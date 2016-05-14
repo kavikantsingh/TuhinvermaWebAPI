@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAPP.DAL", "LAPP.DAL\LAPP.DAL.csproj", "{69F423DF-84C8-4207-BC1C-56FBD7217577}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAPP.BAL", "LAPP.BAL\LAPP.BAL.csproj", "{E0ECE502-CC8C-45FE-8CDE-392260B9205B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAPP.ENTITY", "LAPP.ENTITY\LAPP.ENTITY.csproj", "{71A49425-F6AE-41F2-A0FD-8989A02E69B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAPP.LOGING", "LAPP.LOGING\LAPP.LOGING.csproj", "{791236C0-1637-44C8-B2A9-A1FAD30B32D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAPP.WS", "LAPP.WS\LAPP.WS.csproj", "{814FB30A-F8F4-4EB3-BBD2-92C2CC5FEDDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAPP.GlobalFunctions", "LAPP.GlobalFunctions\LAPP.GlobalFunctions.csproj", "{241A69DE-5464-4251-9FE8-E69AB8FD5891}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69F423DF-84C8-4207-BC1C-56FBD7217577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69F423DF-84C8-4207-BC1C-56FBD7217577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69F423DF-84C8-4207-BC1C-56FBD7217577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69F423DF-84C8-4207-BC1C-56FBD7217577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0ECE502-CC8C-45FE-8CDE-392260B9205B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0ECE502-CC8C-45FE-8CDE-392260B9205B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0ECE502-CC8C-45FE-8CDE-392260B9205B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0ECE502-CC8C-45FE-8CDE-392260B9205B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71A49425-F6AE-41F2-A0FD-8989A02E69B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71A49425-F6AE-41F2-A0FD-8989A02E69B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71A49425-F6AE-41F2-A0FD-8989A02E69B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71A49425-F6AE-41F2-A0FD-8989A02E69B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{791236C0-1637-44C8-B2A9-A1FAD30B32D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{791236C0-1637-44C8-B2A9-A1FAD30B32D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{791236C0-1637-44C8-B2A9-A1FAD30B32D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{791236C0-1637-44C8-B2A9-A1FAD30B32D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{814FB30A-F8F4-4EB3-BBD2-92C2CC5FEDDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{814FB30A-F8F4-4EB3-BBD2-92C2CC5FEDDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{814FB30A-F8F4-4EB3-BBD2-92C2CC5FEDDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{814FB30A-F8F4-4EB3-BBD2-92C2CC5FEDDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241A69DE-5464-4251-9FE8-E69AB8FD5891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241A69DE-5464-4251-9FE8-E69AB8FD5891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241A69DE-5464-4251-9FE8-E69AB8FD5891}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241A69DE-5464-4251-9FE8-E69AB8FD5891}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
