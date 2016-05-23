@@ -36,6 +36,7 @@ namespace LAPP.ENTITY
     {
         public string Key { get; set; }
         public int UserID { get; set; }
+        public int IndividualID { get; set; }
         public object UserInfo { get; set; }
 
     }

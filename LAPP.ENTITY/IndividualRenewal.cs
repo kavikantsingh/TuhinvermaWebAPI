@@ -30,22 +30,60 @@ namespace LAPP.ENTITY
 
         public List<IndividualLegalResponse> IndividualLegal { get; set; }
 
-        public List<IndividualCEHResponse> IndividualCEH { get; set; }
+      //  public List<IndividualCEHResponse> IndividualCEH { get; set; }
         public List<IndividualCECourseResponse> IndividualCECourse { get; set; }
         public IndividualAffidavitResponse IndividualAffidavit { get; set; }
 
-        public List<FeesDetails> FeesDetails { get; set; }
+        public List<FeeDetails> FeesDetails { get; set; }
+        public int RequestedLicenseStatusTypeId { get; set; }
     }
-
 
     public class RenewalGet : BaseEntity
     {
+        public int ApplicationId { get; set; }
+        public int ApplicationTypeId { get; set; }
+        public int ApplicationStatusId { get; set; }
+        public int ApplicationStatusReasonId { get; set; }
+        public string ApplicationNumber { get; set; }
+        public string ApplicationSubmitMode { get; set; }
+        public DateTime StartedDate { get; set; }
+        public DateTime? SubmittedDate { get; set; }
+        public DateTime ApplicationStatusDate { get; set; }
+        public DateTime PaymentDeadlineDate { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public string ConfirmationNumber { get; set; }
+        public string ReferenceNumber { get; set; }
+        public bool IsFingerprintingNotRequired { get; set; }
+        public bool IsPaymentRequired { get; set; }
+        public bool CanProvisionallyHire { get; set; }
+        public bool GoPaperless { get; set; }
+        public int LicenseRequirementId { get; set; }
+        public int WithdrawalReasonId { get; set; }
+        public int LicenseTypeId { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public bool IsPaid { get; set; }
         public int IndividualId { get; set; }
         public string LicenseNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string SubmittedOn { get; set; }
-        public string Status { get; set; }
+        public string ApplicationStatus { get; set; }
+    }
+
+
+    public class RenewalGetSelected : BaseEntity
+    {
+        public int IndividualId { get; set; }
+        public string LicenseNumber { get; set; }
+        public string ApplicationNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime? SubmittedDate { get; set; }
+        public string ApplicationStatus { get; set; }
+
+        public bool IsActive { get; set; }
+
         public bool IsPaid { get; set; }
 
     }
@@ -53,7 +91,7 @@ namespace LAPP.ENTITY
     public class RenewalGetResponse : BaseEntityServiceResponse
     {
 
-        public List<RenewalGet> RenewalGetList { get; set; }
+        public List<RenewalGetSelected> RenewalGetList { get; set; }
     }
 
 

@@ -30,5 +30,14 @@ namespace LAPP.BAL
             return objDal.Get_IndividualLicense_By_IndividualLicenseId(ID);
         }
 
+        public IndividualLicense Get_Pending_IndividualLicense_By_IndividualId(int individualId)
+        {
+            return objDal.Get_Pending_IndividualLicense_By_IndividualId(individualId);
+        }
+
+        public IndividualLicense Get_Latest_IndividualLicense_By_IndividualId(int individualId)
+        {
+            return objDal.Get_Latest_IndividualLicense_By_IndividualId(individualId);
+        }
     }
 }

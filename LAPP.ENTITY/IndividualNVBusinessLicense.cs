@@ -17,9 +17,11 @@ namespace LAPP.ENTITY
         public bool ContentItemResponse { get; set; }
         public string Status { get; set; }
         public string NameonBusinessLicense { get; set; }
-        public string BusinessLicenseHash { get; set; }
+        public string BusinessLicenseNumber { get; set; }
+        public string ContentDescription { get; set; }
 
         public bool IsActive { get; set; }
+
        
     }
     public class IndividualNVBusinessLicense : IndividualNVBusinessLicenseResponse

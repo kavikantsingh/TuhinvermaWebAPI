@@ -30,4 +30,10 @@ namespace LAPP.ENTITY
         public DateTime ModifiedOn { get; set; }
         public string IndividualAddressGuid { get; set; }
     }
+
+
+    public class IndividualAddressResponseRequest : BaseEntityServiceResponse
+    {
+        public List<IndividualAddressResponse> IndividualAddressResponse { get; set; }
+    }
 }

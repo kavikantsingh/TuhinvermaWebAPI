@@ -14,12 +14,12 @@ namespace LAPP.DAL
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("ContactId", objContact.ContactId));
-            lstParameter.Add(new MySqlParameter("ContactFirstName", objContact.ContactFirstName));
-            lstParameter.Add(new MySqlParameter("ContactLastName", objContact.ContactLastName));
-            lstParameter.Add(new MySqlParameter("ContactMiddleName", objContact.ContactMiddleName));
+            lstParameter.Add(new MySqlParameter("ContactFirstName", objContact.ContactFirstName.NullString()));
+            lstParameter.Add(new MySqlParameter("ContactLastName", objContact.ContactLastName.NullString()));
+            lstParameter.Add(new MySqlParameter("ContactMiddleName", objContact.ContactMiddleName.NullString()));
             lstParameter.Add(new MySqlParameter("ContactTypeId", objContact.ContactTypeId));
-            lstParameter.Add(new MySqlParameter("Code", objContact.Code));
-            lstParameter.Add(new MySqlParameter("ContactInfo", objContact.ContactInfo));
+            lstParameter.Add(new MySqlParameter("Code", objContact.Code.NullString()));
+            lstParameter.Add(new MySqlParameter("ContactInfo", objContact.ContactInfo.NullString()));
             lstParameter.Add(new MySqlParameter("DateContactValidated", objContact.DateContactValidated));
             lstParameter.Add(new MySqlParameter("IsActive", objContact.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objContact.IsDeleted));
@@ -88,7 +88,7 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
-            lstParameter.Add(new MySqlParameter("ContactId", ID));
+            lstParameter.Add(new MySqlParameter("G_ContactId", ID));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "contact_Get_By_ContactId", lstParameter.ToArray());
             Contact objEntity = null;
             DataTable dt = ds.Tables[0];

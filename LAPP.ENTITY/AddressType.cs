@@ -37,4 +37,20 @@ namespace LAPP.ENTITY
         public DateTime ModifiedOn { get; set; }
 
     }
+
+    public class AddressTypeGet : BaseEntity
+    {
+        public int AddressTypeId { get; set; }
+        public string AddressTypeCode { get; set; }
+        public string AddressTypeDesc { get; set; }
+        public bool IsActive { get; set; }
+    }
+
+
+
+    public class AddressTypeGetResponse : BaseEntityServiceResponse
+    {
+        public List<AddressTypeGet> AddressTypeGetList { get; set; }
+    }
+
 }

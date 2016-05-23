@@ -32,6 +32,10 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualEmployment.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualEmployment.CreatedBy));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualEmployment.ModifiedBy));
+
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualEmployment.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualEmployment.ModifiedOn));
+
             lstParameter.Add(new MySqlParameter("IndividualEmploymentGuid", objIndividualEmployment.IndividualEmploymentGuid));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
@@ -63,7 +67,27 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_ApplicationId", ApplicationId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualemployment_GET_BY_ApplicationId", lstParameter.ToArray());
+            List<IndividualEmployment> lstEntity = new List<IndividualEmployment>();
+            IndividualEmployment objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        public List<IndividualEmployment> Get_IndividualEmployment_by_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualemployment_GET_BY_IndividualId", lstParameter.ToArray());
             List<IndividualEmployment> lstEntity = new List<IndividualEmployment>();
             IndividualEmployment objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -92,7 +116,15 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
-
+        public void IndividualEmployment_SoftDelete_by_ApplicationId(int _ApplicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_ApplicationId", _ApplicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualemployment_SoftDelete_by_ApplicationId", lstParameter.ToArray());
+            
+        }
         private IndividualEmployment FetchEntity(DataRow dr)
         {
             IndividualEmployment objEntity = new IndividualEmployment();
@@ -178,7 +210,12 @@ namespace LAPP.DAL
             }
             if (dr.Table.Columns.Contains("IndividualEmploymentGuid") && dr["IndividualEmploymentGuid"] != DBNull.Value)
             {
-                objEntity.IndividualEmploymentGuid = (Guid)dr["IndividualEmploymentGuid"];
+                objEntity.IndividualEmploymentGuid = dr["IndividualEmploymentGuid"].ToString();
+            }
+
+            if (dr.Table.Columns.Contains("EmployerName") && dr["EmployerName"] != DBNull.Value)
+            {
+                objEntity.EmployerName = dr["EmployerName"].ToString();
             }
             return objEntity;
 

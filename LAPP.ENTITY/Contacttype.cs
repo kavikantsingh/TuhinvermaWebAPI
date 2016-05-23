@@ -36,4 +36,17 @@ namespace LAPP.ENTITY
         [Display(Description = "Required:No,   (DateTime), For example: MM/dd/yyyy HH:mm:ss ")]
         public DateTime ModifiedOn { get; set; }
     }
+
+    public class ContactTypeGet : BaseEntity
+    {
+        public int ContactTypeId { get; set; }
+        public string Code { get; set; }
+        public string Desc { get; set; }
+        public bool IsActive { get; set; }
+    }
+
+    public class ContactTypeGetResponse : BaseEntityServiceResponse
+    {
+        public List<ContactTypeGet> ContactTypeGetList { get; set; }
+    }
 }

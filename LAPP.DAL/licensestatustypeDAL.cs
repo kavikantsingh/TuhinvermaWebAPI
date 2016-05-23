@@ -37,7 +37,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "LICENSESTATUSTYPE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "licensestatustype_Get_All");
             List<LicenseStatusType> lstEntity = new List<LicenseStatusType>();
             LicenseStatusType objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

@@ -9,12 +9,13 @@ namespace LAPP.ENTITY
     {
         public int IndividualCertificationId { get; set; }
         public int IndividualId { get; set; }
-        public int CertificationTypeId { get; set; }
+        public int? CertificationTypeId { get; set; }
         public string ClinicalComptence { get; set; }
         public bool IsClinicalComptence { get; set; }
         public DateTime? DateIssued { get; set; }
         public string ABAMember { get; set; }
         public string PraxisExam { get; set; }
+        public bool NoChange { get; set; } 
         public bool IsNBCHIS { get; set; }
         public string NBCHISAccount { get; set; }
         public string NBCHISCertificate { get; set; }

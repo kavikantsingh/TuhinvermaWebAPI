@@ -37,18 +37,42 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("SupervisorLicenseNumber", objIndividualSupervisoryInfo.SupervisorLicenseNumber));
             lstParameter.Add(new MySqlParameter("SupervisorStateLicensed", objIndividualSupervisoryInfo.SupervisorStateLicensed));
             lstParameter.Add(new MySqlParameter("SupervisorLicenseExpirationDate", objIndividualSupervisoryInfo.SupervisorLicenseExpirationDate));
+            lstParameter.Add(new MySqlParameter("IndividualNameId", objIndividualSupervisoryInfo.IndividualNameId));
+
             lstParameter.Add(new MySqlParameter("ReferenceNumber", objIndividualSupervisoryInfo.ReferenceNumber));
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualSupervisoryInfo.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualSupervisoryInfo.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualSupervisoryInfo.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualSupervisoryInfo.CreatedOn));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualSupervisoryInfo.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualSupervisoryInfo.ModifiedOn));
+
             lstParameter.Add(new MySqlParameter("IndividualSupervisoryInfoGuid", objIndividualSupervisoryInfo.IndividualSupervisoryInfoGuid));
+
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
             objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualsupervisoryinfo_Save", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
+        }
+
+        public IndividualSupervisoryInfo Get_IndividualSupervisoryInfo_By_ApplicationId(int applicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_ApplicationId", applicationId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualsupervisoryinfo_Get_By_ApplicationId", lstParameter.ToArray());
+            IndividualSupervisoryInfo objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
         }
 
         public List<IndividualSupervisoryInfo> Get_All_IndividualSupervisoryInfo()
@@ -201,6 +225,12 @@ namespace LAPP.DAL
             {
                 objEntity.ReferenceNumber = Convert.ToString(dr["ReferenceNumber"]);
             }
+
+            if (dr.Table.Columns.Contains("IndividualNameId") && dr["IndividualNameId"] != DBNull.Value)
+            {
+                objEntity.IndividualNameId = Convert.ToInt32(dr["IndividualNameId"]);
+            }
+
             if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
             {
                 objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);
@@ -227,8 +257,24 @@ namespace LAPP.DAL
             }
             if (dr.Table.Columns.Contains("IndividualSupervisoryInfoGuid") && dr["IndividualSupervisoryInfoGuid"] != DBNull.Value)
             {
-                objEntity.IndividualSupervisoryInfoGuid = (Guid)dr["IndividualSupervisoryInfoGuid"];
+                objEntity.IndividualSupervisoryInfoGuid =  dr["IndividualSupervisoryInfoGuid"].ToString();
             }
+
+            if (dr.Table.Columns.Contains("FirstName") && dr["FirstName"] != DBNull.Value)
+            {
+                objEntity.FirstName = dr["FirstName"].ToString();
+            }
+
+            if (dr.Table.Columns.Contains("LastName") && dr["LastName"] != DBNull.Value)
+            {
+                objEntity.LastName = dr["LastName"].ToString();
+            }
+
+            if (dr.Table.Columns.Contains("MiddleName") && dr["MiddleName"] != DBNull.Value)
+            {
+                objEntity.MiddleName = dr["MiddleName"].ToString();
+            }
+
             return objEntity;
 
         }

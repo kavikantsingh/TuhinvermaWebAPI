@@ -8,6 +8,7 @@ namespace LAPP.ENTITY
         public string  FeeType { get; set; }
         public decimal Amount { get; set; }
         public string Status { get; set; }
+        public string InvoiceNumber { get; set; }
 
     }
 }

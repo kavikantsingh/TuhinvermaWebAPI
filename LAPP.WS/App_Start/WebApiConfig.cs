@@ -1,4 +1,5 @@
-﻿using LAPP.WS.Areas.HelpPage;
+﻿using LAPP.WS.App_Helper.Common;
+using LAPP.WS.Areas.HelpPage;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,9 @@ namespace LAPP.WS
             config.SetDocumentationProvider(new XmlDocumentationProvider(
     HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
             config.Formatters.Add(new BrowserJsonFormatter());
+
+            //FileHelper.FileToBase64();
+             
         }
 
         private static void EnableCrossSiteRequests(HttpConfiguration config)

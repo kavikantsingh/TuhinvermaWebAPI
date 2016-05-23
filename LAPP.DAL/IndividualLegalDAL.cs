@@ -16,9 +16,9 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IndividualLegalId", objIndividualLegal.IndividualLegalId));
             lstParameter.Add(new MySqlParameter("IndividualId", objIndividualLegal.IndividualId));
             lstParameter.Add(new MySqlParameter("ContentItemLkId", objIndividualLegal.ContentItemLkId));
-            lstParameter.Add(new MySqlParameter("ContentItemHash", objIndividualLegal.ContentItemHash));
+            lstParameter.Add(new MySqlParameter("ContentItemNumber", objIndividualLegal.ContentItemNumber));
             lstParameter.Add(new MySqlParameter("ContentItemResponse", objIndividualLegal.ContentItemResponse));
-            lstParameter.Add(new MySqlParameter("Desc", objIndividualLegal.Desc));
+            lstParameter.Add(new MySqlParameter("Description", objIndividualLegal.Desc));
 
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualLegal.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualLegal.IsDeleted));
@@ -53,13 +53,37 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<IndividualLegal> Get_IndividualLegal_By_IndividualId(int IndividualId)
+        {
+
+            string SGUID = Guid.NewGuid().ToString();
+
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("G_IndividualLegalGuid", SGUID));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individuallegal_Get_By_IndividualId", lstParameter.ToArray());
+            List<IndividualLegal> lstEntity = new List<IndividualLegal>();
+            IndividualLegal objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         public IndividualLegal Get_IndividualLegal_By_IndividualLegalId(int ID)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("IndividualLegalId", ID));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualLegal_GET_BY_IndividualLegalId", lstParameter.ToArray());
+            lstParameter.Add(new MySqlParameter("G_IndividualLegalId", ID));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individuallegal_Get_By_IndividualLegalId", lstParameter.ToArray());
             IndividualLegal objEntity = null;
             DataTable dt = ds.Tables[0];
             if (dt.Rows.Count > 0)
@@ -86,9 +110,9 @@ namespace LAPP.DAL
             {
                 objEntity.ContentItemLkId = Convert.ToInt32(dr["ContentItemLkId"]);
             }
-            if (dr.Table.Columns.Contains("ContentItemHash") && dr["ContentItemHash"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("ContentItemNumber") && dr["ContentItemNumber"] != DBNull.Value)
             {
-                objEntity.ContentItemHash = Convert.ToInt32(dr["ContentItemHash"]);
+                objEntity.ContentItemNumber = Convert.ToInt32(dr["ContentItemNumber"]);
             }
             if (dr.Table.Columns.Contains("ContentItemResponse") && dr["ContentItemResponse"] != DBNull.Value)
             {
@@ -129,6 +153,11 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IndividualLegalGuid") && dr["IndividualLegalGuid"] != DBNull.Value)
             {
                 objEntity.IndividualLegalGuid = Convert.ToString(dr["IndividualLegalGuid"]);
+            }
+
+            if (dr.Table.Columns.Contains("ContentDescription") && dr["ContentDescription"] != DBNull.Value)
+            {
+                objEntity.ContentDescription = Convert.ToString(dr["ContentDescription"]);
             }
             return objEntity;
 

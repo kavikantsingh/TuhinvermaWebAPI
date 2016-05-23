@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,6 +47,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backoffice\IndividualFolder\IndividualAddressCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualDocumentCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualContactCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualLicenseCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualEducationCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualEmploymentCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualNameCS.cs" />
+    <Compile Include="IndividualCommentLogBAL.cs" />
+    <Compile Include="IndividualCommunicationToLogBAL.cs" />
+    <Compile Include="IndividualCommunicationLogBAL.cs" />
+    <Compile Include="Payment\Payment.cs" />
+    <Compile Include="IndividualLogBAL.cs" />
+    <Compile Include="IndividualCommentBAL.cs" />
+    <Compile Include="RevFeeDueDtlBAL.cs" />
+    <Compile Include="RevFeeDueBAL.cs" />
+    <Compile Include="RevFeeDisbBAL.cs" />
+    <Compile Include="ShoppingCartBAL.cs" />
+    <Compile Include="RevFeeMasterBAL.cs" />
+    <Compile Include="RevFeeCollectBAL.cs" />
+    <Compile Include="IndividualDocumentBAL.cs" />
+    <Compile Include="TransactionBAL.cs" />
+    <Compile Include="IndividualRenewalBAL.cs" />
     <Compile Include="EmployerTypeBAL.cs" />
     <Compile Include="IndividualCECourseBAL.cs" />
     <Compile Include="IndividualCEHoursBAL.cs" />
@@ -58,7 +82,7 @@
     <Compile Include="IndividualSupervisoryInfoBAL.cs" />
     <Compile Include="IndividualVeteranBranchBAL.cs" />
     <Compile Include="IndividualVeteranBAL.cs" />
-    <Compile Include="IndividualOtherNameBAL.cs" />
+    <Compile Include="IndividualNameBAL.cs" />
     <Compile Include="IndividualNVBusinessLicenseBAL.cs" />
     <Compile Include="IndividualLegalBAL.cs" />
     <Compile Include="IndividualChildSupportBAL.cs" />
@@ -67,6 +91,7 @@
     <Compile Include="ContentItemLkBAL.cs" />
     <Compile Include="IndividualOtherBAL.cs" />
     <Compile Include="Renewal\RenewalProcess.cs" />
+    <Compile Include="Renewal\ValidateRenewalRequest.cs" />
     <Compile Include="SerialsBAL.cs" />
     <Compile Include="LicenseRequirementBAL.cs" />
     <Compile Include="IndividualCertificationBAL.cs" />
@@ -143,6 +168,10 @@
     <ProjectReference Include="..\LAPP.GlobalFunctions\LAPP.GlobalFunctions.csproj">
       <Project>{241a69de-5464-4251-9fe8-e69ab8fd5891}</Project>
       <Name>LAPP.GlobalFunctions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LAPP.LOGING\LAPP.LOGING.csproj">
+      <Project>{791236c0-1637-44c8-b2a9-a1fad30b32d7}</Project>
+      <Name>LAPP.LOGING</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

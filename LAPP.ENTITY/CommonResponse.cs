@@ -58,5 +58,45 @@ namespace LAPP.ENTITY
         public string ConfirmPassword { get; set; }
     }
 
+    public class RenewalEmailWithAttachment
+    {
 
+        public string Email { get; set; }
+        public int IndividualId { get; set; }
+        public int ApplicationId { get; set; }
+
+        public string PaymentReceiptBase64 { get; set; }
+        public string PaymentReceiptName { get; set; }
+
+        public string LicenseOutputBase64 { get; set; }
+        public string LicenseOutputName { get; set; }
+
+        public string RenewalApplicationBase64 { get; set; }
+        public string RenewalApplitionName { get; set; }
+        
+
+    }
+
+    public class  EmailWithAttachment
+    {
+
+        public string Email { get; set; }
+        public int IndividualId { get; set; }
+        public int ApplicationId { get; set; }
+
+        public string Subject { get; set; }
+        public int TemplateId { get; set; }
+        public int TemplateTypeId { get; set; }
+
+        public List<EmailAttachment> objAttachmentList { get; set; }
+
+    }
+
+
+    public class EmailAttachment
+    {
+        public string DocumentStringBase64 { get; set; }
+        public string DocumentName { get; set; }
+
+    }
 }

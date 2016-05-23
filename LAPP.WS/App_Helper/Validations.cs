@@ -48,7 +48,7 @@ namespace LAPP.WS.App_Helper
                 ResponseReason objValidationResponse = new ResponseReason();
                 objValidationResponse.Code = Code;
                 objValidationResponse.PropertyName = PropertyName;
-                objValidationResponse.Message = GeneralFunctions.GetSplitedCamelCase(PropertyName).ToLower() + " " + " data too long. " + ValidateLength(PropertyValue, Maxlength);
+                objValidationResponse.Message = GeneralFunctions.GetSplitedCamelCase(PropertyName).ToLower() + " " + " Data too long. " + ValidateLength(PropertyValue, Maxlength);
 
                 ObjReasonList.Add(objValidationResponse);
             }
@@ -81,7 +81,7 @@ namespace LAPP.WS.App_Helper
                 ResponseReason objValidationResponse = new ResponseReason();
                 objValidationResponse.Code = Code;
                 objValidationResponse.PropertyName = PropertyName;
-                objValidationResponse.Message = GeneralFunctions.GetSplitedCamelCase(PropertyName).ToLower() + " " + "is required. Should be greater than 0. ";
+                objValidationResponse.Message = GeneralFunctions.GetSplitedCamelCase(PropertyName).ToLower() + " " + "is required and should be greater than 0. ";
 
                 ObjReasonList.Add(objValidationResponse);
             }
@@ -237,7 +237,7 @@ namespace LAPP.WS.App_Helper
                 ResponseReason objValidationResponse = new ResponseReason();
                 objValidationResponse.Code = Code;
                 objValidationResponse.PropertyName = PropertyName;
-                objValidationResponse.Message = "This email is already registered with us.";
+                objValidationResponse.Message = "The email entered is already registered with us.";
 
                 ObjReasonList.Add(objValidationResponse);
             }
@@ -309,7 +309,7 @@ namespace LAPP.WS.App_Helper
             if (!String.IsNullOrEmpty(password.Trim()) && re.IsMatch(password))
                 return result;
             else
-                return "Password does not match with rule. Please see the password instruction.";
+                return "Password does not follow the password rule. Please see the password instructions for the password rule.";
         }
         #endregion
 
@@ -372,6 +372,57 @@ namespace LAPP.WS.App_Helper
 
 
             // if (!String.IsNullOrEmpty(inputUrl.Trim()) && Regex.IsMatch(url, @"(http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?"))
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PropertyName"></param>
+        /// <param name="PropertyValue"></param>
+        /// <param name="objResponseList"></param>
+        /// <returns></returns>
+        public static List<ResponseReason> IsValidCreditCardNumber(string PropertyName, string PropertyValue, List<ResponseReason> objResponseList)
+        {
+            string Code = "FR";
+            if (!string.IsNullOrEmpty(IsValidCreditCardNumber(PropertyValue)))
+            {
+                ResponseReason objValidationResponse = new ResponseReason();
+                objValidationResponse.Code = Code;
+                objValidationResponse.PropertyName = PropertyName;
+                objValidationResponse.Message = "Please enter a valid card number(numeric value only).";
+
+                objResponseList.Add(objValidationResponse);
+            }
+
+            return objResponseList;
+        }
+
+        private static string IsValidCreditCardNumber(string inputValue, string message = "eer")
+        {
+            string result = "";
+            string data = inputValue.Trim();
+            char[] inputCharactors = data.ToCharArray();
+            if (inputCharactors.Length > 17)
+            {
+                return message;
+            }
+            if (inputCharactors.Length < 13)
+            {
+                return message;
+            }
+
+            if (!String.IsNullOrEmpty(data.ToString()) && Regex.IsMatch(data.ToString(), @"^[0-9]+$"))
+            {
+                // nothing
+            }
+            else
+            {
+                result = message;
+            }
+
+
+
+            return result;
+
         }
         #endregion
 

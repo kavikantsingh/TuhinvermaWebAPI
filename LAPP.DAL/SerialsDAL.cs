@@ -19,6 +19,16 @@ namespace LAPP.DAL
         }
 
 
+        public string Get_Invoice_Number()
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Serial_get_by_Invoice_Number");
+            return ds.Tables[0].Rows[0][0].ToString();
+        }
+
+
+
         public string serial_get_for_License_Number()
         {
             DataSet ds = new DataSet("DS");
@@ -28,7 +38,7 @@ namespace LAPP.DAL
         }
 
 
-       public string serial_get_for_ApplicationNumber()
+        public string serial_get_for_ApplicationNumber()
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
@@ -64,6 +74,6 @@ namespace LAPP.DAL
         }
 
 
-       
+
     }
 }

@@ -36,5 +36,11 @@ namespace LAPP.BAL
         {
             return objDAL.Get_Configuration_By_ConfigurationTypeId(ConfigurationTypeId);
         }
+
+        public List<Configuration> GetALL_Configuration_WithConfigurationType()
+        {
+            return objDAL.GetALL_Configuration_WithConfigurationType();
+        }
+
     }
 }

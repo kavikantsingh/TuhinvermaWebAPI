@@ -11,18 +11,18 @@ namespace LAPP.ENTITY
         public int IndividualLegalId { get; set; }
         public int IndividualId { get; set; }
         public int ContentItemLkId { get; set; }
-        public int ContentItemHash { get; set; }
-        public bool ContentItemResponse { get; set; }
+        public int ContentItemNumber { get; set; }
+        public bool? ContentItemResponse { get; set; }
         public string Desc { get; set; }
-
+        public string ContentDescription { get; set; }
         public bool IsActive { get; set; }
-        
+
     }
 
     public class IndividualLegal : IndividualLegalResponse
 
     {
-        
+
         public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }

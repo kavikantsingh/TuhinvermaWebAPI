@@ -20,7 +20,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ContentItemResponse", objIndividualNVBusinessLicense.ContentItemResponse));
             lstParameter.Add(new MySqlParameter("Status", objIndividualNVBusinessLicense.Status));
             lstParameter.Add(new MySqlParameter("NameonBusinessLicense", objIndividualNVBusinessLicense.NameonBusinessLicense));
-            lstParameter.Add(new MySqlParameter("BusinessLicenseHash", objIndividualNVBusinessLicense.BusinessLicenseHash));
+            lstParameter.Add(new MySqlParameter("BusinessLicenseHash", objIndividualNVBusinessLicense.BusinessLicenseNumber));
 
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualNVBusinessLicense.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualNVBusinessLicense.IsDeleted));
@@ -55,13 +55,37 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<IndividualNVBusinessLicense> Get_IndividualNVBusinessLicense_By_IndividualId(int IndividualId)
+        {
+
+            string IndividualNVBusinessLicenseGuid = Guid.NewGuid().ToString();
+
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("G_IndividualNVBusinessLicenseGuid", IndividualNVBusinessLicenseGuid));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualnvbusinesslicense_Get_By_IndividualId", lstParameter.ToArray());
+            List<IndividualNVBusinessLicense> lstEntity = new List<IndividualNVBusinessLicense>();
+            IndividualNVBusinessLicense objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         public IndividualNVBusinessLicense Get_IndividualNVBusinessLicense_By_IndividualNVBusinessLicenseId(int ID)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("IndividualNVBusinessLicenseId", ID));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualNVBusinessLicense_GET_BY_IndividualNVBusinessLicenseId", lstParameter.ToArray());
+            lstParameter.Add(new MySqlParameter("G_IndividualNVBusinessLicenseId", ID));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualnvbusinelice_GetBy_IndividualNVBusinessLiCId", lstParameter.ToArray());
             IndividualNVBusinessLicense objEntity = null;
             DataTable dt = ds.Tables[0];
             if (dt.Rows.Count > 0)
@@ -104,9 +128,9 @@ namespace LAPP.DAL
             {
                 objEntity.NameonBusinessLicense = Convert.ToString(dr["NameonBusinessLicense"]);
             }
-            if (dr.Table.Columns.Contains("BusinessLicenseHash") && dr["BusinessLicenseHash"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("BusinessLicenseNumber") && dr["BusinessLicenseNumber"] != DBNull.Value)
             {
-                objEntity.BusinessLicenseHash = Convert.ToString(dr["BusinessLicenseHash"]);
+                objEntity.BusinessLicenseNumber = Convert.ToString(dr["BusinessLicenseNumber"]);
             }
 
 
@@ -139,6 +163,12 @@ namespace LAPP.DAL
             {
                 objEntity.IndividualNVBusinessLicenseGuid = Convert.ToString(dr["IndividualNVBusinessLicenseGuid"]);
             }
+
+            if (dr.Table.Columns.Contains("ContentDescription") && dr["ContentDescription"] != DBNull.Value)
+            {
+                objEntity.ContentDescription = Convert.ToString(dr["ContentDescription"]);
+            }
+
             return objEntity;
 
         }

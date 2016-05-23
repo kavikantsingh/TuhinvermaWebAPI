@@ -76,7 +76,7 @@ namespace LAPP.DAL
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("IndividualAddressId", ID));
+            lstParameter.Add(new MySqlParameter("_IndividualAddressId", ID));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALADDRESS_GET_BY_IndividualAddressId", lstParameter.ToArray());
             IndividualAddress objEntity = null;
             DataTable dt = ds.Tables[0];
@@ -146,6 +146,39 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IndividualAddressGuid") && dr["IndividualAddressGuid"] != DBNull.Value)
             {
                 objEntity.IndividualAddressGuid = Convert.ToString(dr["IndividualAddressGuid"]);
+            }
+
+            if (dr.Table.Columns.Contains("Addressee") && dr["Addressee"] != DBNull.Value)
+            {
+                objEntity.Addressee = Convert.ToString(dr["Addressee"]);
+            }
+            if (dr.Table.Columns.Contains("StreetLine1") && dr["StreetLine1"] != DBNull.Value)
+            {
+                objEntity.StreetLine1 = Convert.ToString(dr["StreetLine1"]);
+            }
+            if (dr.Table.Columns.Contains("StreetLine2") && dr["StreetLine2"] != DBNull.Value)
+            {
+                objEntity.StreetLine2 = Convert.ToString(dr["StreetLine2"]);
+            }
+            if (dr.Table.Columns.Contains("City") && dr["City"] != DBNull.Value)
+            {
+                objEntity.City = Convert.ToString(dr["City"]);
+            }
+            if (dr.Table.Columns.Contains("StateCode") && dr["StateCode"] != DBNull.Value)
+            {
+                objEntity.StateCode = Convert.ToString(dr["StateCode"]);
+            }
+            if (dr.Table.Columns.Contains("Zip") && dr["Zip"] != DBNull.Value)
+            {
+                objEntity.Zip = Convert.ToString(dr["Zip"]);
+            }
+            if (dr.Table.Columns.Contains("CountyId") && dr["CountyId"] != DBNull.Value)
+            {
+                objEntity.CountyId = Convert.ToInt32(dr["CountyId"]);
+            }
+            if (dr.Table.Columns.Contains("CountryId") && dr["CountryId"] != DBNull.Value)
+            {
+                objEntity.CountryId = Convert.ToInt32(dr["CountryId"]);
             }
             return objEntity;
 

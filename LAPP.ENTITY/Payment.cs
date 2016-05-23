@@ -26,9 +26,9 @@ namespace LAPP.ENTITY
         public string InvoiceNumber { get; set; }
     }
 
-    public class ListItemResponse :BaseEntityServiceResponse
+    public class ListItemResponse : BaseEntityServiceResponse
     {
-        
+
         public List<ListItems> ListItems { get; set; }
 
     }
@@ -38,7 +38,7 @@ namespace LAPP.ENTITY
         public string Value { get; set; }
 
     }
-    public class AuthorizeNetResponse : BaseEntity
+    public class AuthorizeDotNetGateWayResponse : BaseEntity
     {
         public string Response_Code { get; set; }
         public string Response_Subcode { get; set; }
@@ -137,12 +137,41 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, Max Length:11 (string)")]
         public string Zip { get; set; }
 
-        [Display(Description = "Required: Yes, Use code only eg:USA,  Max Length:3 (string)")]
+        [Display(Description = "Required: Yes, Use state code only eg:USA,  Max Length:3 (string)")]
         public string Country { get; set; }
 
+        [Display(Description = "Required: Yes, Enter valid email address,  Max Length:128 (string)")]
+        public string EmailAddress { get; set; }
+
+        public Transaction TransactionObject { get; set; }
+        public int RequestedLicenseStatusTypeId { get; set; }
     }
     public class Payment : PaymentResponse
     {
 
+    }
+
+    public class InitiatePaymentRequest
+    {
+        public int ApplicationId { get; set; }
+        public int IndividualId { get; set; }
+        public int IndividualLicenseId { get; set; }
+        public int LicenseTypeId { get; set; }
+        public string LicenseNumber { get; set; }
+        public string TransactionDeviceTy { get; set; }
+        public List<FeeDetails> FeeDetailsList { get; set; }
+        public Transaction TransactionObject { get; set; }
+
+    }
+
+    public class FeeDetails
+    {
+        public int RevMstFeeId { get; set; }
+        public string FeeName { get; set; }
+        public decimal FeeAmount { get; set; }
+        public int FeeTypeID { get; set; }
+        public int LicenseTypeId { get; set; }
+        public int IndividualLicenseId { get; set; }
+        public string Description { get; set; }
     }
 }

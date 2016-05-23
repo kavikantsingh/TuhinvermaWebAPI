@@ -13,6 +13,8 @@ namespace LAPP.ENTITY
         public int IndividualVeteranId { get; set; }
         public int BranchofServicesId { get; set; }
         public bool BranchofServicesIdResponse { get; set; }
+        public string ContentDescription { get; set; }
+        public string ContentItemLkCode { get; set; }
 
         public bool IsActive { get; set; }
 

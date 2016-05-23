@@ -29,7 +29,9 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualLicense.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualLicense.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualLicense.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualLicense.CreatedOn));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualLicense.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualLicense.ModifiedOn));
             lstParameter.Add(new MySqlParameter("IndividualLicenseGuid", objIndividualLicense.IndividualLicenseGuid));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
@@ -37,6 +39,23 @@ namespace LAPP.DAL
             objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individuallicense_Save", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
+        }
+
+        public IndividualLicense Get_Latest_IndividualLicense_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individuallicense_GET_Latest_BY_IndividualId", lstParameter.ToArray());
+
+            IndividualLicense objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+
+            }
+            return objEntity;
         }
 
         public List<IndividualLicense> Get_All_IndividualLicense()
@@ -71,7 +90,22 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
-
+        public IndividualLicense Get_Pending_IndividualLicense_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individuallicense_GET_Pending_BY_IndividualId", lstParameter.ToArray());
+          
+            IndividualLicense objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                
+            }
+            return objEntity;
+        }
         public List<IndividualLicense> Get_IndividualLicense_By_IndividualId(int IndividualId)
         {
             DataSet ds = new DataSet("DS");
@@ -168,7 +202,20 @@ namespace LAPP.DAL
             }
             if (dr.Table.Columns.Contains("IndividualLicenseGuid") && dr["IndividualLicenseGuid"] != DBNull.Value)
             {
-                objEntity.IndividualLicenseGuid = (Guid)dr["IndividualLicenseGuid"];
+                objEntity.IndividualLicenseGuid = Convert.ToString(dr["IndividualLicenseGuid"]);
+            }
+
+            if (dr.Table.Columns.Contains("LicenseStatusTypeCode") && dr["LicenseStatusTypeCode"] != DBNull.Value)
+            {
+                objEntity.LicenseStatusTypeCode = Convert.ToString(dr["LicenseStatusTypeCode"]);
+            }
+            if (dr.Table.Columns.Contains("LicenseStatusTypeName") && dr["LicenseStatusTypeName"] != DBNull.Value)
+            {
+                objEntity.LicenseStatusTypeName = Convert.ToString(dr["LicenseStatusTypeName"]);
+            }
+            if (dr.Table.Columns.Contains("LicenseTypeName") && dr["LicenseTypeName"] != DBNull.Value)
+            {
+                objEntity.LicenseTypeName = Convert.ToString(dr["LicenseTypeName"]);
             }
             return objEntity;
 

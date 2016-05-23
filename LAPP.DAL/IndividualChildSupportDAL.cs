@@ -16,7 +16,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IndividualChildSupportId", objIndividualChildSupport.IndividualChildSupportId));
             lstParameter.Add(new MySqlParameter("IndividualId", objIndividualChildSupport.IndividualId));
             lstParameter.Add(new MySqlParameter("ContentItemLkId", objIndividualChildSupport.ContentItemLkId));
-            lstParameter.Add(new MySqlParameter("ContentItemHash", objIndividualChildSupport.ContentItemHash));
+            lstParameter.Add(new MySqlParameter("ContentItemNumber", objIndividualChildSupport.ContentItemNumber));
             lstParameter.Add(new MySqlParameter("ContentItemResponse", objIndividualChildSupport.ContentItemResponse));
 
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualChildSupport.IsActive));
@@ -51,14 +51,32 @@ namespace LAPP.DAL
             }
             return lstEntity;
         }
+        public List<IndividualChildSupport> Get_IndividualChildSupport_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("_IndividualChildSupportGuid", Guid.NewGuid().ToString()));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualchildsupport_Getby_IndividualId", lstParameter.ToArray());
+            List<IndividualChildSupport> lstEntity = new List<IndividualChildSupport>();
+            IndividualChildSupport objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
 
         public IndividualChildSupport Get_IndividualChildSupport_By_IndividualChildSupportId(int ID)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("IndividualChildSupportId", ID));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualChildSupport_GET_BY_IndividualChildSupportId", lstParameter.ToArray());
+            lstParameter.Add(new MySqlParameter("_IndividualChildSupportId", ID));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualchildsupport_Getby_IndividualchildsupportId", lstParameter.ToArray());
             IndividualChildSupport objEntity = null;
             DataTable dt = ds.Tables[0];
             if (dt.Rows.Count > 0)
@@ -85,9 +103,9 @@ namespace LAPP.DAL
             {
                 objEntity.ContentItemLkId = Convert.ToInt32(dr["ContentItemLkId"]);
             }
-            if (dr.Table.Columns.Contains("ContentItemHash") && dr["ContentItemHash"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("ContentItem#") && dr["ContentItem#"] != DBNull.Value)
             {
-                objEntity.ContentItemHash = Convert.ToInt32(dr["ContentItemHash"]);
+                objEntity.ContentItemNumber = Convert.ToInt32(dr["ContentItem#"]);
             }
             if (dr.Table.Columns.Contains("ContentItemResponse") && dr["ContentItemResponse"] != DBNull.Value)
             {
@@ -123,6 +141,18 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IndividualChildSupportGuid") && dr["IndividualChildSupportGuid"] != DBNull.Value)
             {
                 objEntity.IndividualChildSupportGuid = Convert.ToString(dr["IndividualChildSupportGuid"]);
+            }
+
+
+            if (dr.Table.Columns.Contains("ContentItemLkCode") && dr["ContentItemLkCode"] != DBNull.Value)
+            {
+                objEntity.ContentItemLkCode = Convert.ToString(dr["ContentItemLkCode"]);
+            }
+
+
+            if (dr.Table.Columns.Contains("ContentDescription") && dr["ContentDescription"] != DBNull.Value)
+            {
+                objEntity.ContentDescription = Convert.ToString(dr["ContentDescription"]);
             }
             return objEntity;
 

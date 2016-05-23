@@ -12,9 +12,13 @@ using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using LAPP.WS.ValidateController.Login;
 using LAPP.GlobalFunctions;
+using LAPP.LOGING;
 
 namespace LAPP.WS.Controllers.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class UserController : ApiController
     {
 
@@ -27,9 +31,21 @@ namespace LAPP.WS.Controllers.Common
         [ActionName("Login")]
         public LoginInfoResponse Login(LoginInfo ObjLoginInfo)
         {
+            UsersBAL objUsersBAL = new UsersBAL();
             LogingHelper.SaveAuditInfo();
 
             LoginInfoResponse objResponse = new LoginInfoResponse();
+            if (ObjLoginInfo == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+
+            }
+
+
 
             try
             {
@@ -46,47 +62,164 @@ namespace LAPP.WS.Controllers.Common
 
                 if (ObjLoginInfo.LoginWithoutEmail)
                 {
-                    if (ObjLoginInfo.AccessCode.ToLower() == "1234" && ObjLoginInfo.LastName.ToLower() == "verma" && ObjLoginInfo.LicenseNumber.ToLower() == "1234")
+
+                    try
                     {
+                        Individual objIndividual = new Individual();
+                        IndividualBAL objIndividualBAL = new IndividualBAL();
 
-                        objResponse.Status = true;
-                        objResponse.Message = "Login Successfull.";
-                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                        string Key = TokenHelper.GenrateToken(1, "");
+                        objIndividual = objIndividualBAL.Get_Individual_By_LastNameSSNCodeLicenseNumber(ObjLoginInfo.LastName, ObjLoginInfo.LicenseNumber, ObjLoginInfo.AccessCode);
+                        if (objIndividual != null)
+                        {
+                            Users objUseres = new Users();
 
-                        objResponse.Key = Key;
-                        objResponse.UserID = 1;
+                            objUseres = objUsersBAL.Get_Users_byIndividualId(objIndividual.IndividualId);
+                            if (objUseres == null)
+                            {
+                                objUseres = new Users();
+
+                                objUseres.FirstName = "";
+                                objUseres.UserName = "";
+                                objUseres.LastName = "";
+                                objUseres.UserTypeId = 6;
+                                objUseres.UserStatusId = 1;
+                                objUseres.IsPending = false;
+                                objUseres.SourceId = 1;
+                                objUseres.Email = "";
+
+                                objUseres.Gender = "";
+
+
+                                objUseres.PositionTitle = "";
+
+                                objUseres.Phone = "";
+
+                                objUseres.PasswordHash = "123456";
+                                objUseres.FailedLogins = 0;
+
+                                objUseres.IsActive = true;
+                                objUseres.IsDeleted = false;
+
+                                objUseres.CreatedBy = 1;
+                                objUseres.UserGuid = Guid.NewGuid().ToString();
+                                objUseres.IndividualGuid = Guid.NewGuid().ToString();
+                                objUseres.Authenticator = Guid.NewGuid().ToString();
+                                objUseres.CreatedOn = DateTime.Now;
+                                objUseres.CreatedBy = 0;
+                                objUseres.IndividualId = objIndividual.IndividualId;
+                                objUseres.UserId = objUsersBAL.Individual_User_Save(objUseres);
+
+                            }
+                            if (objUseres != null && objUseres.UserId > 0)
+                            {
+                                objResponse.Status = true;
+                                objResponse.Message = "Login Successfull.";
+                                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                                string Key = TokenHelper.GenrateToken(objUseres.UserId, "");
+                                objResponse.IndividualID = objIndividual.IndividualId;
+                                objResponse.UserID = objUseres.UserId;
+
+                                var objUserResponse = new { IndividualId = objIndividual.IndividualId, UserID = objUseres.UserId, UserName = objUseres.UserName, UserTypeID = objUseres.UserTypeId, UserTypeName = objUseres.UserTypeName, FirstName = objIndividual.FirstName, LastName = objIndividual.LastName, Email = objUseres.Email };
+
+                                objResponse.Key = Key;
+                                objResponse.UserID = objUseres.UserId;
+                                objResponse.UserInfo = objUserResponse;
+                                LoginHelper.SaveLoginHistory(objUseres);
+                            }
+                            else
+                            {
+                                objResponse.Status = false;
+                                objResponse.Message = "Login Failed. Invalid Credential.";
+                                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("01");
+                                string Key = "";// TokenHelper.GenrateToken(0, "");
+
+                                objResponse.Key = Key;
+                                objResponse.UserID = 0;
+                            }
+                        }
+                        else
+                        {
+                            objResponse.Status = false;
+                            objResponse.Message = "Login Failed. Invalid Credential.";
+                            objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("01");
+                            string Key = "";// TokenHelper.GenrateToken(0, "");
+
+                            objResponse.Key = Key;
+                            objResponse.UserID = 0;
+                        }
+
+
+
+
+
 
                     }
+                    catch (Exception ex)
+                    {
+
+                        throw ex;
+                    }
+
+                    //if (ObjLoginInfo.AccessCode.ToLower() == "1234" && ObjLoginInfo.LastName.ToLower() == "verma" && ObjLoginInfo.LicenseNumber.ToLower() == "1234")
+                    //{
+
+                    //    Users objUser = objUsersBAL.Get_Users_byUsersId(20);
+                    //    if (objUser != null && objUser.UserId > 0)
+                    //    {
+                    //        objResponse.Status = true;
+                    //        objResponse.Message = "Login Successfull.";
+                    //        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    //        string Key = TokenHelper.GenrateToken(1, "");
+
+                    //        var objUserResponse = new { UserID = objUser.UserId, UserName = objUser.UserName, UserTypeID = objUser.UserTypeId, UserTypeName = objUser.UserTypeName, FirstName = objUser.FirstName, LastName = objUser.LastName, Email = objUser.Email };
+
+                    //        objResponse.Key = Key;
+                    //        objResponse.UserID = 1;
+                    //        objResponse.UserInfo = objUserResponse;
+                    //        LoginHelper.SaveLoginHistory(objUser);
+                    //    }
+                    //    else
+                    //    {
+                    //        objResponse.Status = false;
+                    //        objResponse.Message = "Login Failed. Invalid Credential.";
+                    //        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("01");
+                    //        string Key = TokenHelper.GenrateToken(1, "");
+
+                    //        objResponse.Key = Key;
+                    //        objResponse.UserID = 1;
+                    //    }
+
+                    //}
 
                 }
                 else
                 {
-                    UsersBAL objUsersBAL = new UsersBAL();
+
                     Users objUser = objUsersBAL.Get_Users_by_Email_And_Password(ObjLoginInfo.Email, ObjLoginInfo.Password);
                     if (objUser != null && objUser.UserId > 0)
                     {
                         objResponse.Status = true;
                         objResponse.Message = "Login Successfull.";
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                        string Key = TokenHelper.GenrateToken(1, "");
+                        string Key = TokenHelper.GenrateToken(objUser.UserId, "");
 
-                        var objUserResponse = new { UserID = objUser.UserId, UserName = objUser.UserName, UserTypeID = objUser.UserTypeId, UserTypeName = objUser.UserTypeName, FirstName = objUser.FirstName, LastName = objUser.LastName, Email = objUser.Email };
+                        var objUserResponse = new { IndividualId = objUser.IndividualId, UserID = objUser.UserId, UserName = objUser.UserName, UserTypeID = objUser.UserTypeId, UserTypeName = objUser.UserTypeName, FirstName = objUser.FirstName, LastName = objUser.LastName, Email = objUser.Email };
 
                         objResponse.Key = Key;
-                        objResponse.UserID = 1;
+                        objResponse.UserID = objUser.UserId;
+                        objResponse.IndividualID = objUser.IndividualId;
                         objResponse.UserInfo = objUserResponse;
                         LoginHelper.SaveLoginHistory(objUser);
                     }
                     else
                     {
                         objResponse.Status = false;
-                        objResponse.Message = "Login Failed. Invalid credentials.";
+                        objResponse.Message = "Login Failed. Invalid Credential.";
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("01");
-                        string Key = TokenHelper.GenrateToken(1, "");
+                        string Key = "";// TokenHelper.GenrateToken(0, "");
 
                         objResponse.Key = Key;
-                        objResponse.UserID = 1;
+                        objResponse.UserID = 0;
                     }
                 }
 
@@ -120,13 +253,13 @@ namespace LAPP.WS.Controllers.Common
             {
                 objRsponse.StatusCode = "00";
                 objRsponse.Status = true;
-                objRsponse.Message = "An email sent to your email address please follow the instructions to reset the password.";
+                objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
             }
             else
             {
                 objRsponse.StatusCode = "11";
                 objRsponse.Status = false;
-                objRsponse.Message = "Email not sent due to some technical problem.";
+                objRsponse.Message = "We are not able to send email due to technical issues.";
             }
             return objRsponse;
 
@@ -134,22 +267,19 @@ namespace LAPP.WS.Controllers.Common
         /// <summary>
         ///  Reset Access code by User ID
         /// </summary>
-     
+
         /// <param name="obj"></param>
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("ResetAccessCode")]
-        public ResetAccessCodeResponse ResetAccessCode( ResetAccessCodeRequest obj)
+        public ResetAccessCodeResponse ResetAccessCode(ResetAccessCodeRequest obj)
         {
-
-            // string str = System.Web.Security.Membership.GeneratePassword(4,0);
-
-
             ResetAccessCodeResponse objResponse = new ResetAccessCodeResponse();
+
+
             objResponse.StatusCode = "00";
             objResponse.Status = true;
-            objResponse.Message = "An email sent to your email address with access code and instruction. Please follow the instructions.";
-            //EmailHelper.SendMail("", "Reset Access Code", "Reset Access Code " + str,true);
+            objResponse.Message = "An email has been sent to your email address with access code and instructions. Please follow the instructions in your email.";
 
             return objResponse;
 
@@ -206,7 +336,7 @@ namespace LAPP.WS.Controllers.Common
             ResetPasswordResponse objRsponse = new ResetPasswordResponse();
             objRsponse.StatusCode = "00";
             objRsponse.Status = true;
-            objRsponse.Message = "An email sent to your email address please follow the instructions to reset the password.";
+            objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
             if (objLstRequest.Count > 0)
             {
                 Users objUser = new Users();
@@ -219,13 +349,13 @@ namespace LAPP.WS.Controllers.Common
                     {
                         objRsponse.StatusCode = "00";
                         objRsponse.Status = true;
-                        objRsponse.Message = "An email sent to your email address please follow the instructions to reset the password.";
+                        objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
                     }
                     else
                     {
                         objRsponse.StatusCode = "11";
                         objRsponse.Status = false;
-                        objRsponse.Message = "Email not sent due to some technical problem.";
+                        objRsponse.Message = "We are not able to send email due to technical issues.";
                     }
                 }
 
@@ -275,7 +405,7 @@ namespace LAPP.WS.Controllers.Common
                 {
                     if (objUser.PasswordHash != ObjChangePasswordRequest.OldPassword)
                     {
-                        objResponse.Message = "Old password does not match.";
+                        objResponse.Message = "New password entered does not match the previous password.";
                         objResponse.Status = false;
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                         objResponse.ResponseReason = "";
@@ -300,7 +430,7 @@ namespace LAPP.WS.Controllers.Common
                 }
                 else
                 {
-                    objResponse.Message = "Invalid user id supplied.";
+                    objResponse.Message = "Invalid Username.";
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = "";

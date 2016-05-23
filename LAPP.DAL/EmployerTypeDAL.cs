@@ -35,7 +35,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "EMPLOYERTYPE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "employertype_Get_All");
             List<EmployerType> lstEntity = new List<EmployerType>();
             EmployerType objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

@@ -45,6 +45,15 @@
             <param name="ObjReasonList"></param> /// <param name="Maxlength"></param>
             <returns></returns>
         </member>
+        <member name="M:LAPP.WS.App_Helper.Validations.IsValidCreditCardNumber(System.String,System.String,System.Collections.Generic.List{LAPP.ENTITY.ResponseReason})">
+            <summary>
+            
+            </summary>
+            <param name="PropertyName"></param>
+            <param name="PropertyValue"></param>
+            <param name="objResponseList"></param>
+            <returns></returns>
+        </member>
         <member name="M:LAPP.WS.App_Helper.Validations.IsValidDateProperty(System.String,System.String,System.Collections.Generic.List{LAPP.ENTITY.ResponseReason},System.Int32)">
             <summary>
             
@@ -666,48 +675,182 @@
             <param name="Key">The Key of the data.</param>
             <param name="objConfigurationType">Object of ConfigurationType</param>
         </member>
-        <member name="T:LAPP.WS.Controllers.Misc.CountryController">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualAddressSave(System.String,LAPP.ENTITY.IndividualAddressResponse)">
             <summary>
-            Populate Country data
-            </summary>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Misc.CountryController.GetAllCountry(System.String)">
-            <summary>
-            Looks up all data for Country by Key.
+            Save or Update the data For IndividualAddress
             </summary>
             <param name="Key">The Key of the data.</param>
+            <param name="objIndividualAddress">Object of IndividualAddress</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Misc.CountryController.SaveCountry(System.String,LAPP.ENTITY.CountryRequest)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualAddressBYIndividualId(System.String,System.Int32)">
             <summary>
-            Save or Update the data for Country
+            Get Method to get IndividualAddress by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSave(System.String,LAPP.ENTITY.IndividualResponse)">
+            <summary>
+            Save or Update the data For IndividualAddress
             </summary>
             <param name="Key">The Key of the data.</param>
-            <param name="objCountry">Object of Country</param>
+            <param name="objIndividual">Object of IndividualAddress</param>
         </member>
-        <member name="T:LAPP.WS.Controllers.Misc.StateController">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualBYIndividualId(System.String,System.Int32)">
             <summary>
-            Populate State data
+            Get Method to get Individual by key and ID.
             </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Misc.StateController.GetStateByCountryID(System.String,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualNameSave(System.String,LAPP.ENTITY.IndividualNameRequest)">
             <summary>
-            Looks up all data for State by Key.
-            </summary>
-            <param name="Key">The Key of the data.</param>
-            <param name="CountryID">The Country ID of the states.</param>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Misc.StateController.SaveState(System.String,LAPP.ENTITY.State)">
-            <summary>
-            Save or Update the data for State
+            Save or Update the data For IndividualNameAddress
             </summary>
             <param name="Key">The Key of the data.</param>
-            <param name="objState">Object of State</param>
+            <param name="objIndividualName">Object of IndividualNameAddress</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualNameBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualName by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualEducationSave(System.String,LAPP.ENTITY.IndividualCECourseResponse)">
+            <summary>
+            Save or Update the data For IndividualCECourse
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualCECourse">Object of IndividualCECourse</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualEducationBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualEducation by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualEmploymentSave(System.String,LAPP.ENTITY.IndividualEmploymentResponse)">
+            <summary>
+            Save or Update the data For IndividualEmployment
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualEmployment">Object of IndividualEmployment</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualEmploymentByIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualEmployment by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualLicense by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseSave(System.String,LAPP.ENTITY.IndividualLicenseResponse)">
+            <summary>
+            Save or Update the data For IndividualLicense
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualLicense">Object of IndividualLicense</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualDocumentGetByIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualDocument by key and IndividualId.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualDocumentGetByIndividualIdAndApplicationId(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get Method to get IndividualDocument by key IndividualId and ApplicationId.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+            <param name="ApplicationId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualDocumentDeleteByID(System.String,System.Int32)">
+            <summary>
+            Delete Method to get IndividualDocument by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="ID">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualDocumentSave(System.String,LAPP.ENTITY.IndividualDocumentUpload)">
+            <summary>
+            Save or Update the data For IndividualDocument
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualDocument">Object of IndividualDocument</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualContactSave(System.String,LAPP.ENTITY.IndividualContactResponse)">
+            <summary>
+            Save or Update the data For IndividualContact
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualContact">Object of IndividualContact</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualContactBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualContact by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="T:LAPP.WS.Controllers.Common.CommonController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.CommonController.ServerDateTimeGet">
+            <summary>
+            Get Server date and time
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.CommonController.RenewalEmailWithAttachment(System.String,LAPP.ENTITY.RenewalEmailWithAttachment)">
+            <summary>
+            Send Payment Email with Attachment
+            </summary>
+            <param name="Key">The Key of the data.</param> 
+            <param name="objEmailRequest"></param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.CommonController.EmailWithAttachment(System.String,LAPP.ENTITY.EmailWithAttachment)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="objEmailRequest"></param>
+            <returns></returns>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.EmployerController.EmployerTypeGetAll(System.String)">
             <summary>
             Employer Type get all
             </summary>
             <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.LogController.CommentLogSave(System.String,LAPP.ENTITY.IndividualCommentLogRequest)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="objCommentLog"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.LogController.CommunicationLogSave(System.String,LAPP.ENTITY.IndividualCommunicationLogRequest)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="objCommunicationLog"></param>
             <returns></returns>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.LookupController.LookupGetBYLookupTypeID(System.String,System.Int32)">
@@ -785,6 +928,14 @@
             <param name="objPaymentRequest"></param>
             <returns></returns>
         </member>
+        <member name="M:LAPP.WS.Controllers.Common.PaymentController.InitiatePayment(System.String,LAPP.ENTITY.InitiatePaymentRequest)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="objInitiatePaymentRequest"></param>
+            <returns></returns>
+        </member>
         <member name="M:LAPP.WS.Controllers.Common.PaymentController.MonthListGet(System.String)">
             <summary>
             
@@ -818,6 +969,53 @@
             </summary>
             <param name="Key">The Key of the data.</param>
             <param name="objSource">Object of Source</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.TypeValuesController.AddressTypeGetAll(System.String)">
+            <summary>
+            Looks up all data by Key For AddressType.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.TypeValuesController.ContactTypeGetAll(System.String)">
+            <summary>
+            Looks up all data by Key For ContactType.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.TypeValuesController.LicenseTypeGetAll(System.String)">
+            <summary>
+            Looks up all data by Key For LicenseType.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.TypeValuesController.LicenseStatusTypeGetAll(System.String)">
+            <summary>
+            Looks up all data by Key For LicenseStatusType.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.TypeValuesController.ApplicationTypeGetAll(System.String)">
+            <summary>
+            Looks up all data by Key For ApplicationType.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.TypeValuesController.CertificationTypeGetAll(System.String)">
+            <summary>
+            Looks up all data by Key For CertificationType.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.TypeValuesController.IndividualEmploymentEmployerTypeGetAll(System.String)">
+            <summary>
+            Looks up all data by Key For IndividualEmploymentEmployerType.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="T:LAPP.WS.Controllers.Common.UserController">
+            <summary>
+            
+            </summary>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.UserController.Login(LAPP.ENTITY.LoginInfo)">
             <summary>
@@ -860,6 +1058,43 @@
             <param name="Key"></param>
             <param name="ObjChangePasswordRequest"></param>
             <returns>BaseEntityServiceResponse</returns>
+        </member>
+        <member name="T:LAPP.WS.Controllers.Misc.CountryController">
+            <summary>
+            Populate Country data
+            </summary>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Misc.CountryController.GetAllCountry(System.String)">
+            <summary>
+            Looks up all data for Country by Key.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Misc.CountryController.SaveCountry(System.String,LAPP.ENTITY.CountryRequest)">
+            <summary>
+            Save or Update the data for Country
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objCountry">Object of Country</param>
+        </member>
+        <member name="T:LAPP.WS.Controllers.Misc.StateController">
+            <summary>
+            Populate State data
+            </summary>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Misc.StateController.GetStateByCountryID(System.String,System.Int32)">
+            <summary>
+            Looks up all data for State by Key.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="CountryID">The Country ID of the states.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Misc.StateController.SaveState(System.String,LAPP.ENTITY.State)">
+            <summary>
+            Save or Update the data for State
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objState">Object of State</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Loging.LoggingController.AuditvisitInfoSave(System.String,LAPP.LOGING.ENTITY.AuditvisitInfo)">
             <summary>
@@ -923,6 +1158,13 @@
             </summary>
             <param name="Key"></param>
             <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearch(System.String,LAPP.ENTITY.IndividualSearch)">
+            <summary>
+            Method to Search Renewal by key and objSearch.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="objSearch">Record ID.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.User.MenuController.MenuGetAll(System.String)">
             <summary>

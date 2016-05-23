@@ -1,6 +1,7 @@
 ﻿using LAPP.BAL;
 using LAPP.ENTITY;
 using LAPP.ENTITY.Enumeration;
+using LAPP.LOGING;
 using LAPP.WS.App_Helper;
 using LAPP.WS.App_Helper.Common;
 using LAPP.WS.ValidateController.Backoffice;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace LAPP.WS.Controllers.Backoffice
 {
@@ -45,7 +47,7 @@ namespace LAPP.WS.Controllers.Backoffice
 
                 }
 
-                lstConfiguration = objBAL.GetAll_Configuration();
+                lstConfiguration = objBAL.GetALL_Configuration_WithConfigurationType();
                 if (lstConfiguration != null && lstConfiguration.Count > 0)
                 {
                     objResponse.Status = true;
@@ -54,13 +56,20 @@ namespace LAPP.WS.Controllers.Backoffice
 
                     List<ConfigurationGet> lstConfigurationSelected = lstConfiguration.Select(ConfigurationL => new ConfigurationGet
                     {
-                        ConfigurationId = ConfigurationL.ConfigurationId,
                         ConfigurationTypeId = ConfigurationL.ConfigurationTypeId,
-                        ConfigurationType = ConfigurationL.ConfigurationType,
-                        DepartmentId = ConfigurationL.DepartmentId,
-                        DepartmentName = ConfigurationL.DepartmentName,
-                        Value = ConfigurationL.Value,
-                        IsActive = ConfigurationL.IsActive
+                        ConfigurationId = ConfigurationL.ConfigurationId,
+                        Setting = ConfigurationL.Setting,
+                        Description = ConfigurationL.Description,
+                        DataType = ConfigurationL.DataType,
+                        Category = ConfigurationL.Category,
+                        ValidationRegEx = ConfigurationL.ValidationRegEx,
+                        ValidationMessage = ConfigurationL.ValidationMessage,
+                        DefaultValue = ConfigurationL.DefaultValue,
+                        SupportsDoesNotApply = ConfigurationL.SupportsDoesNotApply,
+                        IsEnabled = ConfigurationL.IsEnabled,
+                        IsEditable = ConfigurationL.IsEditable,
+                        IsActive = ConfigurationL.IsActive,
+                        Value = ConfigurationL.Value
                     }).ToList();
 
 
@@ -98,6 +107,7 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <param name="ID">Record ID.</param>
         [AcceptVerbs("GET")]
         [ActionName("ConfigurationGetBYID")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public ConfigurationResponse ConfigurationGetBYID(string Key, int ID)
         {
             LogingHelper.SaveAuditInfo(Key);
@@ -185,7 +195,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.ConfigurationTypeList = null;
+                    objResponse.ConfigurationList = null;
                     return objResponse;
                 }
 
@@ -214,14 +224,14 @@ namespace LAPP.WS.Controllers.Backoffice
                         Value = Configuration.Value
                     }).ToList();
 
-                    objResponse.ConfigurationTypeList = lstConfigurationTypeSelected;
+                    objResponse.ConfigurationList = lstConfigurationTypeSelected;
                 }
                 else
                 {
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
                     objResponse.Message = "No record found.";
-                    objResponse.ConfigurationTypeList = null;
+                    objResponse.ConfigurationList = null;
                 }
             }
             catch (Exception ex)
@@ -231,7 +241,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                objResponse.ConfigurationTypeList = null;
+                objResponse.ConfigurationList = null;
 
             }
             return objResponse;
@@ -427,7 +437,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.ConfigurationTypeList = null;
+                    objResponse.ConfigurationList = null;
                     return objResponse;
                 }
                 lstConfigurationType = objBAL.GetAll_ConfigurationType();
@@ -454,14 +464,14 @@ namespace LAPP.WS.Controllers.Backoffice
                     }).ToList();
 
 
-                    objResponse.ConfigurationTypeList = lstConfigurationTypeSelected;
+                    objResponse.ConfigurationList = lstConfigurationTypeSelected;
                 }
                 else
                 {
                     objResponse.Status = false;
                     objResponse.Message = "No record found.";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                    objResponse.ConfigurationTypeList = null;
+                    objResponse.ConfigurationList = null;
                 }
             }
             catch (Exception ex)
@@ -471,7 +481,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.Status = false;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                 objResponse.Message = ex.Message;
-                objResponse.ConfigurationTypeList = null;
+                objResponse.ConfigurationList = null;
 
             }
             return objResponse;
@@ -502,7 +512,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.ConfigurationTypeList = null;
+                    objResponse.ConfigurationList = null;
                     return objResponse;
                 }
 
@@ -531,14 +541,14 @@ namespace LAPP.WS.Controllers.Backoffice
                         IsActive = Configuration.IsActive
                     }).ToList();
 
-                    objResponse.ConfigurationTypeList = lstConfigurationTypeSelected;
+                    objResponse.ConfigurationList = lstConfigurationTypeSelected;
                 }
                 else
                 {
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
                     objResponse.Message = "No record found.";
-                    objResponse.ConfigurationTypeList = null;
+                    objResponse.ConfigurationList = null;
                 }
             }
             catch (Exception ex)
@@ -548,7 +558,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                objResponse.ConfigurationTypeList = null;
+                objResponse.ConfigurationList = null;
 
             }
             return objResponse;

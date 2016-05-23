@@ -16,9 +16,9 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IndividualAffidavitId", objIndividualAffidavit.IndividualAffidavitId));
             lstParameter.Add(new MySqlParameter("IndividualId", objIndividualAffidavit.IndividualId));
             lstParameter.Add(new MySqlParameter("ContentItemLkId", objIndividualAffidavit.ContentItemLkId));
-            lstParameter.Add(new MySqlParameter("ContentItemHash", objIndividualAffidavit.ContentItemHash));
+            lstParameter.Add(new MySqlParameter("ContentItemNumber", objIndividualAffidavit.ContentItemNumber));
             lstParameter.Add(new MySqlParameter("ContentItemResponse", objIndividualAffidavit.ContentItemResponse));
-            lstParameter.Add(new MySqlParameter("Desc", objIndividualAffidavit.Desc));
+            lstParameter.Add(new MySqlParameter("Description", objIndividualAffidavit.Desc));
 
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualAffidavit.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualAffidavit.IsDeleted));
@@ -72,10 +72,14 @@ namespace LAPP.DAL
 
         public IndividualAffidavit Get_IndividualAffidavit_By_IndividualId(int IndividualId)
         {
+            string SGUID = Guid.NewGuid().ToString();
+
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("G_IndividualAffidavitGuid", SGUID));
+
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualaffidavit_Get_By_IndividualId", lstParameter.ToArray());
             IndividualAffidavit objEntity = null;
             DataTable dt = ds.Tables[0];
@@ -86,6 +90,7 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+
         private IndividualAffidavit FetchEntity(DataRow dr)
         {
             IndividualAffidavit objEntity = new IndividualAffidavit();
@@ -102,9 +107,9 @@ namespace LAPP.DAL
             {
                 objEntity.ContentItemLkId = Convert.ToInt32(dr["ContentItemLkId"]);
             }
-            if (dr.Table.Columns.Contains("ContentItemHash") && dr["ContentItemHash"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("ContentItemNumber") && dr["ContentItemNumber"] != DBNull.Value)
             {
-                objEntity.ContentItemHash = Convert.ToInt32(dr["ContentItemHash"]);
+                objEntity.ContentItemNumber = Convert.ToInt32(dr["ContentItemNumber"]);
             }
             if (dr.Table.Columns.Contains("ContentItemResponse") && dr["ContentItemResponse"] != DBNull.Value)
             {
@@ -146,6 +151,12 @@ namespace LAPP.DAL
             {
                 objEntity.IndividualAffidavitGuid = Convert.ToString(dr["IndividualAffidavitGuid"]);
             }
+
+            if (dr.Table.Columns.Contains("ContentDescription") && dr["ContentDescription"] != DBNull.Value)
+            {
+                objEntity.ContentDescription = Convert.ToString(dr["ContentDescription"]);
+            }
+
             return objEntity;
 
         }

@@ -37,7 +37,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ADDRESSTYPE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "applicationtype_Get_All");
             List<ApplicationType> lstEntity = new List<ApplicationType>();
             ApplicationType objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

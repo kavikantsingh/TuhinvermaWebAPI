@@ -14,11 +14,11 @@ namespace LAPP.DAL
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("IndividualId", objIndividual.IndividualId));
-            lstParameter.Add(new MySqlParameter("FirstName", objIndividual.FirstName));
-            lstParameter.Add(new MySqlParameter("MiddleName", objIndividual.MiddleName));
-            lstParameter.Add(new MySqlParameter("LastName", objIndividual.LastName));
+            lstParameter.Add(new MySqlParameter("FirstName", objIndividual.FirstName.NullString()));
+            lstParameter.Add(new MySqlParameter("MiddleName", objIndividual.MiddleName.NullString()));
+            lstParameter.Add(new MySqlParameter("LastName", objIndividual.LastName.NullString()));
             lstParameter.Add(new MySqlParameter("SuffixId", objIndividual.SuffixId));
-            lstParameter.Add(new MySqlParameter("SSN", objIndividual.SSN));
+            lstParameter.Add(new MySqlParameter("SSN", objIndividual.SSN.NullString()));
             lstParameter.Add(new MySqlParameter("IsItin", objIndividual.IsItin));
             lstParameter.Add(new MySqlParameter("DateOfBirth", objIndividual.DateOfBirth));
             lstParameter.Add(new MySqlParameter("RaceId", objIndividual.RaceId));
@@ -88,6 +88,61 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+
+        public Individual Get_Individual_By_LastNameSSNCodeLicenseNumber(string lastName, string licenseNumber, string sSNCode)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_lastName", lastName));
+            lstParameter.Add(new MySqlParameter("_licenseNumber", licenseNumber));
+            lstParameter.Add(new MySqlParameter("_sSNCode", sSNCode));
+
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUAL_GET_BY_LastNameSSNCodeLicenseNumber", lstParameter.ToArray());
+            Individual objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
+        public List<Individual> Search_Renewal(IndividualSearch obj)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            lstParameter.Add(new MySqlParameter("_Name", obj.Name));
+            lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
+            lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
+            lstParameter.Add(new MySqlParameter("_Phone", obj.Phone));
+            lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
+            lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
+            lstParameter.Add(new MySqlParameter("_StatusId", obj.StatusId));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_By_Search", lstParameter.ToArray());
+
+            List<Individual> lstEntity = new List<Individual>();
+            Individual objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+
+        }
+
+
         private Individual FetchEntity(DataRow dr)
         {
             Individual objEntity = new Individual();
@@ -198,6 +253,42 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("Authenticator") && dr["Authenticator"] != DBNull.Value)
             {
                 objEntity.Authenticator = Convert.ToString(dr["Authenticator"]);
+            }
+
+            //For Search
+
+            if (dr.Table.Columns.Contains("StatusId") && dr["StatusId"] != DBNull.Value)
+            {
+                objEntity.StatusId = Convert.ToInt32(dr["StatusId"]);
+            }
+            if (dr.Table.Columns.Contains("Name") && dr["Name"] != DBNull.Value)
+            {
+                objEntity.Name = Convert.ToString(dr["Name"]);
+            }
+
+            if (dr.Table.Columns.Contains("Phone") && dr["Phone"] != DBNull.Value)
+            {
+                objEntity.Phone = Convert.ToString(dr["Phone"]);
+            }
+
+            if (dr.Table.Columns.Contains("LicenseNumber") && dr["LicenseNumber"] != DBNull.Value)
+            {
+                objEntity.LicenseNumber = Convert.ToString(dr["LicenseNumber"]);
+            }
+
+            // Joined  Field For View Only
+
+            if (dr.Table.Columns.Contains("StatusName") && dr["StatusName"] != DBNull.Value)
+            {
+                objEntity.StatusName = Convert.ToString(dr["StatusName"]);
+            }
+            if (dr.Table.Columns.Contains("SubmittedDate") && dr["SubmittedDate"] != DBNull.Value)
+            {
+                objEntity.SubmittedDate = Convert.ToDateTime(dr["SubmittedDate"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationNumber") && dr["ApplicationNumber"] != DBNull.Value)
+            {
+                objEntity.ApplicationNumber = Convert.ToString(dr["ApplicationNumber"]);
             }
             return objEntity;
 

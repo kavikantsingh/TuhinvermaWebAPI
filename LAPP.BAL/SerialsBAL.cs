@@ -10,7 +10,7 @@ namespace LAPP.BAL
 {
     public class SerialsBAL : BaseBAL
     {
-       
+
 
         public static string Get_Receipt_No()
         {
@@ -23,8 +23,13 @@ namespace LAPP.BAL
             return objDal.serial_get_for_License_Number();
         }
 
+        public static string Get_Invoice_Number()
+        {
+            SerialsDAL objDal = new SerialsDAL();
+            return objDal.Get_Invoice_Number();
+        }
 
-        public static string  Get_Application_Number()
+        public static string Get_Application_Number()
         {
             SerialsDAL objDal = new SerialsDAL();
             return objDal.serial_get_for_ApplicationNumber();

@@ -59,7 +59,6 @@ D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.WS\bin\System.Web.Razor.xml
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.WS\bin\System.Web.WebPages.xml
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.WS\bin\System.Web.WebPages.Deployment.xml
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.WS\bin\System.Web.WebPages.Razor.xml
-D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.WS\bin\Newtonsoft.Json.xml
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.WS\bin\System.Net.Http.Formatting.xml
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.WS\bin\System.Web.Http.xml
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.WS\bin\System.Web.Http.WebHost.xml

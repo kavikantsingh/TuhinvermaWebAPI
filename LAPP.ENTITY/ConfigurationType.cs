@@ -67,7 +67,6 @@ namespace LAPP.ENTITY
         public string Value { get; set; }
     }
 
-
     public class ConfigurationTypeGet : BaseEntity
     {
         public int ConfigurationTypeId { get; set; }
@@ -86,7 +85,6 @@ namespace LAPP.ENTITY
         public string Value { get; set; }
     }
 
-
     public class ConfigurationTypeRequestResponse : BaseEntityServiceResponse
     {
         public List<ConfigurationType> ConfigurationType { get; set; }
@@ -94,6 +92,6 @@ namespace LAPP.ENTITY
 
     public class ConfigurationTypeResponse : BaseEntityServiceResponse
     {
-        public List<ConfigurationTypeGet> ConfigurationTypeList { get; set; }
+        public List<ConfigurationTypeGet> ConfigurationList { get; set; }
     }
 }

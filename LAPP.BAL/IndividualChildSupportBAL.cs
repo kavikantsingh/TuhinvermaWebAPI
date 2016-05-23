@@ -27,5 +27,9 @@ namespace LAPP.BAL
             return objDal.Get_IndividualChildSupport_By_IndividualChildSupportId(ID);
         }
 
+        public List<IndividualChildSupport> Get_IndividualChildSupport_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_IndividualChildSupport_By_IndividualId(IndividualId);
+        }
     }
 }

@@ -34,6 +34,6 @@ namespace LAPP.ENTITY
         public decimal CERolloverHours { get; set; }
         public string ReferenceNumber { get; set; }
         public bool IsActive { get; set; }
-
+       
     }
 }

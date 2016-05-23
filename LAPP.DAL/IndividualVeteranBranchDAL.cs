@@ -51,7 +51,25 @@ namespace LAPP.DAL
             }
             return lstEntity;
         }
-
+        public List<IndividualVeteranBranch> Get_IndividualVeteranBranch_By_IndividualId_VeteranId(int IndividualId,int IndividualVeteranId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("_IndividualVeteranId", IndividualVeteranId));
+            lstParameter.Add(new MySqlParameter("_IndividualVeteranBranchGuid", Guid.NewGuid().ToString()));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualveteranbranch_Getby_IndividualId_VeteranId", lstParameter.ToArray());
+            List<IndividualVeteranBranch> lstEntity = new List<IndividualVeteranBranch>();
+            IndividualVeteranBranch objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
         public IndividualVeteranBranch Get_IndividualVeteranBranch_By_IndividualVeteranBranchId(int ID)
         {
             DataSet ds = new DataSet("DS");
@@ -123,6 +141,19 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IndividualVeteranBranchGuid") && dr["IndividualVeteranBranchGuid"] != DBNull.Value)
             {
                 objEntity.IndividualVeteranBranchGuid = Convert.ToString(dr["IndividualVeteranBranchGuid"]);
+            }
+
+
+
+            if (dr.Table.Columns.Contains("ContentItemLkCode") && dr["ContentItemLkCode"] != DBNull.Value)
+            {
+                objEntity.ContentItemLkCode = Convert.ToString(dr["ContentItemLkCode"]);
+            }
+
+
+            if (dr.Table.Columns.Contains("ContentDescription") && dr["ContentDescription"] != DBNull.Value)
+            {
+                objEntity.ContentDescription = Convert.ToString(dr["ContentDescription"]);
             }
             return objEntity;
 

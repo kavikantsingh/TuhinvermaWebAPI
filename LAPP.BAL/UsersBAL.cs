@@ -52,5 +52,10 @@ namespace LAPP.BAL
         {
             return objDAL.Search_Users(objUsers);
         }
+
+        public Users Get_Users_byIndividualId(int individualId)
+        {
+            return objDAL.Get_Users_byIndividualId(individualId);
+        }
     }
 }

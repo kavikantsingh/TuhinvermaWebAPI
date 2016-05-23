@@ -37,7 +37,7 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, For example: true or false (0,1)")]
         public bool IsActive { get; set; }
 
-        
+
     }
     public class Contact : ContactResponse
 
@@ -61,5 +61,10 @@ namespace LAPP.ENTITY
 
         [Display(Description = "Required: Yes, Max Length:36 (char)")]
         public string Authenticator { get; set; }
+    }
+
+    public class ContactResponseRequest : BaseEntityServiceResponse
+    {
+        public List<ContactResponse> ContactResponse { get; set; }
     }
 }

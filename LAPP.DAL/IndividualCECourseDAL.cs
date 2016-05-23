@@ -37,6 +37,10 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualCECourse.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualCECourse.CreatedBy));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualCECourse.ModifiedBy));
+
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualCECourse.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualCECourse.ModifiedOn));
+
             lstParameter.Add(new MySqlParameter("IndividualCECourseGuid", objIndividualCECourse.IndividualCECourseGuid));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
@@ -78,7 +82,15 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+        public void IndividualCECourse_SoftDelete_by_ApplicationId(int _ApplicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_ApplicationId", _ApplicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualCECourse_SoftDelete_by_ApplicationId", lstParameter.ToArray());
 
+        }
         public List<IndividualCECourse> Get_IndividualCECourse_By_ApplicationId(int ApplicationId)
         {
             DataSet ds = new DataSet("DS");
@@ -97,6 +109,24 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+
+        public List<IndividualCECourse> Get_IndividualCECourse_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualcecourse_GET_BY_IndividualId", lstParameter.ToArray());
+            List<IndividualCECourse> lstEntity = new List<IndividualCECourse>();
+            IndividualCECourse objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
 
 
 

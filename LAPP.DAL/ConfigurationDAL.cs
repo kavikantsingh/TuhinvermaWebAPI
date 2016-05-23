@@ -112,6 +112,26 @@ namespace LAPP.DAL
             return lstCountry;
         }
 
+        public List<Configuration> GetALL_Configuration_WithConfigurationType()
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "configuration_GetALL_WithConfigType");
+            List<Configuration> lstEntity = new List<Configuration>();
+            Configuration objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                {
+                    lstEntity.Add(objEntity);
+                }
+            }
+            return lstEntity;
+        }
+
+
+
         private Configuration FetchEntity(DataRow dr)
         {
             Configuration objEntity = new Configuration();
@@ -182,6 +202,53 @@ namespace LAPP.DAL
             {
                 objEntity.ConfigurationType = Convert.ToString(dr["ConfigurationType"]);
             }
+            //Get
+
+            if (dr.Table.Columns.Contains("Category") && dr["Category"] != DBNull.Value)
+            {
+                objEntity.Category = Convert.ToString(dr["Category"]);
+            }
+            if (dr.Table.Columns.Contains("DataType") && dr["DataType"] != DBNull.Value)
+            {
+                objEntity.DataType = Convert.ToString(dr["DataType"]);
+            }
+            if (dr.Table.Columns.Contains("DefaultValue") && dr["DefaultValue"] != DBNull.Value)
+            {
+                objEntity.DefaultValue = Convert.ToString(dr["DefaultValue"]);
+            }
+            if (dr.Table.Columns.Contains("Description") && dr["Description"] != DBNull.Value)
+            {
+                objEntity.Description = Convert.ToString(dr["Description"]);
+            }
+
+            if (dr.Table.Columns.Contains("IsEnabled") && dr["IsEnabled"] != DBNull.Value)
+            {
+                objEntity.IsEnabled = Convert.ToBoolean(dr["IsEnabled"]);
+            }
+
+            if (dr.Table.Columns.Contains("IsEditable") && dr["IsEditable"] != DBNull.Value)
+            {
+                objEntity.IsEditable = Convert.ToBoolean(dr["IsEditable"]);
+            }
+            if (dr.Table.Columns.Contains("Setting") && dr["Setting"] != DBNull.Value)
+            {
+                objEntity.Setting = Convert.ToString(dr["Setting"]);
+            }
+            if (dr.Table.Columns.Contains("SupportsDoesNotApply") && dr["SupportsDoesNotApply"] != DBNull.Value)
+            {
+                objEntity.SupportsDoesNotApply = Convert.ToBoolean(dr["SupportsDoesNotApply"]);
+            }
+            if (dr.Table.Columns.Contains("ValidationMessage") && dr["ValidationMessage"] != DBNull.Value)
+            {
+                objEntity.ValidationMessage = Convert.ToString(dr["ValidationMessage"]);
+            }
+            if (dr.Table.Columns.Contains("ValidationRegEx") && dr["ValidationRegEx"] != DBNull.Value)
+            {
+                objEntity.ValidationRegEx = Convert.ToString(dr["ValidationRegEx"]);
+            }
+
+
+
 
             return objEntity;
         }

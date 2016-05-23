@@ -38,6 +38,25 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public IndividualVeteran Get_IndividualVeteran_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+          
+            lstParameter.Add(new MySqlParameter("_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("_IndividualVeteranGuid", Guid.NewGuid().ToString()));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualveteran_Getby_IndividualId", lstParameter.ToArray());
+            IndividualVeteran objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
         public List<IndividualVeteran> Get_All_IndividualVeteran()
         {
             DataSet ds = new DataSet("DS");

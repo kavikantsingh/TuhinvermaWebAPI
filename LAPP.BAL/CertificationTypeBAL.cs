@@ -23,7 +23,7 @@ namespace LAPP.BAL
         }
 
 
-        public CertificationType Get_address_By_CertificationTypeId(int ID)
+        public CertificationType Get_CertificationType_By_CertificationTypeId(int ID)
         {
             return objDal.Get_CertificationType_byCertificationTypeId(ID);
         }

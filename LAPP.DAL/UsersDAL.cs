@@ -65,6 +65,8 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+    
+
         public int Individual_User_Save(Users objUsers)
         {
             DBHelper objDB = new DBHelper();
@@ -215,7 +217,20 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
-
+        public Users Get_Users_byIndividualId(int ID)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_IndividualId", ID));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Users_Get_BY_IndividualId", lstParameter.ToArray());
+            Users objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
         public Users Get_Users_by_Email(string Email)
         {
             DataSet ds = new DataSet("DS");

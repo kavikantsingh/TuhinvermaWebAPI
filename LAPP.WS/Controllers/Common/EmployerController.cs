@@ -9,6 +9,7 @@ using LAPP.ENTITY.Enumeration;
 using LAPP.WS.App_Helper.Common;
 using LAPP.BAL;
 using LAPP.WS.App_Helper;
+using LAPP.LOGING;
 
 namespace LAPP.WS.Controllers.Common
 {

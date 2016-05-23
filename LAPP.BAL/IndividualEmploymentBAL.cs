@@ -20,7 +20,10 @@ namespace LAPP.BAL
         {
             return objDal.Get_All_IndividualEmployment();
         }
-
+        public List<IndividualEmployment> Get_IndividualEmployment_by_IndividualId(int IndividualId)
+        {
+            return objDal.Get_IndividualEmployment_by_IndividualId(IndividualId);
+        }
         public List<IndividualEmployment> Get_IndividualEmployment_by_ApplicationId(int ApplicationId)
         {
             return objDal.Get_IndividualEmployment_by_ApplicationId(ApplicationId);
@@ -29,6 +32,9 @@ namespace LAPP.BAL
         {
             return objDal.Get_IndividualEmployment_By_IndividualEmploymentId(ID);
         }
-
+        public void IndividualEmployment_SoftDelete_by_ApplicationId(int _ApplicationId)
+        {
+            objDal.IndividualEmployment_SoftDelete_by_ApplicationId(_ApplicationId);
+        }
     }
 }

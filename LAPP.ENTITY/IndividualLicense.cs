@@ -21,18 +21,35 @@ namespace LAPP.ENTITY
         public DateTime LicenseExpirationDate { get; set; }
         public int LicenseStatusTypeId { get; set; }
         public bool IsActive { get; set; }
- 
+
+        public string Description
+        {
+
+            get
+            {
+                return "Renewal Period from " + LicenseEffectiveDate.ToShortDateString() + " to " + LicenseExpirationDate.ToShortDateString();
+            }
+        }
     }
 
     public class IndividualLicense : IndividualLicenseResponse
 
     {
-        
+        public string LicenseStatusTypeCode { get; set; }
+        public string LicenseStatusTypeName { get; set; }
+
+        public string LicenseTypeName { get; set; }
+
         public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
-        public Guid IndividualLicenseGuid { get; set; }
+        public string IndividualLicenseGuid { get; set; }
+    }
+
+    public class IndividualLicenseResponseRequest : BaseEntityServiceResponse
+    {
+        public List<IndividualLicenseResponse> IndividualLicenseList { get; set; }
     }
 }

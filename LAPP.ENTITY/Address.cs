@@ -37,12 +37,12 @@ namespace LAPP.ENTITY
         [Display(Description = "Required:No, Max Length:11 (Integer), For example: Numeric vlaue (0-9) ")]
         public int? CountryId { get; set; }
 
-       
+
 
         [Display(Description = "Required: Yes, For example: true or false (0,1)")]
         public bool IsActive { get; set; }
 
-        
+
 
 
     }
@@ -80,6 +80,11 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, Max Length:36 (char)")]
         public string Authenticator { get; set; }
 
-       
     }
+
+    public class AddressResponseRequest : BaseEntityServiceResponse
+    {
+        public List<AddressResponse> AddressResponse { get; set; }
+    }
+
 }

@@ -21,6 +21,14 @@ namespace LAPP.BAL
             return objDal.Get_All_IndividualCECourse();
         }
 
+        public List<IndividualCECourse> Get_IndividualCECourse_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_IndividualCECourse_By_IndividualId(IndividualId);
+        }
+        public void IndividualCECourse_SoftDelete_by_ApplicationId(int _ApplicationId)
+        {
+            objDal.IndividualCECourse_SoftDelete_by_ApplicationId(_ApplicationId);
+        }
         public List<IndividualCECourse> Get_IndividualCECourse_By_ApplicationId(int ApplicationId)
         {
             return objDal.Get_IndividualCECourse_By_ApplicationId(ApplicationId);

@@ -58,6 +58,7 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALCONTACT_GET_BY_IndividualId", lstParameter.ToArray());
             List<IndividualContact> lstEntity = new List<IndividualContact>();
             IndividualContact objEntity = null;
@@ -75,7 +76,7 @@ namespace LAPP.DAL
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("IndividualContactId", ID));
+            lstParameter.Add(new MySqlParameter("_IndividualContactId", ID));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALCONTACT_GET_BY_IndividualContactId", lstParameter.ToArray());
             IndividualContact objEntity = null;
             DataTable dt = ds.Tables[0];
@@ -149,6 +150,36 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IndividualContactGuid") && dr["IndividualContactGuid"] != DBNull.Value)
             {
                 objEntity.IndividualContactGuid = Convert.ToString(dr["IndividualContactGuid"]);
+            }
+
+
+            if (dr.Table.Columns.Contains("ContactFirstName") && dr["ContactFirstName"] != DBNull.Value)
+            {
+                objEntity.ContactFirstName = Convert.ToString(dr["ContactFirstName"]);
+            }
+            if (dr.Table.Columns.Contains("ContactLastName") && dr["ContactLastName"] != DBNull.Value)
+            {
+                objEntity.ContactLastName = Convert.ToString(dr["ContactLastName"]);
+            }
+            if (dr.Table.Columns.Contains("ContactMiddleName") && dr["ContactMiddleName"] != DBNull.Value)
+            {
+                objEntity.ContactMiddleName = Convert.ToString(dr["ContactMiddleName"]);
+            }
+            if (dr.Table.Columns.Contains("ContactTypeId") && dr["ContactTypeId"] != DBNull.Value)
+            {
+                objEntity.ContactTypeId = Convert.ToInt32(dr["ContactTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("Code") && dr["Code"] != DBNull.Value)
+            {
+                objEntity.Code = Convert.ToString(dr["Code"]);
+            }
+            if (dr.Table.Columns.Contains("ContactInfo") && dr["ContactInfo"] != DBNull.Value)
+            {
+                objEntity.ContactInfo = Convert.ToString(dr["ContactInfo"]);
+            }
+            if (dr.Table.Columns.Contains("DateContactValidated") && dr["DateContactValidated"] != DBNull.Value)
+            {
+                objEntity.DateContactValidated = Convert.ToDateTime(dr["DateContactValidated"]);
             }
             return objEntity;
 

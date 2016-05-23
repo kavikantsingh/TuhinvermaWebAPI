@@ -11,6 +11,7 @@ using System.Web;
 using LAPP.WS.ValidateController.Loging;
 using LAPP.WS.App_Helper.Common;
 using LAPP.ENTITY.Enumeration;
+using LAPP.LOGING;
 
 namespace LAPP.WS.Controllers.Loging
 {

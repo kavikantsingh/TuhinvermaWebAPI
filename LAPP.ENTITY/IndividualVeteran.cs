@@ -13,12 +13,12 @@ namespace LAPP.ENTITY
         public bool ServedInMilitary { get; set; }
         public bool SpouseofActiveMilitaryMember { get; set; }
         public string MilitaryOccupationSpeciality { get; set; }
-        public DateTime ServiceDateFrom { get; set; }
-        public DateTime ServiceDateTo { get; set; }
+        public DateTime? ServiceDateFrom { get; set; }
+        public DateTime? ServiceDateTo { get; set; }
 
         public bool IsActive { get; set; }
    
-        public List<IndividualVeteranBranch> VeteranBranches { get; set; }
+        public List<IndividualVeteranBranchResponse> VeteranBranches { get; set; }
     }
 
 
@@ -30,7 +30,7 @@ namespace LAPP.ENTITY
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ModifiedBy { get; set; }
-        public DateTime ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
 
         public string IndividualVeteranGuid { get; set; }
     }

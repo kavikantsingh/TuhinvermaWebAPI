@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmailHelper.cs" />
     <Compile Include="Encryption.cs" />
     <Compile Include="GeneralFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

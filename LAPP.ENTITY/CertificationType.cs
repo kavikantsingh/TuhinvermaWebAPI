@@ -19,4 +19,17 @@ namespace LAPP.ENTITY
         public DateTime ModifiedOn { get; set; }
 
     }
+
+    public class CertificationTypeGet : BaseEntity
+    {
+        public int CertificationTypeId { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public bool IsActive { get; set; }
+    }
+
+    public class CertificationTypeGetResponse : BaseEntityServiceResponse
+    {
+        public List<CertificationTypeGet> CertificationTypeGetList { get; set; }
+    }
 }

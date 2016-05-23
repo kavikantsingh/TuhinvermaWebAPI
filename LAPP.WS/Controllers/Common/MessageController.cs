@@ -1,6 +1,7 @@
 ﻿using LAPP.BAL;
 using LAPP.ENTITY;
 using LAPP.ENTITY.Enumeration;
+using LAPP.LOGING;
 using LAPP.WS.App_Helper;
 using LAPP.WS.App_Helper.Common;
 using LAPP.WS.ValidateController.Common;

@@ -91,6 +91,21 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+        public ConfigurationType Get_Configuration_By_Settings_object(string Setting)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_Setting", Setting));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "configuration_Get_By_Settings", lstParameter.ToArray());
+          
+            ConfigurationType objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+               
+            }
+            return objEntity;
+        }
 
         public List<ConfigurationType> Get_Configuration_By_Settings(string Setting)
         {

@@ -1,0 +1,189 @@
+﻿using LAPP.ENTITY;
+using LAPP.ENTITY.Enumeration;
+using LAPP.LOGING;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LAPP.BAL.Backoffice.IndividualFolder
+{
+    public class IndividualAddressCS
+    {
+        public static IndividualAddressResponseRequest SaveIndividualAddress(Token objToken, IndividualAddressResponse objAddressResponse)
+        {
+            IndividualAddressResponseRequest objResponse = new IndividualAddressResponseRequest();
+            AddressBAL objAddressBAL = new AddressBAL();
+            Address objAddress = new Address();
+            IndividualAddress objIndAddress = new IndividualAddress();
+            IndividualAddressBAL objIndAddressBAL = new IndividualAddressBAL();
+            List<IndividualAddress> lstIndividualAddress = new List<IndividualAddress>();
+            try
+            {
+                if (objAddressResponse.AddressId > 0)
+                {
+                    objAddress = new Address();
+                    objAddress = objAddressBAL.Get_address_By_AddressId(objAddressResponse.AddressId);
+                    if (objAddress != null)
+                    {
+                        // Update Address
+
+                        objAddress.Addressee = "";
+                        objAddress.City = objAddressResponse.City;
+                        objAddress.StreetLine1 = objAddressResponse.StreetLine1;
+                        objAddress.StreetLine2 = objAddressResponse.StreetLine2;
+                        objAddress.StateCode = objAddressResponse.StateCode;
+                        objAddress.Zip = objAddressResponse.Zip;
+
+                        objAddress.ModifiedBy = objToken.UserId;
+                        objAddress.ModifiedOn = DateTime.Now;
+                        objAddress.CountryId = 235;
+
+                        objAddress.IsActive = true;
+                        objAddress.IsDeleted = false;
+                        objAddress.UseUserAddress = false;
+                        objAddress.UseVerifiedAddress = false;
+
+                        objAddressBAL.Save_address(objAddress);
+
+                        //End Update Address
+
+                        // Update IndividualAddress
+
+                        objIndAddress = objIndAddressBAL.Get_IndividualAddress_By_IndividualAddressId(objAddressResponse.IndividualAddressId);
+                        if (objIndAddress != null)
+                        {
+                            objIndAddress.IndividualAddressId = objAddressResponse.IndividualAddressId;
+                            objIndAddress.AddressId = objAddress.AddressId;
+                            objIndAddress.AddressTypeId = objAddressResponse.AddressTypeId;
+                            objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
+                            objIndAddress.ModifiedBy = objToken.UserId;
+                            objIndAddress.ModifiedOn = DateTime.Now;
+                            objIndAddress.IndividualId = objAddressResponse.IndividualId;
+                            objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
+
+                            objIndAddressBAL.Save_IndividualAddress(objIndAddress);
+                        }
+
+                        //End  Update IndividualAddress
+
+                        objResponse.Message = MessagesClass.UpdateSuccess;
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    }
+
+                }
+                else
+                {
+
+                    // Save Address
+
+                    objAddress = new Address();
+
+                    objAddress.Addressee = "";
+                    objAddress.AddressGuid = Guid.NewGuid().ToString();
+                    objAddress.Authenticator = Guid.NewGuid().ToString();
+                    objAddress.CountryId = 235;
+
+                    objAddress.IsActive = true;
+                    objAddress.IsDeleted = false;
+                    objAddress.UseUserAddress = false;
+                    objAddress.UseVerifiedAddress = false;
+
+                    objAddress.City = objAddressResponse.City;
+                    objAddress.StreetLine1 = objAddressResponse.StreetLine1;
+                    objAddress.StreetLine2 = objAddressResponse.StreetLine2;
+                    objAddress.StateCode = objAddressResponse.StateCode;
+                    objAddress.Zip = objAddressResponse.Zip;
+
+                    objAddress.CreatedBy = objToken.UserId;
+                    objAddress.CreatedOn = DateTime.Now;
+
+                    objAddress.AddressId = objAddressBAL.Save_address(objAddress);
+
+                    // End Save Address
+
+                    // Save IndividualAddress
+
+                    objIndAddress = new IndividualAddress();
+
+                    objIndAddress.AddressId = objAddress.AddressId;
+                    objIndAddress.AddressTypeId = objAddressResponse.AddressTypeId;
+                    objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
+                    objIndAddress.CreatedBy = objToken.UserId;
+                    objIndAddress.CreatedOn = DateTime.Now;
+                    objIndAddress.IndividualId = objAddressResponse.IndividualId;
+                    objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
+                    objIndAddress.IsActive = true;
+                    objIndAddress.BeginDate = DateTime.Now;
+
+                    objIndAddressBAL.Save_IndividualAddress(objIndAddress);
+
+                    // End Save IndividualAddress
+
+
+                    objResponse.Message = MessagesClass.SaveSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+
+
+                #region AddressResponse
+
+                List<IndividualAddressResponse> lstAddressResponse = new List<IndividualAddressResponse>();
+                lstIndividualAddress = objIndAddressBAL.Get_IndividualAddress_By_IndividualId(objAddressResponse.IndividualId);
+                if (lstIndividualAddress != null)
+                {
+                    lstAddressResponse = lstIndividualAddress
+                       .Select(obj => new IndividualAddressResponse
+                       {
+                           Addressee = obj.Addressee,
+                           AddressTypeId = obj.AddressTypeId,
+                           AddressId = obj.AddressId,
+                           BeginDate = obj.BeginDate,
+                           City = obj.City,
+                           CountryId = obj.CountryId,
+                           CountyId = obj.CountyId,
+                           EndDate = obj.EndDate,
+                           IndividualAddressId = obj.IndividualAddressId,
+                           IndividualId = obj.IndividualId,
+                           IsActive = obj.IsActive,
+                           IsMailingSameasPhysical = obj.IsMailingSameasPhysical,
+                           StateCode = obj.StateCode,
+                           StreetLine1 = obj.StreetLine1,
+                           StreetLine2 = obj.StreetLine2,
+                           Zip = obj.Zip
+
+                       }).ToList();
+                }
+                else
+                {
+                    lstAddressResponse = new List<IndividualAddressResponse>();
+                }
+
+
+                #endregion
+
+                objResponse.Status = true;
+
+                objResponse.IndividualAddressResponse = lstAddressResponse;
+
+            }
+            catch (Exception ex)
+            {
+
+                LogingHelper.SaveExceptionInfo("", ex, "SaveIndividualAddress", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualAddressResponse = null;
+            }
+            return objResponse;
+
+
+        }
+
+    }
+}

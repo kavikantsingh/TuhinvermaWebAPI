@@ -27,7 +27,7 @@ namespace LAPP.DAL
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
-            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "INDIVIDUALEMPLOYMENTEMPLOYERTYPE_SAVE", true, lstParameter.ToArray());
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualemploymentemployertype_Save", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
@@ -36,7 +36,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALEMPLOYMENTEMPLOYERTYPE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualemploymentemployertype_Get_All");
             List<IndividualEmploymentEmployerType> lstEntity = new List<IndividualEmploymentEmployerType>();
             IndividualEmploymentEmployerType objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -53,8 +53,8 @@ namespace LAPP.DAL
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("IndividualEmploymentEmployerTypeId", ID));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALEMPLOYMENTEMPLOYERTYPE_GET_BY_IndividualEmploymentEmployerTypeId", lstParameter.ToArray());
+            lstParameter.Add(new MySqlParameter("G_IndividualEmploymentEmployerTypeId", ID));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualemploymentemployertype_Get_By_IndiEmploymentEmpTyId", lstParameter.ToArray());
             IndividualEmploymentEmployerType objEntity = null;
             DataTable dt = ds.Tables[0];
             if (dt.Rows.Count > 0)

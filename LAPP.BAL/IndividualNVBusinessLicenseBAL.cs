@@ -27,5 +27,9 @@ namespace LAPP.BAL
             return objDal.Get_IndividualNVBusinessLicense_By_IndividualNVBusinessLicenseId(ID);
         }
 
+        public List<IndividualNVBusinessLicense> Get_IndividualNVBusinessLicense_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_IndividualNVBusinessLicense_By_IndividualId(IndividualId);
+        }
     }
 }

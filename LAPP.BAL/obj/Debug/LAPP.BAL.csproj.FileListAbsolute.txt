@@ -3,6 +3,7 @@ D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.BAL.pdb
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.DAL.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.ENTITY.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.GlobalFunctions.dll
+D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.LOGING.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\Newtonsoft.Json.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\System.Web.Http.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\MySql.Data.dll
@@ -10,6 +11,7 @@ D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\System.Net.Http
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.DAL.pdb
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.ENTITY.pdb
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.GlobalFunctions.pdb
+D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\LAPP.LOGING.pdb
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\Newtonsoft.Json.xml
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\System.Web.Http.xml
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.BAL\bin\Debug\System.Net.Http.Formatting.xml

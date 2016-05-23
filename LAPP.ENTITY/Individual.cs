@@ -8,7 +8,6 @@ namespace LAPP.ENTITY
 
 
     public class IndividualResponse : BaseEntity
-
     {
         public int IndividualId { get; set; }
         public string FirstName { get; set; }
@@ -17,7 +16,7 @@ namespace LAPP.ENTITY
         public int? SuffixId { get; set; }
         public string SSN { get; set; }
         public bool IsItin { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public int? RaceId { get; set; }
         public string Gender { get; set; }
         public int? HairColorId { get; set; }
@@ -30,6 +29,8 @@ namespace LAPP.ENTITY
         public string ExternalId2 { get; set; }
         public bool IsArchived { get; set; }
         public bool IsActive { get; set; }
+        public string Email { get; set; }
+
         //public bool IsDeleted { get; set; }
         //public int CreatedBy { get; set; }
         //public DateTime CreatedOn { get; set; }
@@ -38,6 +39,7 @@ namespace LAPP.ENTITY
         //public string IndividualGuid { get; set; }
         //public string Authenticator { get; set; }
     }
+
     public class Individual : IndividualResponse
 
     {
@@ -68,7 +70,56 @@ namespace LAPP.ENTITY
         public DateTime ModifiedOn { get; set; }
         public string IndividualGuid { get; set; }
         public string Authenticator { get; set; }
+
+
+        // For Search
+        public int StatusId { get; set; }
+        public string ApplicationNumber { get; set; }
+
+        public string StatusName { get; set; }
+        public DateTime SubmittedDate { get; set; }
+        public string Phone { get; set; }
+        public string Name { get; set; }
+        public bool IsPaid { get; set; }
+        public string LicenseNumber { get; set; }
     }
 
+
+    public class IndividualSearch : BaseEntity
+    {
+        public string Name { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Phone { get; set; }
+
+        public string LicenseNumber { get; set; }
+
+        public string SSN { get; set; }
+
+        public int StatusId { get; set; }
+
+        public string StatusName { get; set; }
+
+        public int IndividualId { get; set; }
+        public string ApplicationNumber { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime SubmittedDate { get; set; }
+        public bool IsPaid { get; set; }
+    }
+
+
+
+    public class IndividualSearchResponse : BaseEntityServiceResponse
+    {
+        public List<IndividualSearch> IndividualSearch { get; set; }
+    }
+
+    public class IndividualResponseRequest : BaseEntityServiceResponse
+    {
+        public List<IndividualResponse> IndividualResponse { get; set; }
+    }
 
 }

@@ -30,8 +30,12 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IsActive", objProvider.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objProvider.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objProvider.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objProvider.CreatedOn));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objProvider.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objProvider.ModifiedOn));
             lstParameter.Add(new MySqlParameter("ProviderGuid", objProvider.ProviderGuid));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
@@ -44,7 +48,10 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "provider_Get_All");
+
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "provider_Get_All", lstParameter.ToArray());
             List<Provider> lstEntity = new List<Provider>();
             Provider objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -62,6 +69,7 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_ProviderId", ID));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "provider_Get_By_providerId", lstParameter.ToArray());
             Provider objEntity = null;
             DataTable dt = ds.Tables[0];
@@ -94,11 +102,11 @@ namespace LAPP.DAL
             }
             if (dr.Table.Columns.Contains("ProviderName") && dr["ProviderName"] != DBNull.Value)
             {
-                objEntity.ProviderName = Convert.ToByte(dr["ProviderName"]);
+                objEntity.ProviderName = Convert.ToString(dr["ProviderName"]);
             }
             if (dr.Table.Columns.Contains("ProviderDBAName") && dr["ProviderDBAName"] != DBNull.Value)
             {
-                objEntity.ProviderDBAName = Convert.ToByte(dr["ProviderDBAName"]);
+                objEntity.ProviderDBAName = Convert.ToString(dr["ProviderDBAName"]);
             }
             if (dr.Table.Columns.Contains("LicenseNumber") && dr["LicenseNumber"] != DBNull.Value)
             {
@@ -122,7 +130,7 @@ namespace LAPP.DAL
             }
             if (dr.Table.Columns.Contains("TaxId") && dr["TaxId"] != DBNull.Value)
             {
-                objEntity.TaxId = Convert.ToByte(dr["TaxId"]);
+                objEntity.TaxId = Convert.ToString(dr["TaxId"]);
             }
             if (dr.Table.Columns.Contains("ReferenceNumber") && dr["ReferenceNumber"] != DBNull.Value)
             {
@@ -158,7 +166,7 @@ namespace LAPP.DAL
             }
             if (dr.Table.Columns.Contains("ProviderGuid") && dr["ProviderGuid"] != DBNull.Value)
             {
-                objEntity.ProviderGuid = (Guid)dr["ProviderGuid"];
+                objEntity.ProviderGuid = Convert.ToString(dr["ProviderGuid"]);
             }
             return objEntity;
 

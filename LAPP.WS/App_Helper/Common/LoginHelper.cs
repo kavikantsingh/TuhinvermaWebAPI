@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using LAPP.ENTITY;
 using LAPP.BAL;
+using LAPP.LOGING;
 
 namespace LAPP.WS.App_Helper.Common
 {

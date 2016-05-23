@@ -2,6 +2,7 @@
 using LAPP.BAL.Renewal;
 using LAPP.ENTITY;
 using LAPP.ENTITY.Enumeration;
+using LAPP.LOGING;
 using LAPP.WS.App_Helper;
 using LAPP.WS.App_Helper.Common;
 using System;
@@ -78,10 +79,25 @@ namespace LAPP.WS.Controllers.Renewal
         [ActionName("IndividualRenewalSave")]
         public IndividualRenewalResponse IndividualRenewalSave(string Key, IndividualRenewalResponse objRenewalRequest)
         {
-
+            IndividualRenewalResponse objResponse = new IndividualRenewalResponse();
             LogingHelper.SaveAuditInfo(Key);
 
-            IndividualRenewalResponse objResponse = new IndividualRenewalResponse();
+            if (objRenewalRequest == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+
+
+            }
+
+            
+            LogingHelper.SaveExceptionInfo(objRenewalRequest);
+
+
+
             IndividualRenewal objIndividualRenewal = new IndividualRenewal();
 
             try
@@ -126,8 +142,8 @@ namespace LAPP.WS.Controllers.Renewal
         {
             LogingHelper.SaveAuditInfo(Key);
 
+            IndividualRenewalBAL objBAL = new IndividualRenewalBAL();
             RenewalGetResponse objResponse = new RenewalGetResponse();
-            IndividualRenewal objIndividualRenewal = new IndividualRenewal();
             List<RenewalGet> lstRenewalGet = new List<RenewalGet>();
             RenewalGet ovjRenewalGet = new RenewalGet();
             try
@@ -141,31 +157,36 @@ namespace LAPP.WS.Controllers.Renewal
                     return objResponse;
                 }
 
-                objResponse.Status = true;
-                objResponse.Message = "";
-                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                ovjRenewalGet.IndividualId = 10;
-                ovjRenewalGet.FirstName = "Nancy";
-                ovjRenewalGet.LastName = "Blachly";
-                ovjRenewalGet.LicenseNumber = "3124";
-                ovjRenewalGet.SubmittedOn = "03/17/2015";
-                ovjRenewalGet.FirstName = "Submitted";
-                ovjRenewalGet.IsPaid = false;
-                lstRenewalGet.Add(ovjRenewalGet);
+                lstRenewalGet = objBAL.Get_All_Renewal();
+                if (lstRenewalGet != null && lstRenewalGet.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    List<RenewalGetSelected> lstRenewalGetSelected = lstRenewalGet.Select(RenewalGetSelectedRes => new RenewalGetSelected
+                    {
+                        IndividualId = RenewalGetSelectedRes.IndividualId,
+                        LicenseNumber = RenewalGetSelectedRes.LicenseNumber,
+                        ApplicationNumber = RenewalGetSelectedRes.ApplicationNumber,
+                        FirstName = RenewalGetSelectedRes.FirstName,
+                        LastName = RenewalGetSelectedRes.LastName,
+                        SubmittedDate = RenewalGetSelectedRes.SubmittedDate,
+                        IsPaid = RenewalGetSelectedRes.IsPaid,
+                        IsActive = RenewalGetSelectedRes.IsActive,
+                        ApplicationStatus = RenewalGetSelectedRes.ApplicationStatus
 
-                ovjRenewalGet = new RenewalGet();
-                ovjRenewalGet.FirstName = "David";
-                ovjRenewalGet.LastName = "Hook";
-                ovjRenewalGet.IndividualId = 14;
+                    }).ToList();
 
-                ovjRenewalGet.LicenseNumber = "2346";
-                ovjRenewalGet.SubmittedOn = "03/18/2015";
-                ovjRenewalGet.FirstName = "Complete";
-                ovjRenewalGet.IsPaid = true;
 
-                lstRenewalGet.Add(ovjRenewalGet);
-
-                objResponse.RenewalGetList = lstRenewalGet;
+                    objResponse.RenewalGetList = lstRenewalGetSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.RenewalGetList = null;
+                }
             }
             catch (Exception ex)
             {
@@ -175,11 +196,87 @@ namespace LAPP.WS.Controllers.Renewal
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.RenewalGetList = null;
+            }
+            return objResponse;
+        }
+
+
+
+        /// <summary>
+        /// Method to Search Renewal by key and objSearch.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="objSearch">Record ID.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("RenewalSearch")]
+        public IndividualSearchResponse RenewalSearch(string Key, IndividualSearch objSearch)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualSearchResponse objResponse = new IndividualSearchResponse();
+            IndividualBAL objBAL = new IndividualBAL();
+            Individual objEntity = new Individual();
+            List<Individual> lstIndividual = new List<Individual>();
+            List<IndividualSearch> lstIndividualSelected = new List<IndividualSearch>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualSearch = null;
+                    return objResponse;
+                }
+
+                lstIndividual = objBAL.Search_Renewal(objSearch);
+                if (lstIndividual != null && lstIndividual.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearch
+                    {
+                        IndividualId = RenewalGetSelectedRes.IndividualId,
+                        LicenseNumber = RenewalGetSelectedRes.LicenseNumber,
+                        ApplicationNumber = RenewalGetSelectedRes.ApplicationNumber,
+                        FirstName = RenewalGetSelectedRes.FirstName,
+                        LastName = RenewalGetSelectedRes.LastName,
+                        SubmittedDate = RenewalGetSelectedRes.SubmittedDate,
+                        IsPaid = RenewalGetSelectedRes.IsPaid,
+                        IsActive = RenewalGetSelectedRes.IsActive,
+                        Name = RenewalGetSelectedRes.Name,
+                        SSN = RenewalGetSelectedRes.SSN,
+                        Phone = RenewalGetSelectedRes.Phone,
+                        StatusId = RenewalGetSelectedRes.StatusId,
+                        StatusName = RenewalGetSelectedRes.StatusName,
+                    }).ToList();
+
+                    objResponse.IndividualSearch = lstIndividualSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualSearch = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "RenewalSearch", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualSearch = null;
 
             }
             return objResponse;
-
-
         }
+
     }
 }

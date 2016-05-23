@@ -21,7 +21,10 @@ namespace LAPP.BAL
         {
             return objDal.Get_All_IndividualLegal();
         }
-
+        public List<IndividualLegal> Get_IndividualLegal_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_IndividualLegal_By_IndividualId(IndividualId);
+        }
         public IndividualLegal Get_address_By_IndividualLegalId(int ID)
         {
             return objDal.Get_IndividualLegal_By_IndividualLegalId(ID);

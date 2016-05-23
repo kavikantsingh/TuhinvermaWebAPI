@@ -14,12 +14,12 @@ namespace LAPP.DAL
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("AddressId", objaddress.AddressId));
-            lstParameter.Add(new MySqlParameter("Addressee", objaddress.Addressee));
-            lstParameter.Add(new MySqlParameter("StreetLine1", objaddress.StreetLine1));
-            lstParameter.Add(new MySqlParameter("StreetLine2", objaddress.StreetLine2));
-            lstParameter.Add(new MySqlParameter("City", objaddress.City));
-            lstParameter.Add(new MySqlParameter("StateCode", objaddress.StateCode));
-            lstParameter.Add(new MySqlParameter("Zip", objaddress.Zip));
+            lstParameter.Add(new MySqlParameter("Addressee",objaddress.Addressee.NullString()));
+            lstParameter.Add(new MySqlParameter("StreetLine1", objaddress.StreetLine1.NullString()));
+            lstParameter.Add(new MySqlParameter("StreetLine2", objaddress.StreetLine2.NullString()));
+            lstParameter.Add(new MySqlParameter("City", objaddress.City.NullString()));
+            lstParameter.Add(new MySqlParameter("StateCode", objaddress.StateCode.NullString()));
+            lstParameter.Add(new MySqlParameter("Zip", objaddress.Zip.NullString()));
             lstParameter.Add(new MySqlParameter("CountyId", objaddress.CountyId));
             lstParameter.Add(new MySqlParameter("CountryId", objaddress.CountryId));
             lstParameter.Add(new MySqlParameter("DateValidated", objaddress.DateValidated));
@@ -94,7 +94,7 @@ namespace LAPP.DAL
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("AddressId", ID));
+            lstParameter.Add(new MySqlParameter("G_AddressId", ID));
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ADDRESS_GET_BY_AddressId", lstParameter.ToArray());
             Address objEntity = null;

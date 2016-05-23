@@ -10,6 +10,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Text.RegularExpressions;
+using LAPP.WS.ValidateController.Common;
+using System.Transactions;
+using LAPP.LOGING;
+
 namespace LAPP.WS.Controllers.Common
 {
     public class PaymentController : ApiController
@@ -43,10 +47,27 @@ namespace LAPP.WS.Controllers.Common
                 }
 
 
-                objResponse.Status = true;
-                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                objResponse.Message = "";
-                objResponse.PaymentAuthResponse = objAuthorization;
+                #region Validation
+                PaymentResponse objValidationResponse = new PaymentResponse();
+                objValidationResponse = PaymentValidation.ValidateRequest(objPaymentRequest);
+                if (objValidationResponse != null)
+                {
+                    return objValidationResponse;
+                }
+
+                #endregion
+
+                //using (TransactionScope transScope = new TransactionScope(new TransactionScopeOption {ti))
+                //{
+                Token objToken = TokenHelper.GetTokenByKey(Key);
+
+                objResponse = AuthorizeDotNetPayment.ProcessPayment(objPaymentRequest, objToken.UserId, objToken);
+                // transScope.Complete();
+                //}
+
+                return objResponse;
+
+
 
             }
             catch (Exception ex)
@@ -57,6 +78,70 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.PaymentAuthResponse = null;
+
+            }
+            return objResponse;
+
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="objInitiatePaymentRequest"></param>
+        /// <returns></returns>
+        [AcceptVerbs("POST")]
+        [ActionName("InitiatePayment")]
+        public LAPP.ENTITY.TransactionResponse InitiatePayment(string Key, InitiatePaymentRequest objInitiatePaymentRequest)
+        {
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            TransactionResponse objResponse = new TransactionResponse();
+            PaymentAuthResponse objAuthorization = new PaymentAuthResponse();
+
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.Transaction = null;
+                    return objResponse;
+                }
+
+                LAPP.ENTITY.Transaction objTransaction = LAPP.BAL.Payment.InitiatePayment.InitiatePaymentTransaction(objInitiatePaymentRequest, 1);
+
+                if (objTransaction != null)
+                {
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.Message = "Payment Transaction Initiated.";
+                    objResponse.Transaction = Newtonsoft.Json.JsonConvert.DeserializeObject<TrasactionRes>(Newtonsoft.Json.JsonConvert.SerializeObject(objTransaction));
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.TransactionFailed).ToString("00");
+                    objResponse.Message = "Payment Transaction Inititiation failed.";
+                    objResponse.Transaction = null;
+                    return objResponse;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "InitiatePayment", ENTITY.Enumeration.eSeverity.Critical);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Transaction = null;
 
             }
             return objResponse;

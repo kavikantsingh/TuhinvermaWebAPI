@@ -12,18 +12,19 @@ namespace LAPP.ENTITY
         public int ContactId { get; set; }
         public int IndividualEmploymentId { get; set; }
         public int ContactTypeId { get; set; }
-        public DateTime BeginDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? BeginDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public bool IsPreferredContact { get; set; }
         public bool IsMobile { get; set; }
         public bool IsActive { get; set; }
-        
+        public bool IsDeleted { get; set; }
+
     }
 
     public class IndividualEmploymentContact : IndividualEmploymentContactResponse
     {
         
-        public bool IsDeleted { get; set; }
+        
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ModifiedBy { get; set; }

@@ -92,6 +92,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetNullByDataType.cs" />
+    <Compile Include="IndividualCommentLogDAL.cs" />
+    <Compile Include="IndividualCommunicationLogDAL.cs" />
+    <Compile Include="IndividualCommunicationToLogDAL.cs" />
+    <Compile Include="IndividualDocumentDAL.cs" />
+    <Compile Include="IndividualCommentDAL.cs" />
+    <Compile Include="IndividualLogDAL.cs" />
+    <Compile Include="RevFeeMasterDAL.cs" />
+    <Compile Include="RevFeeDueDtlDAL.cs" />
+    <Compile Include="RevFeeDueDAL.cs" />
+    <Compile Include="RevFeeDisbDAL.cs" />
+    <Compile Include="ShoppingCartDAL.cs" />
+    <Compile Include="RevFeeCollectDAL.cs" />
+    <Compile Include="TransactionDAL.cs" />
+    <Compile Include="IndividualRenewalDAL.cs" />
     <Compile Include="EmployerTypeDAL.cs" />
     <Compile Include="EncryptionKey.cs" />
     <Compile Include="IndividualCECourseDAL.cs" />
@@ -105,7 +120,7 @@
     <Compile Include="IndividualSupervisoryInfoDAL.cs" />
     <Compile Include="IndividualVeteranBranchDAL.cs" />
     <Compile Include="IndividualVeteranDAL.cs" />
-    <Compile Include="IndividualOtherNameDAL.cs" />
+    <Compile Include="IndividualNameDAL.cs" />
     <Compile Include="IndividualNVBusinessLicenseDAL.cs" />
     <Compile Include="IndividualLegalDAL.cs" />
     <Compile Include="IndividualChildSupportDAL.cs" />

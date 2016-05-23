@@ -50,6 +50,35 @@ namespace LAPP.ENTITY
         [Display(Description = "Desc:Used for view only.")]
         public string DepartmentName { get; set; }
 
+        [Display(Description = "Desc:Used for view only.")]
+        public string Setting { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public string Description { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public string DataType { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public string Category { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public string ValidationRegEx { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public string ValidationMessage { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public string DefaultValue { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public bool SupportsDoesNotApply { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public bool IsEnabled { get; set; }
+
+        [Display(Description = "Desc:Used for view only.")]
+        public bool IsEditable { get; set; }
     }
 
     public class ConfigurationSearch : BaseEntity
@@ -70,13 +99,24 @@ namespace LAPP.ENTITY
 
     public class ConfigurationGet : BaseEntity
     {
-        public int ConfigurationTypeId { get; set; }
         public int ConfigurationId { get; set; }
+        public int ConfigurationTypeId { get; set; }
         public int DepartmentId { get; set; }
-        public string DepartmentName { get; set; }
         public string Value { get; set; }
-        public bool IsActive { get; set; }
         public string ConfigurationType { get; set; }
+        public string DepartmentName { get; set; }
+        public string Setting { get; set; }
+        public string Description { get; set; }
+        public string DataType { get; set; }
+        public string Category { get; set; }
+        public string ValidationRegEx { get; set; }
+        public string ValidationMessage { get; set; }
+        public string DefaultValue { get; set; }
+        public bool SupportsDoesNotApply { get; set; }
+        public bool IsEnabled { get; set; }
+        public bool IsEditable { get; set; }
+        public bool IsActive { get; set; }
+
     }
 
 

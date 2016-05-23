@@ -26,6 +26,8 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualEmploymentAddress.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualEmploymentAddress.CreatedBy));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualEmploymentAddress.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualEmploymentAddress.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualEmploymentAddress.ModifiedOn));
             lstParameter.Add(new MySqlParameter("IndividualEmploymentAddressGuid", objIndividualEmploymentAddress.IndividualEmploymentAddressGuid));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
@@ -149,6 +151,39 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IndividualEmploymentAddressGuid") && dr["IndividualEmploymentAddressGuid"] != DBNull.Value)
             {
                 objEntity.IndividualEmploymentAddressGuid =  dr["IndividualEmploymentAddressGuid"].ToString();
+            }
+
+            if (dr.Table.Columns.Contains("Addressee") && dr["Addressee"] != DBNull.Value)
+            {
+                objEntity.Addressee = Convert.ToString(dr["Addressee"]);
+            }
+            if (dr.Table.Columns.Contains("StreetLine1") && dr["StreetLine1"] != DBNull.Value)
+            {
+                objEntity.StreetLine1 = Convert.ToString(dr["StreetLine1"]);
+            }
+            if (dr.Table.Columns.Contains("StreetLine2") && dr["StreetLine2"] != DBNull.Value)
+            {
+                objEntity.StreetLine2 = Convert.ToString(dr["StreetLine2"]);
+            }
+            if (dr.Table.Columns.Contains("City") && dr["City"] != DBNull.Value)
+            {
+                objEntity.City = Convert.ToString(dr["City"]);
+            }
+            if (dr.Table.Columns.Contains("StateCode") && dr["StateCode"] != DBNull.Value)
+            {
+                objEntity.StateCode = Convert.ToString(dr["StateCode"]);
+            }
+            if (dr.Table.Columns.Contains("Zip") && dr["Zip"] != DBNull.Value)
+            {
+                objEntity.Zip = Convert.ToString(dr["Zip"]);
+            }
+            if (dr.Table.Columns.Contains("CountyId") && dr["CountyId"] != DBNull.Value)
+            {
+                objEntity.CountyId = Convert.ToInt32(dr["CountyId"]);
+            }
+            if (dr.Table.Columns.Contains("CountryId") && dr["CountryId"] != DBNull.Value)
+            {
+                objEntity.CountryId = Convert.ToInt32(dr["CountryId"]);
             }
             return objEntity;
 

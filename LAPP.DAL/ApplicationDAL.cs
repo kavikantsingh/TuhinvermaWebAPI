@@ -95,6 +95,22 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<Application> Get_All_Renewa()
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_Get_All");
+            List<Application> lstEntity = new List<Application>();
+            Application objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         public Application Get_Application_By_ApplicationId(int ID)
         {
             DataSet ds = new DataSet("DS");

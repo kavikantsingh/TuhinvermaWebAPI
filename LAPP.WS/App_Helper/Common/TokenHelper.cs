@@ -113,7 +113,7 @@ namespace LAPP.WS.App_Helper.Common
                             }
                             else
                             {
-                                objUserSession.ExpiredOn = DateTime.Now.AddMinutes(20);
+                                objUserSession.ExpiredOn = DateTime.Now.AddMinutes(30);
                                 objUserSessionBAL.Update_UserSession(objUserSession);
                                 return true;
                             }

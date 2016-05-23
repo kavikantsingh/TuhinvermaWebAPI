@@ -37,7 +37,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ADDRESSTYPE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "certificationtype_Get_All");
             List<CertificationType> lstEntity = new List<CertificationType>();
             CertificationType objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -49,13 +49,13 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-        public CertificationType Get_CertificationType_byCertificationTypeId(int AddressId)
+        public CertificationType Get_CertificationType_byCertificationTypeId(int CertificationTypeId)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParam = new List<MySqlParameter>();
-            lstParam.Add(new MySqlParameter("G_CertificationTypeId", AddressId));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "addresstype_Get_By_CertificationTypeId");
+            lstParam.Add(new MySqlParameter("G_CertificationTypeId", CertificationTypeId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "certificationtype_Get_By_CertificationTypeId");
 
             CertificationType objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
