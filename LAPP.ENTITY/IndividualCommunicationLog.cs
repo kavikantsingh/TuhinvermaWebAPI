@@ -10,13 +10,13 @@ namespace LAPP.ENTITY
     public class IndividualCommunicationLog : IndividualCommunicationLogRequest
     {
 
-         
+
         public int CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
         public string IndividualCommunicationLogGuid { get; set; }
     }
 
-    public class IndividualCommunicationLogRequest :BaseEntity
+    public class IndividualCommunicationLogRequest : BaseEntity
     {
 
         public int IndividualCommunicationLogId { get; set; }
@@ -44,7 +44,12 @@ namespace LAPP.ENTITY
         public bool IsForPublic { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-         public string EmailTo { get; set; }
+        public string EmailTo { get; set; }
         public int? UserIdTo { get; set; }
+    }
+
+    public class IndividualCommunicationLogRequestResponce : BaseEntityServiceResponse
+    {
+        public List<IndividualCommunicationLogRequest> IndividualCommunicationLogRequest { get; set; }
     }
 }

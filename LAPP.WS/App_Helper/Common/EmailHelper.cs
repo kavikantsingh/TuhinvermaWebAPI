@@ -162,6 +162,10 @@ namespace LAPP.GlobalFunctions
                     //Config_GNF.LogFailedEmail(toAddress, subject);
                 }
             }
+            finally
+            {
+                message.Attachments.ToList().ForEach(a => a.Dispose());
+            }
 
             return result;
         }
@@ -228,6 +232,12 @@ namespace LAPP.GlobalFunctions
                      
                 }
             }
+            finally
+            {
+                message.Attachments.ToList().ForEach(a => a.Dispose());
+            }
+
+
 
             return result;
 
@@ -239,7 +249,7 @@ namespace LAPP.GlobalFunctions
 
 
         #region Configuration
-        private static string GetSenderAddress()
+        public static string GetSenderAddress()
         {
             //return "info@inlumon.com";
             //if (Lapp_Configuration.IsApplicationUnderDevelopment())

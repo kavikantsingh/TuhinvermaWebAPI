@@ -25,8 +25,10 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             List<IndividualNameRequest> lstIndividualName = new List<IndividualNameRequest>();
             try
             {
+                int individualId = objIndividualNameRequest.IndividualId;
+                int? applicationId = null;//objIndividualNameRequest.ApplicationId;
 
-                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objIndividualNameRequest.IndividualId);
+                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
 
                 if (objIndividual != null && objIndividual.FirstName.ToLower() != objIndividualNameRequest.FirstName.ToLower()
                     || objIndividual.LastName.ToLower() != objIndividualNameRequest.LastName.ToLower()
@@ -67,7 +69,13 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividual.ModifiedOn = DateTime.Now;
 
                     objIndividualBAL.Save_Individual(objIndividual);
+                    //SAVE LOG
 
+                    string logText = "Individual Name saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
 
                     objResponse.Message = MessagesClass.SaveSuccess;
                     objResponse.Status = true;

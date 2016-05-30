@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
- 
+
 namespace LAPP.GlobalFunctions
 {
     public class GeneralFunctions
@@ -41,6 +41,14 @@ namespace LAPP.GlobalFunctions
             catch (Exception ex) { return ""; }
         }
 
-      
+        public static string GetTempPassword(int size=8)
+        {
+            const string str = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#$&*%";
+
+            var rnd = new Random();
+            return new string(Enumerable.Repeat(str, size)
+       .Select(s => s[rnd.Next(s.Length)]).ToArray());
+
+        }
     }
 }

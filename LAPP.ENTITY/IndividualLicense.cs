@@ -10,8 +10,8 @@ namespace LAPP.ENTITY
     {
         public int IndividualLicenseId { get; set; }
         public int IndividualId { get; set; }
-        public int ApplicationId { get; set; }
-        public int ApplicationTypeId { get; set; }
+        public int? ApplicationId { get; set; }
+        public int? ApplicationTypeId { get; set; }
         public int LicenseTypeId { get; set; }
         public bool IsLicenseTemporary { get; set; }
         public bool IsLicenseActive { get; set; }
@@ -44,7 +44,7 @@ namespace LAPP.ENTITY
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ModifiedBy { get; set; }
-        public DateTime ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
         public string IndividualLicenseGuid { get; set; }
     }
 

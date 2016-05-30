@@ -59,11 +59,16 @@
     <Compile Include="FileHelper.cs" />
     <Compile Include="LappLogingDAL.cs" />
     <Compile Include="LappLogingEntity.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="LogingHelper.cs" />
     <Compile Include="MessagesClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LAPP.DAL\LAPP.DAL.csproj">
+      <Project>{69f423df-84c8-4207-bc1c-56fbd7217577}</Project>
+      <Name>LAPP.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LAPP.ENTITY\LAPP.ENTITY.csproj">
       <Project>{71a49425-f6ae-41f2-a0fd-8989a02e69b0}</Project>
       <Name>LAPP.ENTITY</Name>

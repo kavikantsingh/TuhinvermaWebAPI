@@ -86,4 +86,10 @@ namespace LAPP.ENTITY.Enumeration
         Log = 'L',
         Comment = 'C'
     }
+
+    public enum eCommentLogSource
+    {
+        WSBakend = 1,
+        WSAPI = 2
+    }
 }

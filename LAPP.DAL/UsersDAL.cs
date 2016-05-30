@@ -30,7 +30,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("PositionTitle", objUsers.PositionTitle));
             lstParameter.Add(new MySqlParameter("Email", objUsers.Email));
             lstParameter.Add(new MySqlParameter("PasswordHash", objUsers.PasswordHash));
-            lstParameter.Add(new MySqlParameter("PasswordSalt", objUsers.PasswordSalt));
+            lstParameter.Add(new MySqlParameter("PasswordSalt", EncryptionKey.GetSalt()));// objUsers.PasswordSalt));
             lstParameter.Add(new MySqlParameter("PasswordExpirationDate", objUsers.PasswordExpirationDate));
             lstParameter.Add(new MySqlParameter("PasswordChangedOn", objUsers.PasswordChangedOn));
             lstParameter.Add(new MySqlParameter("LastLoginDate", objUsers.LastLoginDate));
@@ -57,6 +57,8 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("CreatedOn", objUsers.CreatedOn));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objUsers.ModifiedBy));
             lstParameter.Add(new MySqlParameter("ModifiedOn", objUsers.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("TemporaryPassword", objUsers.TemporaryPassword));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
 
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
@@ -65,7 +67,7 @@ namespace LAPP.DAL
             return returnValue;
         }
 
-    
+
 
         public int Individual_User_Save(Users objUsers)
         {
@@ -83,7 +85,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("PositionTitle", objUsers.PositionTitle));
             lstParameter.Add(new MySqlParameter("Email", objUsers.Email));
             lstParameter.Add(new MySqlParameter("PasswordHash", objUsers.PasswordHash));
-            lstParameter.Add(new MySqlParameter("PasswordSalt", objUsers.PasswordSalt));
+            lstParameter.Add(new MySqlParameter("PasswordSalt", EncryptionKey.GetSalt()));// objUsers.PasswordSalt));
             lstParameter.Add(new MySqlParameter("PasswordExpirationDate", objUsers.PasswordExpirationDate));
             lstParameter.Add(new MySqlParameter("PasswordChangedOn", objUsers.PasswordChangedOn));
             lstParameter.Add(new MySqlParameter("LastLoginDate", objUsers.LastLoginDate));
@@ -114,6 +116,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ModifiedOn", objUsers.ModifiedOn));
 
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("TemporaryPassword", objUsers.TemporaryPassword));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
@@ -236,6 +239,7 @@ namespace LAPP.DAL
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_Email", Email));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Users_Get_BY_Email", lstParameter.ToArray());
             Users objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -405,7 +409,10 @@ namespace LAPP.DAL
             {
                 objEntity.UserGuid = Convert.ToString(dr["UserGuid"]);
             }
-
+            if (dr.Table.Columns.Contains("TemporaryPassword") && dr["TemporaryPassword"] != DBNull.Value)
+            {
+                objEntity.TemporaryPassword = Convert.ToBoolean(dr["TemporaryPassword"]);
+            }
             if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
             {
                 objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);

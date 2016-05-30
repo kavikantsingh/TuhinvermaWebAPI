@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backoffice\IndividualFolder\IndividualAddressCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualCorrespondenceCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualDocumentCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualContactCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualLicenseCS.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="Backoffice\IndividualFolder\IndividualEducationCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualEmploymentCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualNameCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualLogCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualNoteCS.cs" />
     <Compile Include="IndividualCommentLogBAL.cs" />
     <Compile Include="IndividualCommunicationToLogBAL.cs" />
     <Compile Include="IndividualCommunicationLogBAL.cs" />

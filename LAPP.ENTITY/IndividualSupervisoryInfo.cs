@@ -47,6 +47,7 @@ namespace LAPP.ENTITY
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public string SupervisorType { get; set; }
     }
 
     public class SponsorInformationResponse : BaseEntity
@@ -82,6 +83,8 @@ namespace LAPP.ENTITY
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public int? SupervisorWorkAddressId { get; set; }
+        public string SupervisorType { get; set; }
+        public bool IsDeleted { get; set; }
         public List<SponsorAddressResponse> SponsorAddress { get; set; }
 
     }

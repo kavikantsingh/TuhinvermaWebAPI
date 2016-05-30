@@ -16,7 +16,7 @@ namespace LAPP.WS.App_Helper.Common
     public class AuthorizeDotNetPayment
     {
 
-        public static PaymentResponse ProcessPayment(PaymentRequest objPaymentRequest, int CreatedBy, Token objToken )
+        public static PaymentResponse ProcessPayment(PaymentRequest objPaymentRequest, int CreatedBy, Token objToken)
         {
             if (objPaymentRequest == null)
                 throw new Exception("Invalid request object. please check with API request signature.");
@@ -36,12 +36,33 @@ namespace LAPP.WS.App_Helper.Common
                     throw new Exception("Invalid Transaction id sent. please sent the transaction object which you received on payment initiate call.");
 
 
+                RevFeeDueBAL objFeeDueBAL = new RevFeeDueBAL();
+
+                decimal Amount = 0;
+                List<RevFeeDue> lstFeeDue = new List<RevFeeDue>();
+                lstFeeDue = objFeeDueBAL.Get_RevFeeDue_by_TransactionId(objPaymentRequest.TransactionObject.TransactionId);
+                if (lstFeeDue != null)
+                {
+
+                    foreach (RevFeeDue objRevFeeDue in lstFeeDue)
+                    {
+                        Amount += objRevFeeDue.FeeAmount;
+
+                    }
+                }
+
+                if(Amount <= 0)
+                {
+                    throw new Exception("Invalid Transaction id sent. please sent the transaction object which you received on payment initiate call.");
+                }
+
+
                 //string obj = JsonConvert.SerializeObject(lstOrder);
                 //GNF.LogTransaction(obj);
 
                 // Authoroze dot net ebsoft sandbox detail 
-                string loginID = "8248RhgTp";
-                string transactionKey = "5W6wfRC38t42n3gk";
+                string loginID =  LOGING.ConfigurationHelper.GetConfigurationValueBySetting("AuthorizeDotNetApiLoginId");//;
+                string transactionKey =  LOGING.ConfigurationHelper.GetConfigurationValueBySetting("AuthorizeDotNetApiKey");;
 
                 //string loginID = Lapp_Configuration.AuthorizeDotNetAPILoginID().Value.Trim();
                 // string transactionKey = Lapp_Configuration.AuthorizeDotNetTransactionKey().Value.Trim();
@@ -52,7 +73,7 @@ namespace LAPP.WS.App_Helper.Common
 
                 // for real accounts (even in test mode), please make sure that you are
                 // posting to: https://secure.authorize.net/gateway/transact.dll
-                String post_url = "https://test.authorize.net/gateway/transact.dll";
+                String post_url = LOGING.ConfigurationHelper.GetConfigurationValueBySetting("AuthorizeDotNetPostUrl");// "https://test.authorize.net/gateway/transact.dll";
                 //String post_url =  Lapp_Configuration.GetAuthorizeNetPostUrl();
 
 
@@ -81,8 +102,10 @@ namespace LAPP.WS.App_Helper.Common
                 post_values.Add("x_card_num", objPaymentRequest.CardNumber);
                 post_values.Add("x_exp_date", objPaymentRequest.ExpirationMonths.ToString() + objPaymentRequest.ExpirationYears.ToString()); // ddlExpirationMonths.SelectedValue + ddlExpirationYears.SelectedValue);
                                                                                                                                              //post_values.Add("x_exp_date", ddlExpirationMonths.SelectedItem.Text/ddlExpirationYears.SelectedItem.Text);
-                                                                                                                                             //post_values.Add("x_amount", objPaymentRequest.Amount.ToString()); //this.TotalAmount.ToString()
-                post_values.Add("x_amount", "1.00"); //this.TotalAmount.ToString()
+
+                //post_values.Add("x_amount", objPaymentRequest.Amount.ToString()); //this.TotalAmount.ToString()
+                post_values.Add("x_amount", Amount.ToString()); //this.TotalAmount.ToString()
+
                 post_values.Add("x_description", "Description");
                 post_values.Add("x_invoice_num", objPaymentRequest.InvoiceNumber);
 
@@ -193,7 +216,7 @@ namespace LAPP.WS.App_Helper.Common
                     string emailText = "Payment Successfull.";
 
 
-                   // bool emailSent = GlobalFunctions.EmailHelper.SendMail(objPaymentRequest.EmailAddress, "Payment Successfull.", emailText, true);
+                    // bool emailSent = GlobalFunctions.EmailHelper.SendMail(objPaymentRequest.EmailAddress, "Payment Successfull.", emailText, true);
 
                     //Save_Payment(objAuthResponse.Transaction_ID, objAuthResponse.Response_Code, "Authorized");
 
@@ -205,7 +228,7 @@ namespace LAPP.WS.App_Helper.Common
                         if (objIndividual != null)
                         {
 
-                            RevFeeDueBAL objFeeDueBAL = new RevFeeDueBAL();
+                            
                             List<RevFeeDue> objFeedueList = objFeeDueBAL.Get_RevFeeDue_by_TransactionId(objTrans.TransactionId);
 
                             decimal AmountDue = objFeedueList.Sum(x => x.FeeAmount);
@@ -309,9 +332,9 @@ namespace LAPP.WS.App_Helper.Common
                             objTranBal.Save_Transaction(objTrans);
 
 
-                            LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId,objTrans.ApplicationId, objPaymentRequest.RequestedLicenseStatusTypeId, objToken);
+                            LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId, objTrans.ApplicationId, objPaymentRequest.RequestedLicenseStatusTypeId, objToken);
 
-                            
+
                         }
 
                     }

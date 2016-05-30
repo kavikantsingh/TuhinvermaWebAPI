@@ -21,7 +21,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("MasterTransactionId", GetNullValue.ByDataType(objRevFeeDisb.MasterTransactionId)));
             lstParameter.Add(new MySqlParameter("IndividualId", objRevFeeDisb.IndividualId));
             lstParameter.Add(new MySqlParameter("ApplicationId", objRevFeeDisb.ApplicationId));
-            lstParameter.Add(new MySqlParameter("ProviderId",  GetNullValue.ByDataType(objRevFeeDisb.ProviderId)));
+            lstParameter.Add(new MySqlParameter("ProviderId", GetNullValue.ByDataType(objRevFeeDisb.ProviderId)));
             lstParameter.Add(new MySqlParameter("IndividualLicenseId", objRevFeeDisb.IndividualLicenseId));
             lstParameter.Add(new MySqlParameter("LicenseTypeId", objRevFeeDisb.LicenseTypeId));
             lstParameter.Add(new MySqlParameter("RevFeeDueId", objRevFeeDisb.RevFeeDueId));
@@ -52,7 +52,7 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_ApplicationId", ApplicationId));
-         
+
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDisb_GET_BY_ApplicationId", lstParameter.ToArray());
             List<RevFeeDisb> lstEntity = new List<RevFeeDisb>();
             RevFeeDisb objEntity = null;
@@ -89,6 +89,25 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
             //lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDisb_GET_BY_IndividualId", lstParameter.ToArray());
+            List<RevFeeDisb> lstEntity = new List<RevFeeDisb>();
+            RevFeeDisb objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        public List<RevFeeDisb> Get_RevFeeDisb_by_TransactionId(int TransactionId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_TransactionId", TransactionId));
+            //lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDisb_GET_BY_TransactionId", lstParameter.ToArray());
             List<RevFeeDisb> lstEntity = new List<RevFeeDisb>();
             RevFeeDisb objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

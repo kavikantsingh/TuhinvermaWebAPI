@@ -30,7 +30,7 @@ namespace LAPP.BAL
             return objDal.Get_IndividualSupervisoryInfo_By_IndividualSupervisoryInfoId(ID);
         }
 
-        public IndividualSupervisoryInfo Get_IndividualSupervisoryInfo_By_ApplicationId(int applicationId)
+        public List<IndividualSupervisoryInfo> Get_IndividualSupervisoryInfo_By_ApplicationId(int applicationId)
         {
             return objDal.Get_IndividualSupervisoryInfo_By_ApplicationId(applicationId);
         }

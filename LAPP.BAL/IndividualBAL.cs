@@ -20,7 +20,10 @@ namespace LAPP.BAL
         {
             return objDal.Get_All_Individual();
         }
-
+        public List<Individual> Search_Individual(IndividualSearchForIndividual obj)
+        {
+            return objDal.Search_Individual(obj);
+        }
         public List<Individual> Search_Renewal(IndividualSearch obj)
         {
             return objDal.Search_Renewal(obj);

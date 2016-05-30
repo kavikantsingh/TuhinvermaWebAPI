@@ -2,5 +2,6 @@ D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\bin\Debug\LAP
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.pdb
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.xml
+D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb

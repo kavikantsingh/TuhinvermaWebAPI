@@ -11,7 +11,7 @@ namespace LAPP.WS.App_Helper.Common
     public class LogHelper
     {
 
-        public static void LogComment(int IndividualId, int? ApplicationId, eCommentType Type, string LogSource, string LogText, int CreatedBy, int? PageModuleId = null, int? PageModuleTabSubModuleId = null, int? PageTabSectionId = null)
+        public static void SaveIndividualLog(int IndividualId, int? ApplicationId, string LogSource, string LogText, int CreatedBy, int? PageModuleId = null, int? PageModuleTabSubModuleId = null, int? PageTabSectionId = null)
         {
             try
             {
@@ -41,7 +41,48 @@ namespace LAPP.WS.App_Helper.Common
                 objIndCommentLog.PageModuleId = PageModuleId;
                 objIndCommentLog.PageModuleTabSubModuleId = PageModuleTabSubModuleId;
                 objIndCommentLog.PageTabSectionId = PageTabSectionId;
-                objIndCommentLog.Type = ((char)Type).ToString();
+                objIndCommentLog.Type = "L";
+
+                objLogBAL.Save_IndividualCommentLog(objIndCommentLog);
+            }
+            catch (Exception ex)
+            {
+                LOGING.LogingHelper.SaveExceptionInfo("", ex, "LogHelper - LogComment", ENTITY.Enumeration.eSeverity.Error);
+            }
+
+        }
+
+        public static void SaveIndividualComment(int IndividualId, int? ApplicationId, string LogSource, string LogText, int CreatedBy, int? PageModuleId = null, int? PageModuleTabSubModuleId = null, int? PageTabSectionId = null)
+        {
+            try
+            {
+
+                IndividualCommentLog objIndCommentLog = new IndividualCommentLog();
+                IndividualCommentLogBAL objLogBAL = new IndividualCommentLogBAL();
+                objIndCommentLog = new IndividualCommentLog();
+                objIndCommentLog.ApplicationId = ApplicationId;
+                objIndCommentLog.CommentLogDate = DateTime.Now;
+                objIndCommentLog.CommentLogSource = LogSource;
+                objIndCommentLog.CommentLogText = LogText;
+                objIndCommentLog.CreatedBy = CreatedBy;
+                objIndCommentLog.CreatedOn = DateTime.Now;
+                objIndCommentLog.EffectiveDate = DateTime.Now;
+                objIndCommentLog.EndDate = null;
+                objIndCommentLog.IndividualCommentLogGuid = Guid.NewGuid().ToString();
+
+
+                objIndCommentLog.IndividualId = IndividualId;
+                objIndCommentLog.IsActive = true;
+                objIndCommentLog.IsDeleted = false;
+                objIndCommentLog.IsForInvestigationOnly = false;
+                objIndCommentLog.IsForPublic = false;
+
+                objIndCommentLog.IsInternalOnly = true;
+                objIndCommentLog.MasterTransactionId = null;
+                objIndCommentLog.PageModuleId = PageModuleId;
+                objIndCommentLog.PageModuleTabSubModuleId = PageModuleTabSubModuleId;
+                objIndCommentLog.PageTabSectionId = PageTabSectionId;
+                objIndCommentLog.Type = "C";
 
                 objLogBAL.Save_IndividualCommentLog(objIndCommentLog);
             }

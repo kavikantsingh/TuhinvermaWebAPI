@@ -41,4 +41,9 @@ namespace LAPP.ENTITY
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
     }
+
+    public class IndividualCommentLogRequestResponce : BaseEntityServiceResponse
+    {
+        public List<IndividualCommentLogRequest> IndividualCommentLogRequest { get; set; }
+    }
 }

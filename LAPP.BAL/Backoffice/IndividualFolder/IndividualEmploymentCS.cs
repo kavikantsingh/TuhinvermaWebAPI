@@ -25,6 +25,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             List<IndividualEmploymentResponse> lstEmploymentResponse = new List<IndividualEmploymentResponse>();
             try
             {
+                int individualId = objEmploymentResponse.IndividualId;
+                int? applicationId = objEmploymentResponse.ApplicationId;
 
                 objIndEmployment = objIndividualEmploymentBAL.Get_IndividualEmployment_By_IndividualEmploymentId(objEmploymentResponse.IndividualEmploymentId);
                 if (objIndEmployment != null)
@@ -59,6 +61,18 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                     objIndEmployment.IndividualEmploymentId = objIndividualEmploymentBAL.Save_IndividualEmployment(objIndEmployment);
 
+                    //SAVE LOG
+
+                    string logText = "Individual Employment updated successfully. Updated on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
+
+
+                    objResponse.Message = MessagesClass.UpdateSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
                     lstIndividualEmployment.Add(objIndEmployment);
 
@@ -123,6 +137,15 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     //End save IndividualEmployment
 
                     objEmploymentResponse.IndividualEmploymentId = objIndEmployment.IndividualEmploymentId;
+
+
+                    //SAVE LOG
+
+                    string logText = "Individual Employment saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
 
                     objResponse.Message = MessagesClass.SaveSuccess;
                     objResponse.Status = true;

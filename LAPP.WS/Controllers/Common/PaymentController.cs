@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using LAPP.WS.ValidateController.Common;
 using System.Transactions;
 using LAPP.LOGING;
+using System.Web;
 
 namespace LAPP.WS.Controllers.Common
 {
@@ -30,6 +31,8 @@ namespace LAPP.WS.Controllers.Common
         {
 
             LogingHelper.SaveAuditInfo(Key);
+
+            
 
             PaymentResponse objResponse = new PaymentResponse();
             PaymentAuthResponse objAuthorization = new PaymentAuthResponse();
@@ -56,6 +59,22 @@ namespace LAPP.WS.Controllers.Common
                 }
 
                 #endregion
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objPaymentRequest);
+                        LogingHelper.SaveRequestJson(requestStr, "Process Payment");
+                    }
+                   
+                }
+                catch(Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ProcessPayment object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
 
                 //using (TransactionScope transScope = new TransactionScope(new TransactionScopeOption {ti))
                 //{
@@ -113,7 +132,19 @@ namespace LAPP.WS.Controllers.Common
                     return objResponse;
                 }
 
-                LAPP.ENTITY.Transaction objTransaction = LAPP.BAL.Payment.InitiatePayment.InitiatePaymentTransaction(objInitiatePaymentRequest, 1);
+                try
+                {
+                    string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objInitiatePaymentRequest);
+                    LogingHelper.SaveRequestJson(requestStr, "Initiate Payment");
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveRequestJson(ex.Message, " error in Initiate Payment request");
+                }
+
+                Token objToken = TokenHelper.GetTokenByKey(Key);
+
+                LAPP.ENTITY.Transaction objTransaction = LAPP.BAL.Payment.InitiatePayment.InitiatePaymentTransaction(objInitiatePaymentRequest, objToken.UserId);
 
                 if (objTransaction != null)
                 {

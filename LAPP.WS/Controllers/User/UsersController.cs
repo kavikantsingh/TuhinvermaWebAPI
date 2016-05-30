@@ -1,6 +1,7 @@
 ﻿using LAPP.BAL;
 using LAPP.ENTITY;
 using LAPP.ENTITY.Enumeration;
+using LAPP.GlobalFunctions;
 using LAPP.LOGING;
 using LAPP.WS.App_Helper;
 using LAPP.WS.App_Helper.Common;
@@ -451,6 +452,7 @@ namespace LAPP.WS.Controllers.User
                 }
                 else
                 {
+                    string TempPassword= GeneralFunctions.GetTempPassword();
                     objEntity = new Users();
 
                     objEntity.FirstName = objUsers.FirstName;
@@ -471,7 +473,8 @@ namespace LAPP.WS.Controllers.User
                     if (!string.IsNullOrEmpty(objUsers.Phone))
                     { objEntity.Phone = objUsers.Phone; }
 
-                    objEntity.PasswordHash = "123456";
+                    objEntity.PasswordHash = TempPassword;// "123456";
+                    objEntity.TemporaryPassword = true;
                     objEntity.FailedLogins = 0;
                     // objUsers.SourceId = 0;
 
@@ -535,6 +538,19 @@ namespace LAPP.WS.Controllers.User
 
                         }
                     }
+                    #endregion
+
+                    #region Send Email of user creation
+
+                    if(EmailHelper.SendMail(objUsers.Email, "Temporary Password", "Email: "+ objUsers.Email +" <br/> Temporary Password: "+ TempPassword, true))
+                    {
+                        LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Temporary Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Temporary Password email has been sent", EmailHelper.GetSenderAddress(), objUsers.Email, null, null, objUsers.UserId, null, null, null);
+                    }
+                    else
+                    {
+                        LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Temporary Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Temporary Password email sending failed", EmailHelper.GetSenderAddress(), objUsers.Email, null, null, objUsers.UserId, null, null, null);
+                    }
+
                     #endregion
 
                 }

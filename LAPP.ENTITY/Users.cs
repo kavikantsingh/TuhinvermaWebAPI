@@ -85,7 +85,8 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, Max Length: 36 (char)")]
         public string UserGuid { get; set; }
 
-
+  
+        public bool TemporaryPassword { get; set; }
 
 
         [Display(Description = "Required: Yes, For example: true or false (0,1) ")]

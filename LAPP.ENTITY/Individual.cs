@@ -92,6 +92,7 @@ namespace LAPP.ENTITY
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+        public string Email { get; set; }
 
         public string Phone { get; set; }
 
@@ -110,7 +111,27 @@ namespace LAPP.ENTITY
         public bool IsPaid { get; set; }
     }
 
+    public class IndividualSearchForIndividual : BaseEntity
+    {
+        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string LicenseNumber { get; set; }
+        public string SSN { get; set; }
+        public string MiddleName { get; set; }
+        public string Address { get; set; }
+        public int IndividualId { get; set; }
+        public bool IsActive { get; set; }
 
+
+    }
+
+    public class IndividualSearchForIndividualResponse : BaseEntityServiceResponse
+    {
+        public List<IndividualSearchForIndividual> IndividualSearch { get; set; }
+    }
 
     public class IndividualSearchResponse : BaseEntityServiceResponse
     {

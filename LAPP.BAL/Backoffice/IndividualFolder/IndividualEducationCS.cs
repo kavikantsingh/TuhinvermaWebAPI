@@ -21,11 +21,13 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             List<IndividualCECourseResponse> lstCeCourseResponse = new List<IndividualCECourseResponse>();
             try
             {
+                int individualId = objCECourseResponse.IndividualId;
+                int? applicationId = objCECourseResponse.ApplicationId;
 
                 objCehCourse = objIndividualCECourseBAL.Get_IndividualCECourse_By_IndividualCECourseId(objCECourseResponse.IndividualCECourseId);
                 if (objCehCourse != null)
                 {
-                    objCehCourse.IndividualId = objCECourseResponse.IndividualId;
+                    objCehCourse.IndividualId = individualId;
                     objCehCourse.ApplicationId = objCECourseResponse.ApplicationId;
                     objCehCourse.CECourseTypeId = objCECourseResponse.CECourseTypeId;
                     objCehCourse.CECourseActivityTypeId = objCECourseResponse.CECourseActivityTypeId;
@@ -43,13 +45,20 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objCehCourse.InstructorBiography = objCECourseResponse.InstructorBiography;
                     objCehCourse.ActivityDesc = objCECourseResponse.ActivityDesc;
                     objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
-                   // objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
+                    // objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
 
                     objCehCourse.ModifiedBy = objToken.UserId;
                     objCehCourse.ModifiedOn = DateTime.Now;
 
                     objIndividualCECourseBAL.Save_IndividualCECourse(objCehCourse);
 
+                    //SAVE LOG
+
+                    string logText = "Individual Education updated successfully. Updated on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
 
                     objResponse.Message = MessagesClass.UpdateSuccess;
                     objResponse.Status = true;
@@ -60,7 +69,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                 {
                     objCehCourse = new IndividualCECourse();
 
-                    objCehCourse.IndividualId = objCECourseResponse.IndividualId;
+                    objCehCourse.IndividualId = individualId;
                     objCehCourse.ApplicationId = objCECourseResponse.ApplicationId;
                     objCehCourse.CECourseTypeId = objCECourseResponse.CECourseTypeId;
                     objCehCourse.CECourseActivityTypeId = objCECourseResponse.CECourseActivityTypeId;
@@ -86,6 +95,14 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objCehCourse.IndividualCECourseId = objIndividualCECourseBAL.Save_IndividualCECourse(objCehCourse);
 
                     objCECourseResponse.IndividualCECourseId = objCehCourse.IndividualCECourseId;
+
+                    //SAVE LOG
+
+                    string logText = "Individual Education saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
 
                     objResponse.Message = MessagesClass.SaveSuccess;
                     objResponse.Status = true;

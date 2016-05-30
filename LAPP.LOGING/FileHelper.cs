@@ -25,6 +25,11 @@ namespace LAPP.LOGING
         {
             try
             {
+                //if(File.Exists(FilePathWithFileName))
+                //{
+                //    File.Delete(FilePathWithFileName);
+                //}
+
                 byte[] fileBytes = Convert.FromBase64String(base64String);
 
                 File.WriteAllBytes(FilePathWithFileName, fileBytes);

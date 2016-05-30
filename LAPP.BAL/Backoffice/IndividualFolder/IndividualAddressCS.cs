@@ -19,6 +19,9 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             IndividualAddress objIndAddress = new IndividualAddress();
             IndividualAddressBAL objIndAddressBAL = new IndividualAddressBAL();
             List<IndividualAddress> lstIndividualAddress = new List<IndividualAddress>();
+
+            int individualID = objAddressResponse.IndividualId;
+            int? applicantID = null;
             try
             {
                 if (objAddressResponse.AddressId > 0)
@@ -60,7 +63,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
                             objIndAddress.ModifiedBy = objToken.UserId;
                             objIndAddress.ModifiedOn = DateTime.Now;
-                            objIndAddress.IndividualId = objAddressResponse.IndividualId;
+                            objIndAddress.IndividualId = individualID;
                             objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
 
                             objIndAddressBAL.Save_IndividualAddress(objIndAddress);
@@ -71,6 +74,10 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         objResponse.Message = MessagesClass.UpdateSuccess;
                         objResponse.Status = true;
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                        string logText = "Individual Address updated successfully. Updated on " + DateTime.Now.ToShortDateString();
+                        string logSource = eCommentLogSource.WSAPI.ToString();
+                        LogHelper.SaveIndividualLog(individualID, applicantID, logSource, logText, objToken.UserId, null, null, null);
                     }
 
                 }
@@ -113,7 +120,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
                     objIndAddress.CreatedBy = objToken.UserId;
                     objIndAddress.CreatedOn = DateTime.Now;
-                    objIndAddress.IndividualId = objAddressResponse.IndividualId;
+                    objIndAddress.IndividualId = individualID;
                     objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
                     objIndAddress.IsActive = true;
                     objIndAddress.BeginDate = DateTime.Now;
@@ -122,6 +129,13 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                     // End Save IndividualAddress
 
+                    //SAVE LOG
+
+                    string logText = "Individual Address saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualID, applicantID, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
 
                     objResponse.Message = MessagesClass.SaveSuccess;
                     objResponse.Status = true;
@@ -132,7 +146,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                 #region AddressResponse
 
                 List<IndividualAddressResponse> lstAddressResponse = new List<IndividualAddressResponse>();
-                lstIndividualAddress = objIndAddressBAL.Get_IndividualAddress_By_IndividualId(objAddressResponse.IndividualId);
+                lstIndividualAddress = objIndAddressBAL.Get_IndividualAddress_By_IndividualId(individualID);
                 if (lstIndividualAddress != null)
                 {
                     lstAddressResponse = lstIndividualAddress

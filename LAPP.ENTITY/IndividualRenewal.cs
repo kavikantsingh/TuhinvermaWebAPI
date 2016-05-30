@@ -20,7 +20,7 @@ namespace LAPP.ENTITY
 
         public IndividualCertificationResponse IndividualCertification { get; set; }
 
-        public SponsorInformationResponse SponsorInformation { get; set; }
+        public List<SponsorInformationResponse> SponsorInformation { get; set; }
 
         public List<IndividualNVBusinessLicenseResponse> BusinessLicenseInformation { get; set; }
 

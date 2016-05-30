@@ -689,6 +689,13 @@
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSearch(System.String,LAPP.ENTITY.IndividualSearchForIndividual)">
+            <summary>
+            Method to Search Individual by key and objSearch.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="objSearch">Record ID.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSave(System.String,LAPP.ENTITY.IndividualResponse)">
             <summary>
             Save or Update the data For IndividualAddress
@@ -699,6 +706,13 @@
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualBYIndividualId(System.String,System.Int32)">
             <summary>
             Get Method to get Individual by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.ValidateIndividual(System.String,System.Int32)">
+            <summary>
+            Validate Individual by key and ID.
             </summary>
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
@@ -788,6 +802,30 @@
             <param name="Key">The Key of the data.</param>
             <param name="objIndividualDocument">Object of IndividualDocument</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualDocumentSaveByHTML(System.String,LAPP.ENTITY.IndividualDocumentByHTML)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="objIndividualDocumentResponse"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.HtmlToPdfDocument(System.String,LAPP.ENTITY.HtmlToPdfDocument)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="objHtmlToPdfDocument"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.PdfDocumentByIndividualDocumentId(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="IndividualDocumentId"></param>
+            <returns></returns>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualContactSave(System.String,LAPP.ENTITY.IndividualContactResponse)">
             <summary>
             Save or Update the data For IndividualContact
@@ -801,6 +839,55 @@
             </summary>
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.ApplicationBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get Application by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCommentLogGetByIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualCommentLog by key and IndividualId.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCommentLogSave(System.String,LAPP.ENTITY.IndividualCommentLogRequest)">
+            <summary>
+            Save or Update the data For IndividualCommentLog
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualCommentLogRequest">Object of IndividualCommentLog</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLogGetByIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualCommentLog by key and IndividualId.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLogSave(System.String,LAPP.ENTITY.IndividualCommentLogRequest)">
+            <summary>
+            Save or Update the data For IndividualLog
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualCommentLogRequest">Object of IndividualCommentLog</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCorrespondenceGetByIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualCommunicationLog by key and IndividualId.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCorrespondenceSave(System.String,LAPP.ENTITY.IndividualCommunicationLogRequest)">
+            <summary>
+            Save or Update the data For IndividualCorrespondence
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objCommunicationLog">Object of objCommunicationLog</param>
         </member>
         <member name="T:LAPP.WS.Controllers.Common.CommonController">
             <summary>

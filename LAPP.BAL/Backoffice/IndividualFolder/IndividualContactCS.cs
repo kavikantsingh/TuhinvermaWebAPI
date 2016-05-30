@@ -22,7 +22,9 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             Contact objContact = new Contact();
             ContactBAL objContactBAL = new ContactBAL();
 
-            int IndividualId = objContactResponse.IndividualId;
+            int individualId = objContactResponse.IndividualId;
+            int? applicantID = null;
+
             try
             {
 
@@ -61,12 +63,20 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                             objIndividualContact.ModifiedBy = objToken.UserId;
                             objIndividualContact.ModifiedOn = DateTime.Now;
-                            objIndividualContact.IndividualId = IndividualId;
+                            objIndividualContact.IndividualId = individualId;
                             //objIndividualContact.IndividualContactGuid = Guid.NewGuid().ToString();
 
                             objIndividualContactBAL.Save_IndividualContact(objIndividualContact);
                         }
                         //END Update IndividualContact
+
+                        //SAVE LOG
+
+                        string logText = "Individual Contact updated successfully. Updated on " + DateTime.Now.ToShortDateString();
+                        string logSource = eCommentLogSource.WSAPI.ToString();
+                        LogHelper.SaveIndividualLog(individualId, applicantID, logSource, logText, objToken.UserId, null, null, null);
+
+                        //END SAVE LOG
 
                     }
                     objResponse.Message = MessagesClass.UpdateSuccess;
@@ -108,11 +118,21 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualContact.BeginDate = DateTime.Now;
                     objIndividualContact.CreatedBy = objToken.UserId;
                     objIndividualContact.CreatedOn = DateTime.Now;
-                    objIndividualContact.IndividualId = IndividualId;
+                    objIndividualContact.IndividualId = individualId;
 
                     objIndividualContact.IndividualContactId = objIndividualContactBAL.Save_IndividualContact(objIndividualContact);
 
                     //END save IndividualContact
+
+
+                    //SAVE LOG
+
+                    string logText = "Individual Contact saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicantID, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
+
                     objResponse.Message = MessagesClass.SaveSuccess;
                     objResponse.Status = true;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");

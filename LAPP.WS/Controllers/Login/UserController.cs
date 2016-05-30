@@ -94,9 +94,9 @@ namespace LAPP.WS.Controllers.Common
 
                                 objUseres.Phone = "";
 
-                                objUseres.PasswordHash = "123456";
+                                objUseres.PasswordHash = GeneralFunctions.GetTempPassword();// "123456";
                                 objUseres.FailedLogins = 0;
-
+                                objUseres.TemporaryPassword = true;
                                 objUseres.IsActive = true;
                                 objUseres.IsDeleted = false;
 
@@ -249,18 +249,54 @@ namespace LAPP.WS.Controllers.Common
         {
             ForgetPasswordResponse objRsponse = new ForgetPasswordResponse();
 
-            if (EmailHelper.SendMail(Email, "Forget Password", "Forget Password " + Email, true))
+            UsersBAL objUsersBAL = new UsersBAL();
+            Users objUser = objUsersBAL.Get_Users_by_Email(Email);
+            if (objUser != null && objUser.UserId > 0)
             {
-                objRsponse.StatusCode = "00";
-                objRsponse.Status = true;
-                objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
+                Individual objIndividual = new Individual();
+                IndividualBAL objIndividualBAL = new IndividualBAL();
+                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objUser.IndividualId);
+                if (objIndividual != null)
+                {
+                    string TempPassword = GeneralFunctions.GetTempPassword();
+                    objUser.PasswordHash = TempPassword;
+                    objUser.TemporaryPassword = true;
+                    objUsersBAL.Save_Users(objUser);
+                    if (EmailHelper.SendMail(Email, "Forget Password", "Temporary Password: " + TempPassword, true))
+                    {
+
+                        LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                        objRsponse.StatusCode = "00";
+                        objRsponse.Status = true;
+                        objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
+                    }
+                    else
+                    {
+                        LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+
+                        objRsponse.StatusCode = "11";
+                        objRsponse.Status = false;
+                        objRsponse.Message = "We are not able to send email due to technical issues.";
+                    }
+                }
+                else
+                {
+                    objRsponse.StatusCode = ((int)ResponseStatusCode.Validation).ToString("00");
+                    objRsponse.Status = false;
+                    objRsponse.Message = "No associated record found.";
+
+                }
+
             }
             else
             {
-                objRsponse.StatusCode = "11";
+                objRsponse.StatusCode = ((int)ResponseStatusCode.Validation).ToString("00");
                 objRsponse.Status = false;
-                objRsponse.Message = "We are not able to send email due to technical issues.";
+                objRsponse.Message = "No associated record found.";
+
             }
+
+
             return objRsponse;
 
         }
@@ -339,28 +375,52 @@ namespace LAPP.WS.Controllers.Common
             objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
             if (objLstRequest.Count > 0)
             {
-                Users objUser = new Users();
-                UsersBAL objUserBAL = new UsersBAL();
-                objUser = objUserBAL.Get_Users_byUsersId(objLstRequest[0].UserId);
-                if (objUser != null)
+                foreach(ResetByUserIDRequest objUserId in objLstRequest)
                 {
 
-                    if (EmailHelper.SendMail(objUser.Email, "Reset Password", "Reset Password ", true))
+                    UsersBAL objUsersBAL = new UsersBAL();
+                    Users objUser = objUsersBAL.Get_Users_byUsersId(objUserId.UserId);
+                    if (objUser != null && objUser.UserId > 0)
                     {
-                        objRsponse.StatusCode = "00";
-                        objRsponse.Status = true;
-                        objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
+                        Individual objIndividual = new Individual();
+                        IndividualBAL objIndividualBAL = new IndividualBAL();
+                        objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objUser.IndividualId);
+                        if (objIndividual != null)
+                        {
+                            string TempPassword = GeneralFunctions.GetTempPassword();
+                            objUser.PasswordHash = TempPassword;
+                            objUser.TemporaryPassword = true;
+                            objUsersBAL.Save_Users(objUser);
+                            if (EmailHelper.SendMail(objUser.Email, "Reset Password", "Temporary Password: " + TempPassword, true))
+                            {
+
+                                LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Reset Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Reset Password email has been sent",EmailHelper.GetSenderAddress(), objUser.Email, null, null, objUser.UserId, null, null, null);
+                              
+                            }
+                            else
+                            {
+                                LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Reset Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Reset Password email sending failed", EmailHelper.GetSenderAddress(), objUser.Email, null, null, objUser.UserId, null, null, null);
+
+                               
+                            }
+                        }
+                         
+
                     }
-                    else
-                    {
-                        objRsponse.StatusCode = "11";
-                        objRsponse.Status = false;
-                        objRsponse.Message = "We are not able to send email due to technical issues.";
-                    }
+
+
                 }
+                objRsponse.StatusCode = "00";
+                objRsponse.Status = true;
+                objRsponse.Message = "Reset password email sent to users email address.";
+            }
+            else
+            {
+                objRsponse.StatusCode = ((int)ResponseStatusCode.Validation).ToString("00");
+                objRsponse.Status = false;
+                objRsponse.Message = "No user found.";
 
             }
-
 
 
             return objRsponse;
@@ -405,7 +465,7 @@ namespace LAPP.WS.Controllers.Common
                 {
                     if (objUser.PasswordHash != ObjChangePasswordRequest.OldPassword)
                     {
-                        objResponse.Message = "New password entered does not match the previous password.";
+                        objResponse.Message = "Old password does not match.";
                         objResponse.Status = false;
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                         objResponse.ResponseReason = "";
@@ -430,7 +490,7 @@ namespace LAPP.WS.Controllers.Common
                 }
                 else
                 {
-                    objResponse.Message = "Invalid Username.";
+                    objResponse.Message = "Invalid User.";
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = "";

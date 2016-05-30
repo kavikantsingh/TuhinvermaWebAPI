@@ -111,6 +111,24 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<Application> Get_Application_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "application_Get_By_IndividualId", lstParameter.ToArray());
+            List<Application> lstEntity = new List<Application>();
+            Application objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         public Application Get_Application_By_ApplicationId(int ID)
         {
             DataSet ds = new DataSet("DS");
@@ -238,11 +256,17 @@ namespace LAPP.DAL
             {
                 objEntity.ModifiedOn = Convert.ToDateTime(dr["ModifiedOn"]);
             }
-
-
             if (dr.Table.Columns.Contains("ApplicationGuid") && dr["ApplicationGuid"] != DBNull.Value)
             {
                 objEntity.ApplicationGuid = Convert.ToString(dr["ApplicationGuid"]);
+            }
+
+
+            // Used for view
+
+            if (dr.Table.Columns.Contains("ApplicationType") && dr["ApplicationType"] != DBNull.Value)
+            {
+                objEntity.ApplicationType = Convert.ToString(dr["ApplicationType"]);
             }
 
             return objEntity;

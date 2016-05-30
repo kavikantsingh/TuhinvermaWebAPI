@@ -35,8 +35,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             try
             {
 
-                int IndividualId = objIndividualDocumentResponse.IndividualId;
-                int? ApplicationId = objIndividualDocumentResponse.ApplicationId;
+                int individualId = objIndividualDocumentResponse.IndividualId;
+                int? applicationId = objIndividualDocumentResponse.ApplicationId;
 
                 if (lstDocumentToUpload != null && lstDocumentToUpload.Count > 0)
                 {
@@ -49,8 +49,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                             objIndividualDocument = new IndividualDocument();
 
-                            objIndividualDocument.IndividualId = IndividualId;
-                            objIndividualDocument.ApplicationId = ApplicationId;
+                            objIndividualDocument.IndividualId = individualId;
+                            objIndividualDocument.ApplicationId = applicationId;
                             objIndividualDocument.DocumentLkToPageTabSectionId = objDtU.DocumentLkToPageTabSectionId;
                             objIndividualDocument.DocumentLkToPageTabSectionCode = objDtU.DocumentLkToPageTabSectionCode;
 
@@ -75,6 +75,14 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                                 objDtU.IndividualDocumentId = objIndividualDocument.IndividualDocumentId;
 
                                 // objIndividualDocumentUpload = new IndividualDocumentUpload();
+
+                                //SAVE LOG
+
+                                string logText = "Individual Document uploaded successfully. Document Type Name " + objDtU.DocumentTypeName + ". Uploaded on " + DateTime.Now.ToShortDateString();
+                                string logSource = eCommentLogSource.WSAPI.ToString();
+                                LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                                //END SAVE LOG
 
                                 lstDocumentToUploadNEW.Add(objDtU);
 
@@ -104,8 +112,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objResponse.Message = "Error occurred while saving.";
                             objIndividualDocumentUpload.DocumentUploadList = null;
                         }
-                        objIndividualDocumentUpload.ApplicationId = ApplicationId;
-                        objIndividualDocumentUpload.IndividualId = IndividualId;
+                        objIndividualDocumentUpload.ApplicationId = applicationId;
+                        objIndividualDocumentUpload.IndividualId = individualId;
 
 
                         lstIndividualDocumentUpload.Add(objIndividualDocumentUpload);
@@ -134,8 +142,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     return objResponse;
                 }
 
-                objIndividualDocumentUpload.ApplicationId = ApplicationId;
-                objIndividualDocumentUpload.IndividualId = IndividualId;
+                objIndividualDocumentUpload.ApplicationId = applicationId;
+                objIndividualDocumentUpload.IndividualId = individualId;
                 objIndividualDocumentUpload.DocumentUploadList = lstDocumentToUploadNEW;
 
                 lstIndividualDocumentUpload.Add(objIndividualDocumentUpload);

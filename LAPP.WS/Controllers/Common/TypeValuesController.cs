@@ -34,15 +34,15 @@ namespace LAPP.WS.Controllers.Common
             List<AddressType> lstAddressType = new List<AddressType>();
             try
             {
-                if (!TokenHelper.ValidateToken(Key))
-                {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.AddressTypeGetList = null;
-                    return objResponse;
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.AddressTypeGetList = null;
+                //    return objResponse;
 
-                }
+                //}
 
                 lstAddressType = objBAL.Get_All_AddressType();
                 if (lstAddressType != null && lstAddressType.Count > 0)
@@ -103,15 +103,15 @@ namespace LAPP.WS.Controllers.Common
             List<ContactType> lstContactType = new List<ContactType>();
             try
             {
-                if (!TokenHelper.ValidateToken(Key))
-                {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.ContactTypeGetList = null;
-                    return objResponse;
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.ContactTypeGetList = null;
+                //    return objResponse;
 
-                }
+                //}
 
                 lstContactType = objBAL.Get_All_Contacttype();
                 if (lstContactType != null && lstContactType.Count > 0)
@@ -172,15 +172,15 @@ namespace LAPP.WS.Controllers.Common
             List<LicenseType> lstLicenseType = new List<LicenseType>();
             try
             {
-                if (!TokenHelper.ValidateToken(Key))
-                {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.LicenseTypeGetList = null;
-                    return objResponse;
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.LicenseTypeGetList = null;
+                //    return objResponse;
 
-                }
+                //}
 
                 lstLicenseType = objBAL.Get_All_LicenseType();
                 if (lstLicenseType != null && lstLicenseType.Count > 0)
@@ -241,15 +241,15 @@ namespace LAPP.WS.Controllers.Common
             List<LicenseStatusType> lstLicenseStatusType = new List<LicenseStatusType>();
             try
             {
-                if (!TokenHelper.ValidateToken(Key))
-                {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.LicenseStatusTypeGetList = null;
-                    return objResponse;
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.LicenseStatusTypeGetList = null;
+                //    return objResponse;
 
-                }
+                //}
 
                 lstLicenseStatusType = objBAL.Get_All_LicenseStatusType();
                 if (lstLicenseStatusType != null && lstLicenseStatusType.Count > 0)
@@ -314,15 +314,15 @@ namespace LAPP.WS.Controllers.Common
             List<ApplicationType> lstApplicationType = new List<ApplicationType>();
             try
             {
-                if (!TokenHelper.ValidateToken(Key))
-                {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.ApplicationTypeGetList = null;
-                    return objResponse;
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.ApplicationTypeGetList = null;
+                //    return objResponse;
 
-                }
+                //}
 
                 lstApplicationType = objBAL.Get_All_ApplicationType();
                 if (lstApplicationType != null && lstApplicationType.Count > 0)
@@ -383,15 +383,15 @@ namespace LAPP.WS.Controllers.Common
             List<CertificationType> lstCertificationType = new List<CertificationType>();
             try
             {
-                if (!TokenHelper.ValidateToken(Key))
-                {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.CertificationTypeGetList = null;
-                    return objResponse;
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.CertificationTypeGetList = null;
+                //    return objResponse;
 
-                }
+                //}
 
                 lstCertificationType = objBAL.Get_All_CertificationType();
                 if (lstCertificationType != null && lstCertificationType.Count > 0)
@@ -452,15 +452,15 @@ namespace LAPP.WS.Controllers.Common
             List<IndividualEmploymentEmployerType> lstIndividualEmploymentEmployerType = new List<IndividualEmploymentEmployerType>();
             try
             {
-                if (!TokenHelper.ValidateToken(Key))
-                {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.IndividualEmploymentEmployerTypeGetList = null;
-                    return objResponse;
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.IndividualEmploymentEmployerTypeGetList = null;
+                //    return objResponse;
 
-                }
+                //}
 
                 lstIndividualEmploymentEmployerType = objBAL.Get_All_IndividualEmploymentEmployerType();
                 if (lstIndividualEmploymentEmployerType != null && lstIndividualEmploymentEmployerType.Count > 0)

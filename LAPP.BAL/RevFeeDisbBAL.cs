@@ -27,6 +27,11 @@ namespace LAPP.BAL
             return objDal.Get_RevFeeDisb_by_IndividualId(IndividualId);
         }
 
+        public List<RevFeeDisb> Get_RevFeeDisb_by_TransactionId(int TransactionId)
+        {
+            return objDal.Get_RevFeeDisb_by_TransactionId(TransactionId);
+        }
+
         public RevFeeDisb Get_RevFeeDisb_By_RevFeeDisbId(int ID)
         {
             return objDal.Get_RevFeeDisb_By_RevFeeDisbId(ID);

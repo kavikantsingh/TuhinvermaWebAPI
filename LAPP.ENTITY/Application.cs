@@ -7,7 +7,6 @@ namespace LAPP.ENTITY
 {
 
     public class ApplicationResponse : BaseEntity
-
     {
         public int ApplicationId { get; set; }
         public int ApplicationTypeId { get; set; }
@@ -31,15 +30,13 @@ namespace LAPP.ENTITY
         public int? LicenseTypeId { get; set; }
 
         public bool IsActive { get; set; }
-      
-
-      
-
+        public string ApplicationType { get; set; }
     }
+
     public class Application : ApplicationResponse
 
     {
-         
+
         public bool IsDeleted { get; set; }
         public bool IsArchive { get; set; }
         public int CreatedBy { get; set; }
@@ -48,6 +45,10 @@ namespace LAPP.ENTITY
         public DateTime? ModifiedOn { get; set; }
 
         public string ApplicationGuid { get; set; }
-
     }
+    public class ApplicationResponseGet : BaseEntityServiceResponse
+    {
+        public List<ApplicationResponse> ApplicationResponseList { get; set; }
+    }
+
 }

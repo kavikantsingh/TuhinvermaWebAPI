@@ -166,38 +166,38 @@ namespace LAPP.BAL.Renewal
 
             #region Sponsor
 
-            SponsorInformationResponse objSupervisoryInfoRes = new SponsorInformationResponse();
-
+            List<SponsorInformationResponse> lstSupervisoryInfoRes = new List<SponsorInformationResponse>();
             IndividualSupervisoryInfoBAL objIndividualSupervisoryInfoBAL = new IndividualSupervisoryInfoBAL();
-            objSupervisoryInfoRes = objRenewalRequest.IndividualRenewal.SponsorInformation;
-
-            if (objSupervisoryInfoRes != null)
+            lstSupervisoryInfoRes = objRenewalRequest.IndividualRenewal.SponsorInformation;
+            if (lstSupervisoryInfoRes != null)
             {
-                if (!string.IsNullOrEmpty(objSupervisoryInfoRes.FirstName) && !string.IsNullOrEmpty(objSupervisoryInfoRes.LastName))
+                foreach (SponsorInformationResponse objSupervisoryInfoRes in lstSupervisoryInfoRes)
                 {
-                    #region Sponsor Address
-
-                    if (objSupervisoryInfoRes.SponsorAddress != null && objSupervisoryInfoRes.SponsorAddress.Count > 0)
+                    if (!string.IsNullOrEmpty(objSupervisoryInfoRes.FirstName) && !string.IsNullOrEmpty(objSupervisoryInfoRes.LastName))
                     {
-                        SponsorAddressResponse objAddressResp = objSupervisoryInfoRes.SponsorAddress[0];
+                        #region Sponsor Address
 
-                        // lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objAddressResp.StreetLine1), objAddressResp.StreetLine1, lstResponseReason, 128);
-                        //  lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objAddressResp.City), objAddressResp.City, lstResponseReason, 128);
-                        //  lstResponseReason = Validations.IsValidOnlyMaxLength(nameof(objAddressResp.StateCode), objAddressResp.StateCode, lstResponseReason, 2);
-                        //  lstResponseReason = Validations.IsValidUSZIPProperty(nameof(objAddressResp.Zip), objAddressResp.Zip, lstResponseReason, 15);
+                        if (objSupervisoryInfoRes.SponsorAddress != null && objSupervisoryInfoRes.SponsorAddress.Count > 0)
+                        {
+                            SponsorAddressResponse objAddressResp = objSupervisoryInfoRes.SponsorAddress[0];
+
+                            // lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objAddressResp.StreetLine1), objAddressResp.StreetLine1, lstResponseReason, 128);
+                            //  lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objAddressResp.City), objAddressResp.City, lstResponseReason, 128);
+                            //  lstResponseReason = Validations.IsValidOnlyMaxLength(nameof(objAddressResp.StateCode), objAddressResp.StateCode, lstResponseReason, 2);
+                            //  lstResponseReason = Validations.IsValidUSZIPProperty(nameof(objAddressResp.Zip), objAddressResp.Zip, lstResponseReason, 15);
+                        }
+
+                        #endregion
+
+                        #region Sponsor Name
+                        lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objSupervisoryInfoRes.FirstName), objSupervisoryInfoRes.FirstName, lstResponseReason, 128);
+
+                        lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objSupervisoryInfoRes.LastName), objSupervisoryInfoRes.LastName, lstResponseReason, 128);
+
+                        #endregion
                     }
-
-                    #endregion
-
-                    #region Sponsor Name
-                    lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objSupervisoryInfoRes.FirstName), objSupervisoryInfoRes.FirstName, lstResponseReason, 128);
-
-                    lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objSupervisoryInfoRes.LastName), objSupervisoryInfoRes.LastName, lstResponseReason, 128);
-
-                    #endregion
                 }
 
-                //   lstResponseReason = Validations.IsRequiredPropertyMaxLength("Sponsor’s Nevada License Number", objSupervisoryInfoRes.SupervisorLicenseNumber, lstResponseReason, 128);
 
             }
 

@@ -22,8 +22,10 @@ namespace LAPP.BAL
             return objDal.Get_All_Application();
         }
 
-
-      
+        public List<Application> Get_Application_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_Application_By_IndividualId(IndividualId);
+        }
 
         public Application Get_Application_By_ApplicationId(int applicationId)
         {

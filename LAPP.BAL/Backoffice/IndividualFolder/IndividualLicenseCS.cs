@@ -20,10 +20,13 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             List<IndividualLicenseResponse> lstIndividualLicense = new List<IndividualLicenseResponse>();
             try
             {
+                int individualId = objIndividualLicensePostResponse.IndividualId;
+                int? applicationId = objIndividualLicensePostResponse.ApplicationId;
+
                 objIndividualLicense = objIndividualLicenseBAL.Get_IndividualLicense_By_IndividualLicenseId(objIndividualLicensePostResponse.IndividualLicenseId);
                 if (objIndividualLicense != null)
                 {
-                    objIndividualLicense.IndividualId = objIndividualLicensePostResponse.IndividualId;
+                    objIndividualLicense.IndividualId = individualId;
                     objIndividualLicense.ApplicationId = objIndividualLicensePostResponse.ApplicationId;
                     objIndividualLicense.ApplicationTypeId = objIndividualLicensePostResponse.ApplicationTypeId;
                     objIndividualLicense.LicenseTypeId = objIndividualLicensePostResponse.LicenseTypeId;
@@ -40,6 +43,14 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                     objIndividualLicenseBAL.Save_IndividualLicense(objIndividualLicense);
 
+                    //SAVE LOG
+
+                    string logText = "Individual License updated successfully. Updated on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
+
 
                     objResponse.Message = MessagesClass.UpdateSuccess;
                     objResponse.Status = true;
@@ -48,7 +59,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                 else
                 {
                     objIndividualLicense = new IndividualLicense();
-                    objIndividualLicense.IndividualId = objIndividualLicensePostResponse.IndividualId;
+                    objIndividualLicense.IndividualId = individualId;
                     objIndividualLicense.ApplicationId = objIndividualLicensePostResponse.ApplicationId;
                     objIndividualLicense.ApplicationTypeId = objIndividualLicensePostResponse.ApplicationTypeId;
                     objIndividualLicense.LicenseTypeId = objIndividualLicensePostResponse.LicenseTypeId;
@@ -60,12 +71,22 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualLicense.LicenseExpirationDate = objIndividualLicensePostResponse.LicenseExpirationDate;
                     objIndividualLicense.LicenseStatusTypeId = objIndividualLicensePostResponse.LicenseStatusTypeId;
                     objIndividualLicense.IsDeleted = false;
+                    objIndividualLicense.IsActive = true;
                     objIndividualLicense.CreatedBy = objToken.UserId;
                     objIndividualLicense.CreatedOn = DateTime.Now;
                     objIndividualLicense.IndividualLicenseGuid = Guid.NewGuid().ToString();
 
                     objIndividualLicense.IndividualLicenseId = objIndividualLicenseBAL.Save_IndividualLicense(objIndividualLicense);
                     objIndividualLicensePostResponse.IndividualLicenseId = objIndividualLicense.IndividualLicenseId;
+
+                    //SAVE LOG
+
+                    string logText = "Individual License saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
+
                     objResponse.Message = MessagesClass.SaveSuccess;
                     objResponse.Status = true;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");

@@ -46,6 +46,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualSupervisoryInfo.CreatedOn));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualSupervisoryInfo.ModifiedBy));
             lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualSupervisoryInfo.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("SupervisorType", objIndividualSupervisoryInfo.SupervisorType));
 
             lstParameter.Add(new MySqlParameter("IndividualSupervisoryInfoGuid", objIndividualSupervisoryInfo.IndividualSupervisoryInfoGuid));
 
@@ -57,7 +58,7 @@ namespace LAPP.DAL
             return returnValue;
         }
 
-        public IndividualSupervisoryInfo Get_IndividualSupervisoryInfo_By_ApplicationId(int applicationId)
+        public List<IndividualSupervisoryInfo> Get_IndividualSupervisoryInfo_By_ApplicationId(int applicationId)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
@@ -65,14 +66,15 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("_ApplicationId", applicationId));
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualsupervisoryinfo_Get_By_ApplicationId", lstParameter.ToArray());
+            List<IndividualSupervisoryInfo> lstEntity = new List<IndividualSupervisoryInfo>();
             IndividualSupervisoryInfo objEntity = null;
-            DataTable dt = ds.Tables[0];
-            if (dt.Rows.Count > 0)
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                DataRow dr = ds.Tables[0].Rows[0];
                 objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
             }
-            return objEntity;
+            return lstEntity;
         }
 
         public List<IndividualSupervisoryInfo> Get_All_IndividualSupervisoryInfo()
@@ -257,7 +259,7 @@ namespace LAPP.DAL
             }
             if (dr.Table.Columns.Contains("IndividualSupervisoryInfoGuid") && dr["IndividualSupervisoryInfoGuid"] != DBNull.Value)
             {
-                objEntity.IndividualSupervisoryInfoGuid =  dr["IndividualSupervisoryInfoGuid"].ToString();
+                objEntity.IndividualSupervisoryInfoGuid = dr["IndividualSupervisoryInfoGuid"].ToString();
             }
 
             if (dr.Table.Columns.Contains("FirstName") && dr["FirstName"] != DBNull.Value)
@@ -274,7 +276,10 @@ namespace LAPP.DAL
             {
                 objEntity.MiddleName = dr["MiddleName"].ToString();
             }
-
+            if (dr.Table.Columns.Contains("SupervisorType") && dr["SupervisorType"] != DBNull.Value)
+            {
+                objEntity.SupervisorType = dr["SupervisorType"].ToString();
+            }
             return objEntity;
 
         }

@@ -111,6 +111,41 @@ namespace LAPP.DAL
             return objEntity;
         }
 
+        public List<Individual> Search_Individual(IndividualSearchForIndividual obj)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            string Name = "";
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            if (!string.IsNullOrEmpty(obj.Name))
+            {
+                Name = obj.Name.ToLower().Trim();
+            }
+            lstParameter.Add(new MySqlParameter("_Name", Name));
+            lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
+            lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
+            lstParameter.Add(new MySqlParameter("_Phone", obj.Phone));
+            lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
+            lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
+            lstParameter.Add(new MySqlParameter("_Email", obj.Email));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Individual_Search", lstParameter.ToArray());
+
+            List<Individual> lstEntity = new List<Individual>();
+            Individual objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+
+        }
+
         public List<Individual> Search_Renewal(IndividualSearch obj)
         {
             DataSet ds = new DataSet("DS");
@@ -277,7 +312,10 @@ namespace LAPP.DAL
             }
 
             // Joined  Field For View Only
-
+            if (dr.Table.Columns.Contains("Email") && dr["Email"] != DBNull.Value)
+            {
+                objEntity.Email = Convert.ToString(dr["Email"]);
+            }
             if (dr.Table.Columns.Contains("StatusName") && dr["StatusName"] != DBNull.Value)
             {
                 objEntity.StatusName = Convert.ToString(dr["StatusName"]);

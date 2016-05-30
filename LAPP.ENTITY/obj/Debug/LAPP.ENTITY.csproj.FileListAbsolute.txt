@@ -1,4 +1,5 @@
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.pdb
+D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.csprojResolveAssemblyReference.cache
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.pdb

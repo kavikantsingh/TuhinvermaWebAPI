@@ -12,7 +12,7 @@ namespace LAPP.DAL
         {
             if(string.IsNullOrEmpty(value))
             {
-                return null;
+                return "";
             }
             else
             {

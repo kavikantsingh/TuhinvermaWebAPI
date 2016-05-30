@@ -18,8 +18,11 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             IndividualResponse objIndividualResponse = new IndividualResponse();
             Individual objIndividual = new Individual();
             List<IndividualResponse> lstIndividual = new List<IndividualResponse>();
+
             try
             {
+                int individualId = objIndividualPostResponse.IndividualId;
+                int? applicantID = null;
                 objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objIndividualPostResponse.IndividualId);
                 if (objIndividual != null)
                 {
@@ -46,6 +49,14 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                     objIndividualBAL.Save_Individual(objIndividual);
 
+
+                    //SAVE LOG
+
+                    string logText = "Individual updated successfully. Updated on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicantID, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
 
                     objResponse.Message = MessagesClass.UpdateSuccess;
                     objResponse.Status = true;
@@ -78,6 +89,17 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividual.Authenticator = Guid.NewGuid().ToString();
                     objIndividual.IndividualId = objIndividualBAL.Save_Individual(objIndividual);
                     objIndividualPostResponse.IndividualId = objIndividual.IndividualId;
+
+                    individualId = objIndividual.IndividualId;
+
+                    //SAVE LOG
+
+                    string logText = "Individual saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                    string logSource = eCommentLogSource.WSAPI.ToString();
+                    LogHelper.SaveIndividualLog(individualId, applicantID, logSource, logText, objToken.UserId, null, null, null);
+
+                    //END SAVE LOG
+
                     objResponse.Message = MessagesClass.SaveSuccess;
                     objResponse.Status = true;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");

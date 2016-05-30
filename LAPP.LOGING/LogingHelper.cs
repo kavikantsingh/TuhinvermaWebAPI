@@ -148,5 +148,55 @@ namespace LAPP.LOGING
             }
 
         }
+
+        public static void SaveRequestJson(string jsonText, string Title)
+        {
+            Log objLog = new Log();
+            try
+            {
+
+                HttpBrowserCapabilities obj = HttpContext.Current.Request.Browser;
+                objLog.MachineName = HttpContext.Current.Server.MachineName;
+                objLog.UserHostName = HttpContext.Current.Request.UserHostName;
+                objLog.RequestBrowserTypeVersion = obj != null ? obj.Browser + " " + obj.Version : string.Empty;
+                objLog.UserHostAddress = HttpContext.Current.Request.UserHostAddress;
+                objLog.RequestUrl = HttpContext.Current.Request.Url.AbsoluteUri;
+                objLog.UserId = 0;
+                objLog.UserName = "";
+                objLog.IndividualId = 0;
+                objLog.EntityId = 0;
+                objLog.AppDomainName = HttpContext.Current.Request.Url.OriginalString;
+                objLog.RequestUrlReferrer = HttpContext.Current.Request.UrlReferrer != null ? HttpContext.Current.Request.UrlReferrer.AbsoluteUri : "";
+                objLog.Timestamp = DateTime.Now;
+                objLog.Exception = jsonText; // Newtonsoft.Json.JsonConvert.SerializeObject(objRenewalRequest);
+                objLog.Application = "LAPP";
+                objLog.AppDomainName = AppDomainName;
+                objLog.CreatedOn = DateTime.Now;
+                objLog.ElapsedMs = 0;
+                objLog.UserAgent = HttpContext.Current.Request.UserAgent;
+                objLog.Win32ThreadId = "";
+                objLog.StackTrace = Title ;
+                objLog.Severity = "";
+                objLog.Title = Title ;
+                objLog.ThreadName = "";
+                objLog.Source = (eSource.WS).ToString();
+                objLog.ProcessName = "";
+                objLog.ProcessID = "";
+                objLog.Priority = 0;
+                objLog.Message = "";
+                objLog.IsDebug = false;
+                objLog.FormattedMessage = "";
+                objLog.EventID = 0;
+
+                LogDAL objDal = new LogDAL();
+                objLog.LogID = objDal.Save_Log(objLog);
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+
+        }
     }
 }
