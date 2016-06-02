@@ -83,7 +83,7 @@
 }
 
 .help-page .api-name {
-    width: 40%;
+    width: 20%;
 }
 
 .help-page .api-documentation {
@@ -103,7 +103,7 @@
 }
 
 .help-page .parameter-annotations {
-    width: 20%;
+    width: 60%;
 }
 
 .help-page h1,

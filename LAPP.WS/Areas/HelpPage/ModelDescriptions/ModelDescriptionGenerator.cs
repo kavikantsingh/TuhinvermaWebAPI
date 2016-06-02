@@ -58,6 +58,12 @@ namespace LAPP.WS.Areas.HelpPage.ModelDescriptions
                     return String.Format(CultureInfo.CurrentCulture, "Matching regular expression pattern: {0}", regularExpression.Pattern);
                 }
             },
+            { typeof(DisplayAttribute), a =>
+                {
+                    DisplayAttribute displayAttrivute = (DisplayAttribute)a;
+                    return String.Format(CultureInfo.CurrentCulture, "Descriptions: {0}", displayAttrivute.Description);
+                }
+            },
         };
 
         // Modify this to add more default documentations.

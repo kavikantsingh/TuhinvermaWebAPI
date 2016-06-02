@@ -5,9 +5,3 @@ D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\bin\Debug\New
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb
-D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.dll
-D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.pdb
-D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.dll
-D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache
-D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
-D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb

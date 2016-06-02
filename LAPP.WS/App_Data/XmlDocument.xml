@@ -1037,18 +1037,6 @@
             <param name="Key"></param>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderController.ProviderRegister(LAPP.ENTITY.ProviderRegister)">
-            <summary>
-            This API used for Provider Registration.
-            </summary>
-            <param name="ObjRegisterInfo">Request object for Provider Registration.</param>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderController.ProviderLogin(LAPP.ENTITY.ProviderLogin)">
-            <summary>
-            This API used for Provider Login.
-            </summary>
-            <param name="ObjLoginInfo">Request object for Provider Login.</param>
-        </member>
         <member name="M:LAPP.WS.Controllers.Common.SourceController.SourceGetAll(System.String)">
             <summary>
             Looks up all data by Key For Source.
