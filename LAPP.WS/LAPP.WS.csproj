@@ -49,6 +49,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>LIB\EO.Pdf.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=3.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>LIB\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.0.1011, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -158,8 +162,10 @@
     <Content Include="EmailTemplate\ConfirmationEmailUponSuccessfulPaymentAffirmativeActionisY.html" />
     <Content Include="EmailTemplate\ConfirmationEmailUponSuccessfulPaymentAffirmativeActionisN.html" />
     <Content Include="EmailTemplate\RenewalConfirmation.html" />
+    <Content Include="EmailTemplate\SpeechandHearingRenewalNotice.html" />
     <Content Include="Global.asax" />
     <Content Include="LIB\EO.Pdf.dll" />
+    <Content Include="LIB\EPPlus.dll" />
     <Content Include="LIB\MySql.Data.dll" />
     <Content Include="LIB\Newtonsoft.Json.dll" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
@@ -268,6 +274,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="EmailTemplate\DataForSendingEmail-ActiveLicenseOnly.xlsx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

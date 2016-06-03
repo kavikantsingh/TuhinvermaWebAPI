@@ -97,12 +97,12 @@ namespace LAPP.DAL
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individuallicense_GET_Pending_BY_IndividualId", lstParameter.ToArray());
-          
+
             IndividualLicense objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 objEntity = FetchEntity(dr);
-                
+
             }
             return objEntity;
         }
@@ -124,7 +124,23 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-
+        public List<IndividualLicense> GetALL_IndividualLicense_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individuallicense_GETALL_BY_IndividualId", lstParameter.ToArray());
+            List<IndividualLicense> lstEntity = new List<IndividualLicense>();
+            IndividualLicense objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
         private IndividualLicense FetchEntity(DataRow dr)
         {
             IndividualLicense objEntity = new IndividualLicense();
@@ -216,6 +232,11 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("LicenseTypeName") && dr["LicenseTypeName"] != DBNull.Value)
             {
                 objEntity.LicenseTypeName = Convert.ToString(dr["LicenseTypeName"]);
+            }
+
+            if (dr.Table.Columns.Contains("LicenseDetail") && dr["LicenseDetail"] != DBNull.Value)
+            {
+                objEntity.LicenseDetail = Convert.ToString(dr["LicenseDetail"]);
             }
             return objEntity;
 

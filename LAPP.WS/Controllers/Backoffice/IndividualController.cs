@@ -21,6 +21,8 @@ using EO.Pdf;
 using System.Drawing;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
+using System.Data.OleDb;
+using System.Data;
 
 namespace LAPP.WS.Controllers.Backoffice
 {
@@ -254,6 +256,79 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+
+        /// <summary>
+        /// Method to Search Individual by key and objSearch with Pager.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="objSearch">objSearch.</param>
+        /// <param name="CurrentPage">Record ID.</param>
+        /// <param name="PagerSize">Record ID.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("IndividualSearchWithPage")]
+        public IndividualSearchForIndividualResponse IndividualSearchWithPage(string Key, IndividualSearchForIndividual objSearch, int CurrentPage, int PagerSize)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualSearchForIndividualResponse objResponse = new IndividualSearchForIndividualResponse();
+            IndividualBAL objBAL = new IndividualBAL();
+            Individual objEntity = new Individual();
+            List<Individual> lstIndividual = new List<Individual>();
+            List<IndividualSearchForIndividual> lstIndividualSelected = new List<IndividualSearchForIndividual>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualSearch = null;
+                    return objResponse;
+                }
+
+                lstIndividual = objBAL.Search_Individual_WithPager(objSearch, CurrentPage, PagerSize);
+                if (lstIndividual != null && lstIndividual.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearchForIndividual
+                    {
+                        IndividualId = RenewalGetSelectedRes.IndividualId,
+                        FirstName = RenewalGetSelectedRes.FirstName,
+                        LastName = RenewalGetSelectedRes.LastName,
+                        Name = RenewalGetSelectedRes.Name,
+                        Email = RenewalGetSelectedRes.Email,
+                        SSN = RenewalGetSelectedRes.SSN,
+                        Phone = RenewalGetSelectedRes.Phone,
+
+                    }).ToList();
+
+                    objResponse.IndividualSearch = lstIndividualSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualSearch = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualSearchWithPage", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualSearch = null;
+
+            }
+            return objResponse;
+        }
 
 
 
@@ -1106,7 +1181,10 @@ namespace LAPP.WS.Controllers.Backoffice
                         LicenseNumber = obj.LicenseNumber,
                         LicenseStatusTypeId = obj.LicenseStatusTypeId,
                         LicenseTypeId = obj.LicenseTypeId,
-                        OriginalLicenseDate = obj.OriginalLicenseDate
+                        OriginalLicenseDate = obj.OriginalLicenseDate,
+                        LicenseStatusTypeCode = obj.LicenseStatusTypeCode,
+                        LicenseTypeName = obj.LicenseTypeName,
+                        LicenseStatusTypeName = obj.LicenseStatusTypeName
 
                     }).ToList();
 
@@ -1138,6 +1216,90 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             return objResponse;
         }
+
+
+        /// <summary>
+        /// Get Method to get IndividualLicenseDetail by key and ID.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualLicenseDetailBYIndividualId")]
+        public IndividualLicenseResponseRequest IndividualLicenseDetailBYIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualLicenseResponseRequest objResponse = new IndividualLicenseResponseRequest();
+            IndividualLicenseBAL objIndividualLicenseBAL = new IndividualLicenseBAL();
+            IndividualLicenseResponse objIndividualLicenseResponse = new IndividualLicenseResponse();
+            IndividualLicense objIndividualLicense = new IndividualLicense();
+            List<IndividualLicenseResponse> lstIndividualLicenseResponse = new List<IndividualLicenseResponse>();
+            List<IndividualLicense> lstIndividualLicense = new List<IndividualLicense>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualLicenseList = null;
+                    return objResponse;
+                }
+
+                lstIndividualLicense = objIndividualLicenseBAL.GetALL_IndividualLicense_By_IndividualId(IndividualId);
+                if (lstIndividualLicense != null && lstIndividualLicense.Count > 0)
+                {
+                    List<IndividualLicenseResponse> lstLicenseResponse = lstIndividualLicense.Select(obj => new IndividualLicenseResponse
+                    {
+                        ApplicationId = obj.ApplicationId,
+                        ApplicationTypeId = obj.ApplicationTypeId,
+                        IndividualId = obj.IndividualId,
+                        IndividualLicenseId = obj.IndividualLicenseId,
+                        IsActive = obj.IsActive,
+                        IsLicenseActive = obj.IsLicenseActive,
+                        IsLicenseTemporary = obj.IsLicenseTemporary,
+                        LicenseEffectiveDate = obj.LicenseEffectiveDate,
+                        LicenseExpirationDate = obj.LicenseExpirationDate,
+                        LicenseNumber = obj.LicenseNumber,
+                        LicenseStatusTypeId = obj.LicenseStatusTypeId,
+                        LicenseTypeId = obj.LicenseTypeId,
+                        OriginalLicenseDate = obj.OriginalLicenseDate,
+                        LicenseStatusTypeCode = obj.LicenseStatusTypeCode,
+                        LicenseTypeName = obj.LicenseTypeName,
+                        LicenseStatusTypeName = obj.LicenseStatusTypeName,
+                        LicenseDetail = obj.LicenseDetail
+
+                    }).ToList();
+
+                    objResponse.IndividualLicenseList = lstLicenseResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualLicenseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualLicenseDetailBYIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualLicenseList = null;
+
+            }
+            return objResponse;
+        }
+
 
 
         /// <summary>
@@ -1557,7 +1719,7 @@ namespace LAPP.WS.Controllers.Backoffice
                             int individualId = objIndividualDocumentResponse.IndividualId;
                             int? applicationId = objIndividualDocumentResponse.ApplicationId;
 
-                        
+
                             objIndividualDocument = new IndividualDocument();
 
                             objIndividualDocument.IndividualId = IndividualId;
@@ -1586,7 +1748,7 @@ namespace LAPP.WS.Controllers.Backoffice
                                 objDtU.IndividualDocumentId = objIndividualDocument.IndividualDocumentId;
 
 
-                                string DocFileName = objIndividualDocument.IndividualDocumentId +"-"+ objDtU.DocNameWithExtention; // Guid.NewGuid().ToString() + ".pdf";
+                                string DocFileName = objIndividualDocument.IndividualDocumentId + "-" + objDtU.DocNameWithExtention; // Guid.NewGuid().ToString() + ".pdf";
                                 string DocPath = FileHelper.Base64ToFile(objDtU.DocStrBase64, FilePath + DocFileName); // (FilePath + DocFileName);
 
                                 objDtU.DocNameWithExtention = DocFileName;
@@ -1939,7 +2101,7 @@ namespace LAPP.WS.Controllers.Backoffice
                                 objDtU.IndividualDocumentId = objIndividualDocument.IndividualDocumentId;
 
 
-                                string DocFileName = objIndividualDocument.IndividualDocumentId +"-"+ objDtU.DocNameWithExtention;
+                                string DocFileName = objIndividualDocument.IndividualDocumentId + "-" + objDtU.DocNameWithExtention;
                                 string DocPath = FilePath + DocFileName;
                                 EO.Pdf.Runtime.AddLicense("f6yywc2faLWRm8ufdabl/RfusLWRm8ufdeb29RDxguXqAMvjmuvpzs22aKi1wN2vaqqmsSHkq+rtABm8W6ymsdq9RoGksefyot7y8h/0q9zC6gPqnNHvxg34aav32PjOhuHZBPXWerTBzdryot7y8h/0q9zCnrWfWbOz/RTinuX39umMQ3Xj7fQQ7azcwp61n1mz8PoO5Kfq6doPvXCoucfbtWutucPnrqXg5/YZ8p7A6M+4iVmXwP0U4p7l9/YQn6fY8fbooZrh5QrNvXWm8PoO5Kfq6fbpjEOXpM0M66Xm+8+4iVmXwPIP41nr/QEQvFu807/745+ZpLEh5Kvq7QAZvFs=");
 
@@ -2068,11 +2230,11 @@ namespace LAPP.WS.Controllers.Backoffice
                     if (objIndividualDocumentResponse.SendEmail)
                     {
                         string EmailTemplate = ""; // File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/RenewalConfirmation.html"));
-                        if(!string.IsNullOrEmpty(objIndividualDocumentResponse.AffirmativeAction) &&  objIndividualDocumentResponse.AffirmativeAction.ToUpper() == "Y")
+                        if (!string.IsNullOrEmpty(objIndividualDocumentResponse.AffirmativeAction) && objIndividualDocumentResponse.AffirmativeAction.ToUpper() == "Y")
                         {
                             EmailTemplate = File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/ConfirmationEmailUponSuccessfulPaymentAffirmativeActionisY.html"));
                         }
-                        else if(!string.IsNullOrEmpty(objIndividualDocumentResponse.AffirmativeAction) && objIndividualDocumentResponse.AffirmativeAction.ToUpper() == "N")
+                        else if (!string.IsNullOrEmpty(objIndividualDocumentResponse.AffirmativeAction) && objIndividualDocumentResponse.AffirmativeAction.ToUpper() == "N")
                         {
                             EmailTemplate = File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/ConfirmationEmailUponSuccessfulPaymentAffirmativeActionisN.html"));
                         }
@@ -2126,11 +2288,17 @@ namespace LAPP.WS.Controllers.Backoffice
                                 }
                                 if (EmailHelper.SendMailWithMultipleAttachment(objIndividualDocumentResponse.Email, "Online License Renewal and Payment", EmailTemplate, true, lstAttachment))
                                 {
-                                    LogHelper.LogCommunication(objIndividual.IndividualId, objApplication.ApplicationId, eCommunicationType.Email, "Renewal Confirmation", eCommunicationStatus.Success, "Public", "Renewal Confirmation email has been sent", EmailHelper.GetSenderAddress(), objIndividualDocumentResponse.Email, null, null, objToken.UserId, null, null, null);
+                                    LogHelper.SaveIndividualLog(objIndividual.IndividualId, null, "Backoffice", ("Online License Renewal and Payment sent by email. Email Address: " + objIndividualDocumentResponse.Email + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
+                                    LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Online License Renewal and Payment", eCommunicationStatus.Success, "Backoffice", EmailTemplate, EmailHelper.GetSenderAddress(), objIndividualDocumentResponse.Email, null, null, 0, null, null, null);
+
+                                    //LogHelper.LogCommunication(objIndividual.IndividualId, objApplication.ApplicationId, eCommunicationType.Email, "Renewal Confirmation", eCommunicationStatus.Success, "Public", "Renewal Confirmation email has been sent", EmailHelper.GetSenderAddress(), objIndividualDocumentResponse.Email, null, null, objToken.UserId, null, null, null);
                                 }
                                 else
                                 {
-                                    LogHelper.LogCommunication(objIndividual.IndividualId, objApplication.ApplicationId, eCommunicationType.Email, "Online License Renewal and Payment", eCommunicationStatus.Fail, "Public", "Renewal Confirmation email sending failed.", EmailHelper.GetSenderAddress(), objIndividualDocumentResponse.Email, null, null, objToken.UserId, null, null, null);
+                                    LogHelper.SaveIndividualLog(objIndividual.IndividualId, null, "Backoffice", ("Online License Renewal and Payment sent by email failed. Email Address: " + objIndividualDocumentResponse.Email + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
+                                    LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Online License Renewal and Payment", eCommunicationStatus.Fail, "Backoffice", EmailTemplate, EmailHelper.GetSenderAddress(), objIndividualDocumentResponse.Email, null, null, 0, null, null, null);
+
+                                    //LogHelper.LogCommunication(objIndividual.IndividualId, objApplication.ApplicationId, eCommunicationType.Email, "Online License Renewal and Payment", eCommunicationStatus.Fail, "Public", "Renewal Confirmation email sending failed.", EmailHelper.GetSenderAddress(), objIndividualDocumentResponse.Email, null, null, objToken.UserId, null, null, null);
                                 }
 
                             }
@@ -2158,6 +2326,138 @@ namespace LAPP.WS.Controllers.Backoffice
         }
 
         #endregion
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        // [AcceptVerbs("GET")]
+        // [ActionName("IndividualSendRenewalNotice")]
+        //[ApiExplorerSettings(IgnoreApi = true)]
+        //public IndividualDocumentByHtmlResponse IndividualSendRenewalNotice(string Key)
+        //{
+        //    if (Key != "8004746986")
+        //        return null;
+
+        //    IndividualDocumentByHtmlResponse objResponse = new IndividualDocumentByHtmlResponse();
+        //    IndividualDocumentBAL objIndividualDocumentBAL = new IndividualDocumentBAL();
+        //    IndividualDocument objIndividualDocument = new IndividualDocument();
+
+
+
+        //    try
+        //    {
+        //        //string EmailTemplate = ""; // File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/RenewalConfirmation.html"));
+        //        string FilePath = HttpContext.Current.Server.MapPath("~/EmailTemplate/DataForSendingEmail-ActiveLicenseOnly.xlsx");
+        //        OleDbConnection conn = new OleDbConnection();
+        //        OleDbCommand cmd = new OleDbCommand();
+        //        OleDbDataAdapter da = new OleDbDataAdapter();
+        //        DataSet ds = new DataSet();
+        //        string query = null;
+        //        string connString = string.Empty;
+        //        //Connection String to Excel Workbook
+        //        //FileStream stream = File.Open(strNewPath, FileMode.Open, FileAccess.Read);
+
+
+        //        ///---------------- Using EPPlus--------------------------------------
+        //        var pck = new OfficeOpenXml.ExcelPackage();
+        //        pck.Load(new System.IO.FileInfo(FilePath).OpenRead());
+        //        var ws = pck.Workbook.Worksheets.First();  // or Worksheets[1] instead(1-based!)
+        //        DataTable tbl = new DataTable();
+        //        bool hasHeader = true; // change it if required
+        //        foreach (var firstRowCell in ws.Cells[1, 1, 1, ws.Dimension.End.Column])
+        //        {
+        //            tbl.Columns.Add(hasHeader ? firstRowCell.Text : string.Format("Column {0}", firstRowCell.Start.Column));
+        //        }
+        //        var startRow = hasHeader ? 2 : 1;
+        //        for (var rowNum = startRow; rowNum <= ws.Dimension.End.Row; rowNum++)
+        //        {
+        //            var wsRow = ws.Cells[rowNum, 1, rowNum, ws.Dimension.End.Column];
+        //            var row = tbl.NewRow();
+        //            foreach (var cell in wsRow)
+        //            {
+        //                row[cell.Start.Column - 1] = cell.Text;
+        //            }
+        //            tbl.Rows.Add(row);
+        //        }
+        //        pck.Dispose();
+
+        //        int Sent = 0;
+        //        int failed = 0;
+
+        //        if (tbl.Rows.Count > 0)
+        //        {
+
+
+        //            foreach (DataRow dr in tbl.Rows)
+        //            {
+        //                try
+        //                {
+        //                    string EmailTemplate = File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/SpeechandHearingRenewalNotice.html"));
+
+        //                    int IndividualID = Convert.ToInt32(dr["IndividualId"].ToString());
+        //                    string LicenseType = dr["LicenseType"].ToString();
+        //                    string LicenseNumber = dr["LicenseNumber"].ToString();
+        //                    string LicenseExpirationDate = Convert.ToDateTime(dr["LicenseExpirationDate"].ToString()).ToString("MM/dd/yyyy");
+        //                    string EmailAddress = dr["EmailAddress"].ToString();
+        //                    string Email = EmailAddress; //  "test@ebsoftsolutions.com";
+
+
+        //                    EmailTemplate = EmailTemplate.Replace("#LicenseType#", LicenseType );
+        //                    EmailTemplate = EmailTemplate.Replace("#LicenseNumber#", LicenseNumber);
+        //                    EmailTemplate = EmailTemplate.Replace("#LicenseExpirationDate#", LicenseExpirationDate);
+
+        //                    if (!string.IsNullOrEmpty(EmailAddress))
+        //                    {
+
+
+        //                        if (EmailHelper.SendMailWithMultipleAttachment(Email, "License Renewal ONLINE is now open", EmailTemplate, true, new List<Attachment>() ))
+        //                        {
+        //                            LogHelper.SaveIndividualLog(IndividualID, null, "Backoffice", ("Renewal notice has been sent by email. Email Address: " + EmailAddress + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
+        //                            LogHelper.LogCommunication(IndividualID, null, eCommunicationType.Email, "License Renewal ONLINE is now open", eCommunicationStatus.Success, "Backoffice", EmailTemplate, EmailHelper.GetSenderAddress(), Email, null, null, 0, null, null, null);
+        //                            Sent++;
+        //                        }
+        //                        else
+        //                        {
+        //                            LogHelper.LogCommunication(IndividualID, null, eCommunicationType.Email, "License Renewal ONLINE is now open", eCommunicationStatus.Fail, "Backoffice", EmailTemplate, EmailHelper.GetSenderAddress(), Email, null, null, 0, null, null, null);
+        //                            failed++;
+
+        //                        }
+        //                    }
+
+        //                }
+        //                catch (Exception ex)
+        //                {
+
+        //                }
+
+
+        //            }
+        //        }
+
+
+        //        objResponse.Message = "Email Sent:" + Sent + ", Email Failed:" + failed;
+        //        objResponse.Status = false;
+        //        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+        //        objResponse.ResponseReason = null;
+        //        return objResponse;
+
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        LogingHelper.SaveExceptionInfo(Key, ex, "IndividualDocumentGetByHTML", ENTITY.Enumeration.eSeverity.Error);
+
+        //        objResponse.Status = false;
+        //        objResponse.Message = ex.Message;
+        //        objResponse.IndividualDocumentUploadList = null;
+        //        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+        //    }
+        //    return objResponse;
+        //}
 
         /// <summary>
         /// 

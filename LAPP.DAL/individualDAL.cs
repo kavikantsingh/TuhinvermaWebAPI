@@ -146,6 +146,43 @@ namespace LAPP.DAL
 
         }
 
+        public List<Individual> Search_Individual_WithPager(IndividualSearchForIndividual obj, int CurrentPage, int PagerSize)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            string Name = "";
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            if (!string.IsNullOrEmpty(obj.Name))
+            {
+                Name = obj.Name.ToLower().Trim();
+            }
+            lstParameter.Add(new MySqlParameter("_Name", Name));
+            lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
+            lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
+            lstParameter.Add(new MySqlParameter("_Phone", obj.Phone));
+            lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
+            lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
+            lstParameter.Add(new MySqlParameter("_Email", obj.Email));
+            lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
+            lstParameter.Add(new MySqlParameter("Pager", PagerSize));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Individual_Search_WithPager", lstParameter.ToArray());
+
+            List<Individual> lstEntity = new List<Individual>();
+            Individual objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+
+        }
+
         public List<Individual> Search_Renewal(IndividualSearch obj)
         {
             DataSet ds = new DataSet("DS");
@@ -163,6 +200,39 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("_StatusId", obj.StatusId));
 
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_By_Search", lstParameter.ToArray());
+
+            List<Individual> lstEntity = new List<Individual>();
+            Individual objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+
+        }
+
+        public List<Individual> Search_RenewalWithPager(IndividualSearch obj, int CurrentPage, int PagerSize)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            lstParameter.Add(new MySqlParameter("_Name", obj.Name));
+            lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
+            lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
+            lstParameter.Add(new MySqlParameter("_Phone", obj.Phone));
+            lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
+            lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
+            lstParameter.Add(new MySqlParameter("_StatusId", obj.StatusId));
+            lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
+            lstParameter.Add(new MySqlParameter("Pager", PagerSize));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_By_Search_WithPager", lstParameter.ToArray());
 
             List<Individual> lstEntity = new List<Individual>();
             Individual objEntity = null;

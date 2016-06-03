@@ -24,10 +24,20 @@ namespace LAPP.BAL
         {
             return objDal.Search_Individual(obj);
         }
+        public List<Individual> Search_Individual_WithPager(IndividualSearchForIndividual obj, int CurrentPage, int PagerSize)
+        {
+            return objDal.Search_Individual_WithPager(obj, CurrentPage, PagerSize);
+        }
+
         public List<Individual> Search_Renewal(IndividualSearch obj)
         {
             return objDal.Search_Renewal(obj);
         }
+        public List<Individual> Search_RenewalWithPager(IndividualSearch obj, int CurrentPage, int PagerSize)
+        {
+            return objDal.Search_RenewalWithPager(obj, CurrentPage, PagerSize);
+        }
+
         public Individual Get_Individual_By_IndividualId(int ID)
         {
             return objDal.Get_Individual_By_IndividualId(ID);
