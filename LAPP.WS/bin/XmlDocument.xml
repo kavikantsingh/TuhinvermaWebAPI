@@ -689,21 +689,21 @@
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSearch(System.String,LAPP.ENTITY.IndividualSearchForIndividual)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSearch(System.String,LAPP.ENTITY.IndividualSearch)">
             <summary>
             Method to Search Individual by key and objSearch.
             </summary>
             <param name="Key">API security key.</param>
             <param name="objSearch">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSearchWithPage(System.String,LAPP.ENTITY.IndividualSearchForIndividual,System.Int32,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSearchWithPage(System.String,LAPP.ENTITY.IndividualSearch,System.Int32,System.Int32)">
             <summary>
             Method to Search Individual by key and objSearch with Pager.
             </summary>
             <param name="Key">API security key.</param>
             <param name="objSearch">objSearch.</param>
-            <param name="CurrentPage">Record ID.</param>
-            <param name="PagerSize">Record ID.</param>
+            <param name="PageNumber">Record ID.</param>
+            <param name="NoOfRecords">Record ID.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSave(System.String,LAPP.ENTITY.IndividualResponse)">
             <summary>
@@ -1262,21 +1262,21 @@
             <param name="Key"></param>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearch(System.String,LAPP.ENTITY.IndividualSearch)">
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearch(System.String,LAPP.ENTITY.RenewalApplication)">
             <summary>
             Method to Search Renewal by key and objSearch.
             </summary>
             <param name="Key">API security key.</param>
             <param name="objSearch">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearchWithPager(System.String,LAPP.ENTITY.IndividualSearch,System.Int32,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearchWithPager(System.String,LAPP.ENTITY.RenewalApplication,System.Int32,System.Int32)">
             <summary>
             Method to Search Renewal by key and objSearch with pager.
             </summary>
             <param name="Key">API security key.</param>
             <param name="objSearch">objSearch.</param>
-            <param name="CurrentPage">CurrentPage.</param>
-            <param name="PagerSize">PagerSize.</param>
+            <param name="PageNumber">CurrentPage.</param>
+            <param name="NoOfRecords">PagerSize.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.User.MenuController.MenuGetAll(System.String)">
             <summary>

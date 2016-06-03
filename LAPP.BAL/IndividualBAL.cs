@@ -20,20 +20,20 @@ namespace LAPP.BAL
         {
             return objDal.Get_All_Individual();
         }
-        public List<Individual> Search_Individual(IndividualSearchForIndividual obj)
+        public List<Individual> Search_Individual(IndividualSearch obj)
         {
             return objDal.Search_Individual(obj);
         }
-        public List<Individual> Search_Individual_WithPager(IndividualSearchForIndividual obj, int CurrentPage, int PagerSize)
+        public List<Individual> Search_Individual_WithPager(IndividualSearch obj, int CurrentPage, int PagerSize)
         {
             return objDal.Search_Individual_WithPager(obj, CurrentPage, PagerSize);
         }
 
-        public List<Individual> Search_Renewal(IndividualSearch obj)
+        public List<Individual> Search_Renewal(RenewalApplication obj)
         {
             return objDal.Search_Renewal(obj);
         }
-        public List<Individual> Search_RenewalWithPager(IndividualSearch obj, int CurrentPage, int PagerSize)
+        public List<Individual> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
         {
             return objDal.Search_RenewalWithPager(obj, CurrentPage, PagerSize);
         }

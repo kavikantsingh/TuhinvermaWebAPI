@@ -85,7 +85,7 @@ namespace LAPP.ENTITY
     }
 
 
-    public class IndividualSearch : BaseEntity
+    public class RenewalApplication : BaseEntity
     {
         public string Name { get; set; }
 
@@ -111,7 +111,7 @@ namespace LAPP.ENTITY
         public bool IsPaid { get; set; }
     }
 
-    public class IndividualSearchForIndividual : BaseEntity
+    public class IndividualSearch: BaseEntity
     {
         public string Name { get; set; }
         public string FirstName { get; set; }
@@ -128,14 +128,14 @@ namespace LAPP.ENTITY
 
     }
 
-    public class IndividualSearchForIndividualResponse : BaseEntityServiceResponse
-    {
-        public List<IndividualSearchForIndividual> IndividualSearch { get; set; }
-    }
-
     public class IndividualSearchResponse : BaseEntityServiceResponse
     {
-        public List<IndividualSearch> IndividualSearch { get; set; }
+        public List<IndividualSearch> IndividualList { get; set; }
+    }
+
+    public class RenewalSearchResponse : BaseEntityServiceResponse
+    {
+        public List<RenewalApplication> RenewalApplicationList { get; set; }
     }
 
     public class IndividualResponseRequest : BaseEntityServiceResponse

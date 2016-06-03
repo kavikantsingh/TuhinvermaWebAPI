@@ -111,7 +111,7 @@ namespace LAPP.DAL
             return objEntity;
         }
 
-        public List<Individual> Search_Individual(IndividualSearchForIndividual obj)
+        public List<Individual> Search_Individual(IndividualSearch obj)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
@@ -146,7 +146,7 @@ namespace LAPP.DAL
 
         }
 
-        public List<Individual> Search_Individual_WithPager(IndividualSearchForIndividual obj, int CurrentPage, int PagerSize)
+        public List<Individual> Search_Individual_WithPager(IndividualSearch obj, int CurrentPage, int PagerSize)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
@@ -183,7 +183,7 @@ namespace LAPP.DAL
 
         }
 
-        public List<Individual> Search_Renewal(IndividualSearch obj)
+        public List<Individual> Search_Renewal(RenewalApplication obj)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
@@ -214,7 +214,7 @@ namespace LAPP.DAL
 
         }
 
-        public List<Individual> Search_RenewalWithPager(IndividualSearch obj, int CurrentPage, int PagerSize)
+        public List<Individual> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
