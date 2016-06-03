@@ -25,6 +25,10 @@ namespace LAPP.BAL
             return objDal.Get_IndividualLicense_By_IndividualId(IndividualId);
         }
 
+        public List<IndividualLicense> GetALL_IndividualLicense_By_IndividualId(int IndividualId)
+        {
+            return objDal.GetALL_IndividualLicense_By_IndividualId(IndividualId);
+        }
         public IndividualLicense Get_IndividualLicense_By_IndividualLicenseId(int ID)
         {
             return objDal.Get_IndividualLicense_By_IndividualLicenseId(ID);

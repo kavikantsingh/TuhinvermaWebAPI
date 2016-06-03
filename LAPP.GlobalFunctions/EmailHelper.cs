@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LAPP.LOGING;
+using LAPP.WS.App_Helper.Common;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace LAPP.GlobalFunctions
     public class EmailHelper
     {
 
-        private static string SenderText = "inLumon";
+        private static string SenderText = ConfigurationHelper.GetConfigurationValueBySetting("EmailSenderName"); //  "Speech-Language Pathology, Audiology and Hearing Aid Dispensing Board";
 
         #region Email Helper
 
@@ -160,6 +162,10 @@ namespace LAPP.GlobalFunctions
                     //Config_GNF.LogFailedEmail(toAddress, subject);
                 }
             }
+            finally
+            {
+                message.Attachments.ToList().ForEach(a => a.Dispose());
+            }
 
             return result;
         }
@@ -177,7 +183,7 @@ namespace LAPP.GlobalFunctions
             }
         }
 
-        public static bool SendMailWithMultipleAttachment(string toAddress, string subject, string mailContent, bool IsBodyHtml, List<System.Net.Mail.Attachment> lstAttachment)
+        public static bool SendMailWithMultipleAttachment( string toAddress, string subject, string mailContent, bool IsBodyHtml, List<System.Net.Mail.Attachment> lstAttachment)
         {
             mailContent = SetLogo(mailContent);
             bool result = false;
@@ -223,9 +229,15 @@ namespace LAPP.GlobalFunctions
                 if (!SendUsingBackupSMTP(message))
                 {
                     result = false;
-                    //Config_GNF.LogFailedEmail(toAddress, subject);
+                     
                 }
             }
+            finally
+            {
+                message.Attachments.ToList().ForEach(a => a.Dispose());
+            }
+
+
 
             return result;
 
@@ -237,12 +249,12 @@ namespace LAPP.GlobalFunctions
 
 
         #region Configuration
-        private static string GetSenderAddress()
+        public static string GetSenderAddress()
         {
             //return "info@inlumon.com";
             //if (Lapp_Configuration.IsApplicationUnderDevelopment())
             //{
-                return ConfigurationManager.AppSettings["FromAddress"].ToString();//
+            return ConfigurationHelper.GetConfigurationValueBySetting("SMTPFromAddress");// ConfigurationManager.AppSettings["FromAddress"].ToString();//
             //}
             //else
             //{
@@ -254,12 +266,12 @@ namespace LAPP.GlobalFunctions
         {
 
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Host = ConfigurationManager.AppSettings["SMTPHost"];
-            smtpClient.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+            smtpClient.Host = ConfigurationHelper.GetConfigurationValueBySetting("SmtpServer");// ConfigurationManager.AppSettings["SMTPHost"];
+            smtpClient.Port = Convert.ToInt32(ConfigurationHelper.GetConfigurationValueBySetting("SMTPPort"));// Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Timeout = 60000;
-            smtpClient.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["SenderAddress"], ConfigurationManager.AppSettings["EmailPassword"]);
-            smtpClient.EnableSsl = false; // Convert.ToBoolean(Lapp_Configuration.SmtpEnableSsl().Value);
+            smtpClient.Credentials = new NetworkCredential(ConfigurationHelper.GetConfigurationValueBySetting("SmtpUsername"), ConfigurationHelper.GetConfigurationValueBySetting("SmtpPassword"));
+            smtpClient.EnableSsl = Convert.ToBoolean(ConfigurationHelper.GetConfigurationValueBySetting("SmtpEnableSsl")); // Convert.ToBoolean(Lapp_Configuration.SmtpEnableSsl().Value);
 
             //if (Lapp_Configuration.IsApplicationUnderDevelopment())
             //{
@@ -286,14 +298,21 @@ namespace LAPP.GlobalFunctions
 
         private static SmtpClient GetBackupSMTPClientObject()
         {
+            //SmtpClient smtpClient = new SmtpClient();
+            //smtpClient.Host = ConfigurationManager.AppSettings["SMTPHost"];
+            //smtpClient.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+            //smtpClient.UseDefaultCredentials = false;
+            //smtpClient.Timeout = 60000;
+            //smtpClient.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["SenderAddress"], ConfigurationManager.AppSettings["EmailPassword"]);
+            //smtpClient.EnableSsl = false; // Convert.ToBoolean(Lapp_Configuration.SmtpEnableSsl().Value);
+
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Host = ConfigurationManager.AppSettings["SMTPHost"];
-            smtpClient.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+            smtpClient.Host = ConfigurationHelper.GetConfigurationValueBySetting("SmtpServer");// ConfigurationManager.AppSettings["SMTPHost"];
+            smtpClient.Port = Convert.ToInt32(ConfigurationHelper.GetConfigurationValueBySetting("SMTPPort"));// Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Timeout = 60000;
-            smtpClient.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["SenderAddress"], ConfigurationManager.AppSettings["EmailPassword"]);
-            smtpClient.EnableSsl = false; // Convert.ToBoolean(Lapp_Configuration.SmtpEnableSsl().Value);
-
+            smtpClient.Credentials = new NetworkCredential(ConfigurationHelper.GetConfigurationValueBySetting("SmtpUsername"), ConfigurationHelper.GetConfigurationValueBySetting("SmtpPassword"));
+            smtpClient.EnableSsl = Convert.ToBoolean(ConfigurationHelper.GetConfigurationValueBySetting("SmtpEnableSsl")); // Convert.ToBoolean(Lapp_Configuration.SmtpEnableSsl().Value);
 
             //SmtpClient smtpClient = new SmtpClient();
             //smtpClient.Host =  ConfigurationManager.AppSettings["SMTPHost"];

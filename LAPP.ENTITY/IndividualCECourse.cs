@@ -10,7 +10,7 @@ namespace LAPP.ENTITY
     {
         public int IndividualCECourseId { get; set; }
         public int IndividualId { get; set; }
-        public int ApplicationId { get; set; }
+        public int? ApplicationId { get; set; }
         public int? CECourseTypeId { get; set; }
         public int? CECourseActivityTypeId { get; set; }
         public DateTime? CECourseStartDate { get; set; }

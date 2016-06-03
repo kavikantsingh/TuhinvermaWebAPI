@@ -14,7 +14,7 @@ namespace LAPP.GlobalFunctions
     public class EmailHelper
     {
 
-        private static string SenderText = "inLumon";
+        private static string SenderText = ConfigurationHelper.GetConfigurationValueBySetting("EmailSenderName"); //  "Speech-Language Pathology, Audiology and Hearing Aid Dispensing Board";
 
         #region Email Helper
 

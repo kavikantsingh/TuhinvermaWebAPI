@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E8FB3B4E-4F4F-4C56-8099-8935367A578D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SendRenewalNotice</RootNamespace>
+    <AssemblyName>SendRenewalNotice</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LAPP.BAL\LAPP.BAL.csproj">
+      <Project>{e0ece502-cc8c-45fe-8cde-392260b9205b}</Project>
+      <Name>LAPP.BAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LAPP.DAL\LAPP.DAL.csproj">
+      <Project>{69f423df-84c8-4207-bc1c-56fbd7217577}</Project>
+      <Name>LAPP.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LAPP.ENTITY\LAPP.ENTITY.csproj">
+      <Project>{71a49425-f6ae-41f2-a0fd-8989a02e69b0}</Project>
+      <Name>LAPP.ENTITY</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LAPP.GlobalFunctions\LAPP.GlobalFunctions.csproj">
+      <Project>{241a69de-5464-4251-9fe8-e69ab8fd5891}</Project>
+      <Name>LAPP.GlobalFunctions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LAPP.LOGING\LAPP.LOGING.csproj">
+      <Project>{791236c0-1637-44c8-b2a9-a1fad30b32d7}</Project>
+      <Name>LAPP.LOGING</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LAPP.WS\LAPP.WS.csproj">
+      <Project>{814fb30a-f8f4-4eb3-bbd2-92c2cc5feddb}</Project>
+      <Name>LAPP.WS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

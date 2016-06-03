@@ -93,7 +93,7 @@ namespace LAPP.WS.Controllers.Renewal
 
             }
 
-            
+
             LogingHelper.SaveExceptionInfo(objRenewalRequest);
 
 
@@ -277,6 +277,90 @@ namespace LAPP.WS.Controllers.Renewal
             }
             return objResponse;
         }
+
+
+
+
+        /// <summary>
+        /// Method to Search Renewal by key and objSearch with pager.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="objSearch">objSearch.</param>
+        /// <param name="CurrentPage">CurrentPage.</param>
+        /// <param name="PagerSize">PagerSize.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("RenewalSearchWithPager")]
+        public IndividualSearchResponse RenewalSearchWithPager(string Key, IndividualSearch objSearch, int CurrentPage, int PagerSize)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualSearchResponse objResponse = new IndividualSearchResponse();
+            IndividualBAL objBAL = new IndividualBAL();
+            Individual objEntity = new Individual();
+            List<Individual> lstIndividual = new List<Individual>();
+            List<IndividualSearch> lstIndividualSelected = new List<IndividualSearch>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualSearch = null;
+                    return objResponse;
+                }
+
+                lstIndividual = objBAL.Search_RenewalWithPager(objSearch, CurrentPage, PagerSize);
+                if (lstIndividual != null && lstIndividual.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearch
+                    {
+                        IndividualId = RenewalGetSelectedRes.IndividualId,
+                        LicenseNumber = RenewalGetSelectedRes.LicenseNumber,
+                        ApplicationNumber = RenewalGetSelectedRes.ApplicationNumber,
+                        FirstName = RenewalGetSelectedRes.FirstName,
+                        LastName = RenewalGetSelectedRes.LastName,
+                        SubmittedDate = RenewalGetSelectedRes.SubmittedDate,
+                        IsPaid = RenewalGetSelectedRes.IsPaid,
+                        IsActive = RenewalGetSelectedRes.IsActive,
+                        Name = RenewalGetSelectedRes.Name,
+                        SSN = RenewalGetSelectedRes.SSN,
+                        Phone = RenewalGetSelectedRes.Phone,
+                        StatusId = RenewalGetSelectedRes.StatusId,
+                        StatusName = RenewalGetSelectedRes.StatusName,
+                    }).ToList();
+
+                    objResponse.IndividualSearch = lstIndividualSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualSearch = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "RenewalSearchWithPager", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualSearch = null;
+
+            }
+            return objResponse;
+        }
+
+
+
 
     }
 }

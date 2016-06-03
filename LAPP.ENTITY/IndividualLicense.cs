@@ -19,8 +19,13 @@ namespace LAPP.ENTITY
         public DateTime OriginalLicenseDate { get; set; }
         public DateTime LicenseEffectiveDate { get; set; }
         public DateTime LicenseExpirationDate { get; set; }
+
         public int LicenseStatusTypeId { get; set; }
         public bool IsActive { get; set; }
+        public string LicenseStatusTypeCode { get; set; }
+        public string LicenseStatusTypeName { get; set; }
+
+        public string LicenseTypeName { get; set; }
 
         public string Description
         {
@@ -30,15 +35,14 @@ namespace LAPP.ENTITY
                 return "Renewal Period from " + LicenseEffectiveDate.ToShortDateString() + " to " + LicenseExpirationDate.ToShortDateString();
             }
         }
+
+        public string LicenseDetail { get; set; }
+
     }
 
     public class IndividualLicense : IndividualLicenseResponse
-
     {
-        public string LicenseStatusTypeCode { get; set; }
-        public string LicenseStatusTypeName { get; set; }
 
-        public string LicenseTypeName { get; set; }
 
         public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }

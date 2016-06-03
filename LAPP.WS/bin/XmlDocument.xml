@@ -696,6 +696,15 @@
             <param name="Key">API security key.</param>
             <param name="objSearch">Record ID.</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSearchWithPage(System.String,LAPP.ENTITY.IndividualSearchForIndividual,System.Int32,System.Int32)">
+            <summary>
+            Method to Search Individual by key and objSearch with Pager.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="objSearch">objSearch.</param>
+            <param name="CurrentPage">Record ID.</param>
+            <param name="PagerSize">Record ID.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualSave(System.String,LAPP.ENTITY.IndividualResponse)">
             <summary>
             Save or Update the data For IndividualAddress
@@ -762,6 +771,13 @@
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseBYIndividualId(System.String,System.Int32)">
             <summary>
             Get Method to get IndividualLicense by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseDetailBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualLicenseDetail by key and ID.
             </summary>
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
@@ -1252,6 +1268,15 @@
             </summary>
             <param name="Key">API security key.</param>
             <param name="objSearch">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearchWithPager(System.String,LAPP.ENTITY.IndividualSearch,System.Int32,System.Int32)">
+            <summary>
+            Method to Search Renewal by key and objSearch with pager.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="objSearch">objSearch.</param>
+            <param name="CurrentPage">CurrentPage.</param>
+            <param name="PagerSize">PagerSize.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.User.MenuController.MenuGetAll(System.String)">
             <summary>
