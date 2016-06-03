@@ -192,15 +192,15 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <param name="objSearch">Record ID.</param>
         [AcceptVerbs("POST")]
         [ActionName("IndividualSearch")]
-        public IndividualSearchForIndividualResponse IndividualSearch(string Key, IndividualSearchForIndividual objSearch)
+        public IndividualSearchResponse IndividualSearch(string Key, IndividualSearch objSearch)
         {
             LogingHelper.SaveAuditInfo(Key);
 
-            IndividualSearchForIndividualResponse objResponse = new IndividualSearchForIndividualResponse();
+            IndividualSearchResponse objResponse = new IndividualSearchResponse();
             IndividualBAL objBAL = new IndividualBAL();
             Individual objEntity = new Individual();
             List<Individual> lstIndividual = new List<Individual>();
-            List<IndividualSearchForIndividual> lstIndividualSelected = new List<IndividualSearchForIndividual>();
+            List<IndividualSearch> lstIndividualSelected = new List<IndividualSearch>();
 
             try
             {
@@ -209,7 +209,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.IndividualSearch = null;
+                    objResponse.IndividualList = null;
                     return objResponse;
                 }
 
@@ -220,7 +220,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearchForIndividual
+                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearch
                     {
                         IndividualId = RenewalGetSelectedRes.IndividualId,
                         FirstName = RenewalGetSelectedRes.FirstName,
@@ -232,14 +232,14 @@ namespace LAPP.WS.Controllers.Backoffice
 
                     }).ToList();
 
-                    objResponse.IndividualSearch = lstIndividualSelected;
+                    objResponse.IndividualList = lstIndividualSelected;
                 }
                 else
                 {
                     objResponse.Status = false;
                     objResponse.Message = "No record found.";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                    objResponse.IndividualSearch = null;
+                    objResponse.IndividualList = null;
                 }
 
             }
@@ -250,7 +250,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                objResponse.IndividualSearch = null;
+                objResponse.IndividualList = null;
 
             }
             return objResponse;
@@ -262,19 +262,19 @@ namespace LAPP.WS.Controllers.Backoffice
         /// </summary>
         /// <param name="Key">API security key.</param>
         /// <param name="objSearch">objSearch.</param>
-        /// <param name="CurrentPage">Record ID.</param>
-        /// <param name="PagerSize">Record ID.</param>
+        /// <param name="PageNumber">Record ID.</param>
+        /// <param name="NoOfRecords">Record ID.</param>
         [AcceptVerbs("POST")]
         [ActionName("IndividualSearchWithPage")]
-        public IndividualSearchForIndividualResponse IndividualSearchWithPage(string Key, IndividualSearchForIndividual objSearch, int CurrentPage, int PagerSize)
+        public IndividualSearchResponse IndividualSearchWithPage(string Key, IndividualSearch objSearch, int PageNumber, int NoOfRecords)
         {
             LogingHelper.SaveAuditInfo(Key);
 
-            IndividualSearchForIndividualResponse objResponse = new IndividualSearchForIndividualResponse();
+            IndividualSearchResponse objResponse = new IndividualSearchResponse();
             IndividualBAL objBAL = new IndividualBAL();
             Individual objEntity = new Individual();
             List<Individual> lstIndividual = new List<Individual>();
-            List<IndividualSearchForIndividual> lstIndividualSelected = new List<IndividualSearchForIndividual>();
+            List<IndividualSearch> lstIndividualSelected = new List<IndividualSearch>();
 
             try
             {
@@ -283,18 +283,18 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.IndividualSearch = null;
+                    objResponse.IndividualList = null;
                     return objResponse;
                 }
 
-                lstIndividual = objBAL.Search_Individual_WithPager(objSearch, CurrentPage, PagerSize);
+                lstIndividual = objBAL.Search_Individual_WithPager(objSearch, PageNumber, NoOfRecords);
                 if (lstIndividual != null && lstIndividual.Count > 0)
                 {
                     objResponse.Status = true;
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearchForIndividual
+                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearch
                     {
                         IndividualId = RenewalGetSelectedRes.IndividualId,
                         FirstName = RenewalGetSelectedRes.FirstName,
@@ -306,14 +306,14 @@ namespace LAPP.WS.Controllers.Backoffice
 
                     }).ToList();
 
-                    objResponse.IndividualSearch = lstIndividualSelected;
+                    objResponse.IndividualList = lstIndividualSelected;
                 }
                 else
                 {
                     objResponse.Status = false;
                     objResponse.Message = "No record found.";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                    objResponse.IndividualSearch = null;
+                    objResponse.IndividualList = null;
                 }
 
             }
@@ -324,7 +324,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                objResponse.IndividualSearch = null;
+                objResponse.IndividualList = null;
 
             }
             return objResponse;

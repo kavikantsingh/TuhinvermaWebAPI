@@ -209,15 +209,15 @@ namespace LAPP.WS.Controllers.Renewal
         /// <param name="objSearch">Record ID.</param>
         [AcceptVerbs("POST")]
         [ActionName("RenewalSearch")]
-        public IndividualSearchResponse RenewalSearch(string Key, IndividualSearch objSearch)
+        public RenewalSearchResponse RenewalSearch(string Key, RenewalApplication objSearch)
         {
             LogingHelper.SaveAuditInfo(Key);
 
-            IndividualSearchResponse objResponse = new IndividualSearchResponse();
+            RenewalSearchResponse objResponse = new RenewalSearchResponse();
             IndividualBAL objBAL = new IndividualBAL();
             Individual objEntity = new Individual();
             List<Individual> lstIndividual = new List<Individual>();
-            List<IndividualSearch> lstIndividualSelected = new List<IndividualSearch>();
+            List<RenewalApplication> lstIndividualSelected = new List<RenewalApplication>();
 
             try
             {
@@ -226,7 +226,7 @@ namespace LAPP.WS.Controllers.Renewal
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.IndividualSearch = null;
+                    objResponse.RenewalApplicationList = null;
                     return objResponse;
                 }
 
@@ -237,7 +237,7 @@ namespace LAPP.WS.Controllers.Renewal
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearch
+                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new RenewalApplication
                     {
                         IndividualId = RenewalGetSelectedRes.IndividualId,
                         LicenseNumber = RenewalGetSelectedRes.LicenseNumber,
@@ -254,14 +254,14 @@ namespace LAPP.WS.Controllers.Renewal
                         StatusName = RenewalGetSelectedRes.StatusName,
                     }).ToList();
 
-                    objResponse.IndividualSearch = lstIndividualSelected;
+                    objResponse.RenewalApplicationList = lstIndividualSelected;
                 }
                 else
                 {
                     objResponse.Status = false;
                     objResponse.Message = "No record found.";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                    objResponse.IndividualSearch = null;
+                    objResponse.RenewalApplicationList = null;
                 }
 
             }
@@ -272,7 +272,7 @@ namespace LAPP.WS.Controllers.Renewal
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                objResponse.IndividualSearch = null;
+                objResponse.RenewalApplicationList = null;
 
             }
             return objResponse;
@@ -286,19 +286,19 @@ namespace LAPP.WS.Controllers.Renewal
         /// </summary>
         /// <param name="Key">API security key.</param>
         /// <param name="objSearch">objSearch.</param>
-        /// <param name="CurrentPage">CurrentPage.</param>
-        /// <param name="PagerSize">PagerSize.</param>
+        /// <param name="PageNumber">CurrentPage.</param>
+        /// <param name="NoOfRecords">PagerSize.</param>
         [AcceptVerbs("POST")]
         [ActionName("RenewalSearchWithPager")]
-        public IndividualSearchResponse RenewalSearchWithPager(string Key, IndividualSearch objSearch, int CurrentPage, int PagerSize)
+        public RenewalSearchResponse RenewalSearchWithPager(string Key, RenewalApplication objSearch, int PageNumber, int NoOfRecords)
         {
             LogingHelper.SaveAuditInfo(Key);
 
-            IndividualSearchResponse objResponse = new IndividualSearchResponse();
+            RenewalSearchResponse objResponse = new RenewalSearchResponse();
             IndividualBAL objBAL = new IndividualBAL();
             Individual objEntity = new Individual();
             List<Individual> lstIndividual = new List<Individual>();
-            List<IndividualSearch> lstIndividualSelected = new List<IndividualSearch>();
+            List<RenewalApplication> lstIndividualSelected = new List<RenewalApplication>();
 
             try
             {
@@ -307,18 +307,18 @@ namespace LAPP.WS.Controllers.Renewal
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.IndividualSearch = null;
+                    objResponse.RenewalApplicationList = null;
                     return objResponse;
                 }
 
-                lstIndividual = objBAL.Search_RenewalWithPager(objSearch, CurrentPage, PagerSize);
+                lstIndividual = objBAL.Search_RenewalWithPager(objSearch, PageNumber, NoOfRecords);
                 if (lstIndividual != null && lstIndividual.Count > 0)
                 {
                     objResponse.Status = true;
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new IndividualSearch
+                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new RenewalApplication
                     {
                         IndividualId = RenewalGetSelectedRes.IndividualId,
                         LicenseNumber = RenewalGetSelectedRes.LicenseNumber,
@@ -335,14 +335,14 @@ namespace LAPP.WS.Controllers.Renewal
                         StatusName = RenewalGetSelectedRes.StatusName,
                     }).ToList();
 
-                    objResponse.IndividualSearch = lstIndividualSelected;
+                    objResponse.RenewalApplicationList = lstIndividualSelected;
                 }
                 else
                 {
                     objResponse.Status = false;
                     objResponse.Message = "No record found.";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                    objResponse.IndividualSearch = null;
+                    objResponse.RenewalApplicationList = null;
                 }
 
             }
@@ -353,7 +353,7 @@ namespace LAPP.WS.Controllers.Renewal
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                objResponse.IndividualSearch = null;
+                objResponse.RenewalApplicationList = null;
 
             }
             return objResponse;
