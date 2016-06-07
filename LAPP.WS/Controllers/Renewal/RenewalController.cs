@@ -173,7 +173,12 @@ namespace LAPP.WS.Controllers.Renewal
                         SubmittedDate = RenewalGetSelectedRes.SubmittedDate,
                         IsPaid = RenewalGetSelectedRes.IsPaid,
                         IsActive = RenewalGetSelectedRes.IsActive,
-                        ApplicationStatus = RenewalGetSelectedRes.ApplicationStatus
+                        Name = RenewalGetSelectedRes.Name,
+                        SSN = RenewalGetSelectedRes.SSN,
+                        Phone = RenewalGetSelectedRes.Phone,
+                        StatusId = RenewalGetSelectedRes.StatusId,
+                        StatusName = RenewalGetSelectedRes.StatusName,
+
 
                     }).ToList();
 
@@ -290,16 +295,15 @@ namespace LAPP.WS.Controllers.Renewal
         /// <param name="NoOfRecords">PagerSize.</param>
         [AcceptVerbs("POST")]
         [ActionName("RenewalSearchWithPager")]
-        public RenewalSearchResponse RenewalSearchWithPager(string Key, RenewalApplication objSearch, int PageNumber, int NoOfRecords)
+        public RenewalSearchResponse RenewalSearchWithPager(string Key, RenewalApplication objSearch, int PageNumber, int NoOfRecords, bool IsSearch)
         {
             LogingHelper.SaveAuditInfo(Key);
 
             RenewalSearchResponse objResponse = new RenewalSearchResponse();
-            IndividualBAL objBAL = new IndividualBAL();
-            Individual objEntity = new Individual();
-            List<Individual> lstIndividual = new List<Individual>();
-            List<RenewalApplication> lstIndividualSelected = new List<RenewalApplication>();
-
+            List<RenewalGet> lstRenewalGet = new List<RenewalGet>();
+            RenewalGet ovjRenewalGet = new RenewalGet();
+            IndividualRenewalBAL objBAL = new IndividualRenewalBAL();
+            List<RenewalApplication> lstRenewalIndividual = new List<RenewalApplication>();
             try
             {
                 if (!TokenHelper.ValidateToken(Key))
@@ -311,14 +315,21 @@ namespace LAPP.WS.Controllers.Renewal
                     return objResponse;
                 }
 
-                lstIndividual = objBAL.Search_RenewalWithPager(objSearch, PageNumber, NoOfRecords);
-                if (lstIndividual != null && lstIndividual.Count > 0)
+                if (IsSearch)
+                {
+                    lstRenewalGet = objBAL.Search_RenewalWithPager(objSearch, PageNumber, NoOfRecords);
+                }
+                else
+                {
+                    lstRenewalGet = objBAL.GetALL_RenewalWithPager(PageNumber, NoOfRecords);
+                }
+                if (lstRenewalGet != null && lstRenewalGet.Count > 0)
                 {
                     objResponse.Status = true;
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    lstIndividualSelected = lstIndividual.Select(RenewalGetSelectedRes => new RenewalApplication
+                    lstRenewalIndividual = lstRenewalGet.Select(RenewalGetSelectedRes => new RenewalApplication
                     {
                         IndividualId = RenewalGetSelectedRes.IndividualId,
                         LicenseNumber = RenewalGetSelectedRes.LicenseNumber,
@@ -335,7 +346,8 @@ namespace LAPP.WS.Controllers.Renewal
                         StatusName = RenewalGetSelectedRes.StatusName,
                     }).ToList();
 
-                    objResponse.RenewalApplicationList = lstIndividualSelected;
+                    objResponse.Total_Recard = lstRenewalGet[0].Total_Recard;
+                    objResponse.RenewalApplicationList = lstRenewalIndividual;
                 }
                 else
                 {

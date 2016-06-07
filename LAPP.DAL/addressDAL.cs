@@ -14,7 +14,7 @@ namespace LAPP.DAL
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("AddressId", objaddress.AddressId));
-            lstParameter.Add(new MySqlParameter("Addressee",objaddress.Addressee.NullString()));
+            lstParameter.Add(new MySqlParameter("Addressee", objaddress.Addressee.NullString()));
             lstParameter.Add(new MySqlParameter("StreetLine1", objaddress.StreetLine1.NullString()));
             lstParameter.Add(new MySqlParameter("StreetLine2", objaddress.StreetLine2.NullString()));
             lstParameter.Add(new MySqlParameter("City", objaddress.City.NullString()));
@@ -33,6 +33,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ModifiedOn", objaddress.ModifiedOn));
             lstParameter.Add(new MySqlParameter("AddressGuid", objaddress.AddressGuid));
             lstParameter.Add(new MySqlParameter("Authenticator", objaddress.Authenticator));
+            lstParameter.Add(new MySqlParameter("BadAddress", objaddress.BadAddress));
 
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
 
@@ -166,6 +167,12 @@ namespace LAPP.DAL
             {
                 objEntity.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
             }
+
+            if (dr.Table.Columns.Contains("BadAddress") && dr["BadAddress"] != DBNull.Value)
+            {
+                objEntity.BadAddress = Convert.ToBoolean(dr["BadAddress"]);
+            }
+
             if (dr.Table.Columns.Contains("CreatedBy") && dr["CreatedBy"] != DBNull.Value)
             {
                 objEntity.CreatedBy = Convert.ToInt32(dr["CreatedBy"]);

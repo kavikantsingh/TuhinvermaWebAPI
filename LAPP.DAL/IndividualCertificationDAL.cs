@@ -34,6 +34,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("NBCOTDateTaken", objIndividualCertification.NBCOTDateTaken));
             lstParameter.Add(new MySqlParameter("NBCOTDatePassed", objIndividualCertification.NBCOTDatePassed));
             lstParameter.Add(new MySqlParameter("NBCOTDateScheduled", objIndividualCertification.NBCOTDateScheduled));
+            lstParameter.Add(new MySqlParameter("NoChanges", objIndividualCertification.NoChanges));
 
 
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualCertification.IsActive));
@@ -155,7 +156,10 @@ namespace LAPP.DAL
             {
                 objEntity.NBCHISCertificate = Convert.ToString(dr["NBCHISCertificate"]);
             }
-
+            if (dr.Table.Columns.Contains("NoChanges") && dr["NoChanges"] != DBNull.Value)
+            {
+                objEntity.NoChanges = Convert.ToBoolean(dr["NoChanges"]);
+            }
 
             if (dr.Table.Columns.Contains("DatePassed") && dr["DatePassed"] != DBNull.Value)
             {

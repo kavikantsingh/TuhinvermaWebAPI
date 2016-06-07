@@ -145,6 +145,7 @@ namespace LAPP.WS.Controllers.Backoffice
                             StateCode = obj.StateCode,
                             StreetLine1 = obj.StreetLine1,
                             StreetLine2 = obj.StreetLine2,
+                            BadAddress = obj.BadAddress,
                             Zip = obj.Zip
 
 
@@ -226,6 +227,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         FirstName = RenewalGetSelectedRes.FirstName,
                         LastName = RenewalGetSelectedRes.LastName,
                         Name = RenewalGetSelectedRes.Name,
+                        LicenseNumber = RenewalGetSelectedRes.LicenseNumber,
                         Email = RenewalGetSelectedRes.Email,
                         SSN = RenewalGetSelectedRes.SSN,
                         Phone = RenewalGetSelectedRes.Phone,
@@ -270,6 +272,7 @@ namespace LAPP.WS.Controllers.Backoffice
         {
             LogingHelper.SaveAuditInfo(Key);
 
+
             IndividualSearchResponse objResponse = new IndividualSearchResponse();
             IndividualBAL objBAL = new IndividualBAL();
             Individual objEntity = new Individual();
@@ -299,6 +302,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         IndividualId = RenewalGetSelectedRes.IndividualId,
                         FirstName = RenewalGetSelectedRes.FirstName,
                         LastName = RenewalGetSelectedRes.LastName,
+                        LicenseNumber = RenewalGetSelectedRes.LicenseNumber,
                         Name = RenewalGetSelectedRes.Name,
                         Email = RenewalGetSelectedRes.Email,
                         SSN = RenewalGetSelectedRes.SSN,
@@ -307,6 +311,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     }).ToList();
 
                     objResponse.IndividualList = lstIndividualSelected;
+                    objResponse.Total_Recard = lstIndividual[0].Total_Recard;
                 }
                 else
                 {
@@ -431,7 +436,9 @@ namespace LAPP.WS.Controllers.Backoffice
                         IndividualId = obj.IndividualId,
                         FirstName = obj.FirstName,
                         LastName = obj.LastName,
+                        MiddleName = obj.MiddleName,
                         SuffixId = obj.SuffixId,
+                        Email = obj.Email,
                         SSN = obj.SSN,
                         IsItin = obj.IsItin,
                         DateOfBirth = obj.DateOfBirth,
@@ -446,6 +453,21 @@ namespace LAPP.WS.Controllers.Backoffice
                         ExternalId = obj.ExternalId,
                         ExternalId2 = obj.ExternalId2,
                         IsArchived = obj.IsArchived,
+
+                        StatusColorCode = obj.StatusColorCode,
+                        LicenseStatusTypeName = obj.LicenseStatusTypeName,
+                        LicenseNumber = obj.LicenseNumber,
+                        LicenseTypeId = obj.LicenseTypeId,
+                        LicenseTypeName = obj.LicenseTypeName,
+                        LicenseStatusTypeId = obj.LicenseStatusTypeId,
+                        IsNameChanged = obj.IsNameChanged,
+                        PlaceofBirthCity = obj.PlaceofBirthCity,
+                        PlaceofBirthState = obj.PlaceofBirthState,
+                        PlaceofBirthCountry = obj.PlaceofBirthCountry,
+                        objIndividualAddress = obj.objIndividualAddress,
+                        Picture = obj.Picture,
+                        objIndividualContact = obj.objIndividualContact,
+
                         IsActive = obj.IsActive
 
                     }).ToList();
@@ -790,6 +812,8 @@ namespace LAPP.WS.Controllers.Backoffice
                             IndividualNameStatusId = obj.IndividualNameStatusId,
                             IndividualNameTypeId = obj.IndividualNameTypeId,
                             IsActive = obj.IsActive,
+                            BeginDate = obj.BeginDate,
+                            EndDate = obj.EndDate,
 
                         }).ToList();
 
@@ -1184,7 +1208,8 @@ namespace LAPP.WS.Controllers.Backoffice
                         OriginalLicenseDate = obj.OriginalLicenseDate,
                         LicenseStatusTypeCode = obj.LicenseStatusTypeCode,
                         LicenseTypeName = obj.LicenseTypeName,
-                        LicenseStatusTypeName = obj.LicenseStatusTypeName
+                        LicenseStatusTypeName = obj.LicenseStatusTypeName,
+                        LicenseStatusColorCode = obj.LicenseStatusColorCode
 
                     }).ToList();
 
@@ -1267,6 +1292,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         LicenseStatusTypeCode = obj.LicenseStatusTypeCode,
                         LicenseTypeName = obj.LicenseTypeName,
                         LicenseStatusTypeName = obj.LicenseStatusTypeName,
+                        LicenseStatusColorCode = obj.LicenseStatusColorCode,
                         LicenseDetail = obj.LicenseDetail
 
                     }).ToList();
@@ -1598,7 +1624,7 @@ namespace LAPP.WS.Controllers.Backoffice
         /// Save or Update the data For IndividualDocument
         /// </summary>
         /// <param name="Key">The Key of the data.</param>
-        /// <param name="objIndividualDocument">Object of IndividualDocument</param>
+        /// <param name="objIndividualDocumentResponse">Object of IndividualDocument</param>
         [AcceptVerbs("POST")]
         [ActionName("IndividualDocumentSave")]
         public IndividualDocumentUploadResponse IndividualDocumentSave(string Key, IndividualDocumentUpload objIndividualDocumentResponse)
@@ -2748,6 +2774,7 @@ namespace LAPP.WS.Controllers.Backoffice
                             LicenseRequirementId = obj.LicenseRequirementId,
                             WithdrawalReasonId = obj.WithdrawalReasonId,
                             LicenseTypeId = obj.LicenseTypeId,
+                            ApplicationStatus = obj.ApplicationStatus,
                             IsActive = obj.IsActive,
 
                         }).ToList();
@@ -3092,7 +3119,7 @@ namespace LAPP.WS.Controllers.Backoffice
 
         #endregion
 
-        #region Correspondence
+        #region Communication
 
 
 
@@ -3102,8 +3129,8 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <param name="Key">API security key.</param>
         /// <param name="IndividualId">Record ID.</param>
         [AcceptVerbs("GET")]
-        [ActionName("IndividualCorrespondenceGetByIndividualId")]
-        public IndividualCommunicationLogRequestResponce IndividualCorrespondenceGetByIndividualId(string Key, int IndividualId)
+        [ActionName("IndividualCommunicationGetByIndividualId")]
+        public IndividualCommunicationLogRequestResponce IndividualCommunicationGetByIndividualId(string Key, int IndividualId)
         {
             LogingHelper.SaveAuditInfo(Key);
 
@@ -3174,7 +3201,7 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             catch (Exception ex)
             {
-                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCorrespondenceGetByIndividualId", ENTITY.Enumeration.eSeverity.Error);
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCommunicationGetByIndividualId", ENTITY.Enumeration.eSeverity.Error);
 
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
@@ -3188,13 +3215,13 @@ namespace LAPP.WS.Controllers.Backoffice
 
 
         /// <summary>
-        /// Save or Update the data For IndividualCorrespondence
+        /// Save or Update the data For IndividualCommunication
         /// </summary>
         /// <param name="Key">The Key of the data.</param>
         /// <param name="objCommunicationLog">Object of objCommunicationLog</param>
         [AcceptVerbs("POST")]
-        [ActionName("IndividualCorrespondenceSave")]
-        public IndividualCommunicationLogRequestResponce IndividualCorrespondenceSave(string Key, IndividualCommunicationLogRequest objCommunicationLog)
+        [ActionName("IndividualCommunicationSave")]
+        public IndividualCommunicationLogRequestResponce IndividualCommunicationSave(string Key, IndividualCommunicationLogRequest objCommunicationLog)
         {
             int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
 
@@ -3231,7 +3258,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 }
                 else
                 {
-                    objResponse.Message = "Individual Correspondence object cannot be null.";
+                    objResponse.Message = "Individual Communication object cannot be null.";
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = ValidationResponse;
@@ -3240,7 +3267,7 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             catch (Exception ex)
             {
-                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCorrespondenceSave", ENTITY.Enumeration.eSeverity.Error);
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCommunicationSave", ENTITY.Enumeration.eSeverity.Error);
 
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
@@ -3252,5 +3279,151 @@ namespace LAPP.WS.Controllers.Backoffice
 
 
         #endregion
+
+        #region IndividualLegal
+
+
+        /// <summary>
+        /// Get Method to get IndividualLegalby key and IndividualId.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualLegalGetByIndividualId")]
+        public IndividualLegalRequestResponce IndividualLegalResponseGetByIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualLegalRequestResponce objResponse = new IndividualLegalRequestResponce();
+
+            IndividualLegalBAL objIndividualLegalBAL = new IndividualLegalBAL();
+            IndividualLegalResponse objIndividualLegalResponse = new IndividualLegalResponse();
+            List<IndividualLegal> lstIndividualLegal = new List<IndividualLegal>();
+            List<IndividualLegalResponse> lstIndividualLegalResponse = new List<IndividualLegalResponse>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualLegalResponse = null;
+                    return objResponse;
+                }
+
+                lstIndividualLegal = objIndividualLegalBAL.Get_IndividualLegal_By_IndividualId(IndividualId);
+                if (lstIndividualLegal != null && lstIndividualLegal.Count > 0)
+                {
+                    lstIndividualLegalResponse = lstIndividualLegal.Select(obj => new IndividualLegalResponse
+                    {
+                        IndividualLegalId = obj.IndividualLegalId,
+                        IndividualId = obj.IndividualId,
+                        ContentItemLkId = obj.ContentItemLkId,
+                        ContentItemNumber = obj.ContentItemNumber,
+                        ContentItemResponse = obj.ContentItemResponse,
+                        Desc = obj.Desc,
+                        ContentDescription = obj.ContentDescription,
+                        IsActive = obj.IsActive,
+
+                    }).ToList();
+
+                    objResponse.IndividualLegalResponse = lstIndividualLegalResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualLegalResponse = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualLegalGetByIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualLegalResponse = null;
+
+            }
+            return objResponse;
+        }
+
+
+
+        /// <summary>
+        /// Save or Update the data For IndividualLegal
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        /// <param name="objIndividualLegalResponse">Object of objIndividualLegalResponse</param>
+        [AcceptVerbs("POST")]
+        [ActionName("IndividualLegalSave")]
+        public IndividualLegalRequestResponce IndividualLegalSave(string Key, IndividualLegalResponse objIndividualLegalResponse)
+        {
+            int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo(Key);
+            IndividualLegalRequestResponce objResponse = new IndividualLegalRequestResponce();
+
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.Message = null;
+                objResponse.IndividualLegalResponse = null;
+                return objResponse;
+            }
+            try
+            {
+                string ValidationResponse = "";//IndividualValidations.ValidateIndividualCommentLog(lstDocumentToUpload, objIndividualCommentLogResponse.IndividualId);
+
+                if (!string.IsNullOrEmpty(ValidationResponse))
+                {
+                    objResponse.Message = "Validation Error";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = ValidationResponse;
+                    objResponse.IndividualLegalResponse = null;
+                    return objResponse;
+                }
+
+                if (objIndividualLegalResponse != null)
+                {
+                    return IndividualLegalCS.SaveIndividualLegal(TokenHelper.GetTokenByKey(Key), objIndividualLegalResponse);
+                }
+                else
+                {
+                    objResponse.Message = "Individual Legal object cannot be null.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = ValidationResponse;
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualLegalSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.ResponseReason = null;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+            return objResponse;
+        }
+
+
+        #endregion
+
     }
 }

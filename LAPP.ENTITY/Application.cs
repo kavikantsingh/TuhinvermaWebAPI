@@ -31,6 +31,7 @@ namespace LAPP.ENTITY
 
         public bool IsActive { get; set; }
         public string ApplicationType { get; set; }
+        public string ApplicationStatus { get; set; }
     }
 
     public class Application : ApplicationResponse

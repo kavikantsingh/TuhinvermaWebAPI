@@ -30,7 +30,7 @@ namespace LAPP.ENTITY
 
         public List<IndividualLegalResponse> IndividualLegal { get; set; }
 
-      //  public List<IndividualCEHResponse> IndividualCEH { get; set; }
+        //  public List<IndividualCEHResponse> IndividualCEH { get; set; }
         public List<IndividualCECourseResponse> IndividualCECourse { get; set; }
         public IndividualAffidavitResponse IndividualAffidavit { get; set; }
 
@@ -69,6 +69,14 @@ namespace LAPP.ENTITY
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string ApplicationStatus { get; set; }
+        public string Name { get; set; }
+        public string SSN { get; set; }
+        public int StatusId { get; set; }
+        public string StatusName { get; set; }
+        public string Phone { get; set; }
+
+        public int Total_Recard { get; set; }
+
     }
 
 
@@ -81,23 +89,49 @@ namespace LAPP.ENTITY
         public string LastName { get; set; }
         public DateTime? SubmittedDate { get; set; }
         public string ApplicationStatus { get; set; }
-
         public bool IsActive { get; set; }
-
         public bool IsPaid { get; set; }
+        public string Name { get; set; }
+        public string SSN { get; set; }
+        public int StatusId { get; set; }
+        public string StatusName { get; set; }
+        public string Phone { get; set; }
+        public int Total_Recard { get; set; }
+
+    }
+    public class RenewalApplication : BaseEntity
+    {
+        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string LicenseNumber { get; set; }
+        public string SSN { get; set; }
+        public int StatusId { get; set; }
+        public string StatusName { get; set; }
+        public int IndividualId { get; set; }
+        public string ApplicationNumber { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? SubmittedDate { get; set; }
+        public bool IsPaid { get; set; }
+        // public int Total_Recard { get; set; }
 
     }
 
     public class RenewalGetResponse : BaseEntityServiceResponse
     {
-
         public List<RenewalGetSelected> RenewalGetList { get; set; }
     }
 
-
     public class IndividualRenewalResponse : BaseEntityServiceResponse
     {
-
         public IndividualRenewal IndividualRenewal { get; set; }
+    }
+
+    public class RenewalSearchResponse : BaseEntityServiceResponse
+    {
+        public int Total_Recard { get; set; }
+        public List<RenewalApplication> RenewalApplicationList { get; set; }
     }
 }

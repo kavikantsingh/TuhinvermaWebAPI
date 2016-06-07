@@ -31,13 +31,30 @@ namespace LAPP.ENTITY
         public bool IsActive { get; set; }
         public string Email { get; set; }
 
-        //public bool IsDeleted { get; set; }
-        //public int CreatedBy { get; set; }
-        //public DateTime CreatedOn { get; set; }
-        //public int ModifiedBy { get; set; }
-        //public DateTime ModifiedOn { get; set; }
-        //public string IndividualGuid { get; set; }
-        //public string Authenticator { get; set; }
+
+        // 
+        public string LicenseStatusTypeName { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string StatusColorCode { get; set; }
+        public string LicenseNumber { get; set; }
+        public int LicenseTypeId { get; set; }
+        public string LicenseTypeName { get; set; }
+        public int LicenseStatusTypeId { get; set; }
+        public string LicenseStatusTypeCode { get; set; }
+        public string Name { get; set; }
+
+
+        // IndividualOther
+        public bool IsNameChanged { get; set; }
+        public string PlaceofBirthCity { get; set; }
+        public string PlaceofBirthState { get; set; }
+        public int PlaceofBirthCountry { get; set; }
+        public string Picture { get; set; }
+
+        public IndividualAddress objIndividualAddress { get; set; }
+
+        public IndividualContact objIndividualContact { get; set; }
     }
 
     public class Individual : IndividualResponse
@@ -71,6 +88,8 @@ namespace LAPP.ENTITY
         public string IndividualGuid { get; set; }
         public string Authenticator { get; set; }
 
+        public int Total_Recard { get; set; }
+
 
         // For Search
         public int StatusId { get; set; }
@@ -79,45 +98,17 @@ namespace LAPP.ENTITY
         public string StatusName { get; set; }
         public DateTime SubmittedDate { get; set; }
         public string Phone { get; set; }
-        public string Name { get; set; }
-        public bool IsPaid { get; set; }
-        public string LicenseNumber { get; set; }
-    }
-
-
-    public class RenewalApplication : BaseEntity
-    {
-        public string Name { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-        public string Email { get; set; }
-
-        public string Phone { get; set; }
-
-        public string LicenseNumber { get; set; }
-
-        public string SSN { get; set; }
-
-        public int StatusId { get; set; }
-
-        public string StatusName { get; set; }
-
-        public int IndividualId { get; set; }
-        public string ApplicationNumber { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime SubmittedDate { get; set; }
         public bool IsPaid { get; set; }
     }
 
-    public class IndividualSearch: BaseEntity
+    public class IndividualSearch : BaseEntity
     {
         public string Name { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string DateOfBirth { get; set; }
         public string LicenseNumber { get; set; }
         public string SSN { get; set; }
         public string MiddleName { get; set; }
@@ -130,12 +121,8 @@ namespace LAPP.ENTITY
 
     public class IndividualSearchResponse : BaseEntityServiceResponse
     {
+        public int Total_Recard { get; set; }
         public List<IndividualSearch> IndividualList { get; set; }
-    }
-
-    public class RenewalSearchResponse : BaseEntityServiceResponse
-    {
-        public List<RenewalApplication> RenewalApplicationList { get; set; }
     }
 
     public class IndividualResponseRequest : BaseEntityServiceResponse

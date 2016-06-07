@@ -16,5 +16,13 @@ namespace LAPP.BAL
         {
             return objDal.Get_All_Renewal();
         }
+        public List<RenewalGet> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
+        {
+            return objDal.Search_RenewalWithPager(obj, CurrentPage, PagerSize);
+        }
+        public List<RenewalGet> GetALL_RenewalWithPager(int CurrentPage, int PagerSize)
+        {
+            return objDal.GetALL_RenewalWithPager(CurrentPage, PagerSize);
+        }
     }
 }

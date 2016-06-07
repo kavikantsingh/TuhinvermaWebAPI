@@ -71,6 +71,26 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public IndividualAddress Get_Current_IndividualAddress_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALADDRESS_CurrentMailling_GET_BY_IndividualId", lstParameter.ToArray());
+            IndividualAddress objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
         public IndividualAddress Get_IndividualAddress_By_IndividualAddressId(int ID)
         {
             DataSet ds = new DataSet("DS");
@@ -122,6 +142,11 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
             {
                 objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);
+            }
+
+            if (dr.Table.Columns.Contains("BadAddress") && dr["BadAddress"] != DBNull.Value)
+            {
+                objEntity.BadAddress = Convert.ToBoolean(dr["BadAddress"]);
             }
             if (dr.Table.Columns.Contains("IsDeleted") && dr["IsDeleted"] != DBNull.Value)
             {

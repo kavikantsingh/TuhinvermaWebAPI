@@ -30,5 +30,9 @@ namespace LAPP.BAL
             return objDal.Get_IndividualContact_By_IndividualContactId(ID);
         }
 
+        public IndividualContact Get_Primary_IndividualContact_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_Primary_IndividualContact_By_IndividualId(IndividualId);
+        }
     }
 }

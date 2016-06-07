@@ -49,6 +49,47 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                     objIndividualBAL.Save_Individual(objIndividual);
 
+                    // Save Individual Other
+
+                    IndividualOther objIndividualOther = new IndividualOther();
+                    IndividualOtherBAL objIndividualOtherBAL = new IndividualOtherBAL();
+
+                    objIndividualOther = objIndividualOtherBAL.Get_IndividualOther_By_IndividualId(objIndividualPostResponse.IndividualId);
+                    if (objIndividualOther != null)
+                    {
+                        objIndividualOther.IndividualId = objIndividualPostResponse.IndividualId;
+                        objIndividualOther.IsNameChanged = objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.ModifiedBy = objToken.UserId;
+                        objIndividualOther.ModifiedOn = DateTime.Now;
+                        objIndividualOther.Picture = objIndividualPostResponse.Picture;
+                        objIndividualOther.PlaceofBirthCity = objIndividualPostResponse.PlaceofBirthCity;
+                        objIndividualOther.PlaceofBirthCountry = objIndividualPostResponse.PlaceofBirthCountry;
+                        objIndividualOther.PlaceofBirthState = objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOtherBAL.Save_IndividualOther(objIndividualOther);
+                    }
+                    else
+                    {
+                        objIndividualOther.CreatedBy = objToken.UserId;
+                        objIndividualOther.CreatedOn = DateTime.Now;
+                        objIndividualOther.IndividualId = objIndividualPostResponse.IndividualId;
+                        objIndividualOther.IndividualOtherGuid = Guid.NewGuid().ToString();
+                        objIndividualOther.IsActive = true;
+                        objIndividualOther.IsDeleted = false;
+                        objIndividualOther.IsNameChanged = objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.ModifiedBy = null;
+                        objIndividualOther.ModifiedOn = null;
+                        objIndividualOther.Picture = objIndividualPostResponse.Picture;
+                        objIndividualOther.PlaceofBirthCity = objIndividualPostResponse.PlaceofBirthCity;
+                        objIndividualOther.PlaceofBirthCountry = objIndividualPostResponse.PlaceofBirthCountry;
+                        objIndividualOther.PlaceofBirthState = objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOtherBAL.Save_IndividualOther(objIndividualOther);
+
+                    }
+
+
+                    /// End OtherSave
+                    /// 
+
 
                     //SAVE LOG
 
@@ -91,6 +132,51 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualPostResponse.IndividualId = objIndividual.IndividualId;
 
                     individualId = objIndividual.IndividualId;
+
+
+                    // Save Individual Other
+
+                    IndividualOther objIndividualOther = new IndividualOther();
+                    IndividualOtherBAL objIndividualOtherBAL = new IndividualOtherBAL();
+
+                    objIndividualOther = objIndividualOtherBAL.Get_IndividualOther_By_IndividualId(objIndividualPostResponse.IndividualId);
+                    if (objIndividualOther != null)
+                    {
+                        objIndividualOther.IndividualId = objIndividualPostResponse.IndividualId;
+                        objIndividualOther.IsNameChanged = objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.ModifiedBy = objToken.UserId;
+                        objIndividualOther.ModifiedOn = DateTime.Now;
+                        objIndividualOther.Picture = objIndividualPostResponse.Picture;
+                        objIndividualOther.PlaceofBirthCity = objIndividualPostResponse.PlaceofBirthCity;
+                        objIndividualOther.PlaceofBirthCountry = objIndividualPostResponse.PlaceofBirthCountry;
+                        objIndividualOther.PlaceofBirthState = objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOtherBAL.Save_IndividualOther(objIndividualOther);
+                    }
+                    else
+                    {
+                        objIndividualOther = new IndividualOther();
+                        objIndividualOther.CreatedBy = objToken.UserId;
+                        objIndividualOther.CreatedOn = DateTime.Now;
+                        objIndividualOther.IndividualId = objIndividualPostResponse.IndividualId;
+                        objIndividualOther.IndividualOtherGuid = Guid.NewGuid().ToString();
+                        objIndividualOther.IsActive = true;
+                        objIndividualOther.IsDeleted = false;
+                        objIndividualOther.IsNameChanged = objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.ModifiedBy = null;
+                        objIndividualOther.ModifiedOn = null;
+                        objIndividualOther.Picture = objIndividualPostResponse.Picture;
+                        objIndividualOther.PlaceofBirthCity = objIndividualPostResponse.PlaceofBirthCity;
+                        objIndividualOther.PlaceofBirthCountry = objIndividualPostResponse.PlaceofBirthCountry;
+                        objIndividualOther.PlaceofBirthState = objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOtherBAL.Save_IndividualOther(objIndividualOther);
+
+                    }
+
+
+                    /// End OtherSave
+                    /// 
+
+
 
                     //SAVE LOG
 

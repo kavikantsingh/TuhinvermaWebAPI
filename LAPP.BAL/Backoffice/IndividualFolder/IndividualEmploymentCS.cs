@@ -179,7 +179,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                                 objAddress.StreetLine2 = objAddressResponse.StreetLine2;
                                 objAddress.StateCode = objAddressResponse.StateCode;
                                 objAddress.Zip = objAddressResponse.Zip;
-
+                                objAddress.BadAddress = objAddressResponse.BadAddress;
                                 objAddress.ModifiedBy = objToken.UserId;
                                 objAddress.ModifiedOn = DateTime.Now;
 
@@ -228,7 +228,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objAddress.StreetLine2 = objAddressResponse.StreetLine2;
                             objAddress.StateCode = objAddressResponse.StateCode;
                             objAddress.Zip = objAddressResponse.Zip;
-
+                            objAddress.BadAddress = objAddressResponse.BadAddress;
                             objAddress.CreatedBy = objToken.UserId;
                             objAddress.CreatedOn = DateTime.Now;
 

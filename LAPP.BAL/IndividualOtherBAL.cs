@@ -23,6 +23,10 @@ namespace LAPP.BAL
         }
 
 
+        public IndividualOther Get_IndividualOther_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_IndividualOther_By_IndividualId(IndividualId);
+        }
         public IndividualOther Get_address_By_IndividualOtherId(int ID)
         {
             return objDal.Get_IndividualOther_By_IndividualOtherId(ID);

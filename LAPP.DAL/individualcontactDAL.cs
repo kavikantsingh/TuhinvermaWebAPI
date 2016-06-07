@@ -71,6 +71,25 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public IndividualContact Get_Primary_IndividualContact_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALCONTACT_GETPrimary_BY_IndividualId", lstParameter.ToArray());
+            IndividualContact objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
         public IndividualContact Get_IndividualContact_By_IndividualContactId(int ID)
         {
             DataSet ds = new DataSet("DS");

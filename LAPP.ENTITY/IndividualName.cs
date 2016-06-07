@@ -27,6 +27,8 @@ namespace LAPP.ENTITY
         public int IndividualNameStatusId { get; set; }
         public int IndividualNameTypeId { get; set; }
         public bool IsActive { get; set; }
+        public DateTime? BeginDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 
 

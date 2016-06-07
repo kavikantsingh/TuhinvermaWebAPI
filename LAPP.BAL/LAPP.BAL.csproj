@@ -12,6 +12,10 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,7 +61,9 @@
     <Compile Include="Backoffice\IndividualFolder\IndividualEmploymentCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualNameCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualLogCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualLegalCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualNoteCS.cs" />
+    <Compile Include="Common\ProviderCS.cs" />
     <Compile Include="IndividualCommentLogBAL.cs" />
     <Compile Include="IndividualCommunicationToLogBAL.cs" />
     <Compile Include="IndividualCommunicationLogBAL.cs" />

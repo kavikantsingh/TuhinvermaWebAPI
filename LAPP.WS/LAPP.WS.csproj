@@ -25,6 +25,10 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,7 +51,7 @@
   <ItemGroup>
     <Reference Include="EO.Pdf, Version=5.0.65.2, Culture=neutral, PublicKeyToken=e92353a6bf73fffc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>LIB\EO.Pdf.dll</HintPath>
+      <HintPath>..\..\LAPP-New-Licensing-App-WS\LAPP.WS\LIB\EO.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus, Version=3.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -221,6 +225,7 @@
     <Compile Include="Controllers\Common\LookupController.cs" />
     <Compile Include="Controllers\Common\MessageController.cs" />
     <Compile Include="Controllers\Common\PaymentController.cs" />
+    <Compile Include="Controllers\Common\ProviderController.cs" />
     <Compile Include="Controllers\Common\SourceController.cs" />
     <Compile Include="Controllers\Common\StateController.cs" />
     <Compile Include="Controllers\Common\TypeValuesController.cs" />

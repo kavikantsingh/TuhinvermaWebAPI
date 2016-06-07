@@ -42,7 +42,8 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, For example: true or false (0,1)")]
         public bool IsActive { get; set; }
 
-
+        [Display(Description = "Required: Yes, For example: true or false (0,1)")]
+        public bool BadAddress { get; set; }
 
 
     }

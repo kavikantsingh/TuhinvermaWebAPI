@@ -24,6 +24,7 @@ namespace LAPP.ENTITY
         public bool IsActive { get; set; }
         public string LicenseStatusTypeCode { get; set; }
         public string LicenseStatusTypeName { get; set; }
+        public string LicenseStatusColorCode { get; set; }
 
         public string LicenseTypeName { get; set; }
 
@@ -32,7 +33,7 @@ namespace LAPP.ENTITY
 
             get
             {
-                return "Renewal Period from " + LicenseEffectiveDate.ToShortDateString() + " to " + LicenseExpirationDate.ToShortDateString();
+                return "Renewal Period from " + LicenseEffectiveDate.ToShortDateString() + " to " + LicenseExpirationDate.ToShortDateString() + " " + LicenseStatusTypeName;
             }
         }
 

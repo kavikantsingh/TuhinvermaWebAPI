@@ -816,7 +816,7 @@
             Save or Update the data For IndividualDocument
             </summary>
             <param name="Key">The Key of the data.</param>
-            <param name="objIndividualDocument">Object of IndividualDocument</param>
+            <param name="objIndividualDocumentResponse">Object of IndividualDocument</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualDocumentSaveByHTML(System.String,LAPP.ENTITY.IndividualDocumentByHTML)">
             <summary>
@@ -891,19 +891,33 @@
             <param name="Key">The Key of the data.</param>
             <param name="objIndividualCommentLogRequest">Object of IndividualCommentLog</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCorrespondenceGetByIndividualId(System.String,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCommunicationGetByIndividualId(System.String,System.Int32)">
             <summary>
             Get Method to get IndividualCommunicationLog by key and IndividualId.
             </summary>
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCorrespondenceSave(System.String,LAPP.ENTITY.IndividualCommunicationLogRequest)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCommunicationSave(System.String,LAPP.ENTITY.IndividualCommunicationLogRequest)">
             <summary>
-            Save or Update the data For IndividualCorrespondence
+            Save or Update the data For IndividualCommunication
             </summary>
             <param name="Key">The Key of the data.</param>
             <param name="objCommunicationLog">Object of objCommunicationLog</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLegalResponseGetByIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get IndividualLegalby key and IndividualId.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLegalSave(System.String,LAPP.ENTITY.IndividualLegalResponse)">
+            <summary>
+            Save or Update the data For IndividualLegal
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualLegalResponse">Object of objIndividualLegalResponse</param>
         </member>
         <member name="T:LAPP.WS.Controllers.Common.CommonController">
             <summary>
@@ -1052,6 +1066,19 @@
             </summary>
             <param name="Key"></param>
             <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.ProviderRegister(System.String,LAPP.ENTITY.ProviderRegister)">
+            <summary>
+            This API used for Provider Registration.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="ObjRegisterInfo">Request object for Provider Registration.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.ProviderLogin(LAPP.ENTITY.ProviderLogin)">
+            <summary>
+            This API used for Provider Login.
+            </summary>
+            <param name="ObjLoginInfo">Request object for Provider Login.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.SourceController.SourceGetAll(System.String)">
             <summary>
@@ -1269,7 +1296,7 @@
             <param name="Key">API security key.</param>
             <param name="objSearch">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearchWithPager(System.String,LAPP.ENTITY.RenewalApplication,System.Int32,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearchWithPager(System.String,LAPP.ENTITY.RenewalApplication,System.Int32,System.Int32,System.Boolean)">
             <summary>
             Method to Search Renewal by key and objSearch with pager.
             </summary>

@@ -74,6 +74,23 @@ namespace LAPP.DAL
             return objEntity;
         }
 
+        public IndividualOther Get_IndividualOther_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualother_Get_By_IndividualId", lstParameter.ToArray());
+            IndividualOther objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
         private IndividualOther FetchEntity(DataRow dr)
         {
             IndividualOther objEntity = new IndividualOther();

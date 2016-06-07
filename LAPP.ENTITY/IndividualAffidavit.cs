@@ -16,6 +16,9 @@ namespace LAPP.ENTITY
         public bool ContentItemResponse { get; set; }
         public string Desc { get; set; }
         public string ContentDescription { get; set; }
+        public string Name { get; set; }
+        public string SignatureName { get; set; }
+        public DateTime? Date { get; set; }
 
         public bool IsActive { get; set; }
 

@@ -12,6 +12,10 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -104,6 +108,8 @@
     <Compile Include="IndividualComment.cs" />
     <Compile Include="ProviderContact.cs" />
     <Compile Include="ProviderIndividual.cs" />
+    <Compile Include="ProviderLogin.cs" />
+    <Compile Include="ProviderRegister.cs" />
     <Compile Include="ProviderStatusType.cs" />
     <Compile Include="RevFeeCollect.cs" />
     <Compile Include="RevFeeDisb.cs" />

@@ -33,10 +33,10 @@ namespace LAPP.BAL
         {
             return objDal.Search_Renewal(obj);
         }
-        public List<Individual> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
-        {
-            return objDal.Search_RenewalWithPager(obj, CurrentPage, PagerSize);
-        }
+        //public List<Individual> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
+        //{
+        //    return objDal.Search_RenewalWithPager(obj, CurrentPage, PagerSize);
+        //}
 
         public Individual Get_Individual_By_IndividualId(int ID)
         {

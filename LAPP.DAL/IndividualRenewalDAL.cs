@@ -29,6 +29,64 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<RenewalGet> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            lstParameter.Add(new MySqlParameter("_Name", obj.Name));
+            lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
+            lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
+            lstParameter.Add(new MySqlParameter("_Phone", obj.Phone));
+            lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
+            lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
+            lstParameter.Add(new MySqlParameter("_StatusId", obj.StatusId));
+            lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
+            lstParameter.Add(new MySqlParameter("Pager", PagerSize));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_By_Search_WithPager", lstParameter.ToArray());
+
+            List<RenewalGet> lstEntity = new List<RenewalGet>();
+            RenewalGet objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+
+        }
+
+        public List<RenewalGet> GetALL_RenewalWithPager(int CurrentPage, int PagerSize)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
+            lstParameter.Add(new MySqlParameter("Pager", PagerSize));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_GETALL_WITHPAGER", lstParameter.ToArray());
+
+            List<RenewalGet> lstEntity = new List<RenewalGet>();
+            RenewalGet objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+
+        }
+
         private RenewalGet FetchEntity(DataRow dr)
         {
             RenewalGet objEntity = new RenewalGet();
@@ -138,6 +196,45 @@ namespace LAPP.DAL
             {
                 objEntity.IndividualId = Convert.ToInt32(dr["IndividualId"]);
             }
+
+
+            //For Search
+
+            if (dr.Table.Columns.Contains("Total_Recard") && dr["Total_Recard"] != DBNull.Value)
+            {
+                objEntity.Total_Recard = Convert.ToInt32(dr["Total_Recard"]);
+            }
+
+            if (dr.Table.Columns.Contains("StatusId") && dr["StatusId"] != DBNull.Value)
+            {
+                objEntity.StatusId = Convert.ToInt32(dr["StatusId"]);
+            }
+            if (dr.Table.Columns.Contains("Name") && dr["Name"] != DBNull.Value)
+            {
+                objEntity.Name = Convert.ToString(dr["Name"]);
+            }
+
+            if (dr.Table.Columns.Contains("Phone") && dr["Phone"] != DBNull.Value)
+            {
+                objEntity.Phone = Convert.ToString(dr["Phone"]);
+            }
+
+
+            if (dr.Table.Columns.Contains("LicenseNumber") && dr["LicenseNumber"] != DBNull.Value)
+            {
+                objEntity.LicenseNumber = Convert.ToString(dr["LicenseNumber"]);
+            }
+            if (dr.Table.Columns.Contains("SSN") && dr["SSN"] != DBNull.Value)
+            {
+                objEntity.SSN = Convert.ToString(dr["SSN"]);
+            }
+            // Joined  Field For View Only
+
+            if (dr.Table.Columns.Contains("StatusName") && dr["StatusName"] != DBNull.Value)
+            {
+                objEntity.StatusName = Convert.ToString(dr["StatusName"]);
+            }
+
 
             return objEntity;
 

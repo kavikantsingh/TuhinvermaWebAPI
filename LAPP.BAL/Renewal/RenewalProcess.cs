@@ -122,7 +122,7 @@ namespace LAPP.BAL.Renewal
                                         objAddress.ModifiedBy = objToken.UserId;
                                         objAddress.ModifiedOn = DateTime.Now;
                                         objAddress.CountryId = 235;
-
+                                        objAddress.BadAddress = objAddressResponse.BadAddress;
                                         objAddress.IsActive = true;
                                         objAddress.IsDeleted = false;
                                         objAddress.UseUserAddress = false;
@@ -169,7 +169,7 @@ namespace LAPP.BAL.Renewal
                                     objAddress.StreetLine2 = objAddressResponse.StreetLine2;
                                     objAddress.StateCode = objAddressResponse.StateCode;
                                     objAddress.Zip = objAddressResponse.Zip;
-
+                                    objAddress.BadAddress = objAddressResponse.BadAddress;
                                     objAddress.CreatedBy = objToken.UserId;
                                     objAddress.CreatedOn = DateTime.Now;
 
@@ -359,7 +359,6 @@ namespace LAPP.BAL.Renewal
                     }
                     #endregion
 
-
                     #region Individual BusinessLicense
                     try
                     {
@@ -406,8 +405,6 @@ namespace LAPP.BAL.Renewal
                     }
                     #endregion
 
-
-
                     #region Individual Certification
 
                     try
@@ -424,11 +421,32 @@ namespace LAPP.BAL.Renewal
                                 objCertificate = objCertificationBAL.Get_IndividualCertification_By_IndividualId(IndividualId);
                                 if (objCertificate != null)
                                 {
-                                    objCertificate.IndividualCertificationId = objCertificationResponse.IndividualCertificationId;
                                     objCertificate.IndividualId = IndividualId;
                                     objCertificate.CertificationTypeId = objCertificationResponse.CertificationTypeId;
+                                    objCertificate.ClinicalComptence = objCertificationResponse.ClinicalComptence;
+                                    objCertificate.IsClinicalComptence = objCertificationResponse.IsClinicalComptence;
+                                    objCertificate.DateIssued = objCertificationResponse.DateIssued;
+                                    objCertificate.ABAMember = objCertificationResponse.ABAMember;
+                                    objCertificate.PraxisExam = objCertificationResponse.PraxisExam;
+                                    objCertificate.NoChanges = objCertificationResponse.NoChanges;
                                     objCertificate.IsNBCHIS = objCertificationResponse.IsNBCHIS;
                                     objCertificate.NBCHISAccount = objCertificationResponse.NBCHISAccount;
+                                    objCertificate.NBCHISCertificate = objCertificationResponse.NBCHISCertificate;
+                                    objCertificate.DatePassed = objCertificationResponse.DatePassed;
+                                    objCertificate.ASHA = objCertificationResponse.ASHA;
+                                    objCertificate.ABA = objCertificationResponse.ABA;
+
+                                    objCertificate.IsNBCOTAppliedforRenewal = objCertificationResponse.IsNBCOTAppliedforRenewal;
+                                    objCertificate.IsNBCOTCertified = objCertificationResponse.IsNBCOTCertified;
+                                    objCertificate.IsNBCOTExamScheduled = objCertificationResponse.IsNBCOTExamScheduled;
+                                    objCertificate.IsActive = objCertificationResponse.IsActive;
+
+                                    objCertificate.NBCOTDateTaken = objCertificationResponse.NBCOTDateTaken;
+                                    objCertificate.NBCOTDatePassed = objCertificationResponse.NBCOTDatePassed;
+                                    objCertificate.NBCOTDateScheduled = objCertificationResponse.NBCOTDateScheduled;
+                                    objCertificate.ModifiedOn = DateTime.Now;
+                                    objCertificate.ModifiedBy = objToken.UserId;
+
                                     objCertificationBAL.Save_IndividualCertification(objCertificate);
                                 }
 
@@ -438,23 +456,36 @@ namespace LAPP.BAL.Renewal
                                 IndividualCertification objCertificate = new IndividualCertification();
                                 objCertificate.IndividualId = IndividualId;
                                 objCertificate.CertificationTypeId = objCertificationResponse.CertificationTypeId;
+                                objCertificate.ClinicalComptence = objCertificationResponse.ClinicalComptence;
+                                objCertificate.IsClinicalComptence = objCertificationResponse.IsClinicalComptence;
+                                objCertificate.DateIssued = objCertificationResponse.DateIssued;
+                                objCertificate.ABAMember = objCertificationResponse.ABAMember;
+                                objCertificate.PraxisExam = objCertificationResponse.PraxisExam;
+                                objCertificate.NoChanges = objCertificationResponse.NoChanges;
                                 objCertificate.IsNBCHIS = objCertificationResponse.IsNBCHIS;
                                 objCertificate.NBCHISAccount = objCertificationResponse.NBCHISAccount;
+                                objCertificate.NBCHISCertificate = objCertificationResponse.NBCHISCertificate;
+                                objCertificate.DatePassed = objCertificationResponse.DatePassed;
+                                objCertificate.ASHA = objCertificationResponse.ASHA;
+                                objCertificate.ABA = objCertificationResponse.ABA;
 
-                                objCertificate.IsNBCOTAppliedforRenewal = false;
-                                objCertificate.IsNBCOTCertified = false;
-                                objCertificate.IsNBCOTExamScheduled = false;
-                                objCertificate.IsActive = true;
-                                objCertificate.IsClinicalComptence = false;
+                                objCertificate.IsNBCOTAppliedforRenewal = objCertificationResponse.IsNBCOTAppliedforRenewal;
+                                objCertificate.IsNBCOTCertified = objCertificationResponse.IsNBCOTCertified;
+                                objCertificate.IsNBCOTExamScheduled = objCertificationResponse.IsNBCOTExamScheduled;
+                                objCertificate.IsActive = objCertificationResponse.IsActive;
+
+                                objCertificate.NBCOTDateTaken = objCertificationResponse.NBCOTDateTaken;
+                                objCertificate.NBCOTDatePassed = objCertificationResponse.NBCOTDatePassed;
+                                objCertificate.NBCOTDateScheduled = objCertificationResponse.NBCOTDateScheduled;
+
+
                                 objCertificate.IsDeleted = false;
-                                objCertificate.PraxisExam = objCertificationResponse.PraxisExam;
                                 objCertificate.IndividualCertificationGuid = Guid.NewGuid().ToString();
                                 objCertificate.CreatedOn = DateTime.Now;
+                                objCertificate.ModifiedOn = null;
+                                objCertificate.ModifiedBy = null;
                                 objCertificate.CreatedBy = objToken.UserId;
-                                objCertificate.ClinicalComptence = objCertificationResponse.ClinicalComptence;
-                                objCertificate.ASHA = objCertificationResponse.ASHA;
-                                objCertificate.ABAMember = objCertificationResponse.ABAMember;
-                                objCertificate.ABA = objCertificationResponse.ABA;
+
 
                                 objCertificationBAL.Save_IndividualCertification(objCertificate);
 
@@ -508,9 +539,6 @@ namespace LAPP.BAL.Renewal
                                     objCehCourse.CECourseHours = objCehResponse.CECourseHours;
                                     objCehCourse.CourseNameTitle = objCehResponse.CourseNameTitle;
 
-                                    objCehCourse.ModifiedBy = objToken.UserId;
-                                    objCehCourse.ModifiedOn = DateTime.Now;
-
                                     objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
                                     objCehCourse.IsActive = true;
                                     objCehCourse.IsDeleted = objCehResponse.IsDeleted;
@@ -539,7 +567,6 @@ namespace LAPP.BAL.Renewal
                         throw ex;
                     }
                     #endregion
-
 
                     #region Employment Information
                     try
@@ -675,7 +702,7 @@ namespace LAPP.BAL.Renewal
                                                     objAddress.StreetLine2 = objAddressResponse.StreetLine2;
                                                     objAddress.StateCode = objAddressResponse.StateCode;
                                                     objAddress.Zip = objAddressResponse.Zip;
-
+                                                    objAddress.BadAddress = objAddressResponse.BadAddress;
                                                     objAddress.ModifiedBy = objToken.UserId;
                                                     objAddress.ModifiedOn = DateTime.Now;
 
@@ -722,7 +749,7 @@ namespace LAPP.BAL.Renewal
                                                 objAddress.StreetLine2 = objAddressResponse.StreetLine2;
                                                 objAddress.StateCode = objAddressResponse.StateCode;
                                                 objAddress.Zip = objAddressResponse.Zip;
-
+                                                objAddress.BadAddress = objAddressResponse.BadAddress;
                                                 objAddress.CreatedBy = objToken.UserId;
                                                 objAddress.CreatedOn = DateTime.Now;
 
@@ -854,7 +881,6 @@ namespace LAPP.BAL.Renewal
                     }
                     #endregion
 
-
                     #region IndividualAffidavit
                     try
                     {
@@ -872,10 +898,13 @@ namespace LAPP.BAL.Renewal
                             if (objIndividualAffidavit != null)
                             {
                                 objIndividualAffidavit.IndividualId = objIndividualAffidavitResponse.IndividualId;
-                                objIndividualAffidavit.ContentItemLkId = objIndividualAffidavitResponse.ContentItemLkId;
-                                objIndividualAffidavit.ContentItemNumber = objIndividualAffidavitResponse.ContentItemNumber;
+                                //objIndividualAffidavit.ContentItemLkId = objIndividualAffidavitResponse.ContentItemLkId;
+                                //objIndividualAffidavit.ContentItemNumber = objIndividualAffidavitResponse.ContentItemNumber;
                                 objIndividualAffidavit.ContentItemResponse = objIndividualAffidavitResponse.ContentItemResponse;
                                 objIndividualAffidavit.Desc = objIndividualAffidavitResponse.Desc;
+                                objIndividualAffidavit.Name = objIndividualAffidavitResponse.Name;
+                                objIndividualAffidavit.SignatureName = objIndividualAffidavitResponse.SignatureName;
+                                objIndividualAffidavit.Date = objIndividualAffidavitResponse.Date;
                                 objIndividualAffidavit.ModifiedBy = objToken.UserId;
                                 objIndividualAffidavit.ModifiedOn = DateTime.Now;
 
@@ -922,7 +951,6 @@ namespace LAPP.BAL.Renewal
                         throw ex;
                     }
                     #endregion
-
 
                     #region Individual Vetran
 
@@ -984,7 +1012,6 @@ namespace LAPP.BAL.Renewal
 
                     #endregion
 
-
                     #region Sponsor
                     try
                     {
@@ -1018,7 +1045,7 @@ namespace LAPP.BAL.Renewal
                                             objAddress.ModifiedBy = objToken.UserId;
                                             objAddress.ModifiedOn = DateTime.Now;
                                             objAddress.CountryId = 235;
-
+                                            // objAddress.BadAddress = objAddressResponse.BadAddress;
                                             objAddress.IsActive = true;
                                             objAddress.IsDeleted = false;
                                             objAddress.UseUserAddress = false;
@@ -1047,7 +1074,7 @@ namespace LAPP.BAL.Renewal
                                         objAddress.StreetLine2 = !string.IsNullOrEmpty(objAddressResp.StreetLine2) ? objAddressResp.StreetLine2 : "";
                                         objAddress.StateCode = objAddressResp.StateCode;
                                         objAddress.Zip = objAddressResp.Zip;
-
+                                        // objAddress.BadAddress = objAddressResp.BadAddress;
                                         objAddress.CreatedBy = objToken.UserId;
                                         objAddress.CreatedOn = DateTime.Now;
 
@@ -1540,7 +1567,8 @@ namespace LAPP.BAL.Renewal
                                     StateCode = obj.StateCode,
                                     StreetLine1 = obj.StreetLine1,
                                     StreetLine2 = obj.StreetLine2,
-                                    Zip = obj.Zip
+                                    Zip = obj.Zip,
+                                    BadAddress = obj.BadAddress
 
 
                                 }).ToList();
@@ -1981,6 +2009,9 @@ namespace LAPP.BAL.Renewal
                                        ContentItemNumber = obj.ContentItemNumber,
                                        ContentItemResponse = obj.ContentItemResponse,
                                        Desc = obj.Desc,
+                                       Date = obj.Date,
+                                       Name = obj.Name,
+                                       SignatureName = obj.SignatureName,
                                        ContentDescription = obj.ContentDescription,
                                        IsActive = obj.IsActive,
                                    }).ToList();

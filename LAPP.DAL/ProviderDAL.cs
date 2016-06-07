@@ -39,7 +39,7 @@ namespace LAPP.DAL
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
-            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "provider_Save", true, lstParameter.ToArray());
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "Provider_Save", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }

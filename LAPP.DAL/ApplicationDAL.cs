@@ -268,7 +268,10 @@ namespace LAPP.DAL
             {
                 objEntity.ApplicationType = Convert.ToString(dr["ApplicationType"]);
             }
-
+            if (dr.Table.Columns.Contains("ApplicationStatus") && dr["ApplicationStatus"] != DBNull.Value)
+            {
+                objEntity.ApplicationStatus = Convert.ToString(dr["ApplicationStatus"]);
+            }
             return objEntity;
 
         }

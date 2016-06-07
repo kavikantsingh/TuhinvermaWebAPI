@@ -90,6 +90,7 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+
         public IndividualLicense Get_Pending_IndividualLicense_By_IndividualId(int IndividualId)
         {
             DataSet ds = new DataSet("DS");
@@ -106,6 +107,7 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+
         public List<IndividualLicense> Get_IndividualLicense_By_IndividualId(int IndividualId)
         {
             DataSet ds = new DataSet("DS");
@@ -141,6 +143,7 @@ namespace LAPP.DAL
             }
             return lstEntity;
         }
+
         private IndividualLicense FetchEntity(DataRow dr)
         {
             IndividualLicense objEntity = new IndividualLicense();
@@ -238,6 +241,11 @@ namespace LAPP.DAL
             {
                 objEntity.LicenseDetail = Convert.ToString(dr["LicenseDetail"]);
             }
+            if (dr.Table.Columns.Contains("LicenseStatusColorCode") && dr["LicenseStatusColorCode"] != DBNull.Value)
+            {
+                objEntity.LicenseStatusColorCode = Convert.ToString(dr["LicenseStatusColorCode"]);
+            }
+
             return objEntity;
 
         }

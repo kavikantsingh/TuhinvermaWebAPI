@@ -35,4 +35,10 @@ namespace LAPP.ENTITY
         public bool IsEnabled { get; set; }
         public bool IsActive { get; set; }
     }
+
+
+    public class ProviderResponseRequest : BaseEntityServiceResponse
+    {
+        public List<ProviderResponse> ProviderResponseList { get; set; }
+    }
 }

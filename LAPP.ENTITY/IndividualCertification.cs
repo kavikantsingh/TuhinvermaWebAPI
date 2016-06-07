@@ -15,7 +15,7 @@ namespace LAPP.ENTITY
         public DateTime? DateIssued { get; set; }
         public string ABAMember { get; set; }
         public string PraxisExam { get; set; }
-        public bool NoChange { get; set; } 
+        public bool NoChanges { get; set; }
         public bool IsNBCHIS { get; set; }
         public string NBCHISAccount { get; set; }
         public string NBCHISCertificate { get; set; }
@@ -33,18 +33,18 @@ namespace LAPP.ENTITY
 
 
         public bool IsActive { get; set; }
-       
+
 
     }
 
     public class IndividualCertification : IndividualCertificationResponse
     {
-       
+
         public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
-        public int ModifiedBy { get; set; }
-        public DateTime ModifiedOn { get; set; }
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
 
         public string IndividualCertificationGuid { get; set; }
 

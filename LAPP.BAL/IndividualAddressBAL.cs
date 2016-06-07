@@ -21,7 +21,10 @@ namespace LAPP.BAL
             return objDal.Get_All_IndividualAddress();
         }
 
-
+        public IndividualAddress Get_Current_IndividualAddress_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_Current_IndividualAddress_By_IndividualId(IndividualId);
+        }
         public IndividualAddress Get_IndividualAddress_By_IndividualAddressId(int ID)
         {
             return objDal.Get_IndividualAddress_By_IndividualAddressId(ID);

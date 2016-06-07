@@ -19,6 +19,9 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ContentItemNumber", objIndividualAffidavit.ContentItemNumber));
             lstParameter.Add(new MySqlParameter("ContentItemResponse", objIndividualAffidavit.ContentItemResponse));
             lstParameter.Add(new MySqlParameter("Description", objIndividualAffidavit.Desc));
+            lstParameter.Add(new MySqlParameter("Name", objIndividualAffidavit.Name));
+            lstParameter.Add(new MySqlParameter("SignatureName", objIndividualAffidavit.SignatureName));
+            lstParameter.Add(new MySqlParameter("Date", objIndividualAffidavit.Date));
 
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualAffidavit.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualAffidavit.IsDeleted));
@@ -120,7 +123,19 @@ namespace LAPP.DAL
                 objEntity.Desc = Convert.ToString(dr["Desc"]);
             }
 
+            if (dr.Table.Columns.Contains("Name") && dr["Name"] != DBNull.Value)
+            {
+                objEntity.Name = Convert.ToString(dr["Name"]);
+            }
+            if (dr.Table.Columns.Contains("SignatureName") && dr["SignatureName"] != DBNull.Value)
+            {
+                objEntity.SignatureName = Convert.ToString(dr["SignatureName"]);
+            }
 
+            if (dr.Table.Columns.Contains("Date") && dr["Date"] != DBNull.Value)
+            {
+                objEntity.Date = Convert.ToDateTime(dr["Date"]);
+            }
 
             if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
             {

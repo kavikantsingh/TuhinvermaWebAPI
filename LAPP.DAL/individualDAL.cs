@@ -72,6 +72,9 @@ namespace LAPP.DAL
 
         public Individual Get_Individual_By_IndividualId(int ID)
         {
+            IndividualAddressDAL objADAL = new IndividualAddressDAL();
+            IndividualContactDAL objCDAL = new IndividualContactDAL();
+
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
@@ -85,8 +88,14 @@ namespace LAPP.DAL
             {
                 DataRow dr = ds.Tables[0].Rows[0];
                 objEntity = FetchEntity(dr);
+
+                objEntity.objIndividualAddress = objADAL.Get_Current_IndividualAddress_By_IndividualId(objEntity.IndividualId);
+                objEntity.objIndividualContact = objCDAL.Get_Primary_IndividualContact_By_IndividualId(objEntity.IndividualId);
+
             }
             return objEntity;
+
+
         }
 
         public Individual Get_Individual_By_LastNameSSNCodeLicenseNumber(string lastName, string licenseNumber, string sSNCode)
@@ -214,38 +223,38 @@ namespace LAPP.DAL
 
         }
 
-        public List<Individual> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
-        {
-            DataSet ds = new DataSet("DS");
-            DBHelper objDB = new DBHelper();
-            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+        //public List<Individual> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
+        //{
+        //    DataSet ds = new DataSet("DS");
+        //    DBHelper objDB = new DBHelper();
+        //    List<MySqlParameter> lstParameter = new List<MySqlParameter>();
 
-            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+        //    lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
 
-            lstParameter.Add(new MySqlParameter("_Name", obj.Name));
-            lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
-            lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
-            lstParameter.Add(new MySqlParameter("_Phone", obj.Phone));
-            lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
-            lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
-            lstParameter.Add(new MySqlParameter("_StatusId", obj.StatusId));
-            lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
-            lstParameter.Add(new MySqlParameter("Pager", PagerSize));
+        //    lstParameter.Add(new MySqlParameter("_Name", obj.Name));
+        //    lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
+        //    lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
+        //    lstParameter.Add(new MySqlParameter("_Phone", obj.Phone));
+        //    lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
+        //    lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
+        //    lstParameter.Add(new MySqlParameter("_StatusId", obj.StatusId));
+        //    lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
+        //    lstParameter.Add(new MySqlParameter("Pager", PagerSize));
 
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_By_Search_WithPager", lstParameter.ToArray());
+        //    ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_By_Search_WithPager", lstParameter.ToArray());
 
-            List<Individual> lstEntity = new List<Individual>();
-            Individual objEntity = null;
-            foreach (DataRow dr in ds.Tables[0].Rows)
-            {
-                objEntity = FetchEntity(dr);
-                if (objEntity != null)
-                    lstEntity.Add(objEntity);
-            }
-            return lstEntity;
+        //    List<Individual> lstEntity = new List<Individual>();
+        //    Individual objEntity = null;
+        //    foreach (DataRow dr in ds.Tables[0].Rows)
+        //    {
+        //        objEntity = FetchEntity(dr);
+        //        if (objEntity != null)
+        //            lstEntity.Add(objEntity);
+        //    }
+        //    return lstEntity;
 
 
-        }
+        //}
 
 
         private Individual FetchEntity(DataRow dr)
@@ -398,6 +407,70 @@ namespace LAPP.DAL
             {
                 objEntity.ApplicationNumber = Convert.ToString(dr["ApplicationNumber"]);
             }
+
+
+            if (dr.Table.Columns.Contains("Total_Recard") && dr["Total_Recard"] != DBNull.Value)
+            {
+                objEntity.Total_Recard = Convert.ToInt32(dr["Total_Recard"]);
+            }
+
+            if (dr.Table.Columns.Contains("LicenseStatusTypeName") && dr["LicenseStatusTypeName"] != DBNull.Value)
+            {
+                objEntity.LicenseStatusTypeName = Convert.ToString(dr["LicenseStatusTypeName"]);
+            }
+
+            if (dr.Table.Columns.Contains("StatusColorCode") && dr["StatusColorCode"] != DBNull.Value)
+            {
+                objEntity.StatusColorCode = Convert.ToString(dr["StatusColorCode"]);
+            }
+
+            if (dr.Table.Columns.Contains("LicenseTypeId") && dr["LicenseTypeId"] != DBNull.Value)
+            {
+                objEntity.LicenseTypeId = Convert.ToInt32(dr["LicenseTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("LicenseTypeName") && dr["LicenseTypeName"] != DBNull.Value)
+            {
+                objEntity.LicenseTypeName = Convert.ToString(dr["LicenseTypeName"]);
+            }
+
+            if (dr.Table.Columns.Contains("LicenseStatusTypeId") && dr["LicenseStatusTypeId"] != DBNull.Value)
+            {
+                objEntity.LicenseStatusTypeId = Convert.ToInt32(dr["LicenseStatusTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("LicenseStatusTypeCode") && dr["LicenseStatusTypeCode"] != DBNull.Value)
+            {
+                objEntity.LicenseStatusTypeCode = Convert.ToString(dr["LicenseStatusTypeCode"]);
+            }
+
+            if (dr.Table.Columns.Contains("LicenseStatusTypeCode") && dr["LicenseStatusTypeCode"] != DBNull.Value)
+            {
+                objEntity.LicenseStatusTypeCode = Convert.ToString(dr["LicenseStatusTypeCode"]);
+            }
+
+            if (dr.Table.Columns.Contains("IsNameChanged") && dr["IsNameChanged"] != DBNull.Value)
+            {
+                objEntity.IsNameChanged = Convert.ToBoolean(dr["IsNameChanged"]);
+            }
+
+            if (dr.Table.Columns.Contains("PlaceofBirthCity") && dr["PlaceofBirthCity"] != DBNull.Value)
+            {
+                objEntity.PlaceofBirthCity = Convert.ToString(dr["PlaceofBirthCity"]);
+            }
+
+            if (dr.Table.Columns.Contains("PlaceofBirthState") && dr["PlaceofBirthState"] != DBNull.Value)
+            {
+                objEntity.PlaceofBirthState = Convert.ToString(dr["PlaceofBirthState"]);
+            }
+
+            if (dr.Table.Columns.Contains("PlaceofBirthCountry") && dr["PlaceofBirthCountry"] != DBNull.Value)
+            {
+                objEntity.PlaceofBirthCountry = Convert.ToInt32(dr["PlaceofBirthCountry"]);
+            }
+            if (dr.Table.Columns.Contains("Picture") && dr["Picture"] != DBNull.Value)
+            {
+                objEntity.Picture = Convert.ToString(dr["Picture"]);
+            }
+
             return objEntity;
 
         }

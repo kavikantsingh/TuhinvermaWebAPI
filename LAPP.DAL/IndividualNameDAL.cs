@@ -28,6 +28,8 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualName.CreatedOn));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualName.ModifiedBy));
             lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualName.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("BeginDate", objIndividualName.BeginDate));
+            lstParameter.Add(new MySqlParameter("EndDate", objIndividualName.EndDate));
 
 
             lstParameter.Add(new MySqlParameter("IndividualNameGuid", objIndividualName.IndividualNameGuid));
@@ -188,7 +190,14 @@ namespace LAPP.DAL
                 objEntity.IndividualNameGuid = Convert.ToString(dr["IndividualNameGuid"]);
             }
 
-
+            if (dr.Table.Columns.Contains("BeginDate") && dr["BeginDate"] != DBNull.Value)
+            {
+                objEntity.BeginDate = Convert.ToDateTime(dr["BeginDate"]);
+            }
+            if (dr.Table.Columns.Contains("EndDate") && dr["EndDate"] != DBNull.Value)
+            {
+                objEntity.EndDate = Convert.ToDateTime(dr["EndDate"]);
+            }
             return objEntity;
 
         }

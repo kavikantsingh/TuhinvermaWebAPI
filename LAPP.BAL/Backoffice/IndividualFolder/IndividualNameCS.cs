@@ -30,7 +30,25 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                 objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
 
-                if (objIndividual != null && objIndividual.FirstName.ToLower() != objIndividualNameRequest.FirstName.ToLower()
+                if (objIndividual != null)
+                {
+                    if (objIndividual.FirstName == null)
+                    {
+                        objIndividual.FirstName = "";
+                    }
+                    if (objIndividual.MiddleName == null)
+                    {
+                        objIndividual.MiddleName = "";
+                    }
+                    if (objIndividual.LastName == null)
+                    {
+                        objIndividual.LastName = "";
+                    }
+
+                }
+
+                if (objIndividual != null
+                    && objIndividual.FirstName.ToLower() != objIndividualNameRequest.FirstName.ToLower()
                     || objIndividual.LastName.ToLower() != objIndividualNameRequest.LastName.ToLower()
                     || objIndividual.MiddleName.ToLower() != objIndividualNameRequest.MiddleName.ToLower())
                 {
@@ -43,6 +61,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualName.LastName = objIndividual.LastName;
                     objIndividualName.MiddleName = objIndividual.MiddleName;
                     objIndividualName.IndividualId = objIndividual.IndividualId;
+                    objIndividualName.BeginDate = objIndividualNameRequest.BeginDate;
+                    objIndividualName.EndDate = objIndividualNameRequest.EndDate;
                     objIndividualName.SuffixId = objIndividualNameRequest.SuffixId;
                     objIndividualName.IndividualNameStatusId = Convert.ToInt32(eIndividualNameStatus.Previous);
                     objIndividualName.IndividualNameTypeId = Convert.ToInt32(eIndividualNameType.Individual);

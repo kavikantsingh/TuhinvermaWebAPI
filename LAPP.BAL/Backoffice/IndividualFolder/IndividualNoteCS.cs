@@ -30,13 +30,11 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndCommentLog.CommentLogSource = objRequest.CommentLogSource;
                     objIndCommentLog.CommentLogText = objRequest.CommentLogText;
                     objIndCommentLog.EndDate = objRequest.EndDate;
-                    objIndCommentLog.IndividualCommentLogGuid = Guid.NewGuid().ToString();
                     objIndCommentLog.IndividualId = individualId;
-                    objIndCommentLog.IsActive = true;
-                    objIndCommentLog.IsDeleted = false;
-                    objIndCommentLog.IsForInvestigationOnly = false;
-                    objIndCommentLog.IsForPublic = false;
-                    objIndCommentLog.IsInternalOnly = true;
+                    objIndCommentLog.IsActive = objRequest.IsActive;
+                    objIndCommentLog.IsForInvestigationOnly = objRequest.IsForInvestigationOnly;
+                    objIndCommentLog.IsForPublic = objRequest.IsForPublic;
+                    objIndCommentLog.IsInternalOnly = objRequest.IsInternalOnly;
                     objIndCommentLog.MasterTransactionId = objRequest.MasterTransactionId;
                     objIndCommentLog.PageModuleId = objRequest.PageModuleId;
                     objIndCommentLog.PageModuleTabSubModuleId = objRequest.PageModuleTabSubModuleId;
