@@ -37,13 +37,13 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, For example: true or false (0,1)")]
         public bool IsActive { get; set; }
 
-
+        [Display(Description = "Required: Yes, For example: true or false (0,1)")]
+        public bool IsDeleted { get; set; }
     }
     public class Contact : ContactResponse
 
     {
-        [Display(Description = "Required: Yes, For example: true or false (0,1)")]
-        public bool IsDeleted { get; set; }
+
 
         [Display(Description = "Required:Yes, Max Length:11 (Integer), For example: Numeric vlaue (0-9) ")]
         public int CreatedBy { get; set; }

@@ -45,6 +45,8 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, For example: true or false (0,1)")]
         public bool BadAddress { get; set; }
 
+        [Display(Description = "Required: Yes, For example: true or false (0,1)")]
+        public bool IsDeleted { get; set; }
 
     }
     public class Address : AddressResponse
@@ -60,8 +62,7 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, For example: true or false (0,1)")]
         public bool UseVerifiedAddress { get; set; }
 
-        [Display(Description = "Required: Yes, For example: true or false (0,1)")]
-        public bool IsDeleted { get; set; }
+  
 
         [Display(Description = "Required:Yes, Max Length:11 (Integer), For example: Numeric vlaue (0-9) ")]
         public int CreatedBy { get; set; }

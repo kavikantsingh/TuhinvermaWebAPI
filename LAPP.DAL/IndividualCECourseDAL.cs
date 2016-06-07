@@ -42,6 +42,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualCECourse.ModifiedOn));
 
             lstParameter.Add(new MySqlParameter("IndividualCECourseGuid", objIndividualCECourse.IndividualCECourseGuid));
+            lstParameter.Add(new MySqlParameter("IndividualLicenseId", objIndividualCECourse.IndividualLicenseId));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
@@ -236,6 +237,11 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IndividualCECourseGuid") && dr["IndividualCECourseGuid"] != DBNull.Value)
             {
                 objEntity.IndividualCECourseGuid = dr["IndividualCECourseGuid"].ToString();
+            }
+
+            if (dr.Table.Columns.Contains("IndividualLicenseId") && dr["IndividualLicenseId"] != DBNull.Value)
+            {
+                objEntity.IndividualLicenseId = Convert.ToInt32(dr["IndividualLicenseId"]);
             }
             return objEntity;
 

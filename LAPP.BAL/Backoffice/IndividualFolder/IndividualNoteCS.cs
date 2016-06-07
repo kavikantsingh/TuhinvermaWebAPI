@@ -32,6 +32,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndCommentLog.EndDate = objRequest.EndDate;
                     objIndCommentLog.IndividualId = individualId;
                     objIndCommentLog.IsActive = objRequest.IsActive;
+                    objIndCommentLog.IsDeleted = objRequest.IsDeleted;
                     objIndCommentLog.IsForInvestigationOnly = objRequest.IsForInvestigationOnly;
                     objIndCommentLog.IsForPublic = objRequest.IsForPublic;
                     objIndCommentLog.IsInternalOnly = objRequest.IsInternalOnly;
@@ -72,8 +73,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndCommentLog.IndividualCommentLogGuid = Guid.NewGuid().ToString();
                     objIndCommentLog.ReferenceNumber = objRequest.ReferenceNumber;
                     objIndCommentLog.IndividualId = individualId;
-                    objIndCommentLog.IsActive = true;
-                    objIndCommentLog.IsDeleted = false;
+                    objIndCommentLog.IsActive = objRequest.IsActive;
+                    objIndCommentLog.IsDeleted = objRequest.IsDeleted;
                     objIndCommentLog.IsForInvestigationOnly = false;
                     objIndCommentLog.IsForPublic = false;
                     objIndCommentLog.IsInternalOnly = true;

@@ -33,6 +33,7 @@ namespace LAPP.ENTITY
 
 
         public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
 
 
     }
@@ -40,7 +41,6 @@ namespace LAPP.ENTITY
     public class IndividualCertification : IndividualCertificationResponse
     {
 
-        public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int? ModifiedBy { get; set; }

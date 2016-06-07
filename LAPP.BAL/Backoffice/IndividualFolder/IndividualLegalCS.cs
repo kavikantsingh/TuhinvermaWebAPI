@@ -33,6 +33,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndCommentLog.Desc = objRequest.Desc;
                     objIndCommentLog.ContentDescription = objRequest.ContentDescription;
                     objIndCommentLog.IsActive = objRequest.IsActive;
+                    objIndCommentLog.IsDeleted = objRequest.IsDeleted;
                     objIndCommentLog.ModifiedBy = objToken.UserId;
                     objIndCommentLog.ModifiedOn = DateTime.Now;
 
@@ -67,8 +68,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndCommentLog.CreatedBy = objToken.UserId;
                     objIndCommentLog.CreatedOn = DateTime.Now;
                     objIndCommentLog.IndividualLegalGuid = Guid.NewGuid().ToString();
-                    objIndCommentLog.IsActive = true;
-                    objIndCommentLog.IsDeleted = false;
+                    objIndCommentLog.IsActive = objRequest.IsActive;
+                    objIndCommentLog.IsDeleted = objRequest.IsDeleted;
 
                     objIndCommentLog.IndividualLegalId = objLogBAL.Save_IndividualLegal(objIndCommentLog);
 

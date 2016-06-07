@@ -29,21 +29,9 @@ namespace LAPP.ENTITY
         public string ExternalId2 { get; set; }
         public bool IsArchived { get; set; }
         public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
+
         public string Email { get; set; }
-
-
-        // 
-        public string LicenseStatusTypeName { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string StatusColorCode { get; set; }
-        public string LicenseNumber { get; set; }
-        public int LicenseTypeId { get; set; }
-        public string LicenseTypeName { get; set; }
-        public int LicenseStatusTypeId { get; set; }
-        public string LicenseStatusTypeCode { get; set; }
-        public string Name { get; set; }
-
 
         // IndividualOther
         public bool IsNameChanged { get; set; }
@@ -52,8 +40,17 @@ namespace LAPP.ENTITY
         public int PlaceofBirthCountry { get; set; }
         public string Picture { get; set; }
 
-        public IndividualAddress objIndividualAddress { get; set; }
+        // 
+        public string LicenseStatusTypeName { get; set; }
+        public string StatusColorCode { get; set; }
+        public string LicenseNumber { get; set; }
+        public int LicenseTypeId { get; set; }
+        public string LicenseTypeName { get; set; }
+        public int LicenseStatusTypeId { get; set; }
+        public string LicenseStatusTypeCode { get; set; }
+        public string Name { get; set; }
 
+        public IndividualAddress objIndividualAddress { get; set; }
         public IndividualContact objIndividualContact { get; set; }
     }
 
@@ -80,7 +77,6 @@ namespace LAPP.ENTITY
         //public string ExternalId2 { get; set; }
         //public bool IsArchived { get; set; }
         //public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ModifiedBy { get; set; }

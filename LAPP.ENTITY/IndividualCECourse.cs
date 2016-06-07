@@ -29,6 +29,7 @@ namespace LAPP.ENTITY
         public string ReferenceNumber { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
+        public int? IndividualLicenseId { get; set; }
     }
 
     public class IndividualCECourse : IndividualCECourseResponse

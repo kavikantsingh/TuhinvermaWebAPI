@@ -45,6 +45,9 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objCehCourse.InstructorBiography = objCECourseResponse.InstructorBiography;
                     objCehCourse.ActivityDesc = objCECourseResponse.ActivityDesc;
                     objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
+                    objCehCourse.IsActive = objCECourseResponse.IsActive;
+                    objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
+                    objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
                     // objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
 
                     objCehCourse.ModifiedBy = objToken.UserId;
@@ -88,10 +91,12 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objCehCourse.ActivityDesc = objCECourseResponse.ActivityDesc;
                     objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
                     objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
-                    objCehCourse.IsActive = true;
-                    objCehCourse.IsDeleted = false;
+                    objCehCourse.IsActive = objCECourseResponse.IsActive;
+                    objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
                     objCehCourse.CreatedBy = objToken.UserId;
                     objCehCourse.CreatedOn = DateTime.Now;
+                    objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
+
                     objCehCourse.IndividualCECourseId = objIndividualCECourseBAL.Save_IndividualCECourse(objCehCourse);
 
                     objCECourseResponse.IndividualCECourseId = objCehCourse.IndividualCECourseId;
@@ -131,6 +136,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         CourseNameTitle = obj.CourseNameTitle,
                         CourseSponsor = obj.CourseSponsor,
                         IndividualCECourseId = obj.IndividualCECourseId,
+                        IndividualLicenseId = obj.IndividualLicenseId,
                         IndividualId = obj.IndividualId,
                         InstructorBiography = obj.InstructorBiography,
                         IsActive = obj.IsActive,

@@ -68,7 +68,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualName.IndividualNameTypeId = Convert.ToInt32(eIndividualNameType.Individual);
 
                     objIndividualName.IsActive = objIndividualNameRequest.IsActive;
-                    objIndividualName.IsDeleted = false;
+                    objIndividualName.IsDeleted = objIndividualNameRequest.IsDeleted;
                     objIndividualName.CreatedBy = objToken.UserId;
                     objIndividualName.CreatedOn = DateTime.Now;
                     objIndividualName.IndividualNameGuid = Guid.NewGuid().ToString();

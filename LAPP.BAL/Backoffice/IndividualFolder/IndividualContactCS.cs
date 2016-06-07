@@ -45,6 +45,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         objContact.ContactInfo = objContactResponse.ContactInfo;
                         objContact.ModifiedBy = objToken.UserId;
                         objContact.ModifiedOn = DateTime.Now;
+                        objContact.IsDeleted = objContactResponse.IsDeleted;
+                        objContact.IsActive = objContactResponse.IsActive;
 
                         objContactBAL.Save_Contact(objContact);
 
@@ -65,7 +67,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objIndividualContact.ModifiedOn = DateTime.Now;
                             objIndividualContact.IndividualId = individualId;
                             //objIndividualContact.IndividualContactGuid = Guid.NewGuid().ToString();
-
+                            objIndividualContact.IsDeleted = objContactResponse.IsDeleted;
+                            objIndividualContact.IsActive = objContactResponse.IsActive;
                             objIndividualContactBAL.Save_IndividualContact(objIndividualContact);
                         }
                         //END Update IndividualContact
@@ -91,8 +94,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                     objContact.ContactGuid = Guid.NewGuid().ToString();
                     objContact.Authenticator = Guid.NewGuid().ToString();
-                    objContact.IsActive = true;
-                    objContact.IsDeleted = false;
+                    objContact.IsDeleted = objContactResponse.IsDeleted;
+                    objContact.IsActive = objContactResponse.IsActive;
                     objContact.Code = objContactResponse.Code;
                     objContact.ContactFirstName = objContactResponse.ContactFirstName;
                     objContact.ContactLastName = objContactResponse.ContactLastName;
@@ -113,8 +116,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualContact.ContactTypeId = objContactResponse.ContactTypeId;
                     objIndividualContact.IsPreferredContact = objContactResponse.IsPreferredContact;
                     objIndividualContact.IsMobile = objContactResponse.IsMobile;
-                    objIndividualContact.IsActive = true;
-                    objIndividualContact.IsDeleted = false;
+                    objIndividualContact.IsDeleted = objContactResponse.IsDeleted;
+                    objIndividualContact.IsActive = objContactResponse.IsActive;
                     objIndividualContact.BeginDate = DateTime.Now;
                     objIndividualContact.CreatedBy = objToken.UserId;
                     objIndividualContact.CreatedOn = DateTime.Now;

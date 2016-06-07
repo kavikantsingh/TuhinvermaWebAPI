@@ -16,6 +16,7 @@ namespace LAPP.ENTITY
         public DateTime? EndDate { get; set; }
         public bool IsMailingSameasPhysical { get; set; }
         public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 
@@ -23,7 +24,6 @@ namespace LAPP.ENTITY
 
     {
 
-        public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ModifiedBy { get; set; }

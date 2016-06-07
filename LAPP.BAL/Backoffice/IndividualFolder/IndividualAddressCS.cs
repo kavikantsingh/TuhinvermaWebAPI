@@ -44,8 +44,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         objAddress.ModifiedOn = DateTime.Now;
                         objAddress.CountryId = 235;
 
-                        objAddress.IsActive = true;
-                        objAddress.IsDeleted = false;
+                        objAddress.IsActive = objAddressResponse.IsActive;
+                        objAddress.IsDeleted = objAddressResponse.IsDeleted;
                         objAddress.UseUserAddress = false;
                         objAddress.UseVerifiedAddress = false;
 
@@ -66,7 +66,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objIndAddress.ModifiedOn = DateTime.Now;
                             objIndAddress.IndividualId = individualID;
                             objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
-
+                            objIndAddress.IsActive = objAddressResponse.IsActive;
+                            objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
                             objIndAddressBAL.Save_IndividualAddress(objIndAddress);
                         }
 
@@ -94,8 +95,9 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objAddress.Authenticator = Guid.NewGuid().ToString();
                     objAddress.CountryId = 235;
 
-                    objAddress.IsActive = true;
-                    objAddress.IsDeleted = false;
+                    objAddress.IsActive = objAddressResponse.IsActive;
+                    objAddress.IsDeleted = objAddressResponse.IsDeleted;
+
                     objAddress.UseUserAddress = false;
                     objAddress.UseVerifiedAddress = false;
                     objAddress.BadAddress = objAddressResponse.BadAddress;
@@ -123,7 +125,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndAddress.CreatedOn = DateTime.Now;
                     objIndAddress.IndividualId = individualID;
                     objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
-                    objIndAddress.IsActive = true;
+                    objIndAddress.IsActive = objAddressResponse.IsActive;
+                    objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
                     objIndAddress.BeginDate = DateTime.Now;
 
                     objIndAddressBAL.Save_IndividualAddress(objIndAddress);

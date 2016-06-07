@@ -528,6 +528,7 @@ namespace LAPP.BAL.Renewal
                                         objCehCourse.CECourseStatusId = objCehResponse.CECourseStatusId;
                                         objCehCourse.CECourseTypeId = objCehResponse.CECourseTypeId;
                                         objCehCourse.CECourseActivityTypeId = objCehResponse.CECourseActivityTypeId;
+                                        objCehCourse.IndividualLicenseId = objCehResponse.IndividualLicenseId;
                                         objCECourseBAL.Save_IndividualCECourse(objCehCourse);
 
                                     }
@@ -551,6 +552,7 @@ namespace LAPP.BAL.Renewal
                                     objCehCourse.CECourseStatusId = objCehResponse.CECourseStatusId;
                                     objCehCourse.CECourseTypeId = objCehResponse.CECourseTypeId;
                                     objCehCourse.CECourseActivityTypeId = objCehResponse.CECourseActivityTypeId;
+                                    objCehCourse.IndividualLicenseId = objCehResponse.IndividualLicenseId;
                                     objCECourseBAL.Save_IndividualCECourse(objCehCourse);
 
                                 }
@@ -1974,6 +1976,7 @@ namespace LAPP.BAL.Renewal
                                 IndividualCECourseId = obj.IndividualCECourseId,
                                 IndividualId = obj.IndividualId,
                                 InstructorBiography = obj.InstructorBiography,
+                                IndividualLicenseId = obj.IndividualLicenseId,
                                 IsActive = obj.IsActive,
                                 ProgramSponsor = obj.ProgramSponsor,
                                 ReferenceNumber = obj.ReferenceNumber

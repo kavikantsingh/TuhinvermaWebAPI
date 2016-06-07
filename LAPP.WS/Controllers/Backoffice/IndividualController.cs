@@ -346,6 +346,9 @@ namespace LAPP.WS.Controllers.Backoffice
         [ActionName("IndividualSave")]
         public IndividualResponseRequest IndividualSave(string Key, IndividualResponse objIndividual)
         {
+            if (objIndividual == null)
+                throw new Exception("Request object is not matching with API signature. Please compare with API signature.");
+
             int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
 
             LogingHelper.SaveAuditInfo(Key);
@@ -363,6 +366,21 @@ namespace LAPP.WS.Controllers.Backoffice
             try
             {
                 string ValidationResponse = "";// IndividualAddressValidate.ValidateIndividualAddressObject(objIndividualAddress);
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividual);
+                        LogingHelper.SaveRequestJson(requestStr, "Save Individual Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ProcessPayment object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
                 {
@@ -963,6 +981,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         CourseNameTitle = obj.CourseNameTitle,
                         CourseSponsor = obj.CourseSponsor,
                         IndividualCECourseId = obj.IndividualCECourseId,
+                        IndividualLicenseId = obj.IndividualLicenseId,
                         IndividualId = obj.IndividualId,
                         InstructorBiography = obj.InstructorBiography,
                         IsActive = obj.IsActive,

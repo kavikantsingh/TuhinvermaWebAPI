@@ -37,7 +37,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualLicense.LicenseEffectiveDate = objIndividualLicensePostResponse.LicenseEffectiveDate;
                     objIndividualLicense.LicenseExpirationDate = objIndividualLicensePostResponse.LicenseExpirationDate;
                     objIndividualLicense.LicenseStatusTypeId = objIndividualLicensePostResponse.LicenseStatusTypeId;
-
+                    objIndividualLicense.IsActive = objIndividualLicensePostResponse.IsActive;
+                    objIndividualLicense.IsDeleted = objIndividualLicensePostResponse.IsDeleted;
                     objIndividualLicense.ModifiedBy = objToken.UserId;
                     objIndividualLicense.ModifiedOn = DateTime.Now;
 
@@ -70,8 +71,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualLicense.LicenseEffectiveDate = objIndividualLicensePostResponse.LicenseEffectiveDate;
                     objIndividualLicense.LicenseExpirationDate = objIndividualLicensePostResponse.LicenseExpirationDate;
                     objIndividualLicense.LicenseStatusTypeId = objIndividualLicensePostResponse.LicenseStatusTypeId;
-                    objIndividualLicense.IsDeleted = false;
-                    objIndividualLicense.IsActive = true;
+                    objIndividualLicense.IsActive = objIndividualLicensePostResponse.IsActive;
+                    objIndividualLicense.IsDeleted = objIndividualLicensePostResponse.IsDeleted;
                     objIndividualLicense.CreatedBy = objToken.UserId;
                     objIndividualLicense.CreatedOn = DateTime.Now;
                     objIndividualLicense.IndividualLicenseGuid = Guid.NewGuid().ToString();

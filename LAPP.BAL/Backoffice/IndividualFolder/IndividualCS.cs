@@ -42,6 +42,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividual.SSN = objIndividualPostResponse.SSN;
                     objIndividual.Weight = objIndividualPostResponse.Weight;
                     objIndividual.IsActive = objIndividualPostResponse.IsActive;
+                    objIndividual.IsDeleted = objIndividualPostResponse.IsDeleted;
                     objIndividual.IsArchived = objIndividualPostResponse.IsArchived;
 
                     objIndividual.ModifiedBy = objToken.UserId;
@@ -57,31 +58,38 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualOther = objIndividualOtherBAL.Get_IndividualOther_By_IndividualId(objIndividualPostResponse.IndividualId);
                     if (objIndividualOther != null)
                     {
-                        objIndividualOther.IndividualId = objIndividualPostResponse.IndividualId;
-                        objIndividualOther.IsNameChanged = objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.IndividualId = individualId;
                         objIndividualOther.ModifiedBy = objToken.UserId;
                         objIndividualOther.ModifiedOn = DateTime.Now;
-                        objIndividualOther.Picture = objIndividualPostResponse.Picture;
-                        objIndividualOther.PlaceofBirthCity = objIndividualPostResponse.PlaceofBirthCity;
-                        objIndividualOther.PlaceofBirthCountry = objIndividualPostResponse.PlaceofBirthCountry;
-                        objIndividualOther.PlaceofBirthState = objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOther.Picture = String.IsNullOrEmpty(objIndividualPostResponse.Picture) ? "" : objIndividualPostResponse.Picture;
+                        objIndividualOther.PlaceofBirthCity = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthCity) ? "" : objIndividualPostResponse.PlaceofBirthCity;
+                        objIndividualOther.PlaceofBirthCountry = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthCountry.ToString()) ? 0 : objIndividualPostResponse.PlaceofBirthCountry;
+                        objIndividualOther.PlaceofBirthState = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthState) ? "" : objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOther.IsNameChanged = String.IsNullOrEmpty(objIndividualPostResponse.IsNameChanged.ToString()) ? false : objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.IsActive = String.IsNullOrEmpty(objIndividualPostResponse.IsActive.ToString()) ? false : objIndividualPostResponse.IsActive;
+                        objIndividualOther.IsDeleted = String.IsNullOrEmpty(objIndividualPostResponse.IsDeleted.ToString()) ? false : objIndividualPostResponse.IsDeleted;
+
                         objIndividualOtherBAL.Save_IndividualOther(objIndividualOther);
                     }
                     else
                     {
+                        objIndividualOther = new IndividualOther();
                         objIndividualOther.CreatedBy = objToken.UserId;
                         objIndividualOther.CreatedOn = DateTime.Now;
-                        objIndividualOther.IndividualId = objIndividualPostResponse.IndividualId;
+                        objIndividualOther.IndividualId = individualId;
                         objIndividualOther.IndividualOtherGuid = Guid.NewGuid().ToString();
-                        objIndividualOther.IsActive = true;
-                        objIndividualOther.IsDeleted = false;
-                        objIndividualOther.IsNameChanged = objIndividualPostResponse.IsNameChanged;
                         objIndividualOther.ModifiedBy = null;
                         objIndividualOther.ModifiedOn = null;
-                        objIndividualOther.Picture = objIndividualPostResponse.Picture;
-                        objIndividualOther.PlaceofBirthCity = objIndividualPostResponse.PlaceofBirthCity;
-                        objIndividualOther.PlaceofBirthCountry = objIndividualPostResponse.PlaceofBirthCountry;
-                        objIndividualOther.PlaceofBirthState = objIndividualPostResponse.PlaceofBirthState;
+
+                        objIndividualOther.Picture = String.IsNullOrEmpty(objIndividualPostResponse.Picture) ? "" : objIndividualPostResponse.Picture;
+                        objIndividualOther.PlaceofBirthCity = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthCity) ? "" : objIndividualPostResponse.PlaceofBirthCity;
+                        objIndividualOther.PlaceofBirthCountry = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthCountry.ToString()) ? 0 : objIndividualPostResponse.PlaceofBirthCountry;
+                        objIndividualOther.PlaceofBirthState = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthState) ? "" : objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOther.IsNameChanged = String.IsNullOrEmpty(objIndividualPostResponse.IsNameChanged.ToString()) ? false : objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.IsActive = String.IsNullOrEmpty(objIndividualPostResponse.IsActive.ToString()) ? false : objIndividualPostResponse.IsActive;
+                        objIndividualOther.IsDeleted = String.IsNullOrEmpty(objIndividualPostResponse.IsDeleted.ToString()) ? false : objIndividualPostResponse.IsDeleted;
+
+
                         objIndividualOtherBAL.Save_IndividualOther(objIndividualOther);
 
                     }
@@ -123,7 +131,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividual.Weight = objIndividualPostResponse.Weight;
                     objIndividual.IsActive = objIndividualPostResponse.IsActive;
                     objIndividual.IsArchived = objIndividualPostResponse.IsArchived;
-                    objIndividual.IsDeleted = false;
+                    objIndividual.IsDeleted = objIndividualPostResponse.IsDeleted;
                     objIndividual.CreatedBy = objToken.UserId;
                     objIndividual.CreatedOn = DateTime.Now;
                     objIndividual.IndividualGuid = Guid.NewGuid().ToString();
@@ -142,14 +150,19 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndividualOther = objIndividualOtherBAL.Get_IndividualOther_By_IndividualId(objIndividualPostResponse.IndividualId);
                     if (objIndividualOther != null)
                     {
-                        objIndividualOther.IndividualId = objIndividualPostResponse.IndividualId;
-                        objIndividualOther.IsNameChanged = objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.IndividualId = individualId;
                         objIndividualOther.ModifiedBy = objToken.UserId;
                         objIndividualOther.ModifiedOn = DateTime.Now;
-                        objIndividualOther.Picture = objIndividualPostResponse.Picture;
-                        objIndividualOther.PlaceofBirthCity = objIndividualPostResponse.PlaceofBirthCity;
-                        objIndividualOther.PlaceofBirthCountry = objIndividualPostResponse.PlaceofBirthCountry;
-                        objIndividualOther.PlaceofBirthState = objIndividualPostResponse.PlaceofBirthState;
+
+                        objIndividualOther.Picture = String.IsNullOrEmpty(objIndividualPostResponse.Picture) ? "" : objIndividualPostResponse.Picture;
+                        objIndividualOther.PlaceofBirthCity = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthCity) ? "" : objIndividualPostResponse.PlaceofBirthCity;
+                        objIndividualOther.PlaceofBirthCountry = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthCountry.ToString()) ? 0 : objIndividualPostResponse.PlaceofBirthCountry;
+                        objIndividualOther.PlaceofBirthState = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthState) ? "" : objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOther.IsNameChanged = String.IsNullOrEmpty(objIndividualPostResponse.IsNameChanged.ToString()) ? false : objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.IsActive = String.IsNullOrEmpty(objIndividualPostResponse.IsActive.ToString()) ? false : objIndividualPostResponse.IsActive;
+                        objIndividualOther.IsDeleted = String.IsNullOrEmpty(objIndividualPostResponse.IsDeleted.ToString()) ? false : objIndividualPostResponse.IsDeleted;
+
+
                         objIndividualOtherBAL.Save_IndividualOther(objIndividualOther);
                     }
                     else
@@ -157,17 +170,19 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         objIndividualOther = new IndividualOther();
                         objIndividualOther.CreatedBy = objToken.UserId;
                         objIndividualOther.CreatedOn = DateTime.Now;
-                        objIndividualOther.IndividualId = objIndividualPostResponse.IndividualId;
+                        objIndividualOther.IndividualId = individualId;
                         objIndividualOther.IndividualOtherGuid = Guid.NewGuid().ToString();
-                        objIndividualOther.IsActive = true;
-                        objIndividualOther.IsDeleted = false;
-                        objIndividualOther.IsNameChanged = objIndividualPostResponse.IsNameChanged;
+
                         objIndividualOther.ModifiedBy = null;
                         objIndividualOther.ModifiedOn = null;
-                        objIndividualOther.Picture = objIndividualPostResponse.Picture;
-                        objIndividualOther.PlaceofBirthCity = objIndividualPostResponse.PlaceofBirthCity;
-                        objIndividualOther.PlaceofBirthCountry = objIndividualPostResponse.PlaceofBirthCountry;
-                        objIndividualOther.PlaceofBirthState = objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOther.Picture = String.IsNullOrEmpty(objIndividualPostResponse.Picture) ? "" : objIndividualPostResponse.Picture;
+                        objIndividualOther.PlaceofBirthCity = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthCity) ? "" : objIndividualPostResponse.PlaceofBirthCity;
+                        objIndividualOther.PlaceofBirthCountry = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthCountry.ToString()) ? 0 : objIndividualPostResponse.PlaceofBirthCountry;
+                        objIndividualOther.PlaceofBirthState = String.IsNullOrEmpty(objIndividualPostResponse.PlaceofBirthState) ? "" : objIndividualPostResponse.PlaceofBirthState;
+                        objIndividualOther.IsNameChanged = String.IsNullOrEmpty(objIndividualPostResponse.IsNameChanged.ToString()) ? false : objIndividualPostResponse.IsNameChanged;
+                        objIndividualOther.IsActive = String.IsNullOrEmpty(objIndividualPostResponse.IsActive.ToString()) ? false : objIndividualPostResponse.IsActive;
+                        objIndividualOther.IsDeleted = String.IsNullOrEmpty(objIndividualPostResponse.IsDeleted.ToString()) ? false : objIndividualPostResponse.IsDeleted;
+
                         objIndividualOtherBAL.Save_IndividualOther(objIndividualOther);
 
                     }

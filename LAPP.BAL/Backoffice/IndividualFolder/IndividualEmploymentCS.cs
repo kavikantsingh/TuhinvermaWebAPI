@@ -38,7 +38,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         objProvider.ModifiedBy = objToken.UserId;
                         objProvider.ModifiedOn = DateTime.Now;
                         objProvider.ProviderName = objEmploymentResponse.EmployerName;
-
+                        objProvider.IsActive = objEmploymentResponse.IsActive;
+                        objProvider.IsDeleted = objEmploymentResponse.IsDeleted;
                         objProviderBAL.Save_Provider(objProvider);
                     }
 
@@ -58,7 +59,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndEmployment.ModifiedBy = objToken.UserId;
                     objIndEmployment.ModifiedOn = DateTime.Now;
                     objIndEmployment.EmployerName = objEmploymentResponse.EmployerName;
-
+                    objIndEmployment.IsActive = objEmploymentResponse.IsActive;
+                    objIndEmployment.IsDeleted = objEmploymentResponse.IsDeleted;
                     objIndEmployment.IndividualEmploymentId = objIndividualEmploymentBAL.Save_IndividualEmployment(objIndEmployment);
 
                     //SAVE LOG
@@ -88,8 +90,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objProvider.DepartmentId = 2;
                     objProvider.CreatedBy = objToken.UserId;
                     objProvider.CreatedOn = DateTime.Now;
-                    objProvider.IsActive = true;
-                    objProvider.IsDeleted = false;
+                    objProvider.IsActive = objEmploymentResponse.IsActive;
+                    objProvider.IsDeleted = objEmploymentResponse.IsDeleted;
                     objProvider.IsEnabled = true;
                     objProvider.LicenseNumber = "";
                     objProvider.OwnershipCompany = "";
@@ -115,8 +117,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndEmployment.CreatedBy = objToken.UserId;
                     objIndEmployment.CreatedOn = DateTime.Now;
                     objIndEmployment.EmploymentStartDate = DateTime.Now;
-                    objIndEmployment.IsActive = true;
-                    objIndEmployment.IsDeleted = false;
+                    objIndEmployment.IsActive = objEmploymentResponse.IsActive;
+                    objIndEmployment.IsDeleted = objEmploymentResponse.IsDeleted;
                     objIndEmployment.EmploymentHistoryTypeId = 1;
                     objIndEmployment.IndividualEmploymentGuid = Guid.NewGuid().ToString();
                     objIndEmployment.ApplicationId = objEmploymentResponse.ApplicationId;
@@ -180,6 +182,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                                 objAddress.StateCode = objAddressResponse.StateCode;
                                 objAddress.Zip = objAddressResponse.Zip;
                                 objAddress.BadAddress = objAddressResponse.BadAddress;
+                                objAddress.IsActive = objAddressResponse.IsActive;
+                                objAddress.IsDeleted = objAddressResponse.IsDeleted;
                                 objAddress.ModifiedBy = objToken.UserId;
                                 objAddress.ModifiedOn = DateTime.Now;
 
@@ -199,6 +203,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                                     objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
                                     objIndAddress.ModifiedBy = objToken.UserId;
                                     objIndAddress.ModifiedOn = DateTime.Now;
+                                    objIndAddress.IsActive = objAddressResponse.IsActive;
+                                    objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
                                     objIndAddress.IndividualId = objEmploymentResponse.IndividualId;
                                     objIndAddress.IndividualEmploymentAddressGuid = Guid.NewGuid().ToString();
                                     objIndAddress.IndividualEmploymentId = objEmploymentResponse.IndividualEmploymentId;
@@ -218,8 +224,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objAddress.Authenticator = Guid.NewGuid().ToString();
                             objAddress.CountryId = 235;
 
-                            objAddress.IsActive = true;
-                            objAddress.IsDeleted = false;
+                            objAddress.IsActive = objAddressResponse.IsActive;
+                            objAddress.IsDeleted = objAddressResponse.IsDeleted;
                             objAddress.UseUserAddress = false;
                             objAddress.UseVerifiedAddress = false;
 
@@ -246,7 +252,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objIndAddress.CreatedOn = DateTime.Now;
                             objIndAddress.IndividualId = objEmploymentResponse.IndividualId;
                             objIndAddress.IndividualEmploymentAddressGuid = Guid.NewGuid().ToString();
-                            objIndAddress.IsActive = true;
+                            objIndAddress.IsActive = objAddressResponse.IsActive;
+                            objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
                             objIndAddress.BeginDate = DateTime.Now;
                             objIndAddress.IndividualEmploymentId = objEmploymentResponse.IndividualEmploymentId;
                             objIndAddress.IndividualEmploymentAddressId = objIndAddressBAL.Save_IndividualEmploymentAddress(objIndAddress);
@@ -276,6 +283,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             if (objContact != null)
                             {
                                 objContact.Code = objContactResponse.Code;
+                                objContact.IsDeleted = objContactResponse.IsDeleted;
+                                objContact.IsActive = objContactResponse.IsActive;
                                 objContact.ContactFirstName = "";
                                 objContact.ContactLastName = "";
                                 objContact.ContactMiddleName = "";
@@ -299,7 +308,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                                     objIndContact.ContactTypeId = objContactResponse.ContactTypeId;
                                     objIndContact.IsPreferredContact = objContactResponse.IsPreferredContact;
                                     objIndContact.IsMobile = objContactResponse.IsMobile;
-
+                                    objIndContact.IsDeleted = objContactResponse.IsDeleted;
+                                    objIndContact.IsActive = objContactResponse.IsActive;
                                     objIndContact.ModifiedBy = objToken.UserId;
                                     objIndContact.ModifiedOn = DateTime.Now;
                                     objIndContact.IndividualId = objEmploymentResponse.IndividualId;
@@ -319,8 +329,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objContact.ContactGuid = Guid.NewGuid().ToString();
                             objContact.Authenticator = Guid.NewGuid().ToString();
 
-                            objContact.IsActive = true;
-                            objContact.IsDeleted = false;
+                            objContact.IsDeleted = objContactResponse.IsDeleted;
+                            objContact.IsActive = objContactResponse.IsActive;
                             objContact.Code = objContactResponse.Code;
                             objContact.ContactFirstName = "";
                             objContact.ContactLastName = "";
@@ -343,7 +353,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objIndContact.ContactTypeId = objContactResponse.ContactTypeId;
                             objIndContact.IsPreferredContact = objContactResponse.IsPreferredContact;
                             objIndContact.IsMobile = objContactResponse.IsMobile;
-                            objIndContact.IsActive = true;
+                            objIndContact.IsDeleted = objContactResponse.IsDeleted;
+                            objIndContact.IsActive = objContactResponse.IsActive;
                             objIndContact.BeginDate = DateTime.Now;
                             objIndContact.ModifiedBy = objToken.UserId;
                             objIndContact.ModifiedOn = DateTime.Now;
