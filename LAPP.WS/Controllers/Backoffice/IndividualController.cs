@@ -60,6 +60,22 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualAddress);
+                        LogingHelper.SaveRequestJson(requestStr, "Save Individual Address Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "SaveIndividualAddress object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
                 string ValidationResponse = IndividualValidations.ValidateIndividualAddressObject(objIndividualAddress);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
@@ -471,6 +487,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         ExternalId = obj.ExternalId,
                         ExternalId2 = obj.ExternalId2,
                         IsArchived = obj.IsArchived,
+                        Name = obj.Name,
 
                         StatusColorCode = obj.StatusColorCode,
                         LicenseStatusTypeName = obj.LicenseStatusTypeName,
@@ -478,6 +495,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         LicenseTypeId = obj.LicenseTypeId,
                         LicenseTypeName = obj.LicenseTypeName,
                         LicenseStatusTypeId = obj.LicenseStatusTypeId,
+                        OriginalLicenseDate = obj.OriginalLicenseDate,
                         IsNameChanged = obj.IsNameChanged,
                         PlaceofBirthCity = obj.PlaceofBirthCity,
                         PlaceofBirthState = obj.PlaceofBirthState,
@@ -748,6 +766,22 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.IndividualNameResponse = null;
                 return objResponse;
             }
+
+            try
+            {
+                if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                {
+                    // this is executed only in the debug version
+                    string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualName);
+                    LogingHelper.SaveRequestJson(requestStr, "Save Individual Name Request");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "SaveIndividualName object serialization", ENTITY.Enumeration.eSeverity.Critical);
+            }
+
             try
             {
                 string ValidationResponse = "";// IndividualNameAddressValidate.ValidateIndividualNameAddressObject(objIndividualNameAddress);
@@ -897,6 +931,21 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualCECourse);
+                        LogingHelper.SaveRequestJson(requestStr, "Save Individual Education Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "SaveIndividualEducation object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
                 string ValidationResponse = "";// IndividualCECourseValidate.ValidateIndividualCECourseObject(objIndividualCECourse);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
@@ -1051,6 +1100,21 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualEmployment);
+                        LogingHelper.SaveRequestJson(requestStr, "Save Individual Employment Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "SaveIndividualEmployment object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
                 string ValidationResponse = "";// IndividualEmploymentValidate.ValidateIndividualEmploymentObject(objIndividualEmployment);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
@@ -1372,6 +1436,21 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualLicense);
+                        LogingHelper.SaveRequestJson(requestStr, "IndividualLicenseSave Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualLicenseSave object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
                 string ValidationResponse = "";// IndividualLicenseAddressValidate.ValidateIndividualLicenseAddressObject(objIndividualLicenseAddress);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
@@ -2614,6 +2693,22 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualContact);
+                        LogingHelper.SaveRequestJson(requestStr, "IndividualContactSave Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualContactSave object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
                 string ValidationResponse = "";//IndividualValidations.ValidateIndividualContactObject(objIndividualContact);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
@@ -2944,6 +3039,22 @@ namespace LAPP.WS.Controllers.Backoffice
 
             try
             {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualCommentLogRequest);
+                        LogingHelper.SaveRequestJson(requestStr, "IndividualCommentLogSave Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCommentLogSave object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
                 string ValidationResponse = "";//IndividualValidations.ValidateIndividualCommentLog(lstDocumentToUpload, objIndividualCommentLogResponse.IndividualId);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
@@ -3098,6 +3209,21 @@ namespace LAPP.WS.Controllers.Backoffice
 
             try
             {
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualCommentLogRequest);
+                        LogingHelper.SaveRequestJson(requestStr, "IndividualLogSave Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualLogSave object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
                 string ValidationResponse = "";//IndividualValidations.ValidateIndividualCommentLog(lstDocumentToUpload, objIndividualCommentLogResponse.IndividualId);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
@@ -3259,6 +3385,21 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objCommunicationLog);
+                        LogingHelper.SaveRequestJson(requestStr, "Individual Communication Save Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCommunicationSave object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
                 string ValidationResponse = "";//IndividualValidations.ValidateIndividualCommentLog(lstDocumentToUpload, objIndividualCommentLogResponse.IndividualId);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
@@ -3404,6 +3545,22 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualLegalResponse);
+                        LogingHelper.SaveRequestJson(requestStr, "Save Individual Legal Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "SaveIndividualLegal object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
                 string ValidationResponse = "";//IndividualValidations.ValidateIndividualCommentLog(lstDocumentToUpload, objIndividualCommentLogResponse.IndividualId);
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
