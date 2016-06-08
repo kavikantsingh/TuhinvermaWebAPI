@@ -178,7 +178,259 @@ namespace LAPP.WS.Controllers.Backoffice
 
             return objResponse;
         }
-        }
+
+        /// <summary>
+        /// Get Method to get Content by key, ContentItemLkCode and ContentItemHash.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ContentItemLkCode">Content Item Link Code.</param>
+        /// <param name="ContentItemHash">Content Item Link Hash.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ContentGetBYContentItemLkCodeAndItemHash")]
+        public ContentItemLkResponse ContentGetBYContentItemLkCodeAndItemHash(string Key, string ContentItemLkCode, int ContentItemHash)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ContentItemLkResponse objResponse = new ContentItemLkResponse();
+            ContentItemLkBAL objBAL = new ContentItemLkBAL();
+            ContentItemLk objEntity = new ContentItemLk();
+            List<ContentItemLk> lstContent = new List<ContentItemLk>();
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ContentItemLk = null;
+                    return objResponse;
+                }
+                objEntity = objBAL.Get_ContentItemLk_By_ContentItemLkCode_And_ContentItemLkHash(ContentItemLkCode, ContentItemHash);
+                if (objEntity != null)
+                {
+                    lstContent.Add(objEntity);
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    {
+                        ContentItemLkDesc = Cont.ContentItemLkDesc
+                    }
+                    ).ToList();
+                    objResponse.ContentItemLk = lstContentItemLkSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ContentItemLk = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ContentGetBYContentItemLkCodeAndItemHash", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ContentItemLk = null;
+            }
+            return objResponse;
         }
 
+        /// <summary>
+        /// Get Method to get Content by key and ContentItemLkCode.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ContentItemLkCode">Content Item Link Code.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ContentGetBYContentItemLkCode")]
+        public ContentItemLkResponse ContentGetBYContentItemLkCode(string Key, string ContentItemLkCode)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ContentItemLkResponse objResponse = new ContentItemLkResponse();
+            ContentItemLkBAL objBAL = new ContentItemLkBAL();
+            ContentItemLk objEntity = new ContentItemLk();
+            List<ContentItemLk> lstContent = new List<ContentItemLk>();
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ContentItemLk = null;
+                    return objResponse;
+                }
+                lstContent = objBAL.Get_ContentItemLk_By_ContentItemLkCode(ContentItemLkCode);
+                if (lstContent != null && lstContent.Count > 0)
+                {
+                    //lstContent.Add(objEntity);
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    {
+                        ContentItemHash = Cont.ContentItemHash,
+                        ContentItemLkDesc = Cont.ContentItemLkDesc
+                    }
+                    ).ToList();
+                    objResponse.ContentItemLk = lstContentItemLkSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ContentItemLk = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ContentGetBYContentItemLkCode", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ContentItemLk = null;
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// Get Method to get Content by key and ContentLkToPageTabSectionId.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ContentLkToPageTabSectionId">Content Link To PageTabSectionId.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ContentGetBYContentLkToPageTabSectionId")]
+        public ContentItemLkResponse ContentGetBYContentLkToPageTabSectionId(string Key, int ContentLkToPageTabSectionId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ContentItemLkResponse objResponse = new ContentItemLkResponse();
+            ContentItemLkBAL objBAL = new ContentItemLkBAL();
+            ContentItemLk objEntity = new ContentItemLk();
+            List<ContentItemLk> lstContent = new List<ContentItemLk>();
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ContentItemLk = null;
+                    return objResponse;
+                }
+                lstContent = objBAL.Get_ContentItemLk_By_ContentLkToPageTabSectionId(ContentLkToPageTabSectionId);
+                if (lstContent != null && lstContent.Count > 0)
+                {
+                    //lstContent.Add(objEntity);
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    {
+                        ContentItemHash = Cont.ContentItemHash,
+                        ContentItemLkDesc = Cont.ContentItemLkDesc
+                    }
+                    ).ToList();
+                    objResponse.ContentItemLk = lstContentItemLkSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ContentItemLk = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ContentGetBYContentLkToPageTabSectionId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ContentItemLk = null;
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// Get Method to get Content by key and ContentItemLkId.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ContentItemLkId">Content Link Id.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ContentGetBYContentItemLkId")]
+        public ContentItemLkResponse ContentGetBYContentItemLkId(string Key, int ContentItemLkId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ContentItemLkResponse objResponse = new ContentItemLkResponse();
+            ContentItemLkBAL objBAL = new ContentItemLkBAL();
+            ContentItemLk objEntity = new ContentItemLk();
+            List<ContentItemLk> lstContent = new List<ContentItemLk>();
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ContentItemLk = null;
+                    return objResponse;
+                }
+                objEntity = objBAL.Get_ContentItemLk_By_ContentItemLkId(ContentItemLkId);
+                if (objEntity != null)
+                {
+                    lstContent.Add(objEntity);
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    {
+                        ContentItemHash = Cont.ContentItemHash,
+                        ContentItemLkDesc = Cont.ContentItemLkDesc
+                    }
+                    ).ToList();
+                    objResponse.ContentItemLk = lstContentItemLkSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ContentItemLk = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ContentGetBYContentItemLkId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ContentItemLk = null;
+            }
+            return objResponse;
+        }
         #endregion
+    }
+}
+        

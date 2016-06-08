@@ -47,5 +47,10 @@ namespace LAPP.BAL
         {
             return objDal.Get_Individual_By_LastNameSSNCodeLicenseNumber(lastName, licenseNumber, SSNCode);
         }
+
+        public int Save_IndividualProvider(IndividualName objIndividual)
+        {
+            return objDal.Save_IndividualProvider(objIndividual);
+        }
     }
 }

@@ -477,5 +477,27 @@ namespace LAPP.DAL
             return objEntity;
 
         }
+
+
+        public int Save_IndividualProvider(IndividualName objIndividual)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("FirstName", objIndividual.FirstName.NullString()));
+            lstParameter.Add(new MySqlParameter("LastName", objIndividual.LastName.NullString()));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objIndividual.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", DateTime.Now));
+            lstParameter.Add(new MySqlParameter("IndividualNameTypeId", objIndividual.IndividualNameTypeId));
+            lstParameter.Add(new MySqlParameter("IndividualId", objIndividual.IndividualId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objIndividual.ProviderId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objIndividual.ApplicationId));
+            lstParameter.Add(new MySqlParameter("ProvIndvJobTitle", objIndividual.ProvIndvJobTitle));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualname_SaveIndividualProvider", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
     }
 }

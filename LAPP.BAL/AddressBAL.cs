@@ -20,11 +20,20 @@ namespace LAPP.BAL
         {
             return objDal.Get_All_address();
         }
-
-
+        
         public Address Get_address_By_AddressId(int ID)
         {
             return objDal.Get_address_By_AddressId(ID);
+        }
+
+        public int SaveAddressRequestFromSchoolInformationTab(Address objaddress)
+        {
+            return objDal.SaveAddressRequestFromSchoolInformationTab(objaddress);
+        }
+
+        public List<Address> GetAllPreviousAddress(int addressTypeId, int providerId)
+        {
+            return objDal.GetAllPreviousAddress(addressTypeId, providerId);
         }
 
     }

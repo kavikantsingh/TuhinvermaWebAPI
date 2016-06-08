@@ -688,6 +688,35 @@
             <param name="Key">API security key.</param>
             <param name="ID">Record ID.</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentGetBYContentItemLkCodeAndItemHash(System.String,System.String,System.Int32)">
+            <summary>
+            Get Method to get Content by key, ContentItemLkCode and ContentItemHash.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="ContentItemLkCode">Content Item Link Code.</param>
+            <param name="ContentItemHash">Content Item Link Hash.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentGetBYContentItemLkCode(System.String,System.String)">
+            <summary>
+            Get Method to get Content by key and ContentItemLkCode.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="ContentItemLkCode">Content Item Link Code.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentGetBYContentLkToPageTabSectionId(System.String,System.Int32)">
+            <summary>
+            Get Method to get Content by key and ContentLkToPageTabSectionId.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="ContentLkToPageTabSectionId">Content Link To PageTabSectionId.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentGetBYContentItemLkId(System.String,System.Int32)">
+            <summary>
+            Get Method to get Content by key and ContentItemLkId.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="ContentItemLkId">Content Link Id.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualAddressSave(System.String,LAPP.ENTITY.IndividualAddressResponse)">
             <summary>
             Save or Update the data For IndividualAddress
@@ -1094,6 +1123,42 @@
             <param name="ObjProviderLogin">Request object for Provider Login.</param>
             <param name="Key">API Security Key</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.CheckInitialTabActive(LAPP.ENTITY.ProviderInstructions)">
+            <summary>
+            This method is to return the current tab that is active and show tick to all other tabs
+            </summary>
+            <param name="objProviderInstruction">Request object for Provider Instruction.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveButtonOfInstructions(LAPP.ENTITY.ProviderInstructions)">
+            <summary>
+            Save button Click that get invoked from Save button click of Instructor tab of Application 
+            </summary>
+            <param name="objProviderInstruction">Request object for Provider Instruction.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.AddPreviousSchoolInSchoolInformation(LAPP.ENTITY.ProviderNames)">
+            <summary>
+            This method is to Add Previous Schools to the table
+            </summary>
+            <param name="objProviderNames">Request object for Provider Name.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveAddressRequestFromSchoolInformationTab(LAPP.ENTITY.Address)">
+            <summary>
+            This method is to Save the Address data comes in School Information 
+            </summary>
+            <param name="objAddress">Request object for Provider Instruction.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveSchoolInformation(LAPP.ENTITY.ProviderInformation)">
+            <summary>
+            This method is to Save the School Informations
+            </summary>
+            <param name="objSchoolInformation">Request object for Provider Instruction.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.GetAllSchoolInformationDetails(LAPP.ENTITY.ProviderInformation)">
+            <summary>
+            This method is to Save the School Informations
+            </summary>
+            <param name="objSchoolInformation">Request object for Provider Instruction.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Common.SourceController.SourceGetAll(System.String)">
             <summary>
             Looks up all data by Key For Source.
@@ -1274,50 +1339,6 @@
             </summary>
             <param name="Key">The Key of the data.</param>
             <param name="objLog">Object of Log</param>
-        </member>
-        <member name="T:LAPP.WS.Controllers.Renewal.RenewalController">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.IndividualRenewalGet(System.String,System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="Key"></param>
-            <param name="IndividualId"></param>
-            <returns></returns>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.IndividualRenewalSave(System.String,LAPP.ENTITY.IndividualRenewalResponse)">
-            <summary>
-            
-            </summary>
-            <param name="Key"></param>
-            <param name="objRenewalRequest"></param>
-            <returns></returns>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalGetAll(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="Key"></param>
-            <returns></returns>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearch(System.String,LAPP.ENTITY.RenewalApplication)">
-            <summary>
-            Method to Search Renewal by key and objSearch.
-            </summary>
-            <param name="Key">API security key.</param>
-            <param name="objSearch">Record ID.</param>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearchWithPager(System.String,LAPP.ENTITY.RenewalApplication,System.Int32,System.Int32,System.Boolean)">
-            <summary>
-            Method to Search Renewal by key and objSearch with pager.
-            </summary>
-            <param name="Key">API security key.</param>
-            <param name="objSearch">objSearch.</param>
-            <param name="PageNumber">CurrentPage.</param>
-            <param name="NoOfRecords">PagerSize.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.User.MenuController.MenuGetAll(System.String)">
             <summary>

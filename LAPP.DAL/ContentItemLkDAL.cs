@@ -72,6 +72,60 @@ namespace LAPP.DAL
             return objEntity;
         }
 
+        public ContentItemLk Get_ContentItemLk_By_ContentItemLkCode_And_ContentItemLkHash(string Code, int Hash)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ContentItemLkCode", Code));
+            lstParameter.Add(new MySqlParameter("ContentItemLkHash", Hash));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ContentItemLk_GET_BY_Code_And_Hash", lstParameter.ToArray());
+            ContentItemLk objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
+        public List<ContentItemLk> Get_ContentItemLk_By_ContentItemLkCode(string Code)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ContentItemLkCode", Code));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ContentItemLk_GET_BY_Code", lstParameter.ToArray());
+            List<ContentItemLk> lstEntity = new List<ContentItemLk>();
+            ContentItemLk objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        public List<ContentItemLk> Get_ContentItemLk_By_ContentLkToPageTabSectionId(int PageTabSectionId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ContentLkToPageTabSectionId", PageTabSectionId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ContentItemLk_GET_BY_PageTabSectionId", lstParameter.ToArray());
+            List<ContentItemLk> lstEntity = new List<ContentItemLk>();
+            ContentItemLk objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         private ContentItemLk FetchEntity(DataRow dr)
         {
             ContentItemLk objEntity = new ContentItemLk();
@@ -87,9 +141,9 @@ namespace LAPP.DAL
             {
                 objEntity.ContentItemLkCode = Convert.ToString(dr["ContentItemLkCode"]);
             }
-            if (dr.Table.Columns.Contains("ContentItemHash") && dr["ContentItemHash"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("ContentItem#") && dr["ContentItem#"] != DBNull.Value)
             {
-                objEntity.ContentItemHash = Convert.ToInt32(dr["ContentItemHash"]);
+                objEntity.ContentItemHash = Convert.ToInt32(dr["ContentItem#"]);
             }
             if (dr.Table.Columns.Contains("ContentItemLkDesc") && dr["ContentItemLkDesc"] != DBNull.Value)
             {

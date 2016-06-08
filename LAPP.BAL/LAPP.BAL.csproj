@@ -71,6 +71,8 @@
     <Compile Include="IndividualLogBAL.cs" />
     <Compile Include="IndividualCommentBAL.cs" />
     <Compile Include="ProviderIndividualNameBAL.cs" />
+    <Compile Include="ProviderInstructionBAL.cs" />
+    <Compile Include="ProviderNameBAL.cs" />
     <Compile Include="ProviderUserBAL.cs" />
     <Compile Include="RevFeeDueDtlBAL.cs" />
     <Compile Include="RevFeeDueBAL.cs" />

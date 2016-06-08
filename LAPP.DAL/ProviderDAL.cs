@@ -171,5 +171,41 @@ namespace LAPP.DAL
             return objEntity;
 
         }
+
+
+
+        public int SaveSchoolInformation(ProviderInformation objProvider)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            // lstParameter.Add(new MySqlParameter("ProviderId", objProvider.ProviderId));
+            // lstParameter.Add(new MySqlParameter("ProviderNumber", objProvider.ProviderNumber));
+            //lstParameter.Add(new MySqlParameter("DepartmentId", objProvider.DepartmentId));
+            // lstParameter.Add(new MySqlParameter("ProviderTypeId", objProvider.ProviderTypeId));
+            // lstParameter.Add(new MySqlParameter("ProviderName", objProvider.ProviderName));
+            //lstParameter.Add(new MySqlParameter("ProviderDBAName", objProvider.ProviderDBAName));
+            // lstParameter.Add(new MySqlParameter("LicenseNumber", objProvider.LicenseNumber));
+            // lstParameter.Add(new MySqlParameter("ProviderStatusTypeId", objProvider.ProviderStatusTypeId));
+            // lstParameter.Add(new MySqlParameter("OwnershipCompany", objProvider.OwnershipCompany));
+            // lstParameter.Add(new MySqlParameter("BillingNumber", objProvider.BillingNumber));
+            // lstParameter.Add(new MySqlParameter("ClosedDate", objProvider.ClosedDate));
+            // lstParameter.Add(new MySqlParameter("TaxId", objProvider.TaxId));
+            // lstParameter.Add(new MySqlParameter("ReferenceNumber", objProvider.ReferenceNumber));
+            // lstParameter.Add(new MySqlParameter("IsEnabled", objProvider.IsEnabled));
+            //  lstParameter.Add(new MySqlParameter("IsActive", objProvider.IsActive));
+            //  lstParameter.Add(new MySqlParameter("IsDeleted", objProvider.IsDeleted));
+            //  lstParameter.Add(new MySqlParameter("CreatedBy", objProvider.CreatedBy));
+            //  lstParameter.Add(new MySqlParameter("CreatedOn", objProvider.CreatedOn));
+            //  lstParameter.Add(new MySqlParameter("ModifiedBy", objProvider.ModifiedBy));
+            //  lstParameter.Add(new MySqlParameter("ModifiedOn", objProvider.ModifiedOn));
+            //   lstParameter.Add(new MySqlParameter("ProviderGuid", objProvider.ProviderGuid));
+            //   lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "Provider_Save", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
     }
 }

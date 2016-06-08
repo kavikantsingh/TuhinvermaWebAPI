@@ -27,5 +27,10 @@ namespace LAPP.BAL
             return objDal.Get_Provider_By_ProviderId(ID);
         }
 
+
+        public int SaveSchoolInformation(ProviderInformation objProvider)
+        {
+            return objDal.SaveSchoolInformation(objProvider);
+        }
     }
 }

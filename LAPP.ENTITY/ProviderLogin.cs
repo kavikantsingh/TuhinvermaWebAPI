@@ -28,4 +28,29 @@ namespace LAPP.ENTITY
         public string ApplicationStatus { get; set; }
         public string Key { get; set; }
     }
+
+    public class ProviderPreviousSchoolResponse : BaseEntityServiceResponse
+    {
+        public bool IsPasswordChange { get; set; }
+
+        public List<ProviderNames> ListOfPreviousSchool { get; set; }
+
+    }
+
+    public class ProviderAddressResponse : BaseEntityServiceResponse
+    {
+        public bool IsPasswordChange { get; set; }
+        public List<Address> ListOfPreviousAddress { get; set; }
+
+    }
+
+    public class ProviderOnLoadResponse : BaseEntityServiceResponse
+    {
+        public bool IsPasswordChange { get; set; }
+        public ProviderInformation ProviderInformationDetails { get; set; }
+        public List<Address> ListOfPreviousAddress { get; set; }
+        public List<ProviderNames> ListOfPreviousSchool { get; set; }
+        public List<Address> ListOfSatliteSchool { get; set; }
+
+    }
 }

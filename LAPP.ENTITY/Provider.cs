@@ -5,18 +5,27 @@ using System.Text;
 
 namespace LAPP.ENTITY
 {
-    public class Provider : ProviderResponse
+    public class ProviderNames : ProviderResponse
 
     {
+        public int ProviderNameId { get; set; }
+        public int ApplicationId { get; set; }
+        public int IndividualId { get; set; }
+        public string ProviderName { get; set; }
+        public DateTime DateofNameChange { get; set; }
+        public int ProviderNameStatusId { get; set; }
+        public int ProviderNameTypeId { get; set; }
+        public string ReferenceNumber { get; set; }
+        public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
-        public string ProviderGuid { get; set; }
+        public string ProviderNameGuid { get; set; }
     }
 
-    public class ProviderResponse : BaseEntity
+    public class ProviderNameResponse : BaseEntity
 
     {
         public int ProviderId { get; set; }
@@ -36,9 +45,20 @@ namespace LAPP.ENTITY
         public bool IsActive { get; set; }
     }
 
-
-    public class ProviderResponseRequest : BaseEntityServiceResponse
+    public class MyTest
     {
-        public List<ProviderResponse> ProviderResponseList { get; set; }
+        public int ApplicationId { get; set; }
+        public DateTime DateofNameChange { get; set; }
+        public string ProviderName { get; set; }
+
+        public static implicit operator MyTest(List<object> v)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ProviderNameResponseRequest : BaseEntityServiceResponse
+    {
+        public List<ProviderNameResponse> ProviderNameResponseList { get; set; }
     }
 }
