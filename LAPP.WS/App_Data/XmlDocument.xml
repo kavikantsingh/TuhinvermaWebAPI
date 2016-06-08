@@ -1340,6 +1340,50 @@
             <param name="Key">The Key of the data.</param>
             <param name="objLog">Object of Log</param>
         </member>
+        <member name="T:LAPP.WS.Controllers.Renewal.RenewalController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.IndividualRenewalGet(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="IndividualId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.IndividualRenewalSave(System.String,LAPP.ENTITY.IndividualRenewalResponse)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <param name="objRenewalRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalGetAll(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearch(System.String,LAPP.ENTITY.RenewalApplication)">
+            <summary>
+            Method to Search Renewal by key and objSearch.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="objSearch">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.RenewalSearchWithPager(System.String,LAPP.ENTITY.RenewalApplication,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Method to Search Renewal by key and objSearch with pager.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="objSearch">objSearch.</param>
+            <param name="PageNumber">CurrentPage.</param>
+            <param name="NoOfRecords">PagerSize.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.User.MenuController.MenuGetAll(System.String)">
             <summary>
             Looks up all data by Key For Menu.
