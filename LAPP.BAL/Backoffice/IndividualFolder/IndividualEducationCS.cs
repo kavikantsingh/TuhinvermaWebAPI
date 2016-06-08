@@ -48,7 +48,6 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objCehCourse.IsActive = objCECourseResponse.IsActive;
                     objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
                     objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
-                    // objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
 
                     objCehCourse.ModifiedBy = objToken.UserId;
                     objCehCourse.ModifiedOn = DateTime.Now;
@@ -90,12 +89,16 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objCehCourse.InstructorBiography = objCECourseResponse.InstructorBiography;
                     objCehCourse.ActivityDesc = objCECourseResponse.ActivityDesc;
                     objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
-                    objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
                     objCehCourse.IsActive = objCECourseResponse.IsActive;
                     objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
+                    objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
+
                     objCehCourse.CreatedBy = objToken.UserId;
                     objCehCourse.CreatedOn = DateTime.Now;
-                    objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
+                    objCehCourse.ModifiedBy = null;
+                    objCehCourse.ModifiedOn = null;
+                    objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
+
 
                     objCehCourse.IndividualCECourseId = objIndividualCECourseBAL.Save_IndividualCECourse(objCehCourse);
 
@@ -121,27 +124,27 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                 {
                     lstCeCourseResponse = lstIndividualCECourse.Select(obj => new IndividualCECourseResponse
                     {
-                        ActivityDesc = obj.ActivityDesc,
+                        IndividualCECourseId = obj.IndividualCECourseId,
+                        IndividualId = obj.IndividualId,
                         ApplicationId = obj.ApplicationId,
-                        CECourseActivityTypeId = obj.CECourseActivityTypeId,
-                        CECourseDate = obj.CECourseDate,
-                        CECourseDueDate = obj.CECourseDueDate,
-                        CECourseEndDate = obj.CECourseEndDate,
-                        CECourseHours = obj.CECourseHours,
-                        CECourseReportingYear = obj.CECourseReportingYear,
-                        CECourseStartDate = obj.CECourseStartDate,
-                        CECourseStatusId = obj.CECourseStatusId,
                         CECourseTypeId = obj.CECourseTypeId,
+                        CECourseActivityTypeId = obj.CECourseActivityTypeId,
+                        CECourseStartDate = obj.CECourseStartDate,
+                        CECourseEndDate = obj.CECourseEndDate,
+                        CECourseDueDate = obj.CECourseDueDate,
+                        CECourseDate = obj.CECourseDate,
+                        CECourseHours = obj.CECourseHours,
                         CECourseUnits = obj.CECourseUnits,
+                        ProgramSponsor = obj.ProgramSponsor,
                         CourseNameTitle = obj.CourseNameTitle,
                         CourseSponsor = obj.CourseSponsor,
-                        IndividualCECourseId = obj.IndividualCECourseId,
-                        IndividualLicenseId = obj.IndividualLicenseId,
-                        IndividualId = obj.IndividualId,
+                        CECourseReportingYear = obj.CECourseReportingYear,
+                        CECourseStatusId = obj.CECourseStatusId,
                         InstructorBiography = obj.InstructorBiography,
+                        ActivityDesc = obj.ActivityDesc,
+                        ReferenceNumber = obj.ReferenceNumber,
+                        IndividualLicenseId = obj.IndividualLicenseId,
                         IsActive = obj.IsActive,
-                        ProgramSponsor = obj.ProgramSponsor,
-                        ReferenceNumber = obj.ReferenceNumber
                     }).ToList();
                 }
 
