@@ -31,5 +31,20 @@ namespace LAPP.BAL
         {
             return objDal.Get_ContentItemLk_By_ContentItemLkId(ID);
         }
+
+        public ContentItemLk Get_ContentItemLk_By_ContentItemLkCode_And_ContentItemLkHash(string Code, int Hash)
+        {
+            return objDal.Get_ContentItemLk_By_ContentItemLkCode_And_ContentItemLkHash(Code, Hash);
+        }
+
+        public List<ContentItemLk> Get_ContentItemLk_By_ContentItemLkCode(string Code)
+        {
+            return objDal.Get_ContentItemLk_By_ContentItemLkCode(Code);
+        }
+
+        public List<ContentItemLk> Get_ContentItemLk_By_ContentLkToPageTabSectionId(int PageTabSectionId)
+        {
+            return objDal.Get_ContentItemLk_By_ContentLkToPageTabSectionId(PageTabSectionId);
+        }
     }
 }
