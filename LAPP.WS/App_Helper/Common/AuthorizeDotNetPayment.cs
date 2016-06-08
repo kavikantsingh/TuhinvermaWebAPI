@@ -10,6 +10,7 @@ using System.Net;
 using System.Web;
 using LAPP.BAL;
 using LAPP.DAL;
+using LAPP.BAL.Payment;
 
 namespace LAPP.WS.App_Helper.Common
 {
@@ -86,16 +87,16 @@ namespace LAPP.WS.App_Helper.Common
                 post_values.Add("x_delim_char", "|");
                 post_values.Add("x_relay_response", "FALSE");
 
-                post_values.Add("x_test_request", "FALSE");
-                //if ()
-                //{
-                //    post_values.Add("x_test_request", "TRUE");
-                //}
-                //else
-                //{
-                //    post_values.Add("x_test_request", "FALSE");
-                //}
-
+                if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                {
+                    post_values.Add("x_test_request", "TRUE");
+                }
+                else
+                {
+                    post_values.Add("x_test_request", "FALSE");
+                }
+                
+               
                 post_values.Add("x_type", "AUTH_CAPTURE");
                 post_values.Add("x_method", "CC");
 
@@ -222,120 +223,122 @@ namespace LAPP.WS.App_Helper.Common
 
                     if (objTrans != null)
                     {
-                        string ReceiptNumber = SerialsBAL.Get_Receipt_No();
-                        IndividualBAL objIndividualBAL = new IndividualBAL();
-                        Individual objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objTrans.IndividualId);
-                        if (objIndividual != null)
-                        {
+                        InitiatePayment.ProcessApprovedPayment(objTrans, objAuthResponse, objToken, objPaymentRequest.RequestedLicenseStatusTypeId);
+
+                        //string ReceiptNumber = SerialsBAL.Get_Receipt_No();
+                        //IndividualBAL objIndividualBAL = new IndividualBAL();
+                        //Individual objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objTrans.IndividualId);
+                        //if (objIndividual != null)
+                        //{
 
                             
-                            List<RevFeeDue> objFeedueList = objFeeDueBAL.Get_RevFeeDue_by_TransactionId(objTrans.TransactionId);
+                        //    List<RevFeeDue> objFeedueList = objFeeDueBAL.Get_RevFeeDue_by_TransactionId(objTrans.TransactionId);
 
-                            decimal AmountDue = objFeedueList.Sum(x => x.FeeAmount);
+                        //    decimal AmountDue = objFeedueList.Sum(x => x.FeeAmount);
 
-                            RevFeeCollectBAL objFeeCollectBAL = new RevFeeCollectBAL();
-                            RevFeeCollect objFeeCollect = new RevFeeCollect();
-                            objFeeCollect.ShoppingCartId = objTrans.ShoppingCartId;
-                            objFeeCollect.IndividualId = objTrans.IndividualId;
-                            objFeeCollect.ProviderId = 0;
+                        //    RevFeeCollectBAL objFeeCollectBAL = new RevFeeCollectBAL();
+                        //    RevFeeCollect objFeeCollect = new RevFeeCollect();
+                        //    objFeeCollect.ShoppingCartId = objTrans.ShoppingCartId;
+                        //    objFeeCollect.IndividualId = objTrans.IndividualId;
+                        //    objFeeCollect.ProviderId = 0;
 
-                            //IndividualLicenseBAL objIndividualLicenseBAL = new IndividualLicenseBAL();
-                            //IndividualLicense objIndiLicense = objIndividualLicenseBAL.get
+                        //    //IndividualLicenseBAL objIndividualLicenseBAL = new IndividualLicenseBAL();
+                        //    //IndividualLicense objIndiLicense = objIndividualLicenseBAL.get
 
-                            objFeeCollect.IndividualLicenseId = objTrans.IndividualLicenseId;
-                            objFeeCollect.LicenseTypeId = objTrans.LicenseTypeId;
-                            objFeeCollect.ReceiptNo = ReceiptNumber;
-                            objFeeCollect.AmountDue = AmountDue;
-                            objFeeCollect.PaymentMode = "OL";
-                            objFeeCollect.PaymentModeNumber = "";
-                            objFeeCollect.PaidAmount = Convert.ToDecimal(objAuthResponse.Amount);
-                            objFeeCollect.PaymentDate = DateTime.Now;
-                            objFeeCollect.InvoiceNo = objTrans.InvoiceNumber;
-                            objFeeCollect.UserDefinedRefNo = objTrans.InvoiceNumber;
-                            objFeeCollect.UserDefinedPaymentNo = ReceiptNumber;
-                            objFeeCollect.RevCollectFeeNum = "";
-                            objFeeCollect.RevFeePaidSource = "AuthDot";
-                            objFeeCollect.CardType = "";
-                            objFeeCollect.ConfirmationNo = objAuthResponse.Authorization_Code;
-                            objFeeCollect.TransactionRefNo = objAuthResponse.Transaction_ID;
-                            objFeeCollect.PaymentBankName = "";
-                            objFeeCollect.ControlNo = "";
-                            objFeeCollect.PaymentNo = "";
-                            objFeeCollect.ReferenceNumber = objAuthResponse.Transaction_ID;
-                            objFeeCollect.CreatedBy = CreatedBy;
-                            objFeeCollect.CreatedOn = DateTime.Now;
-                            objFeeCollect.RevFeeCollectGuid = Guid.NewGuid().ToString();
+                        //    objFeeCollect.IndividualLicenseId = objTrans.IndividualLicenseId;
+                        //    objFeeCollect.LicenseTypeId = objTrans.LicenseTypeId;
+                        //    objFeeCollect.ReceiptNo = ReceiptNumber;
+                        //    objFeeCollect.AmountDue = AmountDue;
+                        //    objFeeCollect.PaymentMode = "OL";
+                        //    objFeeCollect.PaymentModeNumber = "";
+                        //    objFeeCollect.PaidAmount = Convert.ToDecimal(objAuthResponse.Amount);
+                        //    objFeeCollect.PaymentDate = DateTime.Now;
+                        //    objFeeCollect.InvoiceNo = objTrans.InvoiceNumber;
+                        //    objFeeCollect.UserDefinedRefNo = objTrans.InvoiceNumber;
+                        //    objFeeCollect.UserDefinedPaymentNo = ReceiptNumber;
+                        //    objFeeCollect.RevCollectFeeNum = "";
+                        //    objFeeCollect.RevFeePaidSource = "AuthDot";
+                        //    objFeeCollect.CardType = "";
+                        //    objFeeCollect.ConfirmationNo = objAuthResponse.Authorization_Code;
+                        //    objFeeCollect.TransactionRefNo = objAuthResponse.Transaction_ID;
+                        //    objFeeCollect.PaymentBankName = "";
+                        //    objFeeCollect.ControlNo = "";
+                        //    objFeeCollect.PaymentNo = "";
+                        //    objFeeCollect.ReferenceNumber = objAuthResponse.Transaction_ID;
+                        //    objFeeCollect.CreatedBy = CreatedBy;
+                        //    objFeeCollect.CreatedOn = DateTime.Now;
+                        //    objFeeCollect.RevFeeCollectGuid = Guid.NewGuid().ToString();
 
-                            objFeeCollect.RevFeeCollectId = objFeeCollectBAL.Save_RevFeeCollect(objFeeCollect);
-
-
-                            RevFeeDisbBAL objFeeDisbBAL = new RevFeeDisbBAL();
-
-                            foreach (RevFeeDue FeeDue in objFeedueList)
-                            {
-
-                                RevFeeDisb objFeeDisb = new RevFeeDisb();
-                                objFeeDisb.TransactionId = objTrans.TransactionId;
-                                objFeeDisb.ShoppingCartId = objTrans.ShoppingCartId;
-                                objFeeDisb.RevFeeMasterId = FeeDue.RevFeeMasterId;
-                                objFeeDisb.IndividualId = FeeDue.IndividualId;
-                                objFeeDisb.ApplicationId = FeeDue.ApplicationId;
-                                objFeeDisb.ProviderId = 0;
-                                objFeeDisb.IndividualLicenseId = FeeDue.IndividualLicenseId;
-                                objFeeDisb.LicenseTypeId = FeeDue.LicenseTypeId;
-                                objFeeDisb.RevFeeDueId = FeeDue.RevFeeDueId;
-                                objFeeDisb.FinclTranDate = DateTime.Now;
-                                objFeeDisb.PaymentPostDate = DateTime.Now;
-                                objFeeDisb.InvoiceNo = FeeDue.InvoiceNo;
-                                objFeeDisb.FeePaidAmount = FeeDue.FeeAmount;
-                                objFeeDisb.OrigFeeAmount = FeeDue.FeeAmount;
-                                objFeeDisb.ControlNo = FeeDue.ControlNo;
-                                objFeeDisb.PaymentNo = ReceiptNumber;
-                                objFeeDisb.ReferenceNumber = objAuthResponse.Authorization_Code;
-                                objFeeDisb.CreatedBy = CreatedBy;
-                                objFeeDisb.CreatedOn = DateTime.Now;
-                                objFeeDisb.MasterTransactionId = 0;
-                                objFeeDisb.RevFeeDisbGuid = Guid.NewGuid().ToString();
-
-                                objFeeDisb.RevFeeDisbId = objFeeDisbBAL.Save_RevFeeDisb(objFeeDisb);
+                        //    objFeeCollect.RevFeeCollectId = objFeeCollectBAL.Save_RevFeeCollect(objFeeCollect);
 
 
-                                RevFeeDueDtlBAL objFeeDueDetailBAL = new RevFeeDueDtlBAL();
-                                RevFeeDueDtl objFeeDueDetail = new RevFeeDueDtl();
-                                objFeeDueDetail.RevFeeDueId = FeeDue.RevFeeDueId;
-                                objFeeDueDetail.IndividualId = FeeDue.IndividualId;
-                                objFeeDueDetail.ProviderId = 0;
-                                objFeeDueDetail.IndividualLicenseId = FeeDue.IndividualLicenseId;
-                                objFeeDueDetail.LicenseTypeId = FeeDue.LicenseTypeId;
-                                objFeeDueDetail.InvoiceNo = FeeDue.InvoiceNo;
-                                objFeeDueDetail.ReferenceNumber = FeeDue.ReferenceNumber;
-                                objFeeDueDetail.PaymentNo = objFeeDisb.PaymentNo;
-                                objFeeDueDetail.ReceiptNo = ReceiptNumber;
-                                objFeeDueDetail.ControlNo = "";
-                                objFeeDueDetail.FeePaidAmount = FeeDue.FeeAmount;
-                                objFeeDueDetail.FeeDuePaymentDate = null;
-                                objFeeDueDetail.CreatedBy = CreatedBy;
-                                objFeeDueDetail.CreatedOn = DateTime.Now;
-                                objFeeDueDetail.RevFeeDueDtlGuid = Guid.NewGuid().ToString();
+                        //    RevFeeDisbBAL objFeeDisbBAL = new RevFeeDisbBAL();
 
-                                objFeeDueDetail.RevFeeDueDtlId = objFeeDueDetailBAL.Save_RevFeeDueDtl(objFeeDueDetail);
+                        //    foreach (RevFeeDue FeeDue in objFeedueList)
+                        //    {
+
+                        //        RevFeeDisb objFeeDisb = new RevFeeDisb();
+                        //        objFeeDisb.TransactionId = objTrans.TransactionId;
+                        //        objFeeDisb.ShoppingCartId = objTrans.ShoppingCartId;
+                        //        objFeeDisb.RevFeeMasterId = FeeDue.RevFeeMasterId;
+                        //        objFeeDisb.IndividualId = FeeDue.IndividualId;
+                        //        objFeeDisb.ApplicationId = FeeDue.ApplicationId;
+                        //        objFeeDisb.ProviderId = 0;
+                        //        objFeeDisb.IndividualLicenseId = FeeDue.IndividualLicenseId;
+                        //        objFeeDisb.LicenseTypeId = FeeDue.LicenseTypeId;
+                        //        objFeeDisb.RevFeeDueId = FeeDue.RevFeeDueId;
+                        //        objFeeDisb.FinclTranDate = DateTime.Now;
+                        //        objFeeDisb.PaymentPostDate = DateTime.Now;
+                        //        objFeeDisb.InvoiceNo = FeeDue.InvoiceNo;
+                        //        objFeeDisb.FeePaidAmount = FeeDue.FeeAmount;
+                        //        objFeeDisb.OrigFeeAmount = FeeDue.FeeAmount;
+                        //        objFeeDisb.ControlNo = FeeDue.ControlNo;
+                        //        objFeeDisb.PaymentNo = ReceiptNumber;
+                        //        objFeeDisb.ReferenceNumber = objAuthResponse.Authorization_Code;
+                        //        objFeeDisb.CreatedBy = CreatedBy;
+                        //        objFeeDisb.CreatedOn = DateTime.Now;
+                        //        objFeeDisb.MasterTransactionId = 0;
+                        //        objFeeDisb.RevFeeDisbGuid = Guid.NewGuid().ToString();
+
+                        //        objFeeDisb.RevFeeDisbId = objFeeDisbBAL.Save_RevFeeDisb(objFeeDisb);
 
 
+                        //        RevFeeDueDtlBAL objFeeDueDetailBAL = new RevFeeDueDtlBAL();
+                        //        RevFeeDueDtl objFeeDueDetail = new RevFeeDueDtl();
+                        //        objFeeDueDetail.RevFeeDueId = FeeDue.RevFeeDueId;
+                        //        objFeeDueDetail.IndividualId = FeeDue.IndividualId;
+                        //        objFeeDueDetail.ProviderId = 0;
+                        //        objFeeDueDetail.IndividualLicenseId = FeeDue.IndividualLicenseId;
+                        //        objFeeDueDetail.LicenseTypeId = FeeDue.LicenseTypeId;
+                        //        objFeeDueDetail.InvoiceNo = FeeDue.InvoiceNo;
+                        //        objFeeDueDetail.ReferenceNumber = FeeDue.ReferenceNumber;
+                        //        objFeeDueDetail.PaymentNo = objFeeDisb.PaymentNo;
+                        //        objFeeDueDetail.ReceiptNo = ReceiptNumber;
+                        //        objFeeDueDetail.ControlNo = "";
+                        //        objFeeDueDetail.FeePaidAmount = FeeDue.FeeAmount;
+                        //        objFeeDueDetail.FeeDuePaymentDate = null;
+                        //        objFeeDueDetail.CreatedBy = CreatedBy;
+                        //        objFeeDueDetail.CreatedOn = DateTime.Now;
+                        //        objFeeDueDetail.RevFeeDueDtlGuid = Guid.NewGuid().ToString();
+
+                        //        objFeeDueDetail.RevFeeDueDtlId = objFeeDueDetailBAL.Save_RevFeeDueDtl(objFeeDueDetail);
 
 
 
-                            }
-
-                            objTrans.TransactionEndDatetime = DateTime.Now;
-                            objTrans.TransactionStatus = "C";
-                            objTrans.TransactionInterruptReasonId = 0;
-                            objTranBal.Save_Transaction(objTrans);
 
 
-                            LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId, objTrans.ApplicationId, objPaymentRequest.RequestedLicenseStatusTypeId, objToken);
+                        //    }
+
+                        //    objTrans.TransactionEndDatetime = DateTime.Now;
+                        //    objTrans.TransactionStatus = "C";
+                        //    objTrans.TransactionInterruptReasonId = 0;
+                        //    objTranBal.Save_Transaction(objTrans);
 
 
-                        }
+                        //    LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId, objTrans.ApplicationId, objPaymentRequest.RequestedLicenseStatusTypeId, objToken);
+
+
+                        //}
 
                     }
 

@@ -11,7 +11,7 @@ namespace LAPP.BAL.Renewal
 {
     public class ValidateRenewalRequest
     {
-        internal static IndividualRenewalResponse Validate(IndividualRenewalResponse objRenewalRequest)
+        public static IndividualRenewalResponse Validate(IndividualRenewalResponse objRenewalRequest)
         {
             //Individual 
             #region Individual

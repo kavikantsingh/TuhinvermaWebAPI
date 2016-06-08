@@ -515,45 +515,70 @@ namespace LAPP.BAL.Renewal
                                     IndividualCECourse objCehCourse = objCECourseBAL.Get_IndividualCECourse_By_IndividualCECourseId(objCehResponse.IndividualCECourseId);
                                     if (objCehCourse != null)
                                     {
-                                        objCehCourse.CECourseDate = objCehResponse.CECourseDate;
-                                        objCehCourse.CECourseHours = objCehResponse.CECourseHours;
-                                        objCehCourse.CourseNameTitle = objCehResponse.CourseNameTitle;
-                                        objCehCourse.IsDeleted = objCehResponse.IsDeleted;
-                                        objCehCourse.ModifiedBy = objToken.UserId;
-                                        objCehCourse.ModifiedOn = DateTime.Now;
-                                        objCehCourse.CECourseReportingYear = objCehResponse.CECourseReportingYear;
                                         objCehCourse.IndividualId = IndividualId;
-                                        objCehCourse.ApplicationId = ApplicationId;
-                                        objCehCourse.CECourseTypeId = objCehResponse.CECourseTypeId;
-                                        objCehCourse.CECourseStatusId = objCehResponse.CECourseStatusId;
+                                        objCehCourse.ApplicationId = objCehResponse.ApplicationId;
                                         objCehCourse.CECourseTypeId = objCehResponse.CECourseTypeId;
                                         objCehCourse.CECourseActivityTypeId = objCehResponse.CECourseActivityTypeId;
+                                        objCehCourse.CECourseStartDate = objCehResponse.CECourseStartDate;
+                                        objCehCourse.CECourseEndDate = objCehResponse.CECourseEndDate;
+                                        objCehCourse.CECourseDueDate = objCehResponse.CECourseDueDate;
+                                        objCehCourse.CECourseDate = objCehResponse.CECourseDate;
+                                        objCehCourse.CECourseHours = objCehResponse.CECourseHours;
+                                        objCehCourse.CECourseUnits = objCehResponse.CECourseUnits;
+                                        objCehCourse.ProgramSponsor = objCehResponse.ProgramSponsor;
+                                        objCehCourse.CourseNameTitle = objCehResponse.CourseNameTitle;
+                                        objCehCourse.CourseSponsor = objCehResponse.CourseSponsor;
+                                        objCehCourse.CECourseReportingYear = objCehResponse.CECourseReportingYear;
+                                        objCehCourse.CECourseStatusId = objCehResponse.CECourseStatusId;
+                                        objCehCourse.InstructorBiography = objCehResponse.InstructorBiography;
+                                        objCehCourse.ActivityDesc = objCehResponse.ActivityDesc;
+                                        objCehCourse.ReferenceNumber = objCehResponse.ReferenceNumber;
+                                        objCehCourse.IsActive = objCehResponse.IsActive;
+                                        objCehCourse.IsDeleted = objCehResponse.IsDeleted;
                                         objCehCourse.IndividualLicenseId = objCehResponse.IndividualLicenseId;
+
+                                        objCehCourse.ModifiedBy = objToken.UserId;
+                                        objCehCourse.ModifiedOn = DateTime.Now;
+
                                         objCECourseBAL.Save_IndividualCECourse(objCehCourse);
+
 
                                     }
                                 }
                                 else
                                 {
                                     IndividualCECourse objCehCourse = new IndividualCECourse();
-                                    objCehCourse.CECourseDate = objCehResponse.CECourseDate;
-                                    objCehCourse.CECourseHours = objCehResponse.CECourseHours;
-                                    objCehCourse.CourseNameTitle = objCehResponse.CourseNameTitle;
 
-                                    objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
-                                    objCehCourse.IsActive = true;
-                                    objCehCourse.IsDeleted = objCehResponse.IsDeleted;
-                                    objCehCourse.CreatedBy = objToken.UserId;
-                                    objCehCourse.CreatedOn = DateTime.Now;
-                                    objCehCourse.CECourseReportingYear = objCehResponse.CECourseReportingYear;
                                     objCehCourse.IndividualId = IndividualId;
-                                    objCehCourse.ApplicationId = ApplicationId;
-                                    objCehCourse.CECourseTypeId = objCehResponse.CECourseTypeId;
-                                    objCehCourse.CECourseStatusId = objCehResponse.CECourseStatusId;
+                                    objCehCourse.ApplicationId = objCehResponse.ApplicationId;
                                     objCehCourse.CECourseTypeId = objCehResponse.CECourseTypeId;
                                     objCehCourse.CECourseActivityTypeId = objCehResponse.CECourseActivityTypeId;
+                                    objCehCourse.CECourseStartDate = objCehResponse.CECourseStartDate;
+                                    objCehCourse.CECourseEndDate = objCehResponse.CECourseEndDate;
+                                    objCehCourse.CECourseDueDate = objCehResponse.CECourseDueDate;
+                                    objCehCourse.CECourseDate = objCehResponse.CECourseDate;
+                                    objCehCourse.CECourseHours = objCehResponse.CECourseHours;
+                                    objCehCourse.CECourseUnits = objCehResponse.CECourseUnits;
+                                    objCehCourse.ProgramSponsor = objCehResponse.ProgramSponsor;
+                                    objCehCourse.CourseNameTitle = objCehResponse.CourseNameTitle;
+                                    objCehCourse.CourseSponsor = objCehResponse.CourseSponsor;
+                                    objCehCourse.CECourseReportingYear = objCehResponse.CECourseReportingYear;
+                                    objCehCourse.CECourseStatusId = objCehResponse.CECourseStatusId;
+                                    objCehCourse.InstructorBiography = objCehResponse.InstructorBiography;
+                                    objCehCourse.ActivityDesc = objCehResponse.ActivityDesc;
+                                    objCehCourse.ReferenceNumber = objCehResponse.ReferenceNumber;
+                                    objCehCourse.IsActive = objCehResponse.IsActive;
+                                    objCehCourse.IsDeleted = objCehResponse.IsDeleted;
                                     objCehCourse.IndividualLicenseId = objCehResponse.IndividualLicenseId;
-                                    objCECourseBAL.Save_IndividualCECourse(objCehCourse);
+
+
+                                    objCehCourse.CreatedBy = objToken.UserId;
+                                    objCehCourse.CreatedOn = DateTime.Now;
+                                    objCehCourse.ModifiedBy = null;
+                                    objCehCourse.ModifiedOn = null;
+                                    objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
+
+                                    objCehCourse.IndividualCECourseId = objCECourseBAL.Save_IndividualCECourse(objCehCourse);
 
                                 }
 
@@ -1959,27 +1984,28 @@ namespace LAPP.BAL.Renewal
 
                             List<IndividualCECourseResponse> lstCeCourseResponse = lstCECourse.Select(obj => new IndividualCECourseResponse
                             {
-                                ActivityDesc = obj.ActivityDesc,
-                                ApplicationId = obj.ApplicationId,
-                                CECourseActivityTypeId = obj.CECourseActivityTypeId,
-                                CECourseDate = obj.CECourseDate,
-                                CECourseDueDate = obj.CECourseDueDate,
-                                CECourseEndDate = obj.CECourseEndDate,
-                                CECourseHours = obj.CECourseHours,
-                                CECourseReportingYear = obj.CECourseReportingYear,
-                                CECourseStartDate = obj.CECourseStartDate,
-                                CECourseStatusId = obj.CECourseStatusId,
-                                CECourseTypeId = obj.CECourseTypeId,
-                                CECourseUnits = obj.CECourseUnits,
-                                CourseNameTitle = obj.CourseNameTitle,
-                                CourseSponsor = obj.CourseSponsor,
+
                                 IndividualCECourseId = obj.IndividualCECourseId,
                                 IndividualId = obj.IndividualId,
+                                ApplicationId = obj.ApplicationId,
+                                CECourseTypeId = obj.CECourseTypeId,
+                                CECourseActivityTypeId = obj.CECourseActivityTypeId,
+                                CECourseStartDate = obj.CECourseStartDate,
+                                CECourseEndDate = obj.CECourseEndDate,
+                                CECourseDueDate = obj.CECourseDueDate,
+                                CECourseDate = obj.CECourseDate,
+                                CECourseHours = obj.CECourseHours,
+                                CECourseUnits = obj.CECourseUnits,
+                                ProgramSponsor = obj.ProgramSponsor,
+                                CourseNameTitle = obj.CourseNameTitle,
+                                CourseSponsor = obj.CourseSponsor,
+                                CECourseReportingYear = obj.CECourseReportingYear,
+                                CECourseStatusId = obj.CECourseStatusId,
                                 InstructorBiography = obj.InstructorBiography,
+                                ReferenceNumber = "",
+                                ActivityDesc = obj.ActivityDesc,
                                 IndividualLicenseId = obj.IndividualLicenseId,
                                 IsActive = obj.IsActive,
-                                ProgramSponsor = obj.ProgramSponsor,
-                                ReferenceNumber = obj.ReferenceNumber
                             }).ToList();
                             objIndividualRenewal.IndividualCECourse = lstCeCourseResponse;
 
