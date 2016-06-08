@@ -28,21 +28,6 @@ D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS - SVNOn-98\LAPP.LOGING\bin\Debug\S
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS - SVNOn-98\LAPP.LOGING\obj\Debug\LAPP.LOGING.csprojResolveAssemblyReference.cache
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS - SVNOn-98\LAPP.LOGING\obj\Debug\LAPP.LOGING.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS - SVNOn-98\LAPP.LOGING\obj\Debug\LAPP.LOGING.pdb
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.LOGING.dll
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.LOGING.pdb
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.DAL.dll
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.ENTITY.dll
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\MySql.Data.dll
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\Newtonsoft.Json.dll
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\System.Web.Http.dll
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.dll
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.DAL.pdb
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.ENTITY.pdb
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\System.Web.Http.xml
-D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.xml
-D:\LAPP\LAPP WS New\LAPP.LOGING\obj\Debug\LAPP.LOGING.csprojResolveAssemblyReference.cache
-D:\LAPP\LAPP WS New\LAPP.LOGING\obj\Debug\LAPP.LOGING.dll
-D:\LAPP\LAPP WS New\LAPP.LOGING\obj\Debug\LAPP.LOGING.pdb
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS - Bitbucket\LAPP.LOGING\bin\Debug\LAPP.LOGING.dll
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS - Bitbucket\LAPP.LOGING\bin\Debug\LAPP.LOGING.pdb
 D:\EBS-Projects\SVN\LAPP-New-Licensing-App-WS - Bitbucket\LAPP.LOGING\bin\Debug\LAPP.DAL.dll
@@ -69,3 +54,18 @@ D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.LOGING\bin\Debug\LAP
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.LOGING\obj\Debug\LAPP.LOGING.csprojResolveAssemblyReference.cache
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.LOGING\obj\Debug\LAPP.LOGING.dll
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.LOGING\obj\Debug\LAPP.LOGING.pdb
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.LOGING.dll
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.LOGING.pdb
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.DAL.dll
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.ENTITY.dll
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\MySql.Data.dll
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\Newtonsoft.Json.dll
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\System.Web.Http.dll
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.dll
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.DAL.pdb
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\LAPP.ENTITY.pdb
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\System.Web.Http.xml
+D:\LAPP\LAPP WS New\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.xml
+D:\LAPP\LAPP WS New\LAPP.LOGING\obj\Debug\LAPP.LOGING.csprojResolveAssemblyReference.cache
+D:\LAPP\LAPP WS New\LAPP.LOGING\obj\Debug\LAPP.LOGING.dll
+D:\LAPP\LAPP WS New\LAPP.LOGING\obj\Debug\LAPP.LOGING.pdb

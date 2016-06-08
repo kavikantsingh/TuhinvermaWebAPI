@@ -109,7 +109,10 @@
     <Compile Include="ProviderContact.cs" />
     <Compile Include="ProviderIndividual.cs" />
     <Compile Include="ProviderIndividualName.cs" />
+    <Compile Include="ProviderInformations.cs" />
+    <Compile Include="ProviderInstructions.cs" />
     <Compile Include="ProviderLogin.cs" />
+    <Compile Include="ProviderName.cs" />
     <Compile Include="ProviderRegister.cs" />
     <Compile Include="ProviderStatusType.cs" />
     <Compile Include="ProviderUser.cs" />

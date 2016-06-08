@@ -13,6 +13,10 @@ namespace LAPP.ENTITY
         public DateTime? ModifiedOn { get; set; }
 
         public string IndividualNameGuid { get; set; }
+
+        public int ProviderId { get; set; }
+        public int ApplicationId { get; set; }
+        public string ProvIndvJobTitle { get; set; }
     }
 
     public class IndividualNameRequest : BaseEntity
@@ -29,7 +33,6 @@ namespace LAPP.ENTITY
         public DateTime? BeginDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool IsDeleted { get; set; }
-
     }
 
 

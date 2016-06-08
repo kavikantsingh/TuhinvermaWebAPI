@@ -256,8 +256,8 @@ namespace LAPP.WS.Controllers.Common
                 Individual objIndividual = new Individual();
                 IndividualBAL objIndividualBAL = new IndividualBAL();
                 objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objUser.IndividualId);
-                if (objIndividual != null)
-                {
+                //if (objIndividual != null)
+                //{
                     string TempPassword = GeneralFunctions.GetTempPassword();
                     objUser.PasswordHash = TempPassword;
                     objUser.TemporaryPassword = true;
@@ -278,14 +278,14 @@ namespace LAPP.WS.Controllers.Common
                         objRsponse.Status = false;
                         objRsponse.Message = "We are not able to send email due to technical issues.";
                     }
-                }
-                else
-                {
-                    objRsponse.StatusCode = ((int)ResponseStatusCode.Validation).ToString("00");
-                    objRsponse.Status = false;
-                    objRsponse.Message = "No associated record found.";
+                //}
+                //else
+                //{
+                //    objRsponse.StatusCode = ((int)ResponseStatusCode.Validation).ToString("00");
+                //    objRsponse.Status = false;
+                //    objRsponse.Message = "No associated record found.";
 
-                }
+                //}
 
             }
             else
@@ -477,6 +477,7 @@ namespace LAPP.WS.Controllers.Common
                         objUser.ModifiedOn = DateTime.Now;
                         objUser.ModifiedBy = objToken.UserId;
                         objUser.PasswordHash = ObjChangePasswordRequest.NewPassword;
+                        objUser.TemporaryPassword = false;
                         objUserBAL.Save_Users(objUser);
                         LoginHelper.SavePasswordChangedHistory(objUser);
 

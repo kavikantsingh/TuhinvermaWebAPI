@@ -23,11 +23,20 @@ namespace LAPP.BAL
         {
             return objDal.Get_All_Contact();
         }
-
-
+        
         public Contact Get_Contact_By_ContactId(int ID)
         {
             return objDal.Get_Contact_By_ContactId(ID);
+        }
+
+        public int Save_ContactAndProviderContact(ProviderInformation objContact)
+        {
+            return objDal.Save_ContactAndProviderContact(objContact);
+        }
+
+        public ProviderInformation Get_ContactAndProviderContactByProviderId(int ProviderId, int ContactTypeId)
+        {
+            return objDal.Get_ContactAndProviderContactByProviderId(ProviderId, ContactTypeId);
         }
 
     }

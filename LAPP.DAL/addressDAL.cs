@@ -200,5 +200,105 @@ namespace LAPP.DAL
             return objEntity;
 
         }
+
+        public int SaveAddressRequestFromSchoolInformationTab(Address objaddress)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("AddressId", objaddress.AddressId));
+            lstParameter.Add(new MySqlParameter("StreetLine1", objaddress.StreetLine1.NullString()));
+            lstParameter.Add(new MySqlParameter("StreetLine2", objaddress.StreetLine2.NullString()));
+            lstParameter.Add(new MySqlParameter("City", objaddress.City.NullString()));
+            lstParameter.Add(new MySqlParameter("StateCode", objaddress.StateCode.NullString()));
+            lstParameter.Add(new MySqlParameter("Zip", objaddress.Zip.NullString()));
+            lstParameter.Add(new MySqlParameter("DateValidated", objaddress.DateValidated));
+            lstParameter.Add(new MySqlParameter("UseUserAddress", objaddress.UseUserAddress));
+            lstParameter.Add(new MySqlParameter("UseVerifiedAddress", objaddress.UseVerifiedAddress));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objaddress.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", DateTime.Now));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            //To Fill the provider Address Table
+            lstParameter.Add(new MySqlParameter("ProviderId", objaddress.ProviderId));
+            lstParameter.Add(new MySqlParameter("AddressTypeId", objaddress.AddressTypeId));
+            lstParameter.Add(new MySqlParameter("IsMailingSameasPhysical", objaddress.IsMailingSameasPhysical));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "address_SaveSchoolAddress", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
+        public List<Address> GetAllPreviousAddress(int addressTypeId, int providerId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("AddressTypeId", addressTypeId));
+            lstParameter.Add(new MySqlParameter("ProviderId", providerId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "address_GetPreviousAddress", lstParameter.ToArray());
+
+            List<Address> lstEntity = new List<Address>();
+            Address objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchPreviousAddressEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private Address FetchPreviousAddressEntity(DataRow dr)
+        {
+            Address objEntity = new Address();
+            if (dr.Table.Columns.Contains("AddressId") && dr["AddressId"] != DBNull.Value)
+            {
+                objEntity.AddressId = Convert.ToInt32(dr["AddressId"]);
+            }
+
+            if (dr.Table.Columns.Contains("StreetLine1") && dr["StreetLine1"] != DBNull.Value)
+            {
+                objEntity.StreetLine1 = Convert.ToString(dr["StreetLine1"]);
+            }
+            if (dr.Table.Columns.Contains("StreetLine2") && dr["StreetLine2"] != DBNull.Value)
+            {
+                objEntity.StreetLine2 = Convert.ToString(dr["StreetLine2"]);
+            }
+            if (dr.Table.Columns.Contains("City") && dr["City"] != DBNull.Value)
+            {
+                objEntity.City = Convert.ToString(dr["City"]);
+            }
+            if (dr.Table.Columns.Contains("StateCode") && dr["StateCode"] != DBNull.Value)
+            {
+                objEntity.StateCode = Convert.ToString(dr["StateCode"]);
+            }
+            if (dr.Table.Columns.Contains("Zip") && dr["Zip"] != DBNull.Value)
+            {
+                objEntity.Zip = Convert.ToString(dr["Zip"]);
+            }
+
+            if (dr.Table.Columns.Contains("DateValidated") && dr["DateValidated"] != DBNull.Value)
+            {
+                objEntity.DateValidated = Convert.ToDateTime(dr["DateValidated"]);
+            }
+            if (dr.Table.Columns.Contains("UseUserAddress") && dr["UseUserAddress"] != DBNull.Value)
+            {
+                objEntity.UseUserAddress = Convert.ToBoolean(dr["UseUserAddress"]);
+            }
+            if (dr.Table.Columns.Contains("UseVerifiedAddress") && dr["UseVerifiedAddress"] != DBNull.Value)
+            {
+                objEntity.UseVerifiedAddress = Convert.ToBoolean(dr["UseVerifiedAddress"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedOn") && dr["CreatedOn"] != DBNull.Value)
+            {
+                objEntity.CreatedOn = Convert.ToDateTime(dr["CreatedOn"]);
+            }
+
+
+            return objEntity;
+
+        }
     }
 }

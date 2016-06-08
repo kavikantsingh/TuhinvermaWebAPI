@@ -8,13 +8,16 @@ using LAPP.ENTITY;
 using LAPP.DAL;
 namespace LAPP.BAL
 {
-    public class ProviderBAL : BaseBAL
+    public class ProviderNameBAL : BaseBAL
     {
-        ProviderDAL objDal = new ProviderDAL();
-        public int Save_Provider(Provider objProvider)
+        ProviderNameDAL objDal = new ProviderNameDAL();
+        public int SavePreviousSchoolDetails(ProviderNames objProvider)
         {
-            return objDal.Save_Provider(objProvider);
+            return objDal.SavePreviousSchoolDetails(objProvider);
         }
+
+
+
 
         public List<Provider> Get_All_Provider()
         {
@@ -27,10 +30,5 @@ namespace LAPP.BAL
             return objDal.Get_Provider_By_ProviderId(ID);
         }
 
-
-        public int SaveSchoolInformation(ProviderInformation objProvider)
-        {
-            return objDal.SaveSchoolInformation(objProvider);
-        }
     }
 }

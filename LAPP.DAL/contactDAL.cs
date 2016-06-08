@@ -170,5 +170,60 @@ namespace LAPP.DAL
             return objEntity;
 
         }
+
+
+        public int Save_ContactAndProviderContact(ProviderInformation objContact)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ContactTypeId", objContact.ContactTypeId));
+            lstParameter.Add(new MySqlParameter("ContactInfo", objContact.ContactInfo));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objContact.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", DateTime.Now));
+            lstParameter.Add(new MySqlParameter("ProviderId", objContact.ProviderId));
+            lstParameter.Add(new MySqlParameter("IsPreferredContact", objContact.IsPreferredContact));
+            lstParameter.Add(new MySqlParameter("IsMobile", objContact.IsMobile));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "contact_SaveContactAndProviderContact", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
+        public ProviderInformation Get_ContactAndProviderContactByProviderId(int ProviderId, int ContactTypeId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("ContactTypeId", ContactTypeId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "contact_Get_ContactAndProviderContactByProviderId", lstParameter.ToArray());
+            ProviderInformation objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchContactEntity(dr);
+            }
+            return objEntity;
+        }
+
+        private ProviderInformation FetchContactEntity(DataRow dr)
+        {
+            ProviderInformation objEntity = new ProviderInformation();
+
+            if (dr.Table.Columns.Contains("ContactInfo") && dr["ContactInfo"] != DBNull.Value)
+            {
+                objEntity.ContactInfo = Convert.ToString(dr["ContactInfo"]);
+            }
+            if (dr.Table.Columns.Contains("IsMobile") && dr["IsMobile"] != DBNull.Value)
+            {
+                objEntity.IsMobile = Convert.ToBoolean(dr["IsMobile"]);
+            }
+            return objEntity;
+
+        }
     }
 }
