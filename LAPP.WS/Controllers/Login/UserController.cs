@@ -265,14 +265,16 @@ namespace LAPP.WS.Controllers.Common
                     if (EmailHelper.SendMail(Email, "Forget Password", "Temporary Password: " + TempPassword, true))
                     {
 
-                        LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                        //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                        LogHelper.LogCommunication(objUser.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
                         objRsponse.StatusCode = "00";
                         objRsponse.Status = true;
                         objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
                     }
                     else
                     {
-                        LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                        //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                        LogHelper.LogCommunication(objUser.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
 
                         objRsponse.StatusCode = "11";
                         objRsponse.Status = false;
