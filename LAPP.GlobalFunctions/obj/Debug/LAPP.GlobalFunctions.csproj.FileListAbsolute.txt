@@ -18,3 +18,10 @@ D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.dll
 D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.xml
 D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
 D:\LAPP\LAPP WS New\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb
+D:\PROJECTS\PROJECTS\SERVER\LAAP BIT BUCKT\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.dll
+D:\PROJECTS\PROJECTS\SERVER\LAAP BIT BUCKT\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.pdb
+D:\PROJECTS\PROJECTS\SERVER\LAAP BIT BUCKT\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.dll
+D:\PROJECTS\PROJECTS\SERVER\LAAP BIT BUCKT\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.xml
+D:\PROJECTS\PROJECTS\SERVER\LAAP BIT BUCKT\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
+D:\PROJECTS\PROJECTS\SERVER\LAAP BIT BUCKT\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb
+D:\PROJECTS\PROJECTS\SERVER\LAAP BIT BUCKT\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache

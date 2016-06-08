@@ -407,7 +407,10 @@ namespace LAPP.DAL
             {
                 objEntity.ApplicationNumber = Convert.ToString(dr["ApplicationNumber"]);
             }
-
+            if (dr.Table.Columns.Contains("OriginalLicenseDate") && dr["OriginalLicenseDate"] != DBNull.Value)
+            {
+                objEntity.OriginalLicenseDate = Convert.ToDateTime(dr["OriginalLicenseDate"]);
+            }
 
             if (dr.Table.Columns.Contains("Total_Recard") && dr["Total_Recard"] != DBNull.Value)
             {

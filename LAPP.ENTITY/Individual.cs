@@ -42,6 +42,7 @@ namespace LAPP.ENTITY
 
         // 
         public string LicenseStatusTypeName { get; set; }
+        public DateTime OriginalLicenseDate { get; set; }
         public string StatusColorCode { get; set; }
         public string LicenseNumber { get; set; }
         public int LicenseTypeId { get; set; }
@@ -49,6 +50,23 @@ namespace LAPP.ENTITY
         public int LicenseStatusTypeId { get; set; }
         public string LicenseStatusTypeCode { get; set; }
         public string Name { get; set; }
+
+        //public string FullName
+        //{
+        //    get
+        //    {
+        //        if (FirstName != null && LastName != null && MiddleName != null)
+        //        {
+        //            return FirstName + " " + LastName + " " + MiddleName;
+        //        }
+        //        else
+        //        {
+
+        //            return FirstName + " " + LastName;
+        //        }
+        //    }
+        //}
+
 
         public IndividualAddress objIndividualAddress { get; set; }
         public IndividualContact objIndividualContact { get; set; }

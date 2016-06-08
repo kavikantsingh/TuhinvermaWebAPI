@@ -27,86 +27,129 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             {
                 int individualId = objIndividualNameRequest.IndividualId;
                 int? applicationId = null;//objIndividualNameRequest.ApplicationId;
-
-                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
-
-                if (objIndividual != null)
+                if (objIndividualNameRequest.IndividualNameId > 0)
                 {
-                    if (objIndividual.FirstName == null)
+                    objIndividualName = objIndividualNameBAL.Get_IndividualName_By_IndividualNameId(objIndividualNameRequest.IndividualNameId);
+                    if (objIndividualName != null)
                     {
-                        objIndividual.FirstName = "";
+
+                        objIndividualName.FirstName = objIndividualNameRequest.FirstName;
+                        objIndividualName.LastName = objIndividualNameRequest.LastName;
+                        objIndividualName.MiddleName = objIndividualNameRequest.MiddleName;
+                        objIndividualName.IndividualId = individualId;
+                        objIndividualName.BeginDate = objIndividualNameRequest.BeginDate;
+                        objIndividualName.EndDate = objIndividualNameRequest.EndDate;
+                        objIndividualName.SuffixId = objIndividualNameRequest.SuffixId;
+                        objIndividualName.IndividualNameStatusId = Convert.ToInt32(eIndividualNameStatus.Previous);
+                        objIndividualName.IndividualNameTypeId = Convert.ToInt32(eIndividualNameType.Individual);
+
+                        objIndividualName.ModifiedBy = objToken.UserId; ;
+                        objIndividualName.ModifiedOn = DateTime.Now;
+                        objIndividualName.IsActive = objIndividualNameRequest.IsActive;
+                        objIndividualName.IsDeleted = objIndividualNameRequest.IsDeleted;
+                        objIndividualName.IndividualNameGuid = Guid.NewGuid().ToString();
+
+                        objIndividualName.IndividualNameId = objIndividualNameBAL.Save_IndividualName(objIndividualName);
+
+                        objIndividualNameRequest.IndividualNameId = objIndividualName.IndividualNameId;
+
+
+                        //SAVE LOG
+
+                        string logText = "Individual Name saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                        string logSource = eCommentLogSource.WSAPI.ToString();
+                        LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                        //END SAVE LOG
+
+                        objResponse.Message = MessagesClass.UpdateSuccess;
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
                     }
-                    if (objIndividual.MiddleName == null)
+                    else
                     {
-                        objIndividual.MiddleName = "";
+                        objResponse.Message = "No record found with given IndividualNameId.";
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
                     }
-                    if (objIndividual.LastName == null)
-                    {
-                        objIndividual.LastName = "";
-                    }
-
-                }
-
-                if (objIndividual != null
-                    && objIndividual.FirstName.ToLower() != objIndividualNameRequest.FirstName.ToLower()
-                    || objIndividual.LastName.ToLower() != objIndividualNameRequest.LastName.ToLower()
-                    || objIndividual.MiddleName.ToLower() != objIndividualNameRequest.MiddleName.ToLower())
-                {
-
-                    // Save New Record In IndividualName From Individual Current Name
-
-                    objIndividualName = new IndividualName();
-
-                    objIndividualName.FirstName = objIndividual.FirstName;
-                    objIndividualName.LastName = objIndividual.LastName;
-                    objIndividualName.MiddleName = objIndividual.MiddleName;
-                    objIndividualName.IndividualId = objIndividual.IndividualId;
-                    objIndividualName.BeginDate = objIndividualNameRequest.BeginDate;
-                    objIndividualName.EndDate = objIndividualNameRequest.EndDate;
-                    objIndividualName.SuffixId = objIndividualNameRequest.SuffixId;
-                    objIndividualName.IndividualNameStatusId = Convert.ToInt32(eIndividualNameStatus.Previous);
-                    objIndividualName.IndividualNameTypeId = Convert.ToInt32(eIndividualNameType.Individual);
-
-                    objIndividualName.IsActive = objIndividualNameRequest.IsActive;
-                    objIndividualName.IsDeleted = objIndividualNameRequest.IsDeleted;
-                    objIndividualName.CreatedBy = objToken.UserId;
-                    objIndividualName.CreatedOn = DateTime.Now;
-                    objIndividualName.IndividualNameGuid = Guid.NewGuid().ToString();
-                    objIndividualName.IndividualNameId = objIndividualNameBAL.Save_IndividualName(objIndividualName);
-                    objIndividualNameRequest.IndividualNameId = objIndividualName.IndividualNameId;
-
-
-
-                    //End Save New Record In IndividualName From Individual Current Name
-
-                    // Update New Name In  Individual AS Current Name
-
-                    objIndividual.FirstName = objIndividualNameRequest.FirstName;
-                    objIndividual.LastName = objIndividualNameRequest.LastName;
-                    objIndividual.MiddleName = objIndividualNameRequest.MiddleName;
-
-                    objIndividual.ModifiedBy = objToken.UserId;
-                    objIndividual.ModifiedOn = DateTime.Now;
-
-                    objIndividualBAL.Save_Individual(objIndividual);
-                    //SAVE LOG
-
-                    string logText = "Individual Name saved successfully. Saved on " + DateTime.Now.ToShortDateString();
-                    string logSource = eCommentLogSource.WSAPI.ToString();
-                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
-
-                    //END SAVE LOG
-
-                    objResponse.Message = MessagesClass.SaveSuccess;
-                    objResponse.Status = true;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-
                 }
                 else
                 {
-                    objResponse.Message = "Same name has been entered.";
-                    objResponse.Status = true;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
+                    #region nulltoempty
+                    if (objIndividual != null)
+                    {
+                        if (objIndividual.FirstName == null)
+                        {
+                            objIndividual.FirstName = "";
+                        }
+                        if (objIndividual.MiddleName == null)
+                        {
+                            objIndividual.MiddleName = "";
+                        }
+                        if (objIndividual.LastName == null)
+                        {
+                            objIndividual.LastName = "";
+                        }
+                    }
+                    #endregion
+                    if (objIndividual != null
+                        && objIndividual.FirstName.ToLower() != objIndividualNameRequest.FirstName.ToLower()
+                        || objIndividual.LastName.ToLower() != objIndividualNameRequest.LastName.ToLower()
+                        || objIndividual.MiddleName.ToLower() != objIndividualNameRequest.MiddleName.ToLower())
+                    {
+
+                        // Save New Record In IndividualName From Individual Current Name
+
+                        objIndividualName = new IndividualName();
+
+                        objIndividualName.FirstName = objIndividual.FirstName;
+                        objIndividualName.LastName = objIndividual.LastName;
+                        objIndividualName.MiddleName = objIndividual.MiddleName;
+                        objIndividualName.IndividualId = objIndividual.IndividualId;
+                        objIndividualName.BeginDate = objIndividualNameRequest.BeginDate;
+                        objIndividualName.EndDate = objIndividualNameRequest.EndDate;
+                        objIndividualName.SuffixId = objIndividualNameRequest.SuffixId;
+                        objIndividualName.IndividualNameStatusId = Convert.ToInt32(eIndividualNameStatus.Previous);
+                        objIndividualName.IndividualNameTypeId = Convert.ToInt32(eIndividualNameType.Individual);
+
+                        objIndividualName.IsActive = objIndividualNameRequest.IsActive;
+                        objIndividualName.IsDeleted = objIndividualNameRequest.IsDeleted;
+                        objIndividualName.CreatedBy = objToken.UserId;
+                        objIndividualName.CreatedOn = DateTime.Now;
+                        objIndividualName.IndividualNameGuid = Guid.NewGuid().ToString();
+                        objIndividualName.IndividualNameId = objIndividualNameBAL.Save_IndividualName(objIndividualName);
+                        objIndividualNameRequest.IndividualNameId = objIndividualName.IndividualNameId;
+
+                        //End Save New Record In IndividualName From Individual Current Name
+                        // Update New Name In  Individual AS Current Name
+
+                        objIndividual.FirstName = objIndividualNameRequest.FirstName;
+                        objIndividual.LastName = objIndividualNameRequest.LastName;
+                        objIndividual.MiddleName = objIndividualNameRequest.MiddleName;
+                        objIndividual.ModifiedBy = objToken.UserId;
+                        objIndividual.ModifiedOn = DateTime.Now;
+
+                        objIndividualBAL.Save_Individual(objIndividual);
+                        //SAVE LOG
+
+                        string logText = "Individual Name saved successfully. Saved on " + DateTime.Now.ToShortDateString();
+                        string logSource = eCommentLogSource.WSAPI.ToString();
+                        LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, objToken.UserId, null, null, null);
+
+                        //END SAVE LOG
+
+                        objResponse.Message = MessagesClass.SaveSuccess;
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    }
+                    else
+                    {
+                        objResponse.Message = "Same name has been entered.";
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    }
                 }
 
                 lstIndividualName.Add(objIndividualNameRequest);
