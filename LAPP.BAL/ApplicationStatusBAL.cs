@@ -28,5 +28,9 @@ namespace LAPP.BAL
             return objDal.Get_ApplicationStatus_byApplicationStatusId(ID);
         }
 
+        public ApplicationStatus Get_ApplicationStatus_byApplicationId(int ApplicationId)
+        {
+            return objDal.Get_ApplicationStatus_byApplicationId(ApplicationId);
+        }
     }
 }

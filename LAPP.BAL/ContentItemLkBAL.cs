@@ -27,5 +27,9 @@ namespace LAPP.BAL
             return objDal.Get_ContentItemLk_By_ContentItemLkId(ID);
         }
 
+        public ContentItemLk Get_ContentItemLk_By_ContentItemLkId(int ID)
+        {
+            return objDal.Get_ContentItemLk_By_ContentItemLkId(ID);
+        }
     }
 }

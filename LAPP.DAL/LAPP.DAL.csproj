@@ -103,6 +103,8 @@
     <Compile Include="IndividualDocumentDAL.cs" />
     <Compile Include="IndividualCommentDAL.cs" />
     <Compile Include="IndividualLogDAL.cs" />
+    <Compile Include="ProviderIndividualNameDAL.cs" />
+    <Compile Include="ProviderUserDAL.cs" />
     <Compile Include="RevFeeMasterDAL.cs" />
     <Compile Include="RevFeeDueDtlDAL.cs" />
     <Compile Include="RevFeeDueDAL.cs" />

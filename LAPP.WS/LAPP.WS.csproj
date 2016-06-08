@@ -217,6 +217,7 @@
     <Compile Include="Controllers\Backoffice\BoardController.cs" />
     <Compile Include="App_Helper\CheckModelForNullAttribute.cs" />
     <Compile Include="Controllers\Backoffice\ConfigurationController.cs" />
+    <Compile Include="Controllers\Backoffice\ContentController.cs" />
     <Compile Include="Controllers\Backoffice\IndividualController.cs" />
     <Compile Include="Controllers\Common\CommonController.cs" />
     <Compile Include="Controllers\Common\CountryController.cs" />

@@ -70,6 +70,8 @@
     <Compile Include="Payment\Payment.cs" />
     <Compile Include="IndividualLogBAL.cs" />
     <Compile Include="IndividualCommentBAL.cs" />
+    <Compile Include="ProviderIndividualNameBAL.cs" />
+    <Compile Include="ProviderUserBAL.cs" />
     <Compile Include="RevFeeDueDtlBAL.cs" />
     <Compile Include="RevFeeDueBAL.cs" />
     <Compile Include="RevFeeDisbBAL.cs" />

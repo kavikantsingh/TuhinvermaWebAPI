@@ -675,6 +675,19 @@
             <param name="Key">The Key of the data.</param>
             <param name="objConfigurationType">Object of ConfigurationType</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentItemLkGetAll(System.String)">
+            <summary>
+            Looks up all data by Key For Content.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.LookupContentGetBYContentItemLkID(System.String,System.Int32)">
+            <summary>
+            Get Method to get Content by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="ID">Record ID.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualAddressSave(System.String,LAPP.ENTITY.IndividualAddressResponse)">
             <summary>
             Save or Update the data For IndividualAddress
@@ -1074,11 +1087,12 @@
             <param name="Key">API security key.</param>
             <param name="ObjRegisterInfo">Request object for Provider Registration.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderController.ProviderLogin(LAPP.ENTITY.ProviderLogin)">
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.ProviderLogin(System.String,LAPP.ENTITY.ProviderLogin)">
             <summary>
             This API used for Provider Login.
             </summary>
-            <param name="ObjLoginInfo">Request object for Provider Login.</param>
+            <param name="ObjProviderLogin">Request object for Provider Login.</param>
+            <param name="Key">API Security Key</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.SourceController.SourceGetAll(System.String)">
             <summary>

@@ -19,7 +19,13 @@ namespace LAPP.ENTITY
 
     public class ProviderLoginResponse : BaseEntityServiceResponse
     {
-        public bool IsPasswordChange { get; set; }
-
+        public bool IsPasswordTemporary { get; set; }
+        public int ProviderId { get; set; }
+        public int UserId { get; set; }
+        public int IndividualNameId { get; set; }
+        public int IndividualId { get; set; }
+        public int ApplicationId { get; set; }
+        public string ApplicationStatus { get; set; }
+        public string Key { get; set; }
     }
 }

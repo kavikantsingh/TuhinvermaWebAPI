@@ -31,5 +31,6 @@ namespace LAPP.BAL
         {
             return objDal.Get_Application_By_ApplicationId(applicationId);
         }
+
     }
 }

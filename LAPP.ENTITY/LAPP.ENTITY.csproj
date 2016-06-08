@@ -108,9 +108,11 @@
     <Compile Include="IndividualComment.cs" />
     <Compile Include="ProviderContact.cs" />
     <Compile Include="ProviderIndividual.cs" />
+    <Compile Include="ProviderIndividualName.cs" />
     <Compile Include="ProviderLogin.cs" />
     <Compile Include="ProviderRegister.cs" />
     <Compile Include="ProviderStatusType.cs" />
+    <Compile Include="ProviderUser.cs" />
     <Compile Include="RevFeeCollect.cs" />
     <Compile Include="RevFeeDisb.cs" />
     <Compile Include="RevFeeDueDtl.cs" />

@@ -113,5 +113,23 @@ namespace LAPP.DAL
             return objEntity;
 
         }
+
+        public ApplicationStatus Get_ApplicationStatus_byApplicationId(int ApplicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParam = new List<MySqlParameter>();
+            lstParam.Add(new MySqlParameter("G_ApplicationId", ApplicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "applicationStatus_Get_By_ApplicationId", lstParam.ToArray());
+
+            ApplicationStatus objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+
+            }
+            return objEntity;
+        }
+
     }
 }
