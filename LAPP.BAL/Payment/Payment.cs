@@ -16,7 +16,7 @@ namespace LAPP.BAL.Payment
         {
             LAPP.ENTITY.Transaction objTransaction = new LAPP.ENTITY.Transaction();
 
-            using (TransactionScope transScope = new TransactionScope())
+            using (TransactionScope transScope = new TransactionScope(TransactionScopeOption.Required, new TimeSpan(0, 20, 0)))
             {
                 try
                 {
