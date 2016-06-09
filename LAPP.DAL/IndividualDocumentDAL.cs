@@ -37,6 +37,13 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IndividualDocumentGuid", objIndividualDocument.IndividualDocumentGuid));
             lstParameter.Add(new MySqlParameter("DocumentPath", GetNullValue.ByDataType(objIndividualDocument.DocumentPath)));
 
+            lstParameter.Add(new MySqlParameter("DocumentId", GetNullValue.ByDataType(objIndividualDocument.DocumentId)));
+            lstParameter.Add(new MySqlParameter("DocumentCd", GetNullValue.ByDataType(objIndividualDocument.DocumentCd)));
+            lstParameter.Add(new MySqlParameter("DocumentTypeId", GetNullValue.ByDataType(objIndividualDocument.DocumentTypeId)));
+            lstParameter.Add(new MySqlParameter("DocumentName", GetNullValue.ByDataType(objIndividualDocument.DocumentName)));
+            lstParameter.Add(new MySqlParameter("OtherDocumentTypeName", GetNullValue.ByDataType(objIndividualDocument.OtherDocumentTypeName)));
+            
+
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
@@ -203,6 +210,34 @@ namespace LAPP.DAL
             {
                 objEntity.DocumentPath = dr["DocumentPath"].ToString();
             }
+
+            if (dr.Table.Columns.Contains("DocumentId") && dr["DocumentId"] != DBNull.Value)
+            {
+                objEntity.DocumentId = Convert.ToInt32(dr["DocumentId"].ToString());
+            }
+
+            if (dr.Table.Columns.Contains("DocumentCd") && dr["DocumentCd"] != DBNull.Value)
+            {
+                objEntity.DocumentCd = dr["DocumentCd"].ToString();
+            }
+
+            if (dr.Table.Columns.Contains("DocumentTypeId") && dr["DocumentTypeId"] != DBNull.Value)
+            {
+                objEntity.DocumentTypeId = Convert.ToInt32(dr["DocumentTypeId"].ToString());
+            }
+
+            if (dr.Table.Columns.Contains("DocumentName") && dr["DocumentName"] != DBNull.Value)
+            {
+                objEntity.DocumentName = dr["DocumentName"].ToString();
+            }
+
+            if (dr.Table.Columns.Contains("OtherDocumentTypeName") && dr["OtherDocumentTypeName"] != DBNull.Value)
+            {
+                objEntity.OtherDocumentTypeName = dr["OtherDocumentTypeName"].ToString();
+            }
+
+
+
             return objEntity;
 
         }

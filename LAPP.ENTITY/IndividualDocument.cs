@@ -27,6 +27,11 @@ namespace LAPP.ENTITY
         public DateTime? ModifiedOn { get; set; }
         public string DocumentPath { get; set; }
         public string IndividualDocumentGuid { get; set; }
+        public int? DocumentId { get; set; }
+        public string DocumentCd { get; set; }
+        public int? DocumentTypeId { get; set; }
+        public string DocumentName { get; set; }
+        public string OtherDocumentTypeName { get; set; }
     }
 
     public class IndividualDocumentGet : BaseEntity
@@ -44,6 +49,12 @@ namespace LAPP.ENTITY
         public string ReferenceNumber { get; set; }
 
         public bool IsActive { get; set; }
+
+        public int? DocumentId { get; set; }
+        public string DocumentCd { get; set; }
+        public int? DocumentTypeId { get; set; }
+        public string DocumentName { get; set; }
+        public string OtherDocumentTypeName { get; set; }
     }
 
 
@@ -82,6 +93,12 @@ namespace LAPP.ENTITY
         public bool IsDocumentUploadedbyIndividual { get; set; }
         public bool IsDocumentUploadedbyStaff { get; set; }
         public string ReferenceNumber { get; set; }
+
+        public int? DocumentId { get; set; }
+        public string DocumentCd { get; set; }
+        public int? DocumentTypeId { get; set; }
+        public string OtherDocumentTypeName { get; set; }
+
     }
     public class DocumentToUploadByHTML : BaseEntity
     {
@@ -96,8 +113,13 @@ namespace LAPP.ENTITY
         public DateTime? EndDate { get; set; }
         public bool IsDocumentUploadedbyIndividual { get; set; }
         public bool IsDocumentUploadedbyStaff { get; set; }
-       // public string ReferenceNumber { get; set; }
-     //   public System.Net.Http.HttpResponseMessage FileContent { get; set; }
+        // public string ReferenceNumber { get; set; }
+        //   public System.Net.Http.HttpResponseMessage FileContent { get; set; }
+        public int? DocumentId { get; set; }
+        public string DocumentCd { get; set; }
+        public int? DocumentTypeId { get; set; }
+        public string OtherDocumentTypeName { get; set; }
+
     }
     public class HtmlToPdfDocument : BaseEntity
     {

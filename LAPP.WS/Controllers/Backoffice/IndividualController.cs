@@ -1537,8 +1537,13 @@ namespace LAPP.WS.Controllers.Backoffice
                         EndDate = obj.EndDate,
                         IsDocumentUploadedbyIndividual = obj.IsDocumentUploadedbyIndividual,
                         IsDocumentUploadedbyStaff = obj.IsDocumentUploadedbyStaff,
-                        ReferenceNumber = obj.ReferenceNumber,
+                        ReferenceNumber = "",
                         IsActive = obj.IsActive,
+                        DocumentId = obj.DocumentId,
+                        DocumentCd = obj.DocumentCd,
+                        DocumentTypeId = obj.DocumentTypeId,
+                        DocumentName = obj.DocumentName,
+                        OtherDocumentTypeName = obj.OtherDocumentTypeName
 
                     }).ToList();
 
@@ -1619,6 +1624,11 @@ namespace LAPP.WS.Controllers.Backoffice
                         IsDocumentUploadedbyStaff = obj.IsDocumentUploadedbyStaff,
                         ReferenceNumber = obj.ReferenceNumber,
                         IsActive = obj.IsActive,
+                        DocumentId = obj.DocumentId,
+                        DocumentCd = obj.DocumentCd,
+                        DocumentTypeId = obj.DocumentTypeId,
+                        DocumentName = obj.DocumentName,
+                        OtherDocumentTypeName = obj.OtherDocumentTypeName
 
                     }).ToList();
 
@@ -1697,7 +1707,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 }
                 else
                 {
-                    objResponse.Message = "No record to delete.";
+                    objResponse.Message = "No record found to delete.";
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 }
@@ -1865,6 +1875,12 @@ namespace LAPP.WS.Controllers.Backoffice
                             objIndividualDocument.ModifiedOn = null;
                             objIndividualDocument.ModifiedBy = null;
                             objIndividualDocument.IndividualDocumentGuid = Guid.NewGuid().ToString();
+
+                            objIndividualDocument.DocumentId = objDtU.DocumentId;
+                            objIndividualDocument.DocumentCd = objDtU.DocumentCd;
+                            objIndividualDocument.DocumentTypeId = objDtU.DocumentTypeId;
+                            objIndividualDocument.DocumentName = objDtU.DocNameWithExtention;
+                            objIndividualDocument.OtherDocumentTypeName = objDtU.OtherDocumentTypeName;
 
                             if (objIndividualDocument != null)
                             {
@@ -2218,6 +2234,12 @@ namespace LAPP.WS.Controllers.Backoffice
                             objIndividualDocument.ModifiedOn = null;
                             objIndividualDocument.ModifiedBy = null;
                             objIndividualDocument.IndividualDocumentGuid = Guid.NewGuid().ToString();
+
+                            objIndividualDocument.DocumentId = objDtU.DocumentId;
+                            objIndividualDocument.DocumentCd = objDtU.DocumentCd;
+                            objIndividualDocument.DocumentTypeId = objDtU.DocumentTypeId;
+                            objIndividualDocument.DocumentName = objDtU.DocNameWithExtention;
+                            objIndividualDocument.OtherDocumentTypeName = objDtU.OtherDocumentTypeName;
 
                             if (objIndividualDocument != null)
                             {
