@@ -453,7 +453,7 @@ namespace LAPP.WS.Controllers.Common
                 else
                 {
                     objResponse.IsPasswordTemporary = false;
-                    objResponse.Message = "Invalid Object.";
+                    objResponse.Message = "Login Failed. Invalid Credential.";
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
                     objResponse.ResponseReason = "";
