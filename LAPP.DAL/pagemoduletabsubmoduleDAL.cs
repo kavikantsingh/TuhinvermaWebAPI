@@ -51,6 +51,24 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<PageModuleTabSubModule> Get_All_PageModuletabsubmodule_By_PageModuleId(int PageModuleId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("PageModuleId", PageModuleId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "PageModuleTabSubModule_Get_All", lstParameter.ToArray());
+            List<PageModuleTabSubModule> lstEntity = new List<PageModuleTabSubModule>();
+            PageModuleTabSubModule objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         private PageModuleTabSubModule FetchEntity(DataRow dr)
         {
             PageModuleTabSubModule objEntity = new PageModuleTabSubModule();

@@ -24,4 +24,9 @@ namespace LAPP.ENTITY
         public int ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
     }
+
+    public class PageTabSectionResponse : BaseEntityServiceResponse
+    {
+        public object PageTabSection { get; set; }
+    }
 }

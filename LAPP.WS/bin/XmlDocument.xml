@@ -961,6 +961,26 @@
             <param name="Key">The Key of the data.</param>
             <param name="objIndividualLegalResponse">Object of objIndividualLegalResponse</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.PageController.PageGetAllPageNames(System.String)">
+            <summary>
+            Looks up all data by Key For Pages.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.PageController.PageGetAllTabsByPageModuleId(System.String,System.Int32)">
+            <summary>
+            Looks up all data by Key For Pages.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="PageModuleId">The PageModule .</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.PageController.PageGetAllSectionsByTabId(System.String,System.Int32)">
+            <summary>
+            Looks up all data by Key For Pages.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="PageModuleTabSubModuleId">The PageModule .</param>
+        </member>
         <member name="T:LAPP.WS.Controllers.Common.CommonController">
             <summary>
             

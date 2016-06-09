@@ -39,7 +39,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "PAGEMODULE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "PageModule_Get_All");
             List<PageModule> lstEntity = new List<PageModule>();
             PageModule objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
