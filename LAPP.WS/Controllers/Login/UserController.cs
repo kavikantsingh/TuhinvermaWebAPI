@@ -262,7 +262,21 @@ namespace LAPP.WS.Controllers.Common
                     objUser.PasswordHash = TempPassword;
                     objUser.TemporaryPassword = true;
                     objUsersBAL.Save_Users(objUser);
-                    if (EmailHelper.SendMail(Email, "Forget Password", "Temporary Password: " + TempPassword, true))
+
+                string mailContent = "The password has been reset. The temporary password has been sent to the email address on file. Please check your email address.";
+                mailContent += "<br/> <br/>";
+                mailContent += "Temporary Password: " + TempPassword;
+                mailContent += "<br/> <br/>";
+                mailContent += "If you are missing emails from California Massage Therapy Council, please check email accounts <u>Spam</u> or <u>Junk</u> folder to ensure ";
+                mailContent += "email message was not filtered.If the message is in Spam or Junk folder, click Not Spam or Not Junk after selecting the message, ";
+                mailContent += "which will allow future email messages from California Massage Therapy Council to be delivered to your Inbox.";
+                mailContent += "<br/><br/><br/>";
+                mailContent += "Thank you.";
+                mailContent += "<br/><br/>";
+                mailContent += "California Massage Therapy Council";
+
+                    //if (EmailHelper.SendMail(Email, "Forget Password", "Temporary Password: " + TempPassword, true))
+                    if (EmailHelper.SendMail(Email, "Forget Password", mailContent, true))
                     {
 
                         //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);

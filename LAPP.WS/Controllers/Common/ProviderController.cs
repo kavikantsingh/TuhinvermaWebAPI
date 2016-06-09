@@ -307,7 +307,21 @@ namespace LAPP.WS.Controllers.Common
 
                 #region Send Email of user creation
 
-                if (EmailHelper.SendMail(ObjRegisterInfo.Email, "Temporary Password", "Email: " + ObjRegisterInfo.Email + " <br/> Temporary Password: " + TempPassword, true))
+                string mailContent = "The email address has been registered. The temporary password has been sent to the email address used for Registration. ";
+                mailContent += "Please check your email address.";
+                mailContent += "<br/> <br/>";
+                mailContent += "Temporary Password: " + TempPassword;
+                mailContent += "<br/> <br/>";
+                mailContent += "If you are missing emails from California Massage Therapy Council, please check email accounts <u>Spam</u> or <u>Junk</u> folder to ensure ";
+                mailContent += "email message was not filtered.If the message is in Spam or Junk folder, click Not Spam or Not Junk after selecting the message, ";
+                mailContent += "which will allow future email messages from California Massage Therapy Council to be delivered to your Inbox.";
+                mailContent += "<br/><br/><br/>";
+                mailContent += "Thank you.";
+                mailContent += "<br/><br/>";
+                mailContent += "California Massage Therapy Council";
+
+                //if (EmailHelper.SendMail(ObjRegisterInfo.Email, "Temporary Password", "Email: " + ObjRegisterInfo.Email + " <br/> Temporary Password: " + TempPassword, true))
+                if (EmailHelper.SendMail(ObjRegisterInfo.Email, "Temporary Password", mailContent, true))
                 {
                     LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Temporary Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Temporary Password email has been sent", EmailHelper.GetSenderAddress(), ObjRegisterInfo.Email, null, null, UserId, null, null, null);
                 }
