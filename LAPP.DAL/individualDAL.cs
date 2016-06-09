@@ -174,6 +174,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
             lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
             lstParameter.Add(new MySqlParameter("_Email", obj.Email));
+            lstParameter.Add(new MySqlParameter("_DOB", obj.DateOfBirth));
             lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
             lstParameter.Add(new MySqlParameter("Pager", PagerSize));
 

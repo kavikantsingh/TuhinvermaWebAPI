@@ -8,12 +8,26 @@ using LAPP.ENTITY;
 
 namespace LAPP.BAL
 {
-    public class IndividualCommunicationToLogBAL : BaseBAL
+    public class IndividualCommunicationLogBAL : BaseBAL
     {
-        IndividualCommunicationToLogDAL objDal = new IndividualCommunicationToLogDAL();
-        public int Save_IndividualCommunicationToLog(IndividualCommunicationToLog objIndividualCommunicationToLog)
+
+
+        IndividualCommunicationLogDAL objDal = new IndividualCommunicationLogDAL();
+
+        public int Save_IndividualCommunicationLog(IndividualCommunicationLog objIndividualCommunicationLog)
         {
-            return objDal.Save_IndividualCommunicationToLog(objIndividualCommunicationToLog);
+            return objDal.Save_IndividualCommunicationLog(objIndividualCommunicationLog);
+        }
+
+        public List<IndividualCommunicationLog> Get_IndividualCommunicationLog_by_IndividualId(int IndividualId)
+        {
+            return objDal.Get_IndividualCommunicationLog_by_IndividualId(IndividualId);
+        }
+
+        public IndividualCommunicationLog Get_IndividualCommunicationLog_By_IndividualCommunicationLogId(int ID)
+        {
+            return objDal.Get_IndividualCommunicationLog_By_IndividualCommunicationLogId(ID);
         }
     }
+
 }
