@@ -174,9 +174,6 @@
     <Content Include="LIB\Newtonsoft.Json.dll" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Helper\Common\AuthorizeDotNetPayment.cs" />
@@ -219,6 +216,7 @@
     <Compile Include="Controllers\Backoffice\ConfigurationController.cs" />
     <Compile Include="Controllers\Backoffice\ContentController.cs" />
     <Compile Include="Controllers\Backoffice\IndividualController.cs" />
+    <Compile Include="Controllers\Backoffice\PageController.cs" />
     <Compile Include="Controllers\Common\CommonController.cs" />
     <Compile Include="Controllers\Common\CountryController.cs" />
     <Compile Include="Controllers\Common\EmployerController.cs" />
@@ -281,12 +279,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="EmailTemplate\DataForSendingEmail-ActiveLicenseOnly.xlsx" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -310,6 +302,15 @@
       <Project>{791236c0-1637-44c8-b2a9-a1fad30b32d7}</Project>
       <Name>LAPP.LOGING</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -21,6 +21,11 @@ namespace LAPP.BAL
             return objDal.Get_All_PageModuletabsubmodule();
         }
 
+        public List<PageModuleTabSubModule> Get_All_PageModuletabsubmoduleByPageModuleId(int PageModuleId)
+        {
+            return objDal.Get_All_PageModuletabsubmodule_By_PageModuleId(PageModuleId);
+        }
+
 
     }
 }
