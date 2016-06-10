@@ -93,8 +93,21 @@ namespace LAPP.WS.Controllers.Renewal
 
             }
 
+            try
+            {
+                if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                {
+                    // this is executed only in the debug version
+                    LogingHelper.SaveExceptionInfo(objRenewalRequest);
+                }
 
-            LogingHelper.SaveExceptionInfo(objRenewalRequest);
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveRequestJson(ex.Message, " error in Save renewal request");
+            }
+
+            
 
 
 
