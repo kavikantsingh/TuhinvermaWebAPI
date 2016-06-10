@@ -20,7 +20,7 @@ namespace LAPP.ENTITY
     {
         public int IndividualEmploymentId { get; set; }
         public int IndividualId { get; set; }
-        public int ApplicationId { get; set; }
+        public int? ApplicationId { get; set; }
         public string EmployerName { get; set; }
         public int ProviderId { get; set; }
         public int? EmploymentHistoryTypeId { get; set; }

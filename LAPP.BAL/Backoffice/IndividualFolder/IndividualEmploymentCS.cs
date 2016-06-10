@@ -48,7 +48,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     // Update IndividualEmployment
 
 
-                    objIndEmployment.ApplicationId = objEmploymentResponse.ApplicationId;
+                    objIndEmployment.ApplicationId = applicationId;
                     objIndEmployment.IndividualId = objEmploymentResponse.IndividualId;
                     objIndEmployment.PositionId = objEmploymentResponse.PositionId;
                     objIndEmployment.EmploymentStatusId = objEmploymentResponse.EmploymentStatusId;
@@ -121,7 +121,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndEmployment.IsDeleted = objEmploymentResponse.IsDeleted;
                     objIndEmployment.EmploymentHistoryTypeId = 1;
                     objIndEmployment.IndividualEmploymentGuid = Guid.NewGuid().ToString();
-                    objIndEmployment.ApplicationId = objEmploymentResponse.ApplicationId;
+                    objIndEmployment.ApplicationId = applicationId;
                     objIndEmployment.IndividualId = objEmploymentResponse.IndividualId;
                     objIndEmployment.PositionId = objEmploymentResponse.PositionId;
                     objIndEmployment.EmploymentStatusId = objEmploymentResponse.EmploymentStatusId;
