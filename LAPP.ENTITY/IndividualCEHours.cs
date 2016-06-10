@@ -20,13 +20,13 @@ namespace LAPP.ENTITY
     {
         public int IndividualCEHoursId { get; set; }
         public int IndividualId { get; set; }
-        public int ApplicationId { get; set; }
-        public int CEHoursTypeId { get; set; }
+        public int? ApplicationId { get; set; }
+        public int? CEHoursTypeId { get; set; }
         public DateTime? CEHoursStartDate { get; set; }
         public DateTime? CEHoursEndDate { get; set; }
         public DateTime? CEHoursDueDate { get; set; }
         public int CEHoursReportingYear { get; set; }
-        public int CEHoursStatusId { get; set; }
+        public int? CEHoursStatusId { get; set; }
         public decimal CECarryInHours { get; set; }
         public decimal CERequiredHours { get; set; }
         public decimal CECurrentReportedHours { get; set; }

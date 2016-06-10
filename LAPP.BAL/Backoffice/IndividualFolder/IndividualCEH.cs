@@ -152,5 +152,114 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             return objResponse;
         }
 
+        public static IndividualCEHours CreateIndividualCEH(Token objToken, int IndividualLicenseId, int IndividualId)
+        {
+
+            IndividualCEHoursBAL objIndividualCEHoursBAL = new IndividualCEHoursBAL();
+
+            IndividualCEHours objCehCourse = new IndividualCEHours();
+
+            try
+            {
+                objCehCourse = objIndividualCEHoursBAL.Get_IndividualCEHours_By_IndividualLicenseId(IndividualLicenseId);
+                if (objCehCourse != null)
+                {
+                    return objCehCourse;
+
+                }
+                else {
+
+                    IndividualLicense objLicense = new IndividualLicense();
+                    IndividualLicenseBAL objLicenseBAL = new IndividualLicenseBAL();
+
+                    objLicense = objLicenseBAL.Get_IndividualLicense_By_IndividualLicenseId(IndividualLicenseId);
+                    if (objLicense != null)
+                    {
+
+                        IndividualCEHours objCECourseResponse = new IndividualCEHours();
+                        objCECourseResponse = objIndividualCEHoursBAL.Get_Top_IndividualCEHours_By_IndividualId(IndividualId);
+                        if (objCECourseResponse != null)
+                        {
+
+                            objCehCourse = new IndividualCEHours();
+
+                            objCehCourse.IndividualId = IndividualId;
+                            //objCehCourse.ApplicationId = objCECourseResponse.ApplicationId;
+                            //  objCehCourse.CEHoursTypeId = objCECourseResponse.CEHoursTypeId;
+                            objCehCourse.CEHoursStartDate = objLicense.LicenseEffectiveDate;
+                            //  objCehCourse.CEHoursEndDate = objLicense.LicenseExpirationDate;
+                            // objCehCourse.CEHoursDueDate = objLicense.LicenseEffectiveDate; 
+                            objCehCourse.CEHoursReportingYear = objLicense.LicenseEffectiveDate.Year;
+                            // objCehCourse.CEHoursStatusId = objCECourseResponse.CEHoursStatusId;
+                            objCehCourse.CECarryInHours = objCECourseResponse.CERolloverHours;
+                            objCehCourse.CERequiredHours = 0;
+                            objCehCourse.CECurrentReportedHours = 0;
+                            objCehCourse.CERolloverHours = 0;
+                            objCehCourse.ReferenceNumber = "";
+
+                            objCehCourse.IsActive = true;
+                            objCehCourse.IsDeleted = false;
+                            objCehCourse.IndividualLicenseId = IndividualLicenseId;
+
+                            objCehCourse.CreatedBy = objToken.UserId;
+                            objCehCourse.CreatedOn = DateTime.Now;
+                            objCehCourse.ModifiedBy = null;
+                            objCehCourse.ModifiedOn = null;
+                            objCehCourse.IndividualCEHoursGuid = Guid.NewGuid();
+
+
+                            objCehCourse.IndividualCEHoursId = objIndividualCEHoursBAL.Save_IndividualCEHours(objCehCourse);
+
+                        }
+                        else
+                        {
+                            objCehCourse = new IndividualCEHours();
+
+                            objCehCourse = new IndividualCEHours();
+
+                            objCehCourse.IndividualId = IndividualId;
+                            // objCehCourse.ApplicationId = objCECourseResponse.ApplicationId;
+                            //  objCehCourse.CEHoursTypeId = objCECourseResponse.CEHoursTypeId;
+                            objCehCourse.CEHoursStartDate = objLicense.LicenseEffectiveDate;
+                            //  objCehCourse.CEHoursEndDate = objLicense.LicenseExpirationDate;
+                            // objCehCourse.CEHoursDueDate = objLicense.LicenseEffectiveDate; 
+                            objCehCourse.CEHoursReportingYear = objLicense.LicenseEffectiveDate.Year;
+                            // objCehCourse.CEHoursStatusId = objCECourseResponse.CEHoursStatusId;
+                            objCehCourse.CECarryInHours = 0;
+                            objCehCourse.CERequiredHours = 0;
+                            objCehCourse.CECurrentReportedHours = 0;
+                            objCehCourse.CERolloverHours = 0;
+                            objCehCourse.ReferenceNumber = "";
+
+                            objCehCourse.IsActive = true;
+                            objCehCourse.IsDeleted = false;
+                            objCehCourse.IndividualLicenseId = IndividualLicenseId;
+
+                            objCehCourse.CreatedBy = objToken.UserId;
+                            objCehCourse.CreatedOn = DateTime.Now;
+                            objCehCourse.ModifiedBy = null;
+                            objCehCourse.ModifiedOn = null;
+                            objCehCourse.IndividualCEHoursGuid = Guid.NewGuid();
+
+
+                            objCehCourse.IndividualCEHoursId = objIndividualCEHoursBAL.Save_IndividualCEHours(objCehCourse);
+
+
+                        }
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                LogingHelper.SaveExceptionInfo("", ex, "SaveIndividualCEH", ENTITY.Enumeration.eSeverity.Error);
+
+
+            }
+            return objCehCourse;
+        }
+
     }
 }
