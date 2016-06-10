@@ -3623,5 +3623,170 @@ namespace LAPP.WS.Controllers.Backoffice
 
         #endregion
 
+        #region IndividualCEH_Save
+
+
+        /// <summary>
+        /// Save or Update the data For IndividualCEH
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        /// <param name="objIndividualCEH">Object of IndividualCEH</param>
+        [AcceptVerbs("POST")]
+        [ActionName("IndividualCEHSave")]
+        public IndividualCEHResponseRequest IndividualCEHSave(string Key, IndividualCEHResponse objIndividualCEH)
+        {
+            int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualCEHResponseRequest objResponse = new IndividualCEHResponseRequest();
+            IndividualCEHoursBAL objBAL = new IndividualCEHoursBAL();
+            IndividualCEHours objEntity = new IndividualCEHours();
+            List<IndividualCEHResponse> lstEntity = new List<IndividualCEHResponse>();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.IndividualCEHResponseList = null;
+                return objResponse;
+            }
+            try
+            {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualCEH);
+                        LogingHelper.SaveRequestJson(requestStr, "Save Individual CEH Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCEHSave object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+                string ValidationResponse = "";// IndividualCECourseValidate.ValidateIndividualCECourseObject(objIndividualCECourse);
+
+                if (!string.IsNullOrEmpty(ValidationResponse))
+                {
+                    objResponse.Message = "Validation Error";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = ValidationResponse;
+                    return objResponse;
+                }
+
+                if (objIndividualCEH != null)
+                {
+                    return IndividualCEH.SaveIndividualCEH(TokenHelper.GetTokenByKey(Key), objIndividualCEH);
+                }
+                else
+                {
+                    objResponse.Message = "Individual CEH object cannot be null.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = ValidationResponse;
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCEHSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.IndividualCEHResponseList = null;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+            return objResponse;
+        }
+
+
+        /// <summary>
+        /// Get Method to get IndividualCEH by key and ID.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualCEHBYIndividualId")]
+        public IndividualCEHResponseRequest IndividualCEHBYIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualCEHResponseRequest objResponse = new IndividualCEHResponseRequest();
+            IndividualCEHoursBAL objBAL = new IndividualCEHoursBAL();
+            IndividualCEHResponse objEntity = new IndividualCEHResponse();
+            List<IndividualCEHResponse> lstEntity = new List<IndividualCEHResponse>();
+            List<IndividualCEHours> lstIndividualCEHours = new List<IndividualCEHours>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualCEHResponseList = null;
+                    return objResponse;
+                }
+
+                lstIndividualCEHours = objBAL.Get_IndividualCEHours_By_IndividualId(IndividualId);
+                if (lstIndividualCEHours != null && lstIndividualCEHours.Count > 0)
+                {
+
+                    List<IndividualCEHResponse> lstCeCourseResponse = lstIndividualCEHours.Select(obj => new IndividualCEHResponse
+                    {
+                        IndividualCEHoursId = obj.IndividualCEHoursId,
+                        IndividualId = obj.IndividualId,
+                        ApplicationId = obj.ApplicationId,
+                        CEHoursTypeId = obj.CEHoursTypeId,
+                        CEHoursStartDate = obj.CEHoursStartDate,
+                        CEHoursEndDate = obj.CEHoursEndDate,
+                        CEHoursDueDate = obj.CEHoursDueDate,
+                        CEHoursReportingYear = obj.CEHoursReportingYear,
+                        CEHoursStatusId = obj.CEHoursStatusId,
+                        CECarryInHours = obj.CECarryInHours,
+                        CERequiredHours = obj.CERequiredHours,
+                        CECurrentReportedHours = obj.CECurrentReportedHours,
+                        CERolloverHours = obj.CERolloverHours,
+                        ReferenceNumber = obj.ReferenceNumber,
+                        IsActive = obj.IsActive,
+                        IndividualLicenseId = obj.IndividualLicenseId
+                    }).ToList();
+
+
+                    objResponse.IndividualCEHResponseList = lstCeCourseResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualCEHResponseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualCEHBYIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualCEHResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+        #endregion
+
     }
 }
