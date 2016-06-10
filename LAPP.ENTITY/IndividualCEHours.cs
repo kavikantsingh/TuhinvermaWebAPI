@@ -9,11 +9,10 @@ namespace LAPP.ENTITY
 
     {
 
-        public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
-        public int ModifiedBy { get; set; }
-        public DateTime ModifiedOn { get; set; }
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
         public Guid IndividualCEHoursGuid { get; set; }
     }
 
@@ -35,7 +34,11 @@ namespace LAPP.ENTITY
         public string ReferenceNumber { get; set; }
         public bool IsActive { get; set; }
         public int? IndividualLicenseId { get; set; }
+        public bool IsDeleted { get; set; }
+    }
 
-
+    public class IndividualCEHResponseRequest : BaseEntityServiceResponse
+    {
+        public List<IndividualCEHResponse> IndividualCEHResponseList { get; set; }
     }
 }

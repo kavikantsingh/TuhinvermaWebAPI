@@ -10,7 +10,7 @@ namespace LAPP.ENTITY
         public int IndividualDocumentId { get; set; }
         public int IndividualId { get; set; }
         public int? ApplicationId { get; set; }
-        public int DocumentLkToPageTabSectionId { get; set; }
+        public int? DocumentLkToPageTabSectionId { get; set; }
         public string DocumentLkToPageTabSectionCode { get; set; }
         public string DocumentTypeName { get; set; }
         public DateTime? EffectiveDate { get; set; }

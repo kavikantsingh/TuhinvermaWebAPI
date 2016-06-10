@@ -31,13 +31,15 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualCEHours.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualCEHours.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualCEHours.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualCEHours.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualCEHours.ModifiedOn));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualCEHours.ModifiedBy));
             lstParameter.Add(new MySqlParameter("IndividualCEHoursGuid", objIndividualCEHours.IndividualCEHoursGuid));
             lstParameter.Add(new MySqlParameter("IndividualLicenseId", objIndividualCEHours.IndividualLicenseId));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
-            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "INDIVIDUALCEHOURS_SAVE", true, lstParameter.ToArray());
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualcehours_Save", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
