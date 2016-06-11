@@ -25,7 +25,10 @@ namespace LAPP.BAL
         {
             return objDal.Get_IndividualEmploymentAddress_By_IndividualEmploymentId(IndividualEmploymentId);
         }
-
+        public List<IndividualEmploymentAddress> Get_individualempaddress_GetTopOne_By_IndividualEmpId(int IndividualEmploymentId)
+        {
+            return objDal.Get_individualempaddress_GetTopOne_By_IndividualEmpId(IndividualEmploymentId);
+        }
         public IndividualEmploymentAddress Get_IndividualEmploymentAddress_By_IndividualEmploymentAddressId(int ID)
         {
             return objDal.Get_IndividualEmploymentAddress_By_IndividualEmploymentAddressId(ID);

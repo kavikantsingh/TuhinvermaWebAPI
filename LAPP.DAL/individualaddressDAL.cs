@@ -27,6 +27,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualAddress.ModifiedBy));
             lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualAddress.ModifiedOn));
             lstParameter.Add(new MySqlParameter("IndividualAddressGuid", objIndividualAddress.IndividualAddressGuid));
+            lstParameter.Add(new MySqlParameter("AdressStatusId", objIndividualAddress.AdressStatusId));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
@@ -204,6 +205,10 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("CountryId") && dr["CountryId"] != DBNull.Value)
             {
                 objEntity.CountryId = Convert.ToInt32(dr["CountryId"]);
+            }
+            if (dr.Table.Columns.Contains("AdressStatusId") && dr["AdressStatusId"] != DBNull.Value)
+            {
+                objEntity.AdressStatusId = Convert.ToInt32(dr["AdressStatusId"]);
             }
             return objEntity;
 

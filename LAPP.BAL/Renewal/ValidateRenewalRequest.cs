@@ -104,13 +104,13 @@ namespace LAPP.BAL.Renewal
                 {
                     lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objEmpResponse.EmployerName), objEmpResponse.EmployerName, lstResponseReason, 128);
 
-                    List<IndividualEmploymentContactResponse> lstEmpContactResponse = objEmpResponse.EmploymentContact;
-                    List<IndividualEmploymentAddressResponse> lstEmpAddress = objEmpResponse.EmploymentAddress;
+                    List<IndividualEmploymentContact> lstEmpContactResponse = objEmpResponse.EmploymentContact;
+                    List<IndividualEmploymentAddress> lstEmpAddress = objEmpResponse.EmploymentAddress;
                     if (lstEmpAddress != null && lstEmpAddress.Count > 0)
                     {
                         AddressBAL objAddressBAL = new AddressBAL();
                         Address objAddress = new Address();
-                        foreach (IndividualEmploymentAddressResponse objAddressResponse in lstEmpAddress)
+                        foreach (IndividualEmploymentAddress objAddressResponse in lstEmpAddress)
                         {
 
                             lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objAddressResponse.StreetLine1), objAddressResponse.StreetLine1, lstResponseReason, 128);

@@ -145,7 +145,7 @@ namespace LAPP.BAL.Renewal
                                             objIndAddress.ModifiedOn = DateTime.Now;
                                             objIndAddress.IndividualId = IndividualId;
                                             objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
-
+                                            objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
                                             objIndAddressBAL.Save_IndividualAddress(objIndAddress);
                                         }
                                     }
@@ -187,6 +187,7 @@ namespace LAPP.BAL.Renewal
                                     objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
                                     objIndAddress.IsActive = true;
                                     objIndAddress.BeginDate = DateTime.Now;
+                                    objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
                                     objIndAddressBAL.Save_IndividualAddress(objIndAddress);
 
                                 }
@@ -611,8 +612,8 @@ namespace LAPP.BAL.Renewal
 
                             foreach (IndividualEmploymentResponse objEmpResponse in lstIndividualEmploymentResponse)
                             {
-                                List<IndividualEmploymentContactResponse> lstEmpContactResponse = objEmpResponse.EmploymentContact;
-                                List<IndividualEmploymentAddressResponse> lstEmpAddress = objEmpResponse.EmploymentAddress;
+                                List<IndividualEmploymentContact> lstEmpContactResponse = objEmpResponse.EmploymentContact;
+                                List<IndividualEmploymentAddress> lstEmpAddress = objEmpResponse.EmploymentAddress;
 
                                 IndividualEmployment objIndEmployment = new IndividualEmployment();
                                 IndividualEmploymentBAL objIndEmploymentBAL = new IndividualEmploymentBAL();
@@ -1689,8 +1690,8 @@ namespace LAPP.BAL.Renewal
 
                                 if (lstEmpAddress != null)
                                 {
-                                    List<IndividualEmploymentAddressResponse> lstEmpAddressResponse = lstEmpAddress
-                                    .Select(obj => new IndividualEmploymentAddressResponse
+                                    List<IndividualEmploymentAddress> lstEmpAddressResponse = lstEmpAddress
+                                    .Select(obj => new IndividualEmploymentAddress
                                     {
                                         Addressee = obj.Addressee,
                                         AddressTypeId = obj.AddressTypeId,
@@ -1717,15 +1718,15 @@ namespace LAPP.BAL.Renewal
                                 }
                                 else
                                 {
-                                    objEmployment.EmploymentAddress = new List<IndividualEmploymentAddressResponse>();
+                                    objEmployment.EmploymentAddress = new List<IndividualEmploymentAddress>();
 
                                 }
 
 
                                 if (lstEmpContact != null)
                                 {
-                                    List<IndividualEmploymentContactResponse> lstEmpContactResponse = lstEmpContact
-                                    .Select(obj => new IndividualEmploymentContactResponse
+                                    List<IndividualEmploymentContact> lstEmpContactResponse = lstEmpContact
+                                    .Select(obj => new IndividualEmploymentContact
                                     {
                                         BeginDate = obj.BeginDate,
                                         EndDate = obj.EndDate,
@@ -1750,7 +1751,7 @@ namespace LAPP.BAL.Renewal
                                 }
                                 else
                                 {
-                                    objEmployment.EmploymentContact = new List<IndividualEmploymentContactResponse>();
+                                    objEmployment.EmploymentContact = new List<IndividualEmploymentContact>();
 
                                 }
 

@@ -68,6 +68,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                             objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
                             objIndAddress.IsActive = objAddressResponse.IsActive;
                             objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
+                            objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
                             objIndAddressBAL.Save_IndividualAddress(objIndAddress);
                         }
 
@@ -128,7 +129,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndAddress.IsActive = objAddressResponse.IsActive;
                     objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
                     objIndAddress.BeginDate = DateTime.Now;
-
+                    objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
                     objIndAddressBAL.Save_IndividualAddress(objIndAddress);
 
                     // End Save IndividualAddress

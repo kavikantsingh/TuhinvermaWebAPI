@@ -161,14 +161,22 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
 
                 //SAve EmployeeAddress
+                IndividualEmploymentAddressBAL objEmpAddressBAL = new IndividualEmploymentAddressBAL();
+                //List<IndividualEmploymentAddress> lstIndividualEmploymentAddress = new List<IndividualEmploymentAddress>();
+                //lstIndividualEmploymentAddress = objEmpAddressBAL.Get_IndividualEmploymentAddress_By_IndividualEmploymentId(objEmploymentResponse.IndividualEmploymentId);
+                //if (lstIndividualEmploymentAddress != null && lstIndividualEmploymentAddress.Count > 0)
+                //{
 
-                List<IndividualEmploymentAddressResponse> lstEmpAddress = objEmploymentResponse.EmploymentAddress;
-                List<IndividualEmploymentAddressResponse> lstEmpAddressNew = new List<IndividualEmploymentAddressResponse>();
+
+                //}
+
+                List<IndividualEmploymentAddress> lstEmpAddress = objEmploymentResponse.EmploymentAddress;
+                List<IndividualEmploymentAddress> lstEmpAddressNew = new List<IndividualEmploymentAddress>();
                 if (lstEmpAddress != null && lstEmpAddress.Count > 0)
                 {
                     AddressBAL objAddressBAL = new AddressBAL();
                     Address objAddress = new Address();
-                    foreach (IndividualEmploymentAddressResponse objAddressResponse in lstEmpAddress)
+                    foreach (IndividualEmploymentAddress objAddressResponse in lstEmpAddress)
                     {
                         if (objAddressResponse.AddressId > 0)
                         {
@@ -193,8 +201,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
 
                                 IndividualEmploymentAddress objIndAddress = new IndividualEmploymentAddress();
-                                IndividualEmploymentAddressBAL objIndAddressBAL = new IndividualEmploymentAddressBAL();
-                                objIndAddress = objIndAddressBAL.Get_IndividualEmploymentAddress_By_IndividualEmploymentAddressId(objAddressResponse.IndividualEmploymentAddressId);
+                                objIndAddress = objEmpAddressBAL.Get_IndividualEmploymentAddress_By_IndividualEmploymentAddressId(objAddressResponse.IndividualEmploymentAddressId);
                                 if (objIndAddress != null)
                                 {
                                     objIndAddress.IndividualEmploymentAddressId = objAddressResponse.IndividualEmploymentAddressId;
@@ -209,7 +216,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                                     objIndAddress.IndividualEmploymentAddressGuid = Guid.NewGuid().ToString();
                                     objIndAddress.IndividualEmploymentId = objEmploymentResponse.IndividualEmploymentId;
 
-                                    objIndAddress.IndividualEmploymentAddressId = objIndAddressBAL.Save_IndividualEmploymentAddress(objIndAddress);
+                                    objIndAddress.IndividualEmploymentAddressId = objEmpAddressBAL.Save_IndividualEmploymentAddress(objIndAddress);
                                 }
 
                                 lstEmpAddressNew.Add(objIndAddress);
@@ -266,15 +273,15 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                 // Save/Update Employement Contact
 
-                List<IndividualEmploymentContactResponse> lstEmpContactResponse = objEmploymentResponse.EmploymentContact;
+                List<IndividualEmploymentContact> lstEmpContactResponse = objEmploymentResponse.EmploymentContact;
 
-                List<IndividualEmploymentContactResponse> lstEmpContactNewResponse = new List<IndividualEmploymentContactResponse>();
+                List<IndividualEmploymentContact> lstEmpContactNewResponse = new List<IndividualEmploymentContact>();
 
                 if (lstEmpContactResponse != null && lstEmpContactResponse.Count > 0)
                 {
                     ContactBAL objContactBAL = new ContactBAL();
                     Contact objContact = new Contact();
-                    foreach (IndividualEmploymentContactResponse objContactResponse in lstEmpContactResponse)
+                    foreach (IndividualEmploymentContact objContactResponse in lstEmpContactResponse)
                     {
                         if (objContactResponse.ContactId > 0)
                         {
