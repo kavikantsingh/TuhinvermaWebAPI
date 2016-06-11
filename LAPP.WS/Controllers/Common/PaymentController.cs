@@ -212,10 +212,10 @@ namespace LAPP.WS.Controllers.Common
                 }
 
                 List<ListItems> objItems = new List<ListItems>();
-                for (int i = 1; i < 12; i++)
+                for (int i = 1; i < 13; i++)
                 {
                     ListItems items = new ListItems();
-                    items.Text = CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i];
+                    items.Text = CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i-1];
                     items.Value = i.ToString();
                     objItems.Add(items);
                 }
