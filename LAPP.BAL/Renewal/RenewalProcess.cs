@@ -1590,6 +1590,7 @@ namespace LAPP.BAL.Renewal
                                     EndDate = obj.EndDate,
                                     IndividualAddressId = obj.IndividualAddressId,
                                     IndividualId = obj.IndividualId,
+                                    AdressStatusId = obj.AdressStatusId,
                                     IsActive = obj.IsActive,
                                     IsMailingSameasPhysical = obj.IsMailingSameasPhysical,
                                     StateCode = obj.StateCode,
