@@ -30,7 +30,7 @@ namespace LAPP.ENTITY
 
         public List<IndividualLegalResponse> IndividualLegal { get; set; }
 
-        //  public List<IndividualCEHResponse> IndividualCEH { get; set; }
+         public List<IndividualCEHResponse> IndividualCEH { get; set; }
         public List<IndividualCECourseResponse> IndividualCECourse { get; set; }
         public IndividualAffidavitResponse IndividualAffidavit { get; set; }
 

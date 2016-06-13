@@ -3752,7 +3752,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         CERequiredHours = obj.CERequiredHours,
                         CECurrentReportedHours = obj.CECurrentReportedHours,
                         CERolloverHours = obj.CERolloverHours,
-                        ReferenceNumber = obj.ReferenceNumber,
+                        //ReferenceNumber = obj.ReferenceNumber,
                         IsActive = obj.IsActive,
                         IndividualLicenseId = obj.IndividualLicenseId
                     }).ToList();
@@ -3836,7 +3836,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         CERequiredHours = obj.CERequiredHours,
                         CECurrentReportedHours = obj.CECurrentReportedHours,
                         CERolloverHours = obj.CERolloverHours,
-                        ReferenceNumber = obj.ReferenceNumber,
+                       // ReferenceNumber = obj.ReferenceNumber,
                         IsActive = obj.IsActive,
                         IndividualLicenseId = obj.IndividualLicenseId
                     }).ToList();

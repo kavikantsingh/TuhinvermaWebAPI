@@ -1231,7 +1231,7 @@ namespace LAPP.BAL.Renewal
                             if (objCehCourse != null)
                             {
                                 objCehCourse.IndividualId = IndividualId;
-                                objCehCourse.ApplicationId = objCECourseResponse.ApplicationId;
+                                objCehCourse.ApplicationId = ApplicationId;
                                 objCehCourse.CEHoursTypeId = objCECourseResponse.CEHoursTypeId;
                                 objCehCourse.CEHoursStartDate = objCECourseResponse.CEHoursStartDate;
                                 objCehCourse.CEHoursEndDate = objCECourseResponse.CEHoursEndDate;
@@ -1259,7 +1259,7 @@ namespace LAPP.BAL.Renewal
                                 objCehCourse = new IndividualCEHours();
 
                                 objCehCourse.IndividualId = IndividualId;
-                                objCehCourse.ApplicationId = objCECourseResponse.ApplicationId;
+                                objCehCourse.ApplicationId = ApplicationId;
                                 objCehCourse.CEHoursTypeId = objCECourseResponse.CEHoursTypeId;
                                 objCehCourse.CEHoursStartDate = objCECourseResponse.CEHoursStartDate;
                                 objCehCourse.CEHoursEndDate = objCECourseResponse.CEHoursEndDate;
@@ -1669,6 +1669,7 @@ namespace LAPP.BAL.Renewal
                                     EndDate = obj.EndDate,
                                     IndividualAddressId = obj.IndividualAddressId,
                                     IndividualId = obj.IndividualId,
+                                    AdressStatusId = obj.AdressStatusId,
                                     IsActive = obj.IsActive,
                                     IsMailingSameasPhysical = obj.IsMailingSameasPhysical,
                                     StateCode = obj.StateCode,
@@ -2023,7 +2024,7 @@ namespace LAPP.BAL.Renewal
                     IndividualCEHoursBAL objCEHoursBAL = new IndividualCEHoursBAL();
                     IndividualCEHours objCEHourse = new IndividualCEHours();
                     objCEHourse = IndividualCEH.CreateIndividualCEH(objToken, objIndividualRenewal.IndividualLicense[0].IndividualLicenseId, IndividualId);
-                    if (lstCEHours != null && lstCEHours.Count > 0)
+                    if (objCEHourse != null  )
                     {
                         lstCEHours.Add(objCEHourse);
                         List<IndividualCEHResponse> lstCEHResponse = lstCEHours.Select(obj => new IndividualCEHResponse
