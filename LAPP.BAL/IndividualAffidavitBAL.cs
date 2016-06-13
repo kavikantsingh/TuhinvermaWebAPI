@@ -32,6 +32,9 @@ namespace LAPP.BAL
             return objDal.Get_IndividualAffidavit_By_IndividualId(IndividualId);
         }
 
-
+        public IndividualAffidavit Get_IndividualAffidavit_By_IndId_AppId(int individualId, int applicationId)
+        {
+               return objDal.Get_IndividualAffidavit_By_IndId_AppId(individualId, applicationId);
+        }
     }
 }

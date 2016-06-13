@@ -31,13 +31,33 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualAffidavit.ModifiedOn));
 
             lstParameter.Add(new MySqlParameter("IndividualAffidavitGuid", objIndividualAffidavit.IndividualAffidavitGuid));
-
+            lstParameter.Add(new MySqlParameter("ApplicationId", objIndividualAffidavit.ApplicationId));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
             objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualaffidavit_Save", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
+        }
+
+        public IndividualAffidavit Get_IndividualAffidavit_By_IndId_AppId(int individualId, int applicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", individualId));
+            lstParameter.Add(new MySqlParameter("G_ApplicationId", applicationId));
+            lstParameter.Add(new MySqlParameter("G_IndividualAffidavitGuid", Guid.NewGuid().ToString()));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualaffidavit_Get_By_IndId_AppId", lstParameter.ToArray());
+            IndividualAffidavit objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
         }
 
         public List<IndividualAffidavit> Get_All_IndividualAffidavit()
@@ -171,7 +191,10 @@ namespace LAPP.DAL
             {
                 objEntity.ContentDescription = Convert.ToString(dr["ContentDescription"]);
             }
-
+            if (dr.Table.Columns.Contains("ApplicationId") && dr["ApplicationId"] != DBNull.Value)
+            {
+                objEntity.ApplicationId = Convert.ToInt32(dr["ApplicationId"]);
+            }
             return objEntity;
 
         }

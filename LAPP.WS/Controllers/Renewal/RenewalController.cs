@@ -385,6 +385,53 @@ namespace LAPP.WS.Controllers.Renewal
         }
 
 
+        /// <summary>
+        /// Individual Renewal Get By ApplicationId and IndividualId
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="IndividualId"></param>
+        /// <param name="ApplicationId"></param>
+        /// <returns></returns>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualRenewalGetByApplicationId")]
+        public IndividualRenewalResponse IndividualRenewalGetByApplicationId(string Key, int IndividualId, int ApplicationId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualRenewalResponse objResponse = new IndividualRenewalResponse();
+            IndividualRenewal objIndividualRenewal = new IndividualRenewal();
+
+            try
+            {
+
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualRenewal = null;
+                    return objResponse;
+                }
+
+
+                return RenewalProcess.SelectRenewalResponseByApplicationId(TokenHelper.GetTokenByKey(Key), IndividualId,ApplicationId);
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualRenewalGetByApplicationId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualRenewal = null;
+
+            }
+            return objResponse;
+
+
+        }
 
 
     }
