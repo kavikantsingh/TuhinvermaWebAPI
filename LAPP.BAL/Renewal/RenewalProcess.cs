@@ -512,6 +512,7 @@ namespace LAPP.BAL.Renewal
                         {
                             foreach (IndividualCECourseResponse objCehResponse in lstCECourseResponse)
                             {
+                                objCehResponse.IndividualLicenseId = objIndividualRenewal.IndividualLicense[0].IndividualLicenseId;
                                 if (objCehResponse.IndividualCECourseId > 0)
                                 {
                                     IndividualCECourse objCehCourse = objCECourseBAL.Get_IndividualCECourse_By_IndividualCECourseId(objCehResponse.IndividualCECourseId);
@@ -1226,7 +1227,7 @@ namespace LAPP.BAL.Renewal
                         if (lstCEHoursResp != null && lstCEHoursResp.Count > 0)
                         {
                             IndividualCEHResponse objCECourseResponse = lstCEHoursResp[0];
-
+                            objCECourseResponse.IndividualLicenseId = objIndividualRenewal.IndividualLicense[0].IndividualLicenseId;
                             objCehCourse = objCEHoursBAL.Get_IndividualCEHours_By_IndividualCEHoursId(objCECourseResponse.IndividualCEHoursId);
                             if (objCehCourse != null)
                             {
@@ -2024,7 +2025,7 @@ namespace LAPP.BAL.Renewal
                     IndividualCEHoursBAL objCEHoursBAL = new IndividualCEHoursBAL();
                     IndividualCEHours objCEHourse = new IndividualCEHours();
                     objCEHourse = IndividualCEH.CreateIndividualCEH(objToken, objIndividualRenewal.IndividualLicense[0].IndividualLicenseId, IndividualId);
-                    if (objCEHourse != null  )
+                    if (objCEHourse != null)
                     {
                         lstCEHours.Add(objCEHourse);
                         List<IndividualCEHResponse> lstCEHResponse = lstCEHours.Select(obj => new IndividualCEHResponse
@@ -2338,6 +2339,11 @@ namespace LAPP.BAL.Renewal
         {
             try
             {
+                if (RequestedLicenseStatusTypeId == 0)
+                {
+
+                    RequestedLicenseStatusTypeId = 1;//default Active if 0
+                }
                 bool RenewalApprovalRequired = false;
                 bool RenewalApprovalRequiredifLegalInfoIsYes = false;
 
@@ -2419,9 +2425,12 @@ namespace LAPP.BAL.Renewal
                     #endregion
 
                     objPendingLicenseBAL.Save_IndividualLicense(objPedningLicense);
+
+                    string LicenseStatusTypeName = objPedningLicense.LicenseStatusTypeId == 1 ? "Active" :
+                                                     objPedningLicense.LicenseStatusTypeId == 4 ? "Inactive" : "";
                     if (objPedningLicense.LicenseStatusTypeId != 6)
                     {
-                        LogHelper.SaveIndividualLog(objPedningLicense.IndividualId, objPedningLicense.ApplicationId, (eCommentLogSource.WSAPI).ToString(), "License Renewed, Start Date:" + objPedningLicense.LicenseEffectiveDate.ToShortDateString() + ", End Date: " + objPedningLicense.LicenseExpirationDate.ToShortDateString() + ", Status: Pending Renewal , Updated To: " + (RequestedLicenseStatusTypeId == 1 ? "Active" : "Inactive") + ", Updated On: " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), objToken.UserId);
+                        LogHelper.SaveIndividualLog(objPedningLicense.IndividualId, objPedningLicense.ApplicationId, (eCommentLogSource.WSAPI).ToString(), "License Renewed, Start Date:" + objPedningLicense.LicenseEffectiveDate.ToShortDateString() + ", End Date: " + objPedningLicense.LicenseExpirationDate.ToShortDateString() + ", Status: Pending Renewal , Updated To: " + LicenseStatusTypeName + ", Updated On: " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), objToken.UserId);
                     }
                     else
                     {
