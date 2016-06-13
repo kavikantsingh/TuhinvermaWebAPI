@@ -119,7 +119,7 @@ namespace LAPP.WS.Controllers.Common
                                 objResponse.IndividualID = objIndividual.IndividualId;
                                 objResponse.UserID = objUseres.UserId;
 
-                                var objUserResponse = new { IndividualId = objIndividual.IndividualId, UserID = objUseres.UserId, UserName = objUseres.UserName, UserTypeID = objUseres.UserTypeId, UserTypeName = objUseres.UserTypeName, FirstName = objIndividual.FirstName, LastName = objIndividual.LastName, Email = objUseres.Email, TemporaryPassword = objUseres.TemporaryPassword };
+                                var objUserResponse = new { IndividualId = objIndividual.IndividualId, UserID = objUseres.UserId, UserName = objUseres.UserName, UserTypeID = objUseres.UserTypeId, UserTypeName = objUseres.UserTypeName, FirstName = objIndividual.FirstName, LastName = objIndividual.LastName, Email = objUseres.Email, TemporaryPassword = false };
 
                                 objResponse.Key = Key;
                                 objResponse.UserID = objUseres.UserId;
