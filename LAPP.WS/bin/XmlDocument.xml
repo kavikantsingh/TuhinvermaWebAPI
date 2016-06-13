@@ -961,6 +961,27 @@
             <param name="Key">The Key of the data.</param>
             <param name="objIndividualLegalResponse">Object of objIndividualLegalResponse</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCEHSave(System.String,LAPP.ENTITY.IndividualCEHResponse)">
+            <summary>
+            Save or Update the data For IndividualCEH
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objIndividualCEH">Object of IndividualCEH</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCEHBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get list IndividualCEH by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualCEHByIndividualLicenseId(System.String,System.Int32)">
+            <summary>
+            Get Method to get object of IndividualCEH by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualLicenseId">Individual License Id.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.PageController.PageGetAllPageNames(System.String)">
             <summary>
             Looks up all data by Key For Pages.
@@ -987,6 +1008,12 @@
             </summary>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.CommonController.ServerDateTimeGet">
+            <summary>
+            Get Server date and time
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.CommonController.ReloadConfiguration">
             <summary>
             Get Server date and time
             </summary>
@@ -1403,6 +1430,15 @@
             <param name="objSearch">objSearch.</param>
             <param name="PageNumber">CurrentPage.</param>
             <param name="NoOfRecords">PagerSize.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.IndividualRenewalGetByApplicationId(System.String,System.Int32,System.Int32)">
+            <summary>
+            Individual Renewal Get By ApplicationId and IndividualId
+            </summary>
+            <param name="Key"></param>
+            <param name="IndividualId"></param>
+            <param name="ApplicationId"></param>
+            <returns></returns>
         </member>
         <member name="M:LAPP.WS.Controllers.User.MenuController.MenuGetAll(System.String)">
             <summary>
