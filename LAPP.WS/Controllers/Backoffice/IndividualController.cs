@@ -3466,7 +3466,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     IndividualDocumentUpload objIndividualDocumentUpload = new IndividualDocumentUpload();
                     List<DocumentToUpload> lstDocumentToUpload = new List<DocumentToUpload>();
                     List<DocumentToUpload> lstDocumentToUploadNEW = new List<DocumentToUpload>();
-                    lstDocumentToUpload= objCommunicationLog.DocumentUploadList;
+                    lstDocumentToUpload = objCommunicationLog.DocumentUploadList;
 
                     int IndividualId = objCommunicationLog.IndividualId;
                     int? ApplicationId = objCommunicationLog.ApplicationId;
@@ -3594,7 +3594,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         LogHelper.SaveIndividualLog(objCommunicationLog.IndividualId, null, "Backoffice", ("Communication save Email sent to . Email Address: " + objCommunicationLog.EmailTo + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
 
                         objCommunicationLog.Type = ((char)eCommunicationType.Email).ToString();
-                        objCommunicationLog.CommunicationStatus ="F";
+                        objCommunicationLog.CommunicationStatus = "F";
                         //objCommunicationLog.CommunicationSource = "Backoffice";
                         objCommunicationLog.EmailFrom = EmailHelper.GetSenderAddress();
                         return IndividualCorrespondenceCS.SaveIndividualCorrespondence(TokenHelper.GetTokenByKey(Key), objCommunicationLog);
@@ -3999,7 +3999,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         CERequiredHours = obj.CERequiredHours,
                         CECurrentReportedHours = obj.CECurrentReportedHours,
                         CERolloverHours = obj.CERolloverHours,
-                       // ReferenceNumber = obj.ReferenceNumber,
+                        // ReferenceNumber = obj.ReferenceNumber,
                         IsActive = obj.IsActive,
                         IndividualLicenseId = obj.IndividualLicenseId
                     }).ToList();
