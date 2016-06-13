@@ -7,6 +7,7 @@ using LAPP.ENTITY;
 using LAPP.ENTITY.Enumeration;
 using LAPP.GlobalFunctions;
 using LAPP.LOGING;
+using LAPP.BAL.Backoffice.IndividualFolder;
 
 namespace LAPP.BAL.Renewal
 {
@@ -1214,6 +1215,84 @@ namespace LAPP.BAL.Renewal
                     }
                     #endregion
 
+                    #region Individual CE Hours
+
+                    try
+                    {
+                        List<IndividualCEHResponse> lstCEHoursResp = new List<IndividualCEHResponse>();
+                        IndividualCEHoursBAL objCEHoursBAL = new IndividualCEHoursBAL();
+                        IndividualCEHours objCehCourse = new IndividualCEHours();
+                        lstCEHoursResp = objIndividualRenewal.IndividualCEH;
+                        if (lstCEHoursResp != null && lstCEHoursResp.Count > 0)
+                        {
+                            IndividualCEHResponse objCECourseResponse = lstCEHoursResp[0];
+
+                            objCehCourse = objCEHoursBAL.Get_IndividualCEHours_By_IndividualCEHoursId(objCECourseResponse.IndividualCEHoursId);
+                            if (objCehCourse != null)
+                            {
+                                objCehCourse.IndividualId = IndividualId;
+                                objCehCourse.ApplicationId = objCECourseResponse.ApplicationId;
+                                objCehCourse.CEHoursTypeId = objCECourseResponse.CEHoursTypeId;
+                                objCehCourse.CEHoursStartDate = objCECourseResponse.CEHoursStartDate;
+                                objCehCourse.CEHoursEndDate = objCECourseResponse.CEHoursEndDate;
+                                objCehCourse.CEHoursDueDate = objCECourseResponse.CEHoursDueDate;
+                                objCehCourse.CEHoursReportingYear = objCECourseResponse.CEHoursReportingYear;
+                                objCehCourse.CEHoursStatusId = objCECourseResponse.CEHoursStatusId;
+                                objCehCourse.CECarryInHours = objCECourseResponse.CECarryInHours;
+                                objCehCourse.CERequiredHours = objCECourseResponse.CERequiredHours;
+                                objCehCourse.CECurrentReportedHours = objCECourseResponse.CECurrentReportedHours;
+                                objCehCourse.CERolloverHours = objCECourseResponse.CERolloverHours;
+                                objCehCourse.ReferenceNumber = "";
+                                objCehCourse.IsActive = objCECourseResponse.IsActive;
+                                objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
+                                objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
+                                objCehCourse.ModifiedBy = objToken.UserId;
+                                objCehCourse.ModifiedOn = DateTime.Now;
+
+                                objCEHoursBAL.Save_IndividualCEHours(objCehCourse);
+
+
+                            }
+
+                            else
+                            {
+                                objCehCourse = new IndividualCEHours();
+
+                                objCehCourse.IndividualId = IndividualId;
+                                objCehCourse.ApplicationId = objCECourseResponse.ApplicationId;
+                                objCehCourse.CEHoursTypeId = objCECourseResponse.CEHoursTypeId;
+                                objCehCourse.CEHoursStartDate = objCECourseResponse.CEHoursStartDate;
+                                objCehCourse.CEHoursEndDate = objCECourseResponse.CEHoursEndDate;
+                                objCehCourse.CEHoursDueDate = objCECourseResponse.CEHoursDueDate;
+                                objCehCourse.CEHoursReportingYear = objCECourseResponse.CEHoursReportingYear;
+                                objCehCourse.CEHoursStatusId = objCECourseResponse.CEHoursStatusId;
+                                objCehCourse.CECarryInHours = objCECourseResponse.CECarryInHours;
+                                objCehCourse.CERequiredHours = objCECourseResponse.CERequiredHours;
+                                objCehCourse.CECurrentReportedHours = objCECourseResponse.CECurrentReportedHours;
+                                objCehCourse.CERolloverHours = objCECourseResponse.CERolloverHours;
+                                objCehCourse.ReferenceNumber = "";
+
+                                objCehCourse.IsActive = objCECourseResponse.IsActive;
+                                objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
+                                objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
+
+                                objCehCourse.CreatedBy = objToken.UserId;
+                                objCehCourse.CreatedOn = DateTime.Now;
+                                objCehCourse.ModifiedBy = null;
+                                objCehCourse.ModifiedOn = null;
+                                objCehCourse.IndividualCEHoursGuid = Guid.NewGuid();
+
+                                objCehCourse.IndividualCEHoursId = objCEHoursBAL.Save_IndividualCEHours(objCehCourse);
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Individual CE Hours", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
                     return SelectOrCreateResponse(objToken, IndividualId);
 
                 }
@@ -1940,37 +2019,37 @@ namespace LAPP.BAL.Renewal
 
                     #region Individual CE Hours
 
-                    //List<IndividualCEHours> lstCEHours = new List<IndividualCEHours>();
-                    //IndividualCEHoursBAL objCEHoursBAL = new IndividualCEHoursBAL();
-                    //lstCEHours = objCEHoursBAL.Get_IndividualCEHours_By_IndividualId(IndividualId);
-                    //if (lstCEHours != null && lstCEHours.Count > 0)
-                    //{
-                    //    List<IndividualCEHResponse> lstCEHResponse = lstCEHours.Select(obj => new IndividualCEHResponse
-                    //    {
-                    //        ApplicationId = obj.ApplicationId,
-                    //        CECarryInHours = obj.CECarryInHours,
-                    //        CECurrentReportedHours = obj.CECurrentReportedHours,
-                    //        CEHoursDueDate = obj.CEHoursDueDate,
-                    //        CEHoursEndDate = obj.CEHoursEndDate,
-                    //        CEHoursReportingYear = obj.CEHoursReportingYear,
-                    //        CEHoursStartDate = obj.CEHoursStartDate,
-                    //        CEHoursStatusId = obj.CEHoursStatusId,
-                    //        CEHoursTypeId = obj.CEHoursTypeId,
-                    //        CERequiredHours = obj.CERequiredHours,
-                    //        CERolloverHours = obj.CERolloverHours,
-                    //        IndividualCEHoursId = obj.IndividualCEHoursId,
-                    //        IndividualId = obj.IndividualId,
-                    //        IsActive = obj.IsActive,
-                    //        ReferenceNumber = obj.ReferenceNumber
+                    List<IndividualCEHours> lstCEHours = new List<IndividualCEHours>();
+                    IndividualCEHoursBAL objCEHoursBAL = new IndividualCEHoursBAL();
+                    IndividualCEHours objCEHourse = new IndividualCEHours();
+                    objCEHourse = IndividualCEH.CreateIndividualCEH(objToken, objIndividualRenewal.IndividualLicense[0].IndividualLicenseId, IndividualId);
+                    if (lstCEHours != null && lstCEHours.Count > 0)
+                    {
+                        lstCEHours.Add(objCEHourse);
+                        List<IndividualCEHResponse> lstCEHResponse = lstCEHours.Select(obj => new IndividualCEHResponse
+                        {
+                            ApplicationId = obj.ApplicationId,
+                            CECarryInHours = obj.CECarryInHours,
+                            CECurrentReportedHours = obj.CECurrentReportedHours,
+                            CEHoursDueDate = obj.CEHoursDueDate,
+                            CEHoursEndDate = obj.CEHoursEndDate,
+                            CEHoursReportingYear = obj.CEHoursReportingYear,
+                            CEHoursStartDate = obj.CEHoursStartDate,
+                            CEHoursStatusId = obj.CEHoursStatusId,
+                            CEHoursTypeId = obj.CEHoursTypeId,
+                            CERequiredHours = obj.CERequiredHours,
+                            CERolloverHours = obj.CERolloverHours,
+                            IndividualCEHoursId = obj.IndividualCEHoursId,
+                            IndividualId = obj.IndividualId,
+                            IsActive = obj.IsActive,
+                            IsDeleted = obj.IsDeleted,
+                            IndividualLicenseId = obj.IndividualLicenseId
 
-                    //    }).ToList();
-                    //    objIndividualRenewal.IndividualCEH = lstCEHResponse;
+                        }).ToList();
+                        objIndividualRenewal.IndividualCEH = lstCEHResponse;
 
-                    //}
-                    //else
-                    //{
-                    //    objIndividualRenewal.IndividualCEH = new List<IndividualCEHResponse>();
-                    //}
+                    }
+
 
                     #endregion
 
