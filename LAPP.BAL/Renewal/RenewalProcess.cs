@@ -941,7 +941,7 @@ namespace LAPP.BAL.Renewal
                             if (objIndividualAffidavit != null)
                             {
                                 objIndividualAffidavit.IndividualId = objIndividualAffidavitResponse.IndividualId;
-                                objIndividualAffidavit.ApplicationId = objIndividualAffidavitResponse.ApplicationId;
+                                objIndividualAffidavit.ApplicationId = ApplicationId;
                                 //objIndividualAffidavit.ContentItemNumber = objIndividualAffidavitResponse.ContentItemNumber;
                                 objIndividualAffidavit.ContentItemResponse = objIndividualAffidavitResponse.ContentItemResponse;
                                 objIndividualAffidavit.Desc = objIndividualAffidavitResponse.Desc;
