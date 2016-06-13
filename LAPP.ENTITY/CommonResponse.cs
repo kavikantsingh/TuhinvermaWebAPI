@@ -73,14 +73,15 @@ namespace LAPP.ENTITY
 
         public string RenewalApplicationBase64 { get; set; }
         public string RenewalApplitionName { get; set; }
-        
+
 
     }
 
-    public class  EmailWithAttachment
+    public class EmailWithAttachment
     {
 
         public string Email { get; set; }
+        public string EmailACopyToSender { get; set; }
         public int IndividualId { get; set; }
         public int ApplicationId { get; set; }
 
