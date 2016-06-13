@@ -25,7 +25,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             List<IndividualNameRequest> lstIndividualName = new List<IndividualNameRequest>();
             try
             {
-                int individualId = objIndividualNameRequest.IndividualId;
+                int individualId =Convert.ToInt32( objIndividualNameRequest.IndividualId);
                 int? applicationId = null;//objIndividualNameRequest.ApplicationId;
                 if (objIndividualNameRequest.IndividualNameId > 0)
                 {
@@ -36,7 +36,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         if (objIndividualNameRequest.IndividualNameStatusId == Convert.ToInt32(eIndividualNameStatus.Current))
                         {
                             List<IndividualName> lstIndividualNameS = new List<IndividualName>();
-                            lstIndividualNameS = objIndividualNameBAL.Get_IndividualName_By_IndividualId(objIndividualNameRequest.IndividualId);
+                            lstIndividualNameS = objIndividualNameBAL.Get_IndividualName_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
                             if (lstIndividualNameS != null && lstIndividualNameS.Count > 0)
                             {
                                 if (objIndividualNameRequest.IndividualNameStatusId == Convert.ToInt32(eIndividualNameStatus.Current))
@@ -143,7 +143,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         int RecordInName = 0;
                         // Save New Record In IndividualName From Individual Current Name
                         List<IndividualName> lstIndividualNameS = new List<IndividualName>();
-                        lstIndividualNameS = objIndividualNameBAL.Get_IndividualName_By_IndividualId(objIndividualNameRequest.IndividualId);
+                        lstIndividualNameS = objIndividualNameBAL.Get_IndividualName_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
                         if (lstIndividualNameS != null && lstIndividualNameS.Count > 0)
                         {
                             foreach (IndividualName objname in lstIndividualNameS)

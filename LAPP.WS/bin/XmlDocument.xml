@@ -1431,6 +1431,15 @@
             <param name="PageNumber">CurrentPage.</param>
             <param name="NoOfRecords">PagerSize.</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Renewal.RenewalController.IndividualRenewalGetByApplicationId(System.String,System.Int32,System.Int32)">
+            <summary>
+            Individual Renewal Get By ApplicationId and IndividualId
+            </summary>
+            <param name="Key"></param>
+            <param name="IndividualId"></param>
+            <param name="ApplicationId"></param>
+            <returns></returns>
+        </member>
         <member name="M:LAPP.WS.Controllers.User.MenuController.MenuGetAll(System.String)">
             <summary>
             Looks up all data by Key For Menu.

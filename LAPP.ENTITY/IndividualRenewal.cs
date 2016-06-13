@@ -30,13 +30,13 @@ namespace LAPP.ENTITY
 
         public List<IndividualLegalResponse> IndividualLegal { get; set; }
 
-        public List<IndividualCEHResponse> IndividualCEH { get; set; }
-
+         public List<IndividualCEHResponse> IndividualCEH { get; set; }
         public List<IndividualCECourseResponse> IndividualCECourse { get; set; }
         public IndividualAffidavitResponse IndividualAffidavit { get; set; }
 
         public List<FeeDetails> FeesDetails { get; set; }
         public int RequestedLicenseStatusTypeId { get; set; }
+        public string AffirmativeAction { get; set; }
     }
 
     public class RenewalGet : BaseEntity

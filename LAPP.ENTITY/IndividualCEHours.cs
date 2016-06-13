@@ -8,7 +8,7 @@ namespace LAPP.ENTITY
     public class IndividualCEHours : IndividualCEHResponse
 
     {
-
+public string ReferenceNumber { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int? ModifiedBy { get; set; }
@@ -31,7 +31,7 @@ namespace LAPP.ENTITY
         public decimal CERequiredHours { get; set; }
         public decimal CECurrentReportedHours { get; set; }
         public decimal CERolloverHours { get; set; }
-        public string ReferenceNumber { get; set; }
+        
         public bool IsActive { get; set; }
         public int? IndividualLicenseId { get; set; }
         public bool IsDeleted { get; set; }

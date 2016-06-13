@@ -39,8 +39,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objCehCourse.CERequiredHours = objCECourseResponse.CERequiredHours;
                     objCehCourse.CECurrentReportedHours = objCECourseResponse.CECurrentReportedHours;
                     objCehCourse.CERolloverHours = objCECourseResponse.CERolloverHours;
-                    objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
-                    objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
+                    objCehCourse.ReferenceNumber = "";
+                   
                     objCehCourse.IsActive = objCECourseResponse.IsActive;
                     objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
                     objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
@@ -79,8 +79,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objCehCourse.CERequiredHours = objCECourseResponse.CERequiredHours;
                     objCehCourse.CECurrentReportedHours = objCECourseResponse.CECurrentReportedHours;
                     objCehCourse.CERolloverHours = objCECourseResponse.CERolloverHours;
-                    objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
-                    objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
+                    objCehCourse.ReferenceNumber = "";
+                  //  objCehCourse.ReferenceNumber = objCECourseResponse.ReferenceNumber;
                     objCehCourse.IsActive = objCECourseResponse.IsActive;
                     objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
                     objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
@@ -129,7 +129,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         CERequiredHours = obj.CERequiredHours,
                         CECurrentReportedHours = obj.CECurrentReportedHours,
                         CERolloverHours = obj.CERolloverHours,
-                        ReferenceNumber = obj.ReferenceNumber,
+                        //ReferenceNumber = obj.ReferenceNumber,
                         IsActive = obj.IsActive,
                         IndividualLicenseId = obj.IndividualLicenseId
                     }).ToList();

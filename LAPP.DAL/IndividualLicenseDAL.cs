@@ -41,6 +41,23 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public IndividualLicense Get_IndividualLicense_By_ApplicationId(int applicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_ApplicationId", applicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individuallicense_GET_Latest_BY_ApplicationId", lstParameter.ToArray());
+
+            IndividualLicense objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+
+            }
+            return objEntity;
+        }
+
         public IndividualLicense Get_Latest_IndividualLicense_By_IndividualId(int IndividualId)
         {
             DataSet ds = new DataSet("DS");

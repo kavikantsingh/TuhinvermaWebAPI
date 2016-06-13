@@ -22,7 +22,7 @@ namespace LAPP.ENTITY
 
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-
+        public int ApplicationId { get; set; }
     }
     public class IndividualAffidavit : IndividualAffidavitResponse
 
