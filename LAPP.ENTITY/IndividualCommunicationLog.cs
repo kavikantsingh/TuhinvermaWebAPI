@@ -46,6 +46,8 @@ namespace LAPP.ENTITY
         public bool IsDeleted { get; set; }
         public string EmailTo { get; set; }
         public int? UserIdTo { get; set; }
+
+        public List<DocumentToUpload> DocumentUploadList { get; set; }
     }
 
     public class IndividualCommunicationLogRequestResponce : BaseEntityServiceResponse

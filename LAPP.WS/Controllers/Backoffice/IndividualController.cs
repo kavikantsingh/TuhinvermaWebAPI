@@ -23,6 +23,7 @@ using System.Net.Http.Headers;
 using System.Web.Http.Description;
 using System.Data.OleDb;
 using System.Data;
+using LAPP.WS.Controllers.Common;
 
 namespace LAPP.WS.Controllers.Backoffice
 {
@@ -2620,15 +2621,15 @@ namespace LAPP.WS.Controllers.Backoffice
 
             try
             {
-                IndividualDocumentByHtmlResponse objResponse = new IndividualDocumentByHtmlResponse();
-                if (!TokenHelper.ValidateToken(Key))
-                {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.IndividualDocumentUploadList = null;
-                    return objResponse;
-                }
+                //IndividualDocumentByHtmlResponse objResponse = new IndividualDocumentByHtmlResponse();
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.IndividualDocumentUploadList = null;
+                //    return objResponse;
+                //}
                 string FilePath = ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "Renewal\\";
                 string DocFileName = objHtmlToPdfDocument.DocNameWithExtention;
                 string DocPath = FilePath + DocFileName;
@@ -2659,6 +2660,8 @@ namespace LAPP.WS.Controllers.Backoffice
             { return null; }
         }
 
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -2678,13 +2681,10 @@ namespace LAPP.WS.Controllers.Backoffice
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
                 IndividualDocument objDocument = new IndividualDocument();
                 IndividualDocumentBAL objDocumentBAL = new IndividualDocumentBAL();
-
                 if (!TokenHelper.ValidateToken(Key))
                 {
-                    objResponse.Status = false;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                    objResponse.Message = "User session has expired.";
-                    objResponse.IndividualDocumentUploadList = null;
+                    HttpError myCustomError = new HttpError("User session has expired.") { { "CustomErrorCode", Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00") } };
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, myCustomError);
                 }
 
                 objDocument = objDocumentBAL.Get_IndividualDocument_By_IndividualDocumentId(IndividualDocumentId);
@@ -3413,10 +3413,8 @@ namespace LAPP.WS.Controllers.Backoffice
         public IndividualCommunicationLogRequestResponce IndividualCommunicationSave(string Key, IndividualCommunicationLogRequest objCommunicationLog)
         {
             int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
-
             LogingHelper.SaveAuditInfo(Key);
             IndividualCommunicationLogRequestResponce objResponse = new IndividualCommunicationLogRequestResponce();
-
 
             if (!TokenHelper.ValidateToken(Key))
             {
@@ -3429,7 +3427,6 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
-
                 try
                 {
                     if (System.Web.HttpContext.Current.IsDebuggingEnabled)
@@ -3438,7 +3435,6 @@ namespace LAPP.WS.Controllers.Backoffice
                         string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objCommunicationLog);
                         LogingHelper.SaveRequestJson(requestStr, "Individual Communication Save Request");
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -3458,7 +3454,152 @@ namespace LAPP.WS.Controllers.Backoffice
 
                 if (objCommunicationLog != null)
                 {
-                    return IndividualCorrespondenceCS.SaveIndividualCorrespondence(TokenHelper.GetTokenByKey(Key), objCommunicationLog);
+                    // Save And Cretae Attachment
+
+                    IndividualDocumentBAL objIndividualDocumentBAL = new IndividualDocumentBAL();
+                    IndividualDocument objIndividualDocument = new IndividualDocument();
+                    string FilePath = ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "Renewal\\";
+                    int ErrNo = 0;
+                    List<string> SaveErrorList = new List<string>();
+                    List<Attachment> lstAttachment = new List<Attachment>();
+                    List<IndividualDocumentUpload> lstIndividualDocumentUpload = new List<IndividualDocumentUpload>();
+                    IndividualDocumentUpload objIndividualDocumentUpload = new IndividualDocumentUpload();
+                    List<DocumentToUpload> lstDocumentToUpload = new List<DocumentToUpload>();
+                    List<DocumentToUpload> lstDocumentToUploadNEW = new List<DocumentToUpload>();
+                    lstDocumentToUpload= objCommunicationLog.DocumentUploadList;
+
+                    int IndividualId = objCommunicationLog.IndividualId;
+                    int? ApplicationId = objCommunicationLog.ApplicationId;
+                    if (lstDocumentToUpload != null && lstDocumentToUpload.Count > 0)
+                    {
+                        foreach (DocumentToUpload objDtU in lstDocumentToUpload)
+                        {
+                            try
+                            {
+                                int individualId = objCommunicationLog.IndividualId;
+                                int? applicationId = objCommunicationLog.ApplicationId;
+
+                                objIndividualDocument = new IndividualDocument();
+
+                                objIndividualDocument.IndividualId = IndividualId;
+                                objIndividualDocument.ApplicationId = ApplicationId;
+                                objIndividualDocument.DocumentLkToPageTabSectionId = objDtU.DocumentLkToPageTabSectionId;
+                                objIndividualDocument.DocumentLkToPageTabSectionCode = objDtU.DocumentLkToPageTabSectionCode;
+                                objIndividualDocument.DocumentTypeName = objDtU.DocumentTypeName;
+                                objIndividualDocument.DocumentPath = "";
+                                objIndividualDocument.EffectiveDate = objDtU.EffectiveDate;
+                                objIndividualDocument.EndDate = objDtU.EndDate;
+                                objIndividualDocument.IsDocumentUploadedbyIndividual = objDtU.IsDocumentUploadedbyIndividual;
+                                objIndividualDocument.IsDocumentUploadedbyStaff = objDtU.IsDocumentUploadedbyStaff;
+                                objIndividualDocument.ReferenceNumber = objDtU.ReferenceNumber;
+                                objIndividualDocument.IsActive = true;
+                                objIndividualDocument.IsDeleted = true;
+                                objIndividualDocument.CreatedBy = CreatedOrMoifiy;
+                                objIndividualDocument.CreatedOn = DateTime.Now;
+                                objIndividualDocument.ModifiedOn = null;
+                                objIndividualDocument.ModifiedBy = null;
+                                objIndividualDocument.IndividualDocumentGuid = Guid.NewGuid().ToString();
+                                objIndividualDocument.DocumentId = objDtU.DocumentId;
+                                objIndividualDocument.DocumentCd = objDtU.DocumentCd;
+                                objIndividualDocument.DocumentTypeId = objDtU.DocumentTypeId;
+                                objIndividualDocument.DocumentName = objDtU.DocNameWithExtention;
+                                objIndividualDocument.OtherDocumentTypeName = objDtU.OtherDocumentTypeName;
+
+                                if (objIndividualDocument != null)
+                                {
+                                    objIndividualDocument.IndividualDocumentId = objIndividualDocumentBAL.Save_IndividualDocument(objIndividualDocument);
+                                    objDtU.IndividualDocumentId = objIndividualDocument.IndividualDocumentId;
+
+                                    string DocFileName = objIndividualDocument.IndividualDocumentId + "-" + objDtU.DocNameWithExtention; // Guid.NewGuid().ToString() + ".pdf";
+                                    string DocPath = FileHelper.Base64ToFile(objDtU.DocStrBase64, FilePath + DocFileName); // (FilePath + DocFileName);
+
+                                    objDtU.DocNameWithExtention = DocFileName;
+                                    objIndividualDocument.DocumentPath = DocPath;
+                                    objIndividualDocument.IsDeleted = false;
+                                    objIndividualDocumentBAL.Save_IndividualDocument(objIndividualDocument);
+                                    // objIndividualDocumentUpload = new IndividualDocumentUpload();
+
+                                    lstDocumentToUploadNEW.Add(objDtU);
+
+                                    Attachment objAttachment = new Attachment(DocPath);
+                                    lstAttachment.Add(objAttachment);
+
+                                    //SAVE LOG
+
+                                    string logText = "Individual Document For Communication uploaded successfully. Document Type Name " + objDtU.DocumentTypeName + ". Uploaded on " + DateTime.Now.ToShortDateString();
+                                    string logSource = eCommentLogSource.WSAPI.ToString();
+                                    LogHelper.SaveIndividualLog(individualId, applicationId, logSource, logText, CreatedOrMoifiy, null, null, null);
+
+                                    //END SAVE LOG
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                LogingHelper.SaveExceptionInfo("", ex, "IndividualDocumentSaveForeach", ENTITY.Enumeration.eSeverity.Error);
+                                string ErrMes = ex.Message;
+                                ErrNo = ErrNo + 1;
+                                SaveErrorList.Add(ErrMes);
+                            }
+                        }
+                        // If error occurred
+                        if (SaveErrorList.Count > 0)
+                        {
+                            objResponse.Status = false;
+                            if (ErrNo > 0 && ErrNo != lstDocumentToUpload.Count)
+                            {
+                                objResponse.Message = "Error occurred while uploading attachment.";
+                                objIndividualDocumentUpload.DocumentUploadList = lstDocumentToUploadNEW;
+                            }
+                            else
+                            {
+                                objResponse.Message = "Error occurred while uploading attachment.";
+                                objIndividualDocumentUpload.DocumentUploadList = null;
+                            }
+                            objIndividualDocumentUpload.ApplicationId = ApplicationId;
+                            objIndividualDocumentUpload.IndividualId = IndividualId;
+
+                            lstIndividualDocumentUpload.Add(objIndividualDocumentUpload);
+                            objResponse.ResponseReason = GeneralFunctions.GetJsonStringFromList(SaveErrorList);
+                            objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                            return objResponse;
+                        }
+                        //Success
+
+                        else
+                        {
+                            objResponse.Message = MessagesClass.SaveSuccess;
+                            objResponse.Status = true;
+                            objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                        }
+                    }
+                    else
+                    {
+
+                    }
+
+                    if (EmailHelper.SendMailWithMultipleAttachment(objCommunicationLog.EmailTo, objCommunicationLog.Subject, objCommunicationLog.CommunicationText, true, lstAttachment))
+                    {
+                        LogHelper.SaveIndividualLog(objCommunicationLog.IndividualId, null, "Backoffice", ("Communication save Email sent to . Email Address: " + objCommunicationLog.EmailTo + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
+
+                        objCommunicationLog.Type = ((char)eCommunicationType.Email).ToString();
+                        objCommunicationLog.CommunicationStatus = "S";
+                        //objCommunicationLog.CommunicationSource = "Backoffice";
+                        objCommunicationLog.EmailFrom = EmailHelper.GetSenderAddress();
+                        return IndividualCorrespondenceCS.SaveIndividualCorrespondence(TokenHelper.GetTokenByKey(Key), objCommunicationLog);
+
+                    }
+                    else
+                    {
+                        LogHelper.SaveIndividualLog(objCommunicationLog.IndividualId, null, "Backoffice", ("Communication save Email sent to . Email Address: " + objCommunicationLog.EmailTo + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
+
+                        objCommunicationLog.Type = ((char)eCommunicationType.Email).ToString();
+                        objCommunicationLog.CommunicationStatus ="F";
+                        //objCommunicationLog.CommunicationSource = "Backoffice";
+                        objCommunicationLog.EmailFrom = EmailHelper.GetSenderAddress();
+                        return IndividualCorrespondenceCS.SaveIndividualCorrespondence(TokenHelper.GetTokenByKey(Key), objCommunicationLog);
+                    }
+
                 }
                 else
                 {
