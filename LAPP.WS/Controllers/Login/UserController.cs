@@ -119,7 +119,7 @@ namespace LAPP.WS.Controllers.Common
                                 objResponse.IndividualID = objIndividual.IndividualId;
                                 objResponse.UserID = objUseres.UserId;
 
-                                var objUserResponse = new { IndividualId = objIndividual.IndividualId, UserID = objUseres.UserId, UserName = objUseres.UserName, UserTypeID = objUseres.UserTypeId, UserTypeName = objUseres.UserTypeName, FirstName = objIndividual.FirstName, LastName = objIndividual.LastName, Email = objUseres.Email };
+                                var objUserResponse = new { IndividualId = objIndividual.IndividualId, UserID = objUseres.UserId, UserName = objUseres.UserName, UserTypeID = objUseres.UserTypeId, UserTypeName = objUseres.UserTypeName, FirstName = objIndividual.FirstName, LastName = objIndividual.LastName, Email = objUseres.Email, TemporaryPassword = objUseres.TemporaryPassword };
 
                                 objResponse.Key = Key;
                                 objResponse.UserID = objUseres.UserId;
@@ -203,7 +203,7 @@ namespace LAPP.WS.Controllers.Common
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
                         string Key = TokenHelper.GenrateToken(objUser.UserId, "");
 
-                        var objUserResponse = new { IndividualId = objUser.IndividualId, UserID = objUser.UserId, UserName = objUser.UserName, UserTypeID = objUser.UserTypeId, UserTypeName = objUser.UserTypeName, FirstName = objUser.FirstName, LastName = objUser.LastName, Email = objUser.Email };
+                        var objUserResponse = new { IndividualId = objUser.IndividualId, UserID = objUser.UserId, UserName = objUser.UserName, UserTypeID = objUser.UserTypeId, UserTypeName = objUser.UserTypeName, FirstName = objUser.FirstName, LastName = objUser.LastName, Email = objUser.Email, TemporaryPassword=objUser.TemporaryPassword };
 
                         objResponse.Key = Key;
                         objResponse.UserID = objUser.UserId;
