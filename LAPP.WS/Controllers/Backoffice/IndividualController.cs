@@ -155,6 +155,7 @@ namespace LAPP.WS.Controllers.Backoffice
                             CountyId = obj.CountyId,
                             EndDate = obj.EndDate,
                             IndividualAddressId = obj.IndividualAddressId,
+                            AdressStatusId = obj.AdressStatusId,
                             IndividualId = obj.IndividualId,
                             IsActive = obj.IsActive,
                             IsMailingSameasPhysical = obj.IsMailingSameasPhysical,
@@ -2619,6 +2620,15 @@ namespace LAPP.WS.Controllers.Backoffice
 
             try
             {
+                IndividualDocumentByHtmlResponse objResponse = new IndividualDocumentByHtmlResponse();
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualDocumentUploadList = null;
+                    return objResponse;
+                }
                 string FilePath = ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "Renewal\\";
                 string DocFileName = objHtmlToPdfDocument.DocNameWithExtention;
                 string DocPath = FilePath + DocFileName;
@@ -2662,9 +2672,21 @@ namespace LAPP.WS.Controllers.Backoffice
 
             try
             {
+
+                IndividualDocumentByHtmlResponse objResponse = new IndividualDocumentByHtmlResponse();
+
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
                 IndividualDocument objDocument = new IndividualDocument();
                 IndividualDocumentBAL objDocumentBAL = new IndividualDocumentBAL();
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualDocumentUploadList = null;
+                }
+
                 objDocument = objDocumentBAL.Get_IndividualDocument_By_IndividualDocumentId(IndividualDocumentId);
                 if (objDocument != null)
                 {
