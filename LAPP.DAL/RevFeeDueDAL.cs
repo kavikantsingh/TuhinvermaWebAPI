@@ -273,6 +273,16 @@ namespace LAPP.DAL
             {
                 objEntity.FeeName = Convert.ToString(dr["FeeName"]);
             }
+
+            if (dr.Table.Columns.Contains("ApplicationName") && dr["ApplicationName"] != DBNull.Value)
+            {
+                objEntity.ApplicationName = Convert.ToString(dr["ApplicationName"]);
+            }
+            if (dr.Table.Columns.Contains("PaymentStatus") && dr["PaymentStatus"] != DBNull.Value)
+            {
+                objEntity.PaymentStatus = Convert.ToString(dr["PaymentStatus"]);
+            }
+
             return objEntity;
 
         }

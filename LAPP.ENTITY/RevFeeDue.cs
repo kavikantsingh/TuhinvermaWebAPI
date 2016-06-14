@@ -27,6 +27,8 @@ namespace LAPP.ENTITY
         public decimal FeeAmount { get; set; }
         public DateTime? FeeDueDate { get; set; }
         public string FeeName { get; set; }
+        public string ApplicationName { get; set; }
+        public string PaymentStatus { get; set; }
 
         public decimal AmountUpdated { get; set; }
         public bool Pay { get; set; }
@@ -44,7 +46,7 @@ namespace LAPP.ENTITY
         public string RevFeeDueGuid { get; set; }
     }
 
-    public class RevFeeDueAPIResponse :BaseEntityServiceResponse
+    public class RevFeeDueAPIResponse : BaseEntityServiceResponse
     {
         public List<RevFeeDueResponse> RevFeeDueResponseList { get; set; }
 

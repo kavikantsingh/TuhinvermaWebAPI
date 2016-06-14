@@ -52,7 +52,7 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_IndividualId", individualId));
-         
+
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDisb_GET_Paid_BY_IndividualId", lstParameter.ToArray());
             List<RevFeeDisb> lstEntity = new List<RevFeeDisb>();
             RevFeeDisb objEntity = null;
@@ -258,6 +258,14 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("FeeName") && dr["FeeName"] != DBNull.Value)
             {
                 objEntity.FeeName = Convert.ToString(dr["FeeName"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationName") && dr["ApplicationName"] != DBNull.Value)
+            {
+                objEntity.ApplicationName = Convert.ToString(dr["ApplicationName"]);
+            }
+            if (dr.Table.Columns.Contains("PaymentStatus") && dr["PaymentStatus"] != DBNull.Value)
+            {
+                objEntity.PaymentStatus = Convert.ToString(dr["PaymentStatus"]);
             }
 
             return objEntity;

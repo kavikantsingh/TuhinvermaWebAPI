@@ -4183,7 +4183,9 @@ namespace LAPP.WS.Controllers.Backoffice
                         RevFeeMasterId = obj.RevFeeMasterId,
                         TaskId = obj.TaskId,
                         TransactionId = obj.TransactionId,
-                        IndividualLicenseId = obj.IndividualLicenseId
+                        IndividualLicenseId = obj.IndividualLicenseId,
+                        ApplicationName = obj.ApplicationName,
+                        PaymentStatus = "Unpaid"
                     }).ToList();
 
 
@@ -4268,6 +4270,8 @@ namespace LAPP.WS.Controllers.Backoffice
                         PaymentPostDate = obj.PaymentPostDate,
                         RevFeeDisbId = obj.RevFeeDisbId,
                         ShoppingCartId = obj.ShoppingCartId,
+                        ApplicationName = obj.ApplicationName,
+                        PaymentStatus = "Paid",
                         FeeName = obj.FeeName
                     }).ToList();
 

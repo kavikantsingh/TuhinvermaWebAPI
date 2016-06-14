@@ -27,6 +27,9 @@ namespace LAPP.ENTITY
         public string ControlNo { get; set; }
         public string PaymentNo { get; set; }
         public string FeeName { get; set; }
+
+        public string ApplicationName { get; set; }
+        public string PaymentStatus { get; set; }
     }
 
 
