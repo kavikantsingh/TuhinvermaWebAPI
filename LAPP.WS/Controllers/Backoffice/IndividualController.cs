@@ -3580,12 +3580,19 @@ namespace LAPP.WS.Controllers.Backoffice
 
                     if (EmailHelper.SendMailWithMultipleAttachment(objCommunicationLog.EmailTo, objCommunicationLog.Subject, objCommunicationLog.CommunicationText, true, lstAttachment))
                     {
+                        objCommunicationLog.EmailFrom = EmailHelper.GetSenderAddress();
+
+                        if (objCommunicationLog.EmailaCopyToSender)
+                        {
+                            EmailHelper.SendMailWithMultipleAttachment(objCommunicationLog.EmailFrom, objCommunicationLog.Subject, objCommunicationLog.CommunicationText, true, lstAttachment);
+                        }
+
                         LogHelper.SaveIndividualLog(objCommunicationLog.IndividualId, null, "Backoffice", ("Communication save Email sent to . Email Address: " + objCommunicationLog.EmailTo + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
 
                         objCommunicationLog.Type = ((char)eCommunicationType.Email).ToString();
                         objCommunicationLog.CommunicationStatus = "S";
                         //objCommunicationLog.CommunicationSource = "Backoffice";
-                        objCommunicationLog.EmailFrom = EmailHelper.GetSenderAddress();
+
                         return IndividualCorrespondenceCS.SaveIndividualCorrespondence(TokenHelper.GetTokenByKey(Key), objCommunicationLog);
 
                     }
