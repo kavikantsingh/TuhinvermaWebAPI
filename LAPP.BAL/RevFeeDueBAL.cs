@@ -22,11 +22,15 @@ namespace LAPP.BAL
             return objDal.Get_All_RevFeeDue();
         }
 
-        public List<RevFeeDue> Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(int IndividualId, int ApplicationId)
-        {
-            return objDal.Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(IndividualId, ApplicationId);
-        }
+        //public List<RevFeeDue> Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(int IndividualId, int ApplicationId)
+        //{
+        //    return objDal.Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(IndividualId, ApplicationId);
+        //}
 
+        public RevFeeDue Get_RevFeeDue_by_IndividualIdAnd_ApplicationIdAndRevFeeMasterId(int IndividualId, int ApplicationId, int RevFeeMasterId)
+        {
+            return objDal.Get_RevFeeDue_by_IndividualIdAnd_ApplicationIdAndRevFeeMasterId(IndividualId, ApplicationId, RevFeeMasterId);
+        }
         public List<RevFeeDue> Get_RevFeeDue_by_IndividualId(int IndividualId)
         {
             return objDal.Get_RevFeeDue_by_IndividualId(IndividualId);
@@ -44,7 +48,7 @@ namespace LAPP.BAL
 
         public List<RevFeeDue> Get_Unpaid_RevFeeDue_by_IndividualId(int individualId)
         {
-              return objDal.Get_Unpaid_RevFeeDue_by_IndividualId(individualId);
+            return objDal.Get_Unpaid_RevFeeDue_by_IndividualId(individualId);
         }
     }
 }

@@ -80,24 +80,45 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-        public List<RevFeeDue> Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(int IndividualId, int ApplicationId)
+        //public List<RevFeeDue> Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(int IndividualId, int ApplicationId)
+        //{
+        //    DataSet ds = new DataSet("DS");
+        //    DBHelper objDB = new DBHelper();
+        //    List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+        //    lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+        //    lstParameter.Add(new MySqlParameter("G_ApplicationId", ApplicationId));
+        //    //lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+        //    ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_BY_IndividualId_AND_ApplicationId", lstParameter.ToArray());
+        //    List<RevFeeDue> lstEntity = new List<RevFeeDue>();
+        //    RevFeeDue objEntity = null;
+        //    foreach (DataRow dr in ds.Tables[0].Rows)
+        //    {
+        //        objEntity = FetchEntity(dr);
+        //        if (objEntity != null)
+        //            lstEntity.Add(objEntity);
+        //    }
+        //    return lstEntity;
+        //}
+
+
+        public RevFeeDue Get_RevFeeDue_by_IndividualIdAnd_ApplicationIdAndRevFeeMasterId(int IndividualId, int ApplicationId, int RevFeeMasterId)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
             lstParameter.Add(new MySqlParameter("G_ApplicationId", ApplicationId));
+            lstParameter.Add(new MySqlParameter("G_RevFeeMasterId", RevFeeMasterId));
             //lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_BY_IndividualId_AND_ApplicationId", lstParameter.ToArray());
-            List<RevFeeDue> lstEntity = new List<RevFeeDue>();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_BY_IndivId_AND_AppliId_RevFeeMasId", lstParameter.ToArray());
             RevFeeDue objEntity = null;
-            foreach (DataRow dr in ds.Tables[0].Rows)
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
             {
+                DataRow dr = ds.Tables[0].Rows[0];
                 objEntity = FetchEntity(dr);
-                if (objEntity != null)
-                    lstEntity.Add(objEntity);
             }
-            return lstEntity;
+            return objEntity;
         }
 
         public List<RevFeeDue> Get_RevFeeDue_by_IndividualId(int IndividualId)
