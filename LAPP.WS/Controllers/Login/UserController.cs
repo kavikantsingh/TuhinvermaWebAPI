@@ -457,11 +457,25 @@ namespace LAPP.WS.Controllers.Common
         public BaseEntityServiceResponse ChangePassword(string Key, ChangePasswordRequest ObjChangePasswordRequest)
         {
 
+            if (ObjChangePasswordRequest == null)
+                throw new Exception("Input request object is not valid. Please compare with API signature.");
+
             Token objToken = TokenHelper.GetTokenByKey(Key);
             LogingHelper.SaveAuditInfo(Key);
             BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+
+
             try
             {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+
+                    return objResponse;
+                }
+
                 string ValidationResponse = UserControllerValidation.ValidateChangePassword(ObjChangePasswordRequest);
 
 
