@@ -8,19 +8,19 @@ namespace LAPP.ENTITY
     public class IndividualEmployment : IndividualEmploymentResponse
 
     {
-    
+
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
-        public string  IndividualEmploymentGuid { get; set; }
+        public string IndividualEmploymentGuid { get; set; }
     }
 
     public class IndividualEmploymentResponse : BaseEntity
     {
         public int IndividualEmploymentId { get; set; }
         public int IndividualId { get; set; }
-        public int ApplicationId { get; set; }
+        public int? ApplicationId { get; set; }
         public string EmployerName { get; set; }
         public int ProviderId { get; set; }
         public int? EmploymentHistoryTypeId { get; set; }
@@ -35,8 +35,8 @@ namespace LAPP.ENTITY
         public string Role { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public List<IndividualEmploymentAddressResponse> EmploymentAddress { get; set; }
-        public List<IndividualEmploymentContactResponse> EmploymentContact { get; set; }
+        public List<IndividualEmploymentAddress> EmploymentAddress { get; set; }
+        public List<IndividualEmploymentContact> EmploymentContact { get; set; }
 
 
     }

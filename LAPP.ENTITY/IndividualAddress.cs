@@ -17,7 +17,7 @@ namespace LAPP.ENTITY
         public bool IsMailingSameasPhysical { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-
+        public int AdressStatusId { get; set; }
     }
 
     public class IndividualAddress : IndividualAddressResponse

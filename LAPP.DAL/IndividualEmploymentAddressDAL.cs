@@ -70,6 +70,25 @@ namespace LAPP.DAL
             return objEntity;
         }
 
+        public List<IndividualEmploymentAddress> Get_individualempaddress_GetTopOne_By_IndividualEmpId(int IndividualEmploymentId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualEmploymentId", IndividualEmploymentId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualempaddress_GetTopOne_By_IndividualEmpId", lstParameter.ToArray());
+            List<IndividualEmploymentAddress> lstEntity = new List<IndividualEmploymentAddress>();
+            IndividualEmploymentAddress objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         public List<IndividualEmploymentAddress> Get_IndividualEmploymentAddress_By_IndividualEmploymentId(int IndividualEmploymentId)
         {
             DataSet ds = new DataSet("DS");
@@ -150,7 +169,7 @@ namespace LAPP.DAL
             }
             if (dr.Table.Columns.Contains("IndividualEmploymentAddressGuid") && dr["IndividualEmploymentAddressGuid"] != DBNull.Value)
             {
-                objEntity.IndividualEmploymentAddressGuid =  dr["IndividualEmploymentAddressGuid"].ToString();
+                objEntity.IndividualEmploymentAddressGuid = dr["IndividualEmploymentAddressGuid"].ToString();
             }
 
             if (dr.Table.Columns.Contains("Addressee") && dr["Addressee"] != DBNull.Value)

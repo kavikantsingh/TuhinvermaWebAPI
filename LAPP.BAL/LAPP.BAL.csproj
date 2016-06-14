@@ -62,6 +62,7 @@
     <Compile Include="Backoffice\IndividualFolder\IndividualCorrespondenceCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualDocumentCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualContactCS.cs" />
+    <Compile Include="Backoffice\IndividualFolder\IndividualCEH.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualLicenseCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualEducationCS.cs" />

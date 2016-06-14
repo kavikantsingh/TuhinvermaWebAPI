@@ -31,15 +31,51 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IsActive", objIndividualCEHours.IsActive));
             lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualCEHours.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualCEHours.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualCEHours.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualCEHours.ModifiedOn));
             lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualCEHours.ModifiedBy));
             lstParameter.Add(new MySqlParameter("IndividualCEHoursGuid", objIndividualCEHours.IndividualCEHoursGuid));
             lstParameter.Add(new MySqlParameter("IndividualLicenseId", objIndividualCEHours.IndividualLicenseId));
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
-            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "INDIVIDUALCEHOURS_SAVE", true, lstParameter.ToArray());
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualcehours_Save", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
+        }
+
+        public IndividualCEHours Get_IndividualCEHours_By_IndividualLicenseId(int individualLicenseId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_individualLicenseId", individualLicenseId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualcehours_GET_BY_individualLicenseId", lstParameter.ToArray());
+            IndividualCEHours objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
+        public IndividualCEHours Get_Top_IndividualCEHours_By_IndividualId(int individualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", individualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualcehours_GET_top_BY_IndividualId", lstParameter.ToArray());
+            IndividualCEHours objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
         }
 
         public List<IndividualCEHours> Get_All_IndividualCEHours()

@@ -40,8 +40,14 @@ namespace LAPP.WS.ValidateController.User
                     Users objuser = new Users();
                     UsersBAL objuserBal = new UsersBAL();
                     objuser = objuserBal.Get_Users_byUsersId(objUsers.UserId);
-
-                    if (objuser != null && objuser.Email != objUsers.Email)
+                    if (objuser != null)
+                    {
+                        if (objuser.Email != objUsers.Email)
+                        {
+                            objResponseList = Validations.IsValidEmailFromUser(nameof(objUsers.Email), objUsers.Email, objResponseList);
+                        }
+                    }
+                    else
                     {
                         objResponseList = Validations.IsValidEmailFromUser(nameof(objUsers.Email), objUsers.Email, objResponseList);
                     }

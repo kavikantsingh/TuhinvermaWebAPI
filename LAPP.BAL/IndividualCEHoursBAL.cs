@@ -32,5 +32,14 @@ namespace LAPP.BAL
             return objDal.Get_IndividualCEHours_By_IndividualId(IndividualId);
         }
 
+        public IndividualCEHours Get_Top_IndividualCEHours_By_IndividualId(int individualId)
+        {
+            return objDal.Get_Top_IndividualCEHours_By_IndividualId(individualId);
+        }
+
+        public IndividualCEHours Get_IndividualCEHours_By_IndividualLicenseId(int individualLicenseId)
+        {
+            return objDal.Get_IndividualCEHours_By_IndividualLicenseId(individualLicenseId);
+        }
     }
 }

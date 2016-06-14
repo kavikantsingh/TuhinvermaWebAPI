@@ -134,14 +134,20 @@ namespace LAPP.WS.Controllers.Common
 
                 try
                 {
-                    string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objInitiatePaymentRequest);
-                    LogingHelper.SaveRequestJson(requestStr, "Initiate Payment");
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objInitiatePaymentRequest);
+                        LogingHelper.SaveRequestJson(requestStr, "Initiate Payment");
+                    }
+
                 }
                 catch (Exception ex)
                 {
                     LogingHelper.SaveRequestJson(ex.Message, " error in Initiate Payment request");
                 }
 
+               
                 Token objToken = TokenHelper.GetTokenByKey(Key);
 
                 LAPP.ENTITY.Transaction objTransaction = LAPP.BAL.Payment.InitiatePayment.InitiatePaymentTransaction(objInitiatePaymentRequest, objToken.UserId);
@@ -206,10 +212,10 @@ namespace LAPP.WS.Controllers.Common
                 }
 
                 List<ListItems> objItems = new List<ListItems>();
-                for (int i = 1; i < 12; i++)
+                for (int i = 1; i < 13; i++)
                 {
                     ListItems items = new ListItems();
-                    items.Text = CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i];
+                    items.Text = CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i-1];
                     items.Value = i.ToString();
                     objItems.Add(items);
                 }

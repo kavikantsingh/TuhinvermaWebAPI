@@ -61,6 +61,26 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<RevFeeDue> Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(int IndividualId, int ApplicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("G_ApplicationId", ApplicationId));
+            //lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_BY_IndividualId_AND_ApplicationId", lstParameter.ToArray());
+            List<RevFeeDue> lstEntity = new List<RevFeeDue>();
+            RevFeeDue objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         public List<RevFeeDue> Get_RevFeeDue_by_IndividualId(int IndividualId)
         {
             DataSet ds = new DataSet("DS");

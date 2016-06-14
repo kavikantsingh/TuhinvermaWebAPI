@@ -35,6 +35,38 @@ namespace LAPP.WS.Controllers.Common
             return DateTime.Now;
         }
 
+        /// <summary>
+        /// Get Server date and time
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("ReloadConfiguration")]
+        public BaseEntityServiceResponse ReloadConfiguration()
+        {
+            BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+
+            try
+            {
+                List<Configuration> lstConfiguration = new List<ENTITY.Configuration>();
+                ConfigurationBAL objConfigBAL = new ConfigurationBAL();
+                lstConfiguration = objConfigBAL.GetALL_Configuration_WithConfigurationType();
+                HttpContext.Current.Application["lstConfiguration"] = lstConfiguration;
+
+                objResponse.Message = "Configuration loaded successfully.";
+                objResponse.Status = true;
+                objResponse.StatusCode = ((int)ResponseStatusCode.Success).ToString("00");
+
+                 
+            }
+            catch (Exception ex)
+            {
+                objResponse.Message = ex.Message;
+                objResponse.Status = true;
+                objResponse.StatusCode = ((int)ResponseStatusCode.Exception).ToString("00");
+
+            }
+            return objResponse;
+        }
         //
         /// <summary>
         /// Send Payment Email with Attachment

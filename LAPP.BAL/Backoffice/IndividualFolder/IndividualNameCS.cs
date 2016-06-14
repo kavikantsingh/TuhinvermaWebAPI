@@ -25,7 +25,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             List<IndividualNameRequest> lstIndividualName = new List<IndividualNameRequest>();
             try
             {
-                int individualId = objIndividualNameRequest.IndividualId;
+                int individualId =Convert.ToInt32( objIndividualNameRequest.IndividualId);
                 int? applicationId = null;//objIndividualNameRequest.ApplicationId;
                 if (objIndividualNameRequest.IndividualNameId > 0)
                 {
@@ -35,6 +35,31 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                         if (objIndividualNameRequest.IndividualNameStatusId == Convert.ToInt32(eIndividualNameStatus.Current))
                         {
+                            List<IndividualName> lstIndividualNameS = new List<IndividualName>();
+                            lstIndividualNameS = objIndividualNameBAL.Get_IndividualName_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
+                            if (lstIndividualNameS != null && lstIndividualNameS.Count > 0)
+                            {
+                                if (objIndividualNameRequest.IndividualNameStatusId == Convert.ToInt32(eIndividualNameStatus.Current))
+                                {
+                                    foreach (IndividualName objname in lstIndividualNameS)
+                                    {
+                                        if (objname != null)
+                                        {
+                                            if (objname.IndividualNameStatusId == Convert.ToInt32(eIndividualNameStatus.Current))
+                                            {
+                                                objname.EndDate = DateTime.Now;
+                                                objname.ModifiedBy = objToken.UserId;
+                                                objname.ModifiedOn = DateTime.Now;
+                                                objname.IndividualNameStatusId = Convert.ToInt32(eIndividualNameStatus.Previous);
+                                                objname.IndividualNameId = objIndividualNameBAL.Save_IndividualName(objname);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+
+
                             objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
                             if (objIndividual != null)
                             {
@@ -118,7 +143,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         int RecordInName = 0;
                         // Save New Record In IndividualName From Individual Current Name
                         List<IndividualName> lstIndividualNameS = new List<IndividualName>();
-                        lstIndividualNameS = objIndividualNameBAL.Get_IndividualName_By_IndividualId(objIndividualNameRequest.IndividualId);
+                        lstIndividualNameS = objIndividualNameBAL.Get_IndividualName_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
                         if (lstIndividualNameS != null && lstIndividualNameS.Count > 0)
                         {
                             foreach (IndividualName objname in lstIndividualNameS)
@@ -129,23 +154,29 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                                         && objname.MiddleName.ToLower() == objIndividualNameRequest.MiddleName.ToLower())
                                 {
 
-                                    objname.FirstName = objIndividualNameRequest.FirstName;
-                                    objname.LastName = objIndividualNameRequest.LastName;
-                                    objname.MiddleName = objIndividualNameRequest.MiddleName;
-                                    objname.IndividualId = individualId;
-                                    objname.BeginDate = objIndividualNameRequest.BeginDate;
-                                    objname.EndDate = objIndividualNameRequest.EndDate;
-                                    objname.SuffixId = objIndividualNameRequest.SuffixId;
-                                    objname.IndividualNameStatusId = objIndividualNameRequest.IndividualNameStatusId;
-                                    objname.IndividualNameTypeId = objIndividualNameRequest.IndividualNameTypeId;
-                                    objname.ModifiedBy = objToken.UserId;
-                                    objname.ModifiedOn = DateTime.Now;
-                                    objname.IsActive = objIndividualNameRequest.IsActive;
-                                    objname.IsDeleted = objIndividualNameRequest.IsDeleted;
-                                    objname.IndividualNameGuid = Guid.NewGuid().ToString();
-                                    objname.IndividualNameId = objIndividualNameBAL.Save_IndividualName(objname);
+                                    objResponse.Message = "Name already exist.Please edit if you want to change.";
+                                    objResponse.Status = true;
+                                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                                    return objResponse;
+                                }
+                            }
 
-                                    RecordInName++;
+                            // update all previous
+                            if (objIndividualNameRequest.IndividualNameStatusId == Convert.ToInt32(eIndividualNameStatus.Current))
+                            {
+                                foreach (IndividualName objname in lstIndividualNameS)
+                                {
+                                    if (objname != null)
+                                    {
+                                        if (objname.IndividualNameStatusId == Convert.ToInt32(eIndividualNameStatus.Current))
+                                        {
+                                            objname.EndDate = DateTime.Now;
+                                            objname.ModifiedBy = objToken.UserId;
+                                            objname.ModifiedOn = DateTime.Now;
+                                            objname.IndividualNameStatusId = Convert.ToInt32(eIndividualNameStatus.Previous);
+                                            objname.IndividualNameId = objIndividualNameBAL.Save_IndividualName(objname);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -179,7 +210,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                         if (objIndividualNameRequest.IndividualNameStatusId == Convert.ToInt32(eIndividualNameStatus.Current))
                         {
-                            objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
+                            //objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(Convert.ToInt32(objIndividualNameRequest.IndividualId));
                             if (objIndividual != null)
                             {
                                 objIndividual.FirstName = objIndividualNameRequest.FirstName;

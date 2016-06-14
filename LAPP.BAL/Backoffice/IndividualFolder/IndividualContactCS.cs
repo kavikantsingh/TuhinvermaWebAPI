@@ -34,7 +34,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     // Update Contact
 
                     objContact = new Contact();
-                    objContact = objContactBAL.Get_Contact_By_ContactId(objContactResponse.ContactId);
+                    objContact = objContactBAL.Get_Contact_By_ContactId(objIndividualContact.ContactId);
                     if (objContact != null)
                     {
                         objContact.Code = objContactResponse.Code;
@@ -53,6 +53,26 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         //END Update Contact
 
                         // Update IndividualContact
+                        if (objContactResponse.IsPreferredContact)
+                        {
+                            lstIndividualContact = new List<IndividualContact>();
+                            lstIndividualContact = objIndividualContactBAL.Get_IndividualContact_By_IndividualId(objContactResponse.IndividualId);
+                            if (lstIndividualContact != null && lstIndividualContact.Count > 0)
+                            {
+                                foreach (IndividualContact objc in lstIndividualContact)
+                                {
+                                    if (objc.IsPreferredContact == true)
+                                    {
+                                        objc.IsPreferredContact = false;
+                                        objc.ModifiedBy = objToken.UserId;
+                                        objc.ModifiedOn = DateTime.Now;
+                                        objIndividualContactBAL.Save_IndividualContact(objc);
+                                    }
+                                }
+                            }
+                        }
+
+
                         objIndividualContact = new IndividualContact();
                         objIndividualContact = objIndividualContactBAL.Get_IndividualContact_By_IndividualContactId(objContactResponse.IndividualContactId);
                         if (objIndividualContact != null)
@@ -109,7 +129,26 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                     //END  save Contact
 
+                    //
+                    if (objContactResponse.IsPreferredContact)
+                    {
+                        lstIndividualContact = new List<IndividualContact>();
+                        lstIndividualContact = objIndividualContactBAL.Get_IndividualContact_By_IndividualId(objContactResponse.IndividualId);
+                        if (lstIndividualContact != null && lstIndividualContact.Count > 0)
+                        {
+                            foreach (IndividualContact objc in lstIndividualContact)
+                            {
+
+                                objc.IsPreferredContact = false;
+                                objc.ModifiedBy = objToken.UserId;
+                                objc.ModifiedOn = DateTime.Now;
+                                objIndividualContactBAL.Save_IndividualContact(objc);
+                            }
+                        }
+                    }
+                    //
                     // save IndividualContact
+
                     objIndividualContact = new IndividualContact();
                     objIndividualContact.IndividualContactGuid = Guid.NewGuid().ToString();
                     objIndividualContact.ContactId = objContact.ContactId;

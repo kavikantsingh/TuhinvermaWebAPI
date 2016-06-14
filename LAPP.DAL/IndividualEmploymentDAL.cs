@@ -82,6 +82,9 @@ namespace LAPP.DAL
 
         public List<IndividualEmployment> Get_IndividualEmployment_by_IndividualId(int IndividualId)
         {
+            IndividualEmploymentContactDAL objCDAL = new IndividualEmploymentContactDAL();
+            IndividualEmploymentAddressDAL objADAL = new IndividualEmploymentAddressDAL();
+
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
@@ -95,6 +98,9 @@ namespace LAPP.DAL
                 objEntity = FetchEntity(dr);
                 if (objEntity != null)
                     lstEntity.Add(objEntity);
+
+                objEntity.EmploymentContact = objCDAL.Get_IndividualEmploymentContact_By_IndividualEmploymentId(objEntity.IndividualEmploymentId);
+                objEntity.EmploymentAddress = objADAL.Get_individualempaddress_GetTopOne_By_IndividualEmpId(objEntity.IndividualEmploymentId);
             }
             return lstEntity;
         }
@@ -123,7 +129,7 @@ namespace LAPP.DAL
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("_ApplicationId", _ApplicationId));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualemployment_SoftDelete_by_ApplicationId", lstParameter.ToArray());
-            
+
         }
         private IndividualEmployment FetchEntity(DataRow dr)
         {
