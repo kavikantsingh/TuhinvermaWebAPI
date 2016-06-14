@@ -4121,5 +4121,176 @@ namespace LAPP.WS.Controllers.Backoffice
 
         #endregion
 
+        #region Fee
+
+        /// <summary>
+        /// Unpaid fee
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="IndividualId"></param>
+        /// <returns></returns>
+        [AcceptVerbs("GET")]
+        [ActionName("UnpaidInvoiceByIndividualId")]
+        public RevFeeDueAPIResponse UnpaidInvoiceByIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+            RevFeeDueAPIResponse objResponse = new RevFeeDueAPIResponse();
+
+            RevFeeDueBAL objBAL = new RevFeeDueBAL();
+
+            List<RevFeeDue> lstEntity = new List<RevFeeDue>();
+            List<RevFeeDueResponse> lstUnpaidFees = new List<RevFeeDueResponse>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.RevFeeDueResponseList = null;
+                    return objResponse;
+                }
+
+                lstEntity = objBAL.Get_Unpaid_RevFeeDue_by_IndividualId(IndividualId);
+                if (lstEntity != null && lstEntity.Count > 0)
+                {
+
+                    List<RevFeeDueResponse> lstCeCourseResponse = lstEntity.Select(obj => new RevFeeDueResponse
+                    {
+
+                        IndividualId = obj.IndividualId,
+                        ApplicationId = obj.ApplicationId,
+                        BatchId = obj.BatchId,
+                        FeeName = obj.FeeName,
+                        ControlNo = obj.ControlNo,
+                        FeeAmount = obj.FeeAmount,
+                        FeeDueDate = obj.FeeDueDate,
+                        FeeDueTypeId = obj.FeeDueTypeId,
+                        InvoiceDate = obj.InvoiceDate,
+                        InvoiceNo = obj.InvoiceNo,
+                        LicenseTypeId = obj.LicenseTypeId,
+                        MasterTransactionId = obj.MasterTransactionId,
+                        ProviderId = obj.ProviderId,
+                        RevFeeDueId = obj.RevFeeDueId,
+                        RevFeeMasterId = obj.RevFeeMasterId,
+                        TaskId = obj.TaskId,
+                        TransactionId = obj.TransactionId,
+                        IndividualLicenseId = obj.IndividualLicenseId
+                    }).ToList();
+
+
+                    objResponse.RevFeeDueResponseList = lstCeCourseResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.RevFeeDueResponseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "UnpaidInvoiceByIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.RevFeeDueResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// Paid Invoice
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="IndividualId"></param>
+        /// <returns></returns>
+        [AcceptVerbs("GET")]
+        [ActionName("PaidInvoiceByIndividualId")]
+        public RevFeeDisbAPIResponse PaidInvoiceByIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+            RevFeeDisbAPIResponse objResponse = new RevFeeDisbAPIResponse();
+
+            RevFeeDisbBAL objBAL = new RevFeeDisbBAL();
+
+            List<RevFeeDisb> lstEntity = new List<RevFeeDisb>();
+            List<RevFeeDisbResponse> lstUnpaidFees = new List<RevFeeDisbResponse>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.RevFeeDisbResponseList = null;
+                    return objResponse;
+                }
+
+                lstEntity = objBAL.Get_Paid_RevFeeDisb_by_IndividualId(IndividualId);
+                if (lstEntity != null && lstEntity.Count > 0)
+                {
+
+                    List<RevFeeDisbResponse> lstCeCourseResponse = lstEntity.Select(obj => new RevFeeDisbResponse
+                    {
+
+                        IndividualId = obj.IndividualId,
+                        ApplicationId = obj.ApplicationId,
+                        ControlNo = obj.ControlNo,
+                        InvoiceNo = obj.InvoiceNo,
+                        LicenseTypeId = obj.LicenseTypeId,
+                        MasterTransactionId = obj.MasterTransactionId,
+                        ProviderId = obj.ProviderId,
+                        RevFeeDueId = obj.RevFeeDueId,
+                        RevFeeMasterId = obj.RevFeeMasterId,
+                        TransactionId = obj.TransactionId,
+                        IndividualLicenseId = obj.IndividualLicenseId,
+                        FeePaidAmount = obj.FeePaidAmount,
+                        FinclTranDate = obj.FinclTranDate,
+                        OrigFeeAmount = obj.OrigFeeAmount,
+                        PaymentNo = obj.PaymentNo,
+                        PaymentPostDate = obj.PaymentPostDate,
+                        RevFeeDisbId = obj.RevFeeDisbId,
+                        ShoppingCartId = obj.ShoppingCartId
+                    }).ToList();
+
+
+                    objResponse.RevFeeDisbResponseList = lstCeCourseResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.RevFeeDisbResponseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "PaidInvoiceByIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.RevFeeDisbResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+        #endregion
     }
 }

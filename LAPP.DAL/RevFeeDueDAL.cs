@@ -45,6 +45,25 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public List<RevFeeDue> Get_Unpaid_RevFeeDue_by_IndividualId(int individualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", individualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_Unpaid_BY_IndividualId", lstParameter.ToArray());
+            List<RevFeeDue> lstEntity = new List<RevFeeDue>();
+            RevFeeDue objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+        }
+
         public List<RevFeeDue> Get_All_RevFeeDue()
         {
             DataSet ds = new DataSet("DS");
@@ -229,7 +248,10 @@ namespace LAPP.DAL
             {
                 objEntity.RevFeeDueGuid = Convert.ToString(dr["RevFeeDueGuid"]);
             }
-
+            if (dr.Table.Columns.Contains("FeeName") && dr["FeeName"] != DBNull.Value)
+            {
+                objEntity.FeeName = Convert.ToString(dr["FeeName"]);
+            }
             return objEntity;
 
         }
