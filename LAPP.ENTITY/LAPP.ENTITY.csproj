@@ -102,6 +102,7 @@
     <Compile Include="PageTabSection.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="PriorPassword.cs" />
+    <Compile Include="ProvClinicHours.cs" />
     <Compile Include="Provider.cs" />
     <Compile Include="ProviderAddress.cs" />
     <Compile Include="ProviderApplication.cs" />
@@ -116,6 +117,8 @@
     <Compile Include="ProviderRegister.cs" />
     <Compile Include="ProviderStatusType.cs" />
     <Compile Include="ProviderUser.cs" />
+    <Compile Include="ProvReqCourseOfStudy.cs" />
+    <Compile Include="ProvReqCourseTitle.cs" />
     <Compile Include="RevFeeCollect.cs" />
     <Compile Include="RevFeeDisb.cs" />
     <Compile Include="RevFeeDueDtl.cs" />

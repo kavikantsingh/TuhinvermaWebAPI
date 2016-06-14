@@ -77,10 +77,13 @@
     <Compile Include="Payment\Payment.cs" />
     <Compile Include="IndividualLogBAL.cs" />
     <Compile Include="IndividualCommentBAL.cs" />
+    <Compile Include="ProvClinicHoursBAL.cs" />
     <Compile Include="ProviderIndividualNameBAL.cs" />
     <Compile Include="ProviderInstructionBAL.cs" />
     <Compile Include="ProviderNameBAL.cs" />
     <Compile Include="ProviderUserBAL.cs" />
+    <Compile Include="ProvReqCourseOfStudyBAL.cs" />
+    <Compile Include="ProvReqCourseTitleBAL.cs" />
     <Compile Include="RevFeeDueDtlBAL.cs" />
     <Compile Include="RevFeeDueBAL.cs" />
     <Compile Include="RevFeeDisbBAL.cs" />

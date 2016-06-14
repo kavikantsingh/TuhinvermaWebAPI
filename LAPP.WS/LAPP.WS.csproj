@@ -225,6 +225,7 @@
     <Compile Include="Controllers\Common\MessageController.cs" />
     <Compile Include="Controllers\Common\PaymentController.cs" />
     <Compile Include="Controllers\Common\ProviderController.cs" />
+    <Compile Include="Controllers\Common\ProviderCurriculumController.cs" />
     <Compile Include="Controllers\Common\SourceController.cs" />
     <Compile Include="Controllers\Common\StateController.cs" />
     <Compile Include="Controllers\Common\TypeValuesController.cs" />

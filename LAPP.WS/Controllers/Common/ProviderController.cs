@@ -386,7 +386,7 @@ namespace LAPP.WS.Controllers.Common
                 {
                     string TokenKey = TokenHelper.GenrateToken(user.UserId, "");
 
-                    if (user.TemporaryPassword) //i.e if the user is login for the first time with the password received on email
+                    if (user.TemporaryPassword) //i.e if the user login for the first time with the password received on email
                     {
                         ProviderUser ObjEntityProviderUser = objProviderUserBAL.Get_ProviderUser_By_UserId(user.UserId);//user.UserId
                         ApplicationStatus ObjEntityApplicationStatus = objApplicationStatusBAL.Get_ApplicationStatus_byApplicationId(ObjEntityProviderUser.ApplicationId);//ObjEntityProviderUser.ApplicationId

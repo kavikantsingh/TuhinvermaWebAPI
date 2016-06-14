@@ -1179,6 +1179,34 @@
             </summary>
             <param name="objSchoolInformation">Request object for Provider Instruction.</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvReqCourseOfStudyGetAll(System.String)">
+            <summary>
+            This API used for Provider Login.
+            </summary>
+            <param name="Key">API Security Key</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvReqCourseTitle(System.String,LAPP.ENTITY.ProvReqCourseTitle)">
+            <summary>
+            This API used for Provider Login.
+            </summary>
+            <param name="Key">API Security Key</param>
+            <param name="objProvReqCourseTitle">object to receive all values</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvReqCourseTitleGetAllByCourseOfStudyId(System.String,System.Int32,System.Int32)">
+            <summary>
+            This API used for Provider Login.
+            </summary>
+            <param name="Key">API Security Key</param>
+            <param name="CourseOfStudyId">Course of Study Id</param>
+            <param name="ProviderId">Provider Id</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvClinicHours(System.String,LAPP.ENTITY.ProvClinicHours)">
+            <summary>
+            This API used to save clinic hours in ProvClinicHours table in database.
+            </summary>
+            <param name="Key">API Security Key</param>
+            <param name="objProvClinicHours">object to receive all values</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Common.SourceController.SourceGetAll(System.String)">
             <summary>
             Looks up all data by Key For Source.
