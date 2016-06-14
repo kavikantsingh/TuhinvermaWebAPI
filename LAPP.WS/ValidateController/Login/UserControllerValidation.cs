@@ -17,11 +17,12 @@ namespace LAPP.WS.ValidateController.Login
         {
             List<ResponseReason> objResponseList = new List<ResponseReason>();
 
-            if (!string.IsNullOrEmpty(objLoginInfo.Email))
+            if (objLoginInfo.LoginWithoutEmail == false && !string.IsNullOrEmpty(objLoginInfo.Email))
             {
                 objResponseList = Validations.IsValidEmailProperty(nameof(objLoginInfo.Email), objLoginInfo.Email, objResponseList);
             }
-            if (!string.IsNullOrEmpty(objLoginInfo.AccessCode))
+
+            if (objLoginInfo.LoginWithoutEmail == true && !string.IsNullOrEmpty(objLoginInfo.AccessCode))
             {
                 objResponseList = Validations.IsRequiredPropertyMaxLength(nameof(objLoginInfo.AccessCode), objLoginInfo.AccessCode, objResponseList, 4);
             }
