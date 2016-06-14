@@ -28,6 +28,9 @@ namespace LAPP.ENTITY
         public DateTime? FeeDueDate { get; set; }
         public string FeeName { get; set; }
 
+        public decimal AmountUpdated { get; set; }
+        public bool Pay { get; set; }
+
     }
 
     public class RevFeeDue : RevFeeDueResponse

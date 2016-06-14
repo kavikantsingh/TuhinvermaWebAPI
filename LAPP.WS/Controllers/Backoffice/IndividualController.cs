@@ -4164,7 +4164,8 @@ namespace LAPP.WS.Controllers.Backoffice
 
                     List<RevFeeDueResponse> lstCeCourseResponse = lstEntity.Select(obj => new RevFeeDueResponse
                     {
-
+                        AmountUpdated = obj.AmountUpdated,
+                        Pay = obj.Pay,
                         IndividualId = obj.IndividualId,
                         ApplicationId = obj.ApplicationId,
                         BatchId = obj.BatchId,
@@ -4266,7 +4267,8 @@ namespace LAPP.WS.Controllers.Backoffice
                         PaymentNo = obj.PaymentNo,
                         PaymentPostDate = obj.PaymentPostDate,
                         RevFeeDisbId = obj.RevFeeDisbId,
-                        ShoppingCartId = obj.ShoppingCartId
+                        ShoppingCartId = obj.ShoppingCartId,
+                        FeeName = obj.FeeName
                     }).ToList();
 
 
