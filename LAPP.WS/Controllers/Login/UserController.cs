@@ -203,7 +203,7 @@ namespace LAPP.WS.Controllers.Common
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
                         string Key = TokenHelper.GenrateToken(objUser.UserId, "");
 
-                        var objUserResponse = new { IndividualId = objUser.IndividualId, UserID = objUser.UserId, UserName = objUser.UserName, UserTypeID = objUser.UserTypeId, UserTypeName = objUser.UserTypeName, FirstName = objUser.FirstName, LastName = objUser.LastName, Email = objUser.Email, TemporaryPassword=objUser.TemporaryPassword };
+                        var objUserResponse = new { IndividualId = objUser.IndividualId, UserID = objUser.UserId, UserName = objUser.UserName, UserTypeID = objUser.UserTypeId, UserTypeName = objUser.UserTypeName, FirstName = objUser.FirstName, LastName = objUser.LastName, Email = objUser.Email, TemporaryPassword = objUser.TemporaryPassword };
 
                         objResponse.Key = Key;
                         objResponse.UserID = objUser.UserId;
@@ -258,10 +258,10 @@ namespace LAPP.WS.Controllers.Common
                 objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objUser.IndividualId);
                 //if (objIndividual != null)
                 //{
-                    string TempPassword = GeneralFunctions.GetTempPassword();
-                    objUser.PasswordHash = TempPassword;
-                    objUser.TemporaryPassword = true;
-                    objUsersBAL.Save_Users(objUser);
+                string TempPassword = GeneralFunctions.GetTempPassword();
+                objUser.PasswordHash = TempPassword;
+                objUser.TemporaryPassword = true;
+                objUsersBAL.Save_Users(objUser);
 
                 string mailContent = "The password has been reset. The temporary password has been sent to the email address on file. Please check your email address.";
                 mailContent += "<br/> <br/>";
@@ -275,25 +275,25 @@ namespace LAPP.WS.Controllers.Common
                 mailContent += "<br/><br/>";
                 mailContent += "California Massage Therapy Council";
 
-                    //if (EmailHelper.SendMail(Email, "Forget Password", "Temporary Password: " + TempPassword, true))
-                    if (EmailHelper.SendMail(Email, "Forget Password", mailContent, true))
-                    {
+                //if (EmailHelper.SendMail(Email, "Forget Password", "Temporary Password: " + TempPassword, true))
+                if (EmailHelper.SendMail(Email, "Forget Password", mailContent, true))
+                {
 
-                        //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
-                        LogHelper.LogCommunication(objUser.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
-                        objRsponse.StatusCode = "00";
-                        objRsponse.Status = true;
-                        objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
-                    }
-                    else
-                    {
-                        //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
-                        LogHelper.LogCommunication(objUser.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                    //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                    LogHelper.LogCommunication(objUser.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                    objRsponse.StatusCode = "00";
+                    objRsponse.Status = true;
+                    objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
+                }
+                else
+                {
+                    //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                    LogHelper.LogCommunication(objUser.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
 
-                        objRsponse.StatusCode = "11";
-                        objRsponse.Status = false;
-                        objRsponse.Message = "We are not able to send email due to technical issues.";
-                    }
+                    objRsponse.StatusCode = "11";
+                    objRsponse.Status = false;
+                    objRsponse.Message = "We are not able to send email due to technical issues.";
+                }
                 //}
                 //else
                 //{
@@ -391,7 +391,7 @@ namespace LAPP.WS.Controllers.Common
             objRsponse.Message = "An email has been sent to your email address. Please follow the instructions in email to reset password.";
             if (objLstRequest.Count > 0)
             {
-                foreach(ResetByUserIDRequest objUserId in objLstRequest)
+                foreach (ResetByUserIDRequest objUserId in objLstRequest)
                 {
 
                     UsersBAL objUsersBAL = new UsersBAL();
@@ -410,17 +410,17 @@ namespace LAPP.WS.Controllers.Common
                             if (EmailHelper.SendMail(objUser.Email, "Reset Password", "Temporary Password: " + TempPassword, true))
                             {
 
-                                LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Reset Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Reset Password email has been sent",EmailHelper.GetSenderAddress(), objUser.Email, null, null, objUser.UserId, null, null, null);
-                              
+                                LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Reset Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Reset Password email has been sent", EmailHelper.GetSenderAddress(), objUser.Email, null, null, objUser.UserId, null, null, null);
+
                             }
                             else
                             {
                                 LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Reset Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Reset Password email sending failed", EmailHelper.GetSenderAddress(), objUser.Email, null, null, objUser.UserId, null, null, null);
 
-                               
+
                             }
                         }
-                         
+
 
                     }
 
@@ -542,6 +542,118 @@ namespace LAPP.WS.Controllers.Common
             }
 
 
+        }
+
+
+
+        /// <summary>
+        ///Validate User by Email.
+        /// </summary>
+        /// <param name="Email">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ValidateEmailExist")]
+        public UsersResponse ValidateEmailExist(string Email)
+        {
+            //LogingHelper.SaveAuditInfo(Key);
+
+            UsersResponse objResponse = new UsersResponse();
+            UsersBAL objBAL = new UsersBAL();
+            Users objEntity = new Users();
+            List<Users> lstUsers = new List<Users>();
+            try
+            {
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.Users = null;
+                //    return objResponse;
+                //}
+
+                objEntity = objBAL.Get_Users_by_Email(Email);
+                if (objEntity != null)
+                {
+
+                    objResponse.Status = false;
+                    objResponse.Message = "The email entered is already registered with us.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "This email not in use.  ";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "ValidateEmailExist", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Users = null;
+
+            }
+            return objResponse;
+        }
+
+
+
+        /// <summary>
+        ///Validate User by UserName.
+        /// </summary>
+        /// <param name="UserName">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ValidateUserNameExist")]
+        public UsersResponse ValidateUserNameExist(string UserName)
+        {
+            //LogingHelper.SaveAuditInfo(Key);
+
+            UsersResponse objResponse = new UsersResponse();
+            UsersBAL objBAL = new UsersBAL();
+            Users objEntity = new Users();
+            List<Users> lstUsers = new List<Users>();
+            try
+            {
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.Users = null;
+                //    return objResponse;
+                //}
+
+                objEntity = objBAL.Get_Users_by_UserName(UserName);
+                if (objEntity != null)
+                {
+
+                    objResponse.Status = false;
+                    objResponse.Message = "The username entered is already registered with us.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "This username not in use.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "ValidateUserNameExist", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Users = null;
+
+            }
+            return objResponse;
         }
 
     }

@@ -38,6 +38,11 @@ namespace LAPP.BAL
             return objDAL.Get_Users_by_Email(Email);
         }
 
+        public Users Get_Users_by_UserName(string UserName)
+        {
+            return objDAL.Get_Users_by_UserName(UserName);
+        }
+
         public Users Get_Users_by_Email_And_Password(string Email, string Password)
         {
             return objDAL.Get_Users_by_Email_And_Password(Email, Password);

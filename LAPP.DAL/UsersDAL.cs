@@ -249,6 +249,21 @@ namespace LAPP.DAL
             return objEntity;
         }
 
+        public Users Get_Users_by_UserName(string UserName)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_UserName", UserName));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Users_Get_BY_UserName", lstParameter.ToArray());
+            Users objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
         public Users Get_Users_by_Email_And_Password(string Email, string Password)
         {
             DataSet ds = new DataSet("DS");
