@@ -984,6 +984,93 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+
+        /// <summary>
+        /// Get Method to get IndividualEducation by key and IndividualLicenseId.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualLicenseId">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualEducationBYIndividualLicenseId")]
+        public IndividualCECourseResponseRequest IndividualEducationBYIndividualLicenseId(string Key, int IndividualLicenseId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualCECourseResponseRequest objResponse = new IndividualCECourseResponseRequest();
+            IndividualCECourseBAL objBAL = new IndividualCECourseBAL();
+            IndividualCECourseResponse objEntity = new IndividualCECourseResponse();
+            List<IndividualCECourseResponse> lstEntity = new List<IndividualCECourseResponse>();
+            List<IndividualCECourse> lstIndividualCECourse = new List<IndividualCECourse>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualCECourseResponseList = null;
+                    return objResponse;
+                }
+
+                lstIndividualCECourse = objBAL.Get_IndividualCECourse_By_IndividualLicenseId(IndividualLicenseId);
+                if (lstIndividualCECourse != null && lstIndividualCECourse.Count > 0)
+                {
+
+                    List<IndividualCECourseResponse> lstCeCourseResponse = lstIndividualCECourse.Select(obj => new IndividualCECourseResponse
+                    {
+                        ActivityDesc = obj.ActivityDesc,
+                        ApplicationId = obj.ApplicationId,
+                        CECourseActivityTypeId = obj.CECourseActivityTypeId,
+                        CECourseDate = obj.CECourseDate,
+                        CECourseDueDate = obj.CECourseDueDate,
+                        CECourseEndDate = obj.CECourseEndDate,
+                        CECourseHours = obj.CECourseHours,
+                        CECourseReportingYear = obj.CECourseReportingYear,
+                        CECourseStartDate = obj.CECourseStartDate,
+                        CECourseStatusId = obj.CECourseStatusId,
+                        CECourseTypeId = obj.CECourseTypeId,
+                        CECourseUnits = obj.CECourseUnits,
+                        CourseNameTitle = obj.CourseNameTitle,
+                        CourseSponsor = obj.CourseSponsor,
+                        IndividualCECourseId = obj.IndividualCECourseId,
+                        IndividualLicenseId = obj.IndividualLicenseId,
+                        IndividualId = obj.IndividualId,
+                        InstructorBiography = obj.InstructorBiography,
+                        IsActive = obj.IsActive,
+                        ProgramSponsor = obj.ProgramSponsor,
+                        ReferenceNumber = obj.ReferenceNumber
+                    }).ToList();
+
+
+                    objResponse.IndividualCECourseResponseList = lstCeCourseResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualCECourseResponseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualEducationBYIndividualLicenseId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualCECourseResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+
         /// <summary>
         /// Get Method to get IndividualEducation by key and ID.
         /// </summary>
@@ -1068,6 +1155,7 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             return objResponse;
         }
+
 
         #endregion
 

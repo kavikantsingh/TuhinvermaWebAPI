@@ -107,7 +107,7 @@ namespace LAPP.WS.Controllers.Renewal
                 LogingHelper.SaveRequestJson(ex.Message, " error in Save renewal request");
             }
 
-            
+
 
 
 
@@ -358,6 +358,7 @@ namespace LAPP.WS.Controllers.Renewal
                         StatusId = RenewalGetSelectedRes.StatusId,
                         StatusName = RenewalGetSelectedRes.StatusName,
                         ApplicationId = RenewalGetSelectedRes.ApplicationId,
+                        ApplicationStatusId = RenewalGetSelectedRes.ApplicationStatusId,
                     }).ToList();
 
                     objResponse.Total_Recard = lstRenewalGet[0].Total_Recard;
@@ -416,7 +417,7 @@ namespace LAPP.WS.Controllers.Renewal
                 }
 
 
-                return RenewalProcess.SelectRenewalResponseByApplicationId(TokenHelper.GetTokenByKey(Key), IndividualId,ApplicationId);
+                return RenewalProcess.SelectRenewalResponseByApplicationId(TokenHelper.GetTokenByKey(Key), IndividualId, ApplicationId);
 
             }
             catch (Exception ex)
