@@ -357,6 +357,7 @@ namespace LAPP.WS.Controllers.Renewal
                         Phone = RenewalGetSelectedRes.Phone,
                         StatusId = RenewalGetSelectedRes.StatusId,
                         StatusName = RenewalGetSelectedRes.StatusName,
+                        ApplicationId = RenewalGetSelectedRes.ApplicationId,
                     }).ToList();
 
                     objResponse.Total_Recard = lstRenewalGet[0].Total_Recard;
