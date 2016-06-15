@@ -83,6 +83,7 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+
         public void IndividualCECourse_SoftDelete_by_ApplicationId(int _ApplicationId)
         {
             DataSet ds = new DataSet("DS");
@@ -92,6 +93,7 @@ namespace LAPP.DAL
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualCECourse_SoftDelete_by_ApplicationId", lstParameter.ToArray());
 
         }
+
         public List<IndividualCECourse> Get_IndividualCECourse_By_ApplicationId(int ApplicationId)
         {
             DataSet ds = new DataSet("DS");
@@ -110,6 +112,23 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<IndividualCECourse> Get_IndividualCECourse_By_IndividualLicenseId(int IndividualLicenseId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualLicenseId", IndividualLicenseId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "individualcecourse_GET_BY_IndividualLicenseId", lstParameter.ToArray());
+            List<IndividualCECourse> lstEntity = new List<IndividualCECourse>();
+            IndividualCECourse objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
 
         public List<IndividualCECourse> Get_IndividualCECourse_By_IndividualId(int IndividualId)
         {

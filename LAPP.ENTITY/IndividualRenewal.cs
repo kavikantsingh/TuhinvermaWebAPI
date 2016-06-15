@@ -119,7 +119,8 @@ namespace LAPP.ENTITY
         public DateTime? SubmittedDate { get; set; }
         public bool IsPaid { get; set; }
         // public int Total_Recard { get; set; }
-
+        public int ApplicationId { get; set; }
+        public int ApplicationStatusId { get; set; }
     }
 
     public class RenewalGetResponse : BaseEntityServiceResponse

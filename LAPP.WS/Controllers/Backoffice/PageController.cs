@@ -50,7 +50,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    var lstPageModuleSelected = lstPageModule.Select(Page => new
+                    var lstPageModuleSelected = lstPageModule.Select(Page => new PageModule
                     {
                         PageModuleId = Page.PageModuleId,
                         PageModuleCode = Page.PageModuleCode,
@@ -173,7 +173,7 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <param name="PageModuleTabSubModuleId">The PageModule .</param>
         [AcceptVerbs("GET")]
         [ActionName("PageGetAllSectionsByTabId")]
-        public PageTabSectionResponse PageGetAllSectionsByTabId(string Key, int PageModuleTabSubModuleId)
+        public PageTabSectionResponse PageGetAllSectionsByTabId(string Key, int PageModuleTabSubModuleId)//PageModuleId
         {
             LogingHelper.SaveAuditInfo(Key);
 
