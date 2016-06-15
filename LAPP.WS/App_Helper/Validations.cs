@@ -247,6 +247,30 @@ namespace LAPP.WS.App_Helper
         }
 
 
+        public static List<ResponseReason> IsValidUserNameFromUser(string PropertyName, string PropertyValue, List<ResponseReason> ObjReasonList)
+        {
+
+            string Code = "FR";
+            Users objUser = new Users();
+            UsersBAL objUBAL = new UsersBAL();
+
+            objUser = objUBAL.Get_Users_by_UserName(PropertyValue);
+
+            if (objUser != null)
+            {
+                ResponseReason objValidationResponse = new ResponseReason();
+                objValidationResponse.Code = Code;
+                objValidationResponse.PropertyName = PropertyName;
+                objValidationResponse.Message = "The username entered is already registered with us.";
+
+                ObjReasonList.Add(objValidationResponse);
+            }
+
+            return ObjReasonList;
+
+        }
+
+
         private static string IsValidEmails(string inputEmail, string message = "error")
         {
             string result = "";

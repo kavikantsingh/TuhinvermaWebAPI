@@ -58,6 +58,34 @@ namespace LAPP.WS.ValidateController.User
                 }
             }
 
+
+
+            if (objUsers.UserName != "")
+            {
+                if (objUsers.UserId > 0)
+                {
+                    Users objuser = new Users();
+                    UsersBAL objuserBal = new UsersBAL();
+                    objuser = objuserBal.Get_Users_byUsersId(objUsers.UserId);
+                    if (objuser != null)
+                    {
+                        if (objuser.UserName != objUsers.UserName)
+                        {
+                            objResponseList = Validations.IsValidUserNameFromUser(nameof(objUsers.UserName), objUsers.UserName, objResponseList);
+                        }
+                    }
+                    else
+                    {
+                        objResponseList = Validations.IsValidUserNameFromUser(nameof(objUsers.UserName), objUsers.UserName, objResponseList);
+                    }
+                }
+                else
+                {
+                    objResponseList = Validations.IsValidUserNameFromUser(nameof(objUsers.UserName), objUsers.UserName, objResponseList);
+                }
+            }
+
+
             if (!string.IsNullOrEmpty(objUsers.Phone))
             {
                 objResponseList = Validations.IsValidUSPhoneNoProperty(nameof(objUsers.Phone), objUsers.Phone, objResponseList, 25);

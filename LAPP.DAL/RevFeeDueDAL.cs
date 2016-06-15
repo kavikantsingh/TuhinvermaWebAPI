@@ -45,6 +45,25 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public List<RevFeeDue> Get_Unpaid_RevFeeDue_by_IndividualId(int individualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", individualId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_Unpaid_BY_IndividualId", lstParameter.ToArray());
+            List<RevFeeDue> lstEntity = new List<RevFeeDue>();
+            RevFeeDue objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+        }
+
         public List<RevFeeDue> Get_All_RevFeeDue()
         {
             DataSet ds = new DataSet("DS");
@@ -61,24 +80,45 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-        public List<RevFeeDue> Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(int IndividualId, int ApplicationId)
+        //public List<RevFeeDue> Get_RevFeeDue_by_IndividualIdAnd_ApplicationId(int IndividualId, int ApplicationId)
+        //{
+        //    DataSet ds = new DataSet("DS");
+        //    DBHelper objDB = new DBHelper();
+        //    List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+        //    lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+        //    lstParameter.Add(new MySqlParameter("G_ApplicationId", ApplicationId));
+        //    //lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+        //    ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_BY_IndividualId_AND_ApplicationId", lstParameter.ToArray());
+        //    List<RevFeeDue> lstEntity = new List<RevFeeDue>();
+        //    RevFeeDue objEntity = null;
+        //    foreach (DataRow dr in ds.Tables[0].Rows)
+        //    {
+        //        objEntity = FetchEntity(dr);
+        //        if (objEntity != null)
+        //            lstEntity.Add(objEntity);
+        //    }
+        //    return lstEntity;
+        //}
+
+
+        public RevFeeDue Get_RevFeeDue_by_IndividualIdAnd_ApplicationIdAndRevFeeMasterId(int IndividualId, int ApplicationId, int RevFeeMasterId)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
             lstParameter.Add(new MySqlParameter("G_ApplicationId", ApplicationId));
+            lstParameter.Add(new MySqlParameter("G_RevFeeMasterId", RevFeeMasterId));
             //lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_BY_IndividualId_AND_ApplicationId", lstParameter.ToArray());
-            List<RevFeeDue> lstEntity = new List<RevFeeDue>();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDue_GET_BY_IndivId_AND_AppliId_RevFeeMasId", lstParameter.ToArray());
             RevFeeDue objEntity = null;
-            foreach (DataRow dr in ds.Tables[0].Rows)
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
             {
+                DataRow dr = ds.Tables[0].Rows[0];
                 objEntity = FetchEntity(dr);
-                if (objEntity != null)
-                    lstEntity.Add(objEntity);
             }
-            return lstEntity;
+            return objEntity;
         }
 
         public List<RevFeeDue> Get_RevFeeDue_by_IndividualId(int IndividualId)
@@ -228,6 +268,19 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("RevFeeDueGuid") && dr["RevFeeDueGuid"] != DBNull.Value)
             {
                 objEntity.RevFeeDueGuid = Convert.ToString(dr["RevFeeDueGuid"]);
+            }
+            if (dr.Table.Columns.Contains("FeeName") && dr["FeeName"] != DBNull.Value)
+            {
+                objEntity.FeeName = Convert.ToString(dr["FeeName"]);
+            }
+
+            if (dr.Table.Columns.Contains("ApplicationName") && dr["ApplicationName"] != DBNull.Value)
+            {
+                objEntity.ApplicationName = Convert.ToString(dr["ApplicationName"]);
+            }
+            if (dr.Table.Columns.Contains("PaymentStatus") && dr["PaymentStatus"] != DBNull.Value)
+            {
+                objEntity.PaymentStatus = Convert.ToString(dr["PaymentStatus"]);
             }
 
             return objEntity;

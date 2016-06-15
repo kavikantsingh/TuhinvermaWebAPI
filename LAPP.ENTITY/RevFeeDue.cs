@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LAPP.ENTITY
 {
-    public class RevFeeDue : BaseEntity
+    public class RevFeeDueResponse : BaseEntity
 
     {
         public int RevFeeDueId { get; set; }
@@ -22,13 +22,33 @@ namespace LAPP.ENTITY
         public int FeeDueTypeId { get; set; }
         public string InvoiceNo { get; set; }
         public DateTime InvoiceDate { get; set; }
-        public string ReferenceNumber { get; set; }
+
         public string ControlNo { get; set; }
         public decimal FeeAmount { get; set; }
         public DateTime? FeeDueDate { get; set; }
+        public string FeeName { get; set; }
+        public string ApplicationName { get; set; }
+        public string PaymentStatus { get; set; }
+
+        public decimal AmountUpdated { get; set; }
+        public bool Pay { get; set; }
+
+    }
+
+    public class RevFeeDue : RevFeeDueResponse
+
+    {
+
+        public string ReferenceNumber { get; set; }
 
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public string RevFeeDueGuid { get; set; }
+    }
+
+    public class RevFeeDueAPIResponse : BaseEntityServiceResponse
+    {
+        public List<RevFeeDueResponse> RevFeeDueResponseList { get; set; }
+
     }
 }

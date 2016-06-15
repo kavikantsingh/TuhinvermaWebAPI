@@ -53,37 +53,63 @@ namespace LAPP.BAL.Payment
                     objTransaction.InvoiceNumber = InvoiceNumber;
                     objTransaction.TransactionId = objTransactionBAL.Save_Transaction(objTransaction);
 
-
+                    RevFeeDue objFeeDue = null;
                     foreach (FeeDetails fee in objRequest.FeeDetailsList)
                     {
 
                         RevFeeDueBAL objFeeDueBAL = new RevFeeDueBAL();
-                        RevFeeDue objFeeDue = new RevFeeDue();
-                        objFeeDue.TransactionId = objTransaction.TransactionId;
-                        objFeeDue.MasterTransactionId = 0;
-                        objFeeDue.RevFeeMasterId = fee.RevMstFeeId;
-                        objFeeDue.IndividualId = objRequest.IndividualId;
-                        objFeeDue.ApplicationId = objRequest.ApplicationId;
-                        objFeeDue.ProviderId = 0;
-                        objFeeDue.IndividualLicenseId = fee.IndividualLicenseId;
-                        objFeeDue.LicenseTypeId = fee.LicenseTypeId;
-                        objFeeDue.BatchId = 0;
-                        objFeeDue.TaskId = 0;
-                        objFeeDue.FeeDueTypeId = 0;
-                        objFeeDue.InvoiceNo = InvoiceNumber;
-                        objFeeDue.InvoiceDate = DateTime.Now;
-                        objFeeDue.ReferenceNumber = "";
-                        objFeeDue.ControlNo = "";
-                        objFeeDue.FeeAmount = fee.FeeAmount;
-                        objFeeDue.FeeDueDate = null;
-                        objFeeDue.CreatedBy = CreatedBy;
-                        objFeeDue.CreatedOn = DateTime.Now;
-                        objFeeDue.RevFeeDueGuid = Guid.NewGuid().ToString();
-                        objFeeDue.RevFeeDueId = objFeeDueBAL.Save_RevFeeDue(objFeeDue);
+                        objFeeDue = objFeeDueBAL.Get_RevFeeDue_by_IndividualIdAnd_ApplicationIdAndRevFeeMasterId(objTransaction.IndividualId, objTransaction.ApplicationId, fee.RevMstFeeId);
 
+                        if (objFeeDue != null && objFeeDue.RevFeeDueId > 0)
+                        {
+                            objFeeDue.TransactionId = objTransaction.TransactionId;
+                            objFeeDue.MasterTransactionId = 0;
+                            objFeeDue.RevFeeMasterId = fee.RevMstFeeId;
+                            objFeeDue.IndividualId = objRequest.IndividualId;
+                            objFeeDue.ApplicationId = objRequest.ApplicationId;
+                            objFeeDue.ProviderId = 0;
+                            objFeeDue.IndividualLicenseId = fee.IndividualLicenseId;
+                            objFeeDue.LicenseTypeId = fee.LicenseTypeId;
+                            objFeeDue.BatchId = 0;
+                            objFeeDue.TaskId = 0;
+                            objFeeDue.FeeDueTypeId = 0;
+                            objFeeDue.InvoiceNo = InvoiceNumber;
+                            objFeeDue.InvoiceDate = DateTime.Now;
+                            objFeeDue.ReferenceNumber = "";
+                            objFeeDue.ControlNo = "";
+                            objFeeDue.FeeAmount = fee.FeeAmount;
+                            objFeeDue.FeeDueDate = null;
+                            objFeeDue.CreatedBy = CreatedBy;
+                            objFeeDue.CreatedOn = DateTime.Now;
+                            objFeeDue.RevFeeDueGuid = Guid.NewGuid().ToString();
+                            objFeeDue.RevFeeDueId = objFeeDueBAL.Save_RevFeeDue(objFeeDue);
+                        }
+                        else
+                        {
 
-                       
-
+                            objFeeDue = new RevFeeDue();
+                            objFeeDue.TransactionId = objTransaction.TransactionId;
+                            objFeeDue.MasterTransactionId = 0;
+                            objFeeDue.RevFeeMasterId = fee.RevMstFeeId;
+                            objFeeDue.IndividualId = objRequest.IndividualId;
+                            objFeeDue.ApplicationId = objRequest.ApplicationId;
+                            objFeeDue.ProviderId = 0;
+                            objFeeDue.IndividualLicenseId = fee.IndividualLicenseId;
+                            objFeeDue.LicenseTypeId = fee.LicenseTypeId;
+                            objFeeDue.BatchId = 0;
+                            objFeeDue.TaskId = 0;
+                            objFeeDue.FeeDueTypeId = 0;
+                            objFeeDue.InvoiceNo = InvoiceNumber;
+                            objFeeDue.InvoiceDate = DateTime.Now;
+                            objFeeDue.ReferenceNumber = "";
+                            objFeeDue.ControlNo = "";
+                            objFeeDue.FeeAmount = fee.FeeAmount;
+                            objFeeDue.FeeDueDate = null;
+                            objFeeDue.CreatedBy = CreatedBy;
+                            objFeeDue.CreatedOn = DateTime.Now;
+                            objFeeDue.RevFeeDueGuid = Guid.NewGuid().ToString();
+                            objFeeDue.RevFeeDueId = objFeeDueBAL.Save_RevFeeDue(objFeeDue);
+                        }
 
                     }
 

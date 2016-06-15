@@ -41,5 +41,10 @@ namespace LAPP.BAL
         {
             return objDal.Get_RevFeeDisb_by_ApplicationId(ApplicationId);
         }
+
+        public List<RevFeeDisb> Get_Paid_RevFeeDisb_by_IndividualId(int individualId)
+        {
+            return objDal.Get_Paid_RevFeeDisb_by_IndividualId(individualId);
+        }
     }
 }
