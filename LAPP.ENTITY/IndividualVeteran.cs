@@ -26,12 +26,17 @@ namespace LAPP.ENTITY
     public class IndividualVeteran : IndividualVeteranResponse
 
     {
-      
+
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
 
         public string IndividualVeteranGuid { get; set; }
+    }
+
+    public class IndividualVeteranResponseRequest : BaseEntityServiceResponse
+    {
+        public List<IndividualVeteranResponse> IndividualVeteranResponseList { get; set; }
     }
 }

@@ -35,4 +35,9 @@ namespace LAPP.ENTITY
 
         public string IndividualAffidavitGuid { get; set; }
     }
+
+    public class IndividualAffidavitResponseRequest : BaseEntityServiceResponse
+    {
+        public List<IndividualAffidavitResponse> IndividualAffidavitResponseList { get; set; }
+    }
 }
