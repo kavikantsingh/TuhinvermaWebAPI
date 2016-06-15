@@ -37,6 +37,8 @@ namespace LAPP.ENTITY
         public List<FeeDetails> FeesDetails { get; set; }
         public int RequestedLicenseStatusTypeId { get; set; }
         public string AffirmativeAction { get; set; }
+        public string Action { get; set; }
+        public string SentFrom { get; set; }
     }
 
     public class RenewalGet : BaseEntity
