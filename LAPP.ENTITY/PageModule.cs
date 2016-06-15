@@ -25,6 +25,6 @@ namespace LAPP.ENTITY
 
     public class PageModuleResponse : BaseEntityServiceResponse
     {
-        public object PageModule { get; set; }
+        public List<PageModule> PageModule { get; set; }
     }
 }
