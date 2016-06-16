@@ -17,7 +17,6 @@ namespace LAPP.ENTITY
         public DateTime EndDate { get; set; }
         public bool IsEnabled { get; set; }
         public bool IsEditable { get; set; }
-
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
