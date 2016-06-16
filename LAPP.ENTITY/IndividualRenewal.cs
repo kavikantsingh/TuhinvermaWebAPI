@@ -37,6 +37,8 @@ namespace LAPP.ENTITY
         public List<FeeDetails> FeesDetails { get; set; }
         public int RequestedLicenseStatusTypeId { get; set; }
         public string AffirmativeAction { get; set; }
+        public string Action { get; set; }
+        public string SentFrom { get; set; }
     }
 
     public class RenewalGet : BaseEntity
@@ -117,7 +119,8 @@ namespace LAPP.ENTITY
         public DateTime? SubmittedDate { get; set; }
         public bool IsPaid { get; set; }
         // public int Total_Recard { get; set; }
-
+        public int ApplicationId { get; set; }
+        public int ApplicationStatusId { get; set; }
     }
 
     public class RenewalGetResponse : BaseEntityServiceResponse

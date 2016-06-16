@@ -20,7 +20,10 @@ namespace LAPP.BAL
         {
             return objDal.Get_All_IndividualCECourse();
         }
-
+        public List<IndividualCECourse> Get_IndividualCECourse_By_IndividualLicenseId(int IndividualLicenseId)
+        {
+            return objDal.Get_IndividualCECourse_By_IndividualLicenseId(IndividualLicenseId);
+        }
         public List<IndividualCECourse> Get_IndividualCECourse_By_IndividualId(int IndividualId)
         {
             return objDal.Get_IndividualCECourse_By_IndividualId(IndividualId);

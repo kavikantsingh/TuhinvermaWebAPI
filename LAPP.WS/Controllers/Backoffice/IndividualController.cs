@@ -984,6 +984,93 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+
+        /// <summary>
+        /// Get Method to get IndividualEducation by key and IndividualLicenseId.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualLicenseId">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualEducationBYIndividualLicenseId")]
+        public IndividualCECourseResponseRequest IndividualEducationBYIndividualLicenseId(string Key, int IndividualLicenseId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualCECourseResponseRequest objResponse = new IndividualCECourseResponseRequest();
+            IndividualCECourseBAL objBAL = new IndividualCECourseBAL();
+            IndividualCECourseResponse objEntity = new IndividualCECourseResponse();
+            List<IndividualCECourseResponse> lstEntity = new List<IndividualCECourseResponse>();
+            List<IndividualCECourse> lstIndividualCECourse = new List<IndividualCECourse>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualCECourseResponseList = null;
+                    return objResponse;
+                }
+
+                lstIndividualCECourse = objBAL.Get_IndividualCECourse_By_IndividualLicenseId(IndividualLicenseId);
+                if (lstIndividualCECourse != null && lstIndividualCECourse.Count > 0)
+                {
+
+                    List<IndividualCECourseResponse> lstCeCourseResponse = lstIndividualCECourse.Select(obj => new IndividualCECourseResponse
+                    {
+                        ActivityDesc = obj.ActivityDesc,
+                        ApplicationId = obj.ApplicationId,
+                        CECourseActivityTypeId = obj.CECourseActivityTypeId,
+                        CECourseDate = obj.CECourseDate,
+                        CECourseDueDate = obj.CECourseDueDate,
+                        CECourseEndDate = obj.CECourseEndDate,
+                        CECourseHours = obj.CECourseHours,
+                        CECourseReportingYear = obj.CECourseReportingYear,
+                        CECourseStartDate = obj.CECourseStartDate,
+                        CECourseStatusId = obj.CECourseStatusId,
+                        CECourseTypeId = obj.CECourseTypeId,
+                        CECourseUnits = obj.CECourseUnits,
+                        CourseNameTitle = obj.CourseNameTitle,
+                        CourseSponsor = obj.CourseSponsor,
+                        IndividualCECourseId = obj.IndividualCECourseId,
+                        IndividualLicenseId = obj.IndividualLicenseId,
+                        IndividualId = obj.IndividualId,
+                        InstructorBiography = obj.InstructorBiography,
+                        IsActive = obj.IsActive,
+                        ProgramSponsor = obj.ProgramSponsor,
+                        ReferenceNumber = obj.ReferenceNumber
+                    }).ToList();
+
+
+                    objResponse.IndividualCECourseResponseList = lstCeCourseResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualCECourseResponseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualEducationBYIndividualLicenseId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualCECourseResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+
         /// <summary>
         /// Get Method to get IndividualEducation by key and ID.
         /// </summary>
@@ -1068,6 +1155,7 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             return objResponse;
         }
+
 
         #endregion
 
@@ -4303,6 +4391,262 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             return objResponse;
         }
+
+        #endregion
+
+        #region ChildSupportDecleration
+
+
+
+        /// <summary>
+        /// Get Method to get object of IndividualChildSupport by key and IndividualId.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">IndividualId.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualChildSupportByIndividualId")]
+        public IndividualChildSupportResponseRequest IndividualChildSupportByIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualChildSupportResponseRequest objResponse = new IndividualChildSupportResponseRequest();
+            List<IndividualChildSupport> lstChildSupport = new List<IndividualChildSupport>();
+            IndividualChildSupportBAL objChildBAL = new IndividualChildSupportBAL();
+            IndividualChildSupportResponse objEntity = new IndividualChildSupportResponse();
+            IndividualChildSupport objCeh = new IndividualChildSupport();
+            List<IndividualCEHResponse> lstEntity = new List<IndividualCEHResponse>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualChildSupportResponseList = null;
+                    return objResponse;
+                }
+
+
+
+                lstChildSupport = objChildBAL.Get_IndividualChildSupport_By_IndividualId(IndividualId);
+                if (lstChildSupport != null && lstChildSupport.Count > 0)
+                {
+                    List<IndividualChildSupportResponse> lstChildResponse = lstChildSupport.Select(obj => new IndividualChildSupportResponse
+                    {
+                        ContentItemNumber = obj.ContentItemNumber,
+                        ContentItemLkId = obj.ContentItemLkId,
+                        ContentItemResponse = obj.ContentItemResponse,
+                        IndividualChildSupportId = obj.IndividualChildSupportId,
+                        IndividualId = obj.IndividualId,
+                        IsActive = obj.IsActive,
+                        ContentDescription = obj.ContentDescription,
+                        ContentItemLkCode = obj.ContentItemLkCode
+                    }).ToList();
+
+                    objResponse.IndividualChildSupportResponseList = lstChildResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualChildSupportResponseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualChildSupportByIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualChildSupportResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+
+
+        #endregion
+
+        #region IndividualVeteran
+
+
+
+        /// <summary>
+        /// Get Method to get object of IndividualVeteran by key and IndividualId.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">IndividualId.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualVeteranByIndividualId")]
+        public IndividualVeteranResponseRequest IndividualVeteranByIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualVeteranResponseRequest objResponse = new IndividualVeteranResponseRequest();
+            IndividualVeteranBAL objIndividualVetranBAL = new IndividualVeteranBAL();
+            IndividualVeteranResponse objEntity = new IndividualVeteranResponse();
+            List<IndividualVeteranResponse> lstEntity = new List<IndividualVeteranResponse>();
+            List<IndividualVeteran> lstIndividualVeteran = new List<IndividualVeteran>();
+            IndividualVeteran objIndividualVetran = new IndividualVeteran();
+            List<IndividualVeteranBranch> lstBranchs = new List<IndividualVeteranBranch>();
+            IndividualVeteranBranchBAL objBranchBAL = new IndividualVeteranBranchBAL();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualVeteranResponseList = null;
+                    return objResponse;
+                }
+
+
+                objIndividualVetran = objIndividualVetranBAL.Get_IndividualVeteran_By_IndividualId(IndividualId);
+                if (objIndividualVetran != null)
+                {
+                    lstBranchs = objBranchBAL.Get_IndividualVeteranBranch_By_IndividualId_VeteranId(IndividualId, objIndividualVetran.IndividualVeteranId);
+                    if (lstBranchs != null)
+                    {
+                        List<IndividualVeteranBranchResponse> lstBranchResp = lstBranchs.Select(obj => new IndividualVeteranBranchResponse
+                        {
+                            BranchofServicesId = obj.BranchofServicesId,
+                            BranchofServicesIdResponse = obj.BranchofServicesIdResponse,
+                            ContentDescription = obj.ContentDescription,
+                            ContentItemLkCode = obj.ContentItemLkCode,
+                            IndividualId = obj.IndividualId,
+                            IndividualVeteranBranchId = obj.IndividualVeteranBranchId,
+                            IndividualVeteranId = obj.IndividualVeteranId,
+                            IsActive = obj.IsActive
+                        }).ToList();
+
+                        objIndividualVetran.VeteranBranches = lstBranchResp;
+                    }
+
+                    lstEntity.Add(objIndividualVetran);
+
+                    objResponse.IndividualVeteranResponseList = lstEntity;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualVeteranResponseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualVeteranByIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualVeteranResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+
+
+        #endregion
+
+        #region IndividualAffidavit
+
+
+        /// <summary>
+        /// Get Method to get object of IndividualAffidavit by key and IndividualId.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">IndividualId.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualAffidavitByIndividualId")]
+        public IndividualAffidavitResponseRequest IndividualAffidavitByIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualAffidavitResponseRequest objResponse = new IndividualAffidavitResponseRequest();
+            IndividualAffidavitResponse objEntity = new IndividualAffidavitResponse();
+            IndividualAffidavit objAffidavit = new IndividualAffidavit();
+            List<IndividualAffidavit> lstobjAffidavit = new List<IndividualAffidavit>();
+            IndividualAffidavitBAL objAffidavitBAL = new IndividualAffidavitBAL();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualAffidavitResponseList = null;
+                    return objResponse;
+                }
+
+
+
+                objAffidavit = objAffidavitBAL.Get_IndividualAffidavit_By_IndividualId(IndividualId);
+                if (objAffidavit != null)
+                {
+                    lstobjAffidavit.Add(objAffidavit);
+                    List<IndividualAffidavitResponse> objAffidavitReesp = lstobjAffidavit
+                           .Select(obj => new IndividualAffidavitResponse
+                           {
+                               IndividualAffidavitId = obj.IndividualAffidavitId,
+                               IndividualId = obj.IndividualId,
+                               ApplicationId = obj.ApplicationId,
+                               ContentItemLkId = obj.ContentItemLkId,
+                               ContentItemNumber = obj.ContentItemNumber,
+                               ContentItemResponse = obj.ContentItemResponse,
+                               Desc = obj.Desc,
+                               Date = obj.Date,
+                               Name = obj.Name,
+                               SignatureName = obj.SignatureName,
+                               ContentDescription = obj.ContentDescription,
+                               IsActive = obj.IsActive,
+                           }).ToList();
+
+                    objResponse.IndividualAffidavitResponseList = objAffidavitReesp;
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualAffidavitResponseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualAffidavitByIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualAffidavitResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+
 
         #endregion
     }
