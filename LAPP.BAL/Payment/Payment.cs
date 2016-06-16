@@ -125,7 +125,7 @@ namespace LAPP.BAL.Payment
             return objTransaction;
         }
 
-        public static bool ProcessApprovedPayment(LAPP.ENTITY.Transaction objTrans, AuthorizeDotNetGateWayResponse objAuthResponse, Token objToken, int RequestedLicenseStatusTypeId)
+        public static bool ProcessApprovedPayment(LAPP.ENTITY.Transaction objTrans, AuthorizeDotNetGateWayResponse objAuthResponse, Token objToken, int RequestedLicenseStatusTypeId, string AffirmativeAction)
         {
             bool Success = false;
             RevFeeDueBAL objFeeDueBAL = new RevFeeDueBAL();
@@ -139,7 +139,7 @@ namespace LAPP.BAL.Payment
                 {
                     if (objTrans != null)
                     {
-                        string ReceiptNumber = SerialsBAL.Get_Receipt_No();
+                        //string ReceiptNumber = SerialsBAL.Get_Receipt_No();
                         IndividualBAL objIndividualBAL = new IndividualBAL();
                         Individual objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objTrans.IndividualId);
                         if (objIndividual != null)
@@ -149,6 +149,8 @@ namespace LAPP.BAL.Payment
                             List<RevFeeDue> objFeedueList = objFeeDueBAL.Get_RevFeeDue_by_TransactionId(objTrans.TransactionId);
 
                             decimal AmountDue = objFeedueList.Sum(x => x.FeeAmount);
+
+                            string InvoiceNumber = objFeedueList[0].InvoiceNo;
 
                             RevFeeCollectBAL objFeeCollectBAL = new RevFeeCollectBAL();
                             RevFeeCollect objFeeCollect = new RevFeeCollect();
@@ -161,15 +163,15 @@ namespace LAPP.BAL.Payment
 
                             objFeeCollect.IndividualLicenseId = objTrans.IndividualLicenseId;
                             objFeeCollect.LicenseTypeId = objTrans.LicenseTypeId;
-                            objFeeCollect.ReceiptNo = ReceiptNumber;
+                            objFeeCollect.ReceiptNo = InvoiceNumber;
                             objFeeCollect.AmountDue = AmountDue;
                             objFeeCollect.PaymentMode = "OL";
                             objFeeCollect.PaymentModeNumber = "";
                             objFeeCollect.PaidAmount = Convert.ToDecimal(objAuthResponse.Amount);
                             objFeeCollect.PaymentDate = DateTime.Now;
-                            objFeeCollect.InvoiceNo = objTrans.InvoiceNumber;
-                            objFeeCollect.UserDefinedRefNo = objTrans.InvoiceNumber;
-                            objFeeCollect.UserDefinedPaymentNo = ReceiptNumber;
+                            objFeeCollect.InvoiceNo = InvoiceNumber;
+                            objFeeCollect.UserDefinedRefNo = InvoiceNumber;
+                            objFeeCollect.UserDefinedPaymentNo = InvoiceNumber;
                             objFeeCollect.RevCollectFeeNum = "";
                             objFeeCollect.RevFeePaidSource = "AuthDot";
                             objFeeCollect.CardType = "";
@@ -207,7 +209,7 @@ namespace LAPP.BAL.Payment
                                 objFeeDisb.FeePaidAmount = FeeDue.FeeAmount;
                                 objFeeDisb.OrigFeeAmount = FeeDue.FeeAmount;
                                 objFeeDisb.ControlNo = FeeDue.ControlNo;
-                                objFeeDisb.PaymentNo = ReceiptNumber;
+                                objFeeDisb.PaymentNo = InvoiceNumber;
                                 objFeeDisb.ReferenceNumber = objAuthResponse.Authorization_Code;
                                 objFeeDisb.CreatedBy = objToken.UserId;
                                 objFeeDisb.CreatedOn = DateTime.Now;
@@ -227,7 +229,7 @@ namespace LAPP.BAL.Payment
                                 objFeeDueDetail.InvoiceNo = FeeDue.InvoiceNo;
                                 objFeeDueDetail.ReferenceNumber = FeeDue.ReferenceNumber;
                                 objFeeDueDetail.PaymentNo = objFeeDisb.PaymentNo;
-                                objFeeDueDetail.ReceiptNo = ReceiptNumber;
+                                objFeeDueDetail.ReceiptNo = InvoiceNumber;
                                 objFeeDueDetail.ControlNo = "";
                                 objFeeDueDetail.FeePaidAmount = FeeDue.FeeAmount;
                                 objFeeDueDetail.FeeDuePaymentDate = null;
@@ -249,7 +251,7 @@ namespace LAPP.BAL.Payment
                             objTranBal.Save_Transaction(objTrans);
 
 
-                            LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId, objTrans.ApplicationId, RequestedLicenseStatusTypeId, objToken);
+                            LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId, objTrans.ApplicationId, RequestedLicenseStatusTypeId, AffirmativeAction, objToken);
 
 
                         }

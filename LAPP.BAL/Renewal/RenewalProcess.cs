@@ -3145,13 +3145,12 @@ namespace LAPP.BAL.Renewal
 
         }
 
-        public static void ChangeLicenseStatus(int IndividualLicenseId, int ApplicationId, int RequestedLicenseStatusTypeId, Token objToken)
+        public static void ChangeLicenseStatus(int IndividualLicenseId, int ApplicationId, int RequestedLicenseStatusTypeId, string AffirmativeAction,  Token objToken)
         {
             try
             {
                 if (RequestedLicenseStatusTypeId == 0)
                 {
-
                     RequestedLicenseStatusTypeId = 1;//default Active if 0
                 }
                 bool RenewalApprovalRequired = false;
@@ -3182,11 +3181,22 @@ namespace LAPP.BAL.Renewal
 
                     if (!RenewalApprovalRequired)
                     {
-                        if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                        if (string.IsNullOrEmpty(AffirmativeAction))
                         {
-                            objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;// 1;
+                            if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                            {
+                                objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;// 1;
+                            }
+                            else
+                            {
+                                objPedningLicense.LicenseStatusTypeId = 6;
+                            }
                         }
-                        else
+                        else if (AffirmativeAction.ToUpper() == "Y")
+                        {
+                            objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;
+                        }
+                        else if (AffirmativeAction.ToUpper() == "N")
                         {
                             objPedningLicense.LicenseStatusTypeId = 6;
                         }
@@ -3295,5 +3305,176 @@ namespace LAPP.BAL.Renewal
 
             }
         }
+
+
+        public static string ConfirmAndApprove(ConfirmAndApproveRequest objRequest,  Token objToken)
+        {
+            
+            string Result = "";
+            int IndividualLicenseId = objRequest.IndividualLicenseID;
+            int ApplicationId = objRequest.ApplicationId;
+            int RequestedLicenseStatusTypeId = objRequest.RequestedLicenseStatusTypeId;
+
+            try
+            {
+                if (RequestedLicenseStatusTypeId == 0)
+                {
+                    RequestedLicenseStatusTypeId = 1;//default Active if 0
+                }
+                bool RenewalApprovalRequired = false;
+                bool RenewalApprovalRequiredifLegalInfoIsYes = false;
+
+
+                ConfigurationTypeBAL objBAL = new ConfigurationTypeBAL();
+                ConfigurationType objEntity = new ConfigurationType();
+                ConfigurationType objConfigurationType = new ConfigurationType();
+                objConfigurationType = objBAL.Get_Configuration_By_Settings_object("RenewalApprovalRequired".ToLower());
+                if (objConfigurationType != null)
+                {
+                    RenewalApprovalRequired = Convert.ToBoolean(objConfigurationType.Value);
+                }
+                objConfigurationType = new ConfigurationType();
+                objConfigurationType = objBAL.Get_Configuration_By_Settings_object("RenewalApprovalRequiredifLegalInfoIsYes".ToLower());
+                if (objConfigurationType != null)
+                {
+                    RenewalApprovalRequiredifLegalInfoIsYes = Convert.ToBoolean(objConfigurationType.Value);
+                }
+
+                IndividualLicense objPedningLicense = new IndividualLicense();
+                IndividualLicenseBAL objPendingLicenseBAL = new IndividualLicenseBAL();
+
+                objPedningLicense = objPendingLicenseBAL.Get_IndividualLicense_By_IndividualLicenseId(IndividualLicenseId);
+                if (objPedningLicense != null)
+                {
+
+                    if (!RenewalApprovalRequired)
+                    {
+                        if (string.IsNullOrEmpty(objRequest.AffirmativeAction))
+                        {
+                            if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                            {
+                                objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;// 1;
+                            }
+                            else
+                            {
+                                objPedningLicense.LicenseStatusTypeId = 6;
+                            }
+                        }
+                        else if(objRequest.AffirmativeAction.ToUpper() == "Y" )
+                        {
+                            objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;
+                        }
+                        else if (objRequest.AffirmativeAction.ToUpper() == "N")
+                        {
+                            objPedningLicense.LicenseStatusTypeId = 6;
+                        }
+                    }
+                    else
+                    {
+                        objPedningLicense.LicenseStatusTypeId = 6;
+
+                    }
+                    objPedningLicense.ModifiedOn = DateTime.Now;
+                    objPedningLicense.ModifiedBy = objToken.UserId;
+
+
+
+                    //
+                    #region  Change Status of Previous renewal
+                    List<IndividualLicense> lstIndividualLicense = new List<IndividualLicense>();
+                    try
+                    {
+
+
+
+                        lstIndividualLicense = objPendingLicenseBAL.Get_IndividualLicense_By_IndividualId(objPedningLicense.IndividualId);
+                        if (lstIndividualLicense != null && lstIndividualLicense.Count > 0)
+                        {
+                            IndividualLicense objLicense = lstIndividualLicense[0];
+                            if (objLicense != null && objPedningLicense.LicenseStatusTypeId != 6)
+                            {
+                                objLicense.LicenseStatusTypeId = 7;//Renewed
+                                objLicense.ModifiedOn = DateTime.Now;
+                                objLicense.ModifiedBy = objToken.UserId;
+                                objPendingLicenseBAL.Save_IndividualLicense(objLicense);
+
+                                LogHelper.SaveIndividualLog(objPedningLicense.IndividualId, objPedningLicense.ApplicationId, (eCommentLogSource.WSAPI).ToString(), "License Status Changed, Start Date:" + objLicense.LicenseEffectiveDate.ToShortDateString() + ", End Date: " + objLicense.LicenseExpirationDate.ToShortDateString() + ", Status: " + (objLicense.LicenseStatusTypeId == 1 ? "Active" : "Expired") + " , Updated To: " + (RequestedLicenseStatusTypeId == 1 ? "Active" : "Inactive") + ", Updated On: " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), objToken.UserId);
+
+                            }
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "ChangeLicenseStatus - Previous Renewal", eSeverity.Critical);
+
+                    }
+                    #endregion
+
+                    objPendingLicenseBAL.Save_IndividualLicense(objPedningLicense);
+
+                    string LicenseStatusTypeName = objPedningLicense.LicenseStatusTypeId == 1 ? "Active" :
+                                                     objPedningLicense.LicenseStatusTypeId == 4 ? "Inactive" : "";
+                    if (objPedningLicense.LicenseStatusTypeId != 6)
+                    {
+                        LogHelper.SaveIndividualLog(objPedningLicense.IndividualId, objPedningLicense.ApplicationId, (eCommentLogSource.WSAPI).ToString(), "License Renewed, Start Date:" + objPedningLicense.LicenseEffectiveDate.ToShortDateString() + ", End Date: " + objPedningLicense.LicenseExpirationDate.ToShortDateString() + ", Status: Pending Renewal , Updated To: " + LicenseStatusTypeName + ", Updated On: " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), objToken.UserId);
+                    }
+                    else
+                    {
+                        LogHelper.SaveIndividualLog(objPedningLicense.IndividualId, objPedningLicense.ApplicationId, (eCommentLogSource.WSAPI).ToString(), "License  Status Changed, Start Date:" + objPedningLicense.LicenseEffectiveDate.ToShortDateString() + ", End Date: " + objPedningLicense.LicenseExpirationDate.ToShortDateString() + ", Status: Pending Renewal , Updated To: Pending Approval, Updated On: " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), objToken.UserId);
+
+
+                    }
+                }
+                try
+                {
+                    Application objApplication = new Application();
+                    ApplicationBAL objApplicationBAL = new ApplicationBAL();
+                    objApplication = objApplicationBAL.Get_Application_By_ApplicationId(ApplicationId);
+                    if (objApplication != null)
+                    {
+                        objApplication.SubmittedDate = DateTime.Now;
+                        objApplication.ApplicationStatusDate = DateTime.Now;
+                        if (!RenewalApprovalRequired)
+                        {
+                            if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                            {
+                                objApplication.ApplicationStatusId = 3;
+                            }
+                            else
+                            {
+
+                                objApplication.ApplicationStatusId = 2;
+
+                            }
+                        }
+                        else
+                        {
+                            objApplication.ApplicationStatusId = 2;
+
+                        }
+
+                        objApplicationBAL.Save_Application(objApplication);
+
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo("", ex, "ChangeLicenseStatus - Application Status", eSeverity.Critical);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "ChangeLicenseStatus", eSeverity.Critical);
+
+            }
+
+            return Result;
+        }
+        
     }
 }

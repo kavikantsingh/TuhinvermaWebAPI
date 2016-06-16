@@ -143,6 +143,72 @@ namespace LAPP.WS.Controllers.Renewal
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="objRequest"></param>
+        /// <returns></returns>
+        [AcceptVerbs("Post")]
+        [ActionName("ConfirmAndApprove")]
+        public ConfirmAndApproveResponse ConfirmAndApprove(string Key, ConfirmAndApproveRequest objRequest)
+        {
+            ConfirmAndApproveResponse objResponse = new ConfirmAndApproveResponse();
+            LogingHelper.SaveAuditInfo(Key);
+
+            if (objRequest == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+                if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                {
+                    // this is executed only in the debug version
+                    LogingHelper.SaveRequestJson(Newtonsoft.Json.JsonConvert.SerializeObject(objRequest), "Confirm and approve  request");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveRequestJson(ex.Message, " error in confirm and approve request");
+            }
+
+
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    
+                    return objResponse;
+                }
+
+                string Result = RenewalProcess.ConfirmAndApprove(objRequest, TokenHelper.GetTokenByKey(Key));
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualRenewalSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+
+            }
+            return objResponse;
+
+        }
+
+
 
         /// <summary>
         /// 
