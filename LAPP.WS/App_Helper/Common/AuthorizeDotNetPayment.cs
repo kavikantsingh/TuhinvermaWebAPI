@@ -17,7 +17,7 @@ namespace LAPP.WS.App_Helper.Common
     public class AuthorizeDotNetPayment
     {
 
-        public static PaymentResponse ProcessPayment(PaymentRequest objPaymentRequest, int CreatedBy, Token objToken)
+        public static PaymentResponse ProcessPayment(PaymentRequest objPaymentRequest, int CreatedBy, string AffirmativeAction, Token objToken)
         {
             if (objPaymentRequest == null)
                 throw new Exception("Invalid request object. please check with API request signature.");
@@ -34,8 +34,24 @@ namespace LAPP.WS.App_Helper.Common
                 Transaction objTrans = objTranBal.Get_Transaction_By_TransactionId(objPaymentRequest.TransactionObject.TransactionId);
 
                 if (objTrans == null)
-                    throw new Exception("Invalid Transaction id sent. please sent the transaction object which you received on payment initiate call.");
+                    throw new Exception("Invalid Transaction id sent. please send the transaction object which you received on payment initiate call.");
 
+                ApplicationBAL objApplicationBAL = new ApplicationBAL();
+                Application objApplication = objApplicationBAL.Get_Application_By_ApplicationId(objPaymentRequest.ApplicationId);
+
+                if (objApplication == null)
+                    throw new Exception("Invalid ApplicationId sent to API. ");
+
+                string DescriptionText = "";
+                IndividualLicenseBAL objIndLicenseBAL = new IndividualLicenseBAL();
+                IndividualLicense objIndLicense = objIndLicenseBAL.Get_IndividualLicense_By_ApplicationId(objApplication.ApplicationId);
+                if(objIndLicense != null)
+                {
+                    DescriptionText = "License number - " + objIndLicense.LicenseNumber;
+                }
+
+
+                  
 
                 RevFeeDueBAL objFeeDueBAL = new RevFeeDueBAL();
 
@@ -52,7 +68,15 @@ namespace LAPP.WS.App_Helper.Common
                     }
                 }
 
-                if(Amount <= 0)
+                string InvoiceNumber = lstFeeDue[0].InvoiceNo;
+
+                if(!string.IsNullOrEmpty(InvoiceNumber))
+                {
+                    DescriptionText += " and Invoice Number - " + InvoiceNumber;
+                }
+
+
+                if (Amount <= 0)
                 {
                     throw new Exception("Invalid Transaction id sent. please sent the transaction object which you received on payment initiate call.");
                 }
@@ -107,8 +131,8 @@ namespace LAPP.WS.App_Helper.Common
                 //post_values.Add("x_amount", objPaymentRequest.Amount.ToString()); //this.TotalAmount.ToString()
                 post_values.Add("x_amount", Amount.ToString()); //this.TotalAmount.ToString()
 
-                post_values.Add("x_description", "Description");
-                post_values.Add("x_invoice_num", objPaymentRequest.InvoiceNumber);
+                post_values.Add("x_description", DescriptionText);
+                post_values.Add("x_invoice_num", InvoiceNumber);
 
                 // Billing Address
 
@@ -121,7 +145,7 @@ namespace LAPP.WS.App_Helper.Common
                 post_values.Add("x_zip", objPaymentRequest.Zip);
                 post_values.Add("x_country", objPaymentRequest.Country); // x_country.Text.Trim());
 
-                // post_values.Add("x_email", x_email.Text.Trim());
+                post_values.Add("x_email", objPaymentRequest.EmailAddress.Trim());
                 // post_values.Add("x_phone", x_phone.Text.Trim());
                 //  post_values.Add("x_fax", x_fax.Text.Trim());
 
@@ -223,7 +247,7 @@ namespace LAPP.WS.App_Helper.Common
 
                     if (objTrans != null)
                     {
-                        InitiatePayment.ProcessApprovedPayment(objTrans, objAuthResponse, objToken, objPaymentRequest.RequestedLicenseStatusTypeId);
+                        InitiatePayment.ProcessApprovedPayment(objTrans, objAuthResponse, objToken, objPaymentRequest.RequestedLicenseStatusTypeId, AffirmativeAction);
 
                         //string ReceiptNumber = SerialsBAL.Get_Receipt_No();
                         //IndividualBAL objIndividualBAL = new IndividualBAL();

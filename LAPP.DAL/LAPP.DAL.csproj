@@ -96,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentMasterDAL.cs" />
     <Compile Include="GetNullByDataType.cs" />
     <Compile Include="IndividualCommentLogDAL.cs" />
     <Compile Include="IndividualCommunicationLogDAL.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="IndividualCommentDAL.cs" />
     <Compile Include="IndividualLogDAL.cs" />
     <Compile Include="ProvClinicHoursDAL.cs" />
+    <Compile Include="ProviderDocumentDAL.cs" />
     <Compile Include="ProviderIndividualNameDAL.cs" />
     <Compile Include="ProviderInstructionDAL.cs" />
     <Compile Include="ProviderNameDAL.cs" />

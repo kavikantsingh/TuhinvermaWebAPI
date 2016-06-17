@@ -72,6 +72,7 @@
     <Compile Include="Backoffice\IndividualFolder\IndividualLegalCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualNoteCS.cs" />
     <Compile Include="Common\ProviderCS.cs" />
+    <Compile Include="DocumentMasterBAL.cs" />
     <Compile Include="IndividualCommentLogBAL.cs" />
     <Compile Include="IndividualCommunicationToLogBAL.cs" />
     <Compile Include="IndividualCommunicationLogBAL.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="IndividualLogBAL.cs" />
     <Compile Include="IndividualCommentBAL.cs" />
     <Compile Include="ProvClinicHoursBAL.cs" />
+    <Compile Include="ProviderDocumentBAL.cs" />
     <Compile Include="ProviderIndividualNameBAL.cs" />
     <Compile Include="ProviderInstructionBAL.cs" />
     <Compile Include="ProviderNameBAL.cs" />

@@ -138,4 +138,22 @@ namespace LAPP.ENTITY
         public int Total_Recard { get; set; }
         public List<RenewalApplication> RenewalApplicationList { get; set; }
     }
+
+    public class ConfirmAndApproveRequest : BaseEntity
+    {
+        public int ApplicationId { get; set; }
+        public int IndividualLicenseID { get; set; }
+        public int RequestedLicenseStatusTypeId { get; set; }
+        public string AffirmativeAction { get; set; }
+        public string Action { get; set; }
+        public string SentFrom { get; set; }
+
+    }
+
+    public class ConfirmAndApproveResponse : BaseEntityServiceResponse
+    {
+       
+    }
+
+
 }

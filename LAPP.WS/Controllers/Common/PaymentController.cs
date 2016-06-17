@@ -24,15 +24,14 @@ namespace LAPP.WS.Controllers.Common
         /// </summary>
         /// <param name="Key"></param>
         /// <param name="objPaymentRequest"></param>
+        /// <param name="AffirmativeAction"></param>
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("ProcessPayment")]
-        public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest)
+        public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest, string AffirmativeAction="")
         {
 
             LogingHelper.SaveAuditInfo(Key);
-
-            
 
             PaymentResponse objResponse = new PaymentResponse();
             PaymentAuthResponse objAuthorization = new PaymentAuthResponse();
@@ -80,7 +79,7 @@ namespace LAPP.WS.Controllers.Common
                 //{
                 Token objToken = TokenHelper.GetTokenByKey(Key);
 
-                objResponse = AuthorizeDotNetPayment.ProcessPayment(objPaymentRequest, objToken.UserId, objToken);
+                objResponse = AuthorizeDotNetPayment.ProcessPayment(objPaymentRequest, objToken.UserId, AffirmativeAction, objToken);
                 // transScope.Complete();
                 //}
 
