@@ -18,7 +18,7 @@ namespace LAPP.ENTITY
         public int LicenseTypeId { get; set; }
         public string LicenseNumber { get; set; }
         public DateTime TransactionStartDatetime { get; set; }
-        public DateTime TransactionEndDatetime { get; set; }
+        public DateTime? TransactionEndDatetime { get; set; }
         public string TransactionStatus { get; set; }
         public int TransactionInterruptReasonId { get; set; }
         public string TransactionDeviceTy { get; set; }
