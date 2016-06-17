@@ -272,11 +272,6 @@ namespace LAPP.DAL
             {
                 objEntity.ApplicationStatus = Convert.ToString(dr["ApplicationStatus"]);
             }
-
-            if (dr.Table.Columns.Contains("LicenseTypeId") && dr["LicenseTypeId"] != DBNull.Value)
-            {
-                objEntity.LicenseTypeId = Convert.ToInt32(dr["LicenseTypeId"]);
-            }
             return objEntity;
 
         }
