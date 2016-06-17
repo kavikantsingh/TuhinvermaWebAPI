@@ -264,6 +264,12 @@ namespace LAPP.DAL
 
             // Used for view
 
+
+            if (dr.Table.Columns.Contains("IsPaid") && dr["IsPaid"] != DBNull.Value)
+            {
+                objEntity.IsPaid = Convert.ToBoolean(dr["IsPaid"]);
+            }
+
             if (dr.Table.Columns.Contains("ApplicationType") && dr["ApplicationType"] != DBNull.Value)
             {
                 objEntity.ApplicationType = Convert.ToString(dr["ApplicationType"]);
