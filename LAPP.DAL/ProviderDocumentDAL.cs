@@ -30,6 +30,26 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<ProviderDocumentGET> Get_ProviderDocument_By_ProviderId_DocumentId_ApplicationId(int ProviderId, int DocumentId, int ApplicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("DocumentId", DocumentId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", ApplicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ProviderDocument_GET_BY_ProviderId_DocumentId_ApplicationId", lstParameter.ToArray());
+            List<ProviderDocumentGET> lstEntity = new List<ProviderDocumentGET>();
+            ProviderDocumentGET objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntityGET(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         public int Save_ProviderDocument(ProviderDocument objProvDoc)
         {
             DBHelper objDB = new DBHelper();
@@ -74,6 +94,18 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public int Delete_ProviderDocument_By_ProviderDocId_ProviderId_And_ApplicationId(int? ProviderDocId, int? ProviderId, int? ModBy, int? AppId)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ProviderDocId", ProviderDocId));
+            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("ModBy", ModBy));
+            lstParameter.Add(new MySqlParameter("AppId", AppId));
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderDocument_Delete_By_ProvId_ProvDocId_AppId", lstParameter.ToArray());
+            return returnValue;
+        }
+
         private ProviderDocumentGET FetchEntityGET(DataRow dr)
         {
             ProviderDocumentGET objEntity = new ProviderDocumentGET();
@@ -97,7 +129,22 @@ namespace LAPP.DAL
             {
                 objEntity.DocumentTypeDesc = Convert.ToString(dr["DocumentTypeDesc"]);
             }
-
+            if (dr.Table.Columns.Contains("DocumentName") && dr["DocumentName"] != DBNull.Value)
+            {
+                objEntity.DocumentName = Convert.ToString(dr["DocumentName"]);
+            }
+            if (dr.Table.Columns.Contains("OtherDocumentTypeName") && dr["OtherDocumentTypeName"] != DBNull.Value)
+            {
+                objEntity.OtherDocumentTypeName = Convert.ToString(dr["OtherDocumentTypeName"]);
+            }
+            if (dr.Table.Columns.Contains("DocumentTypeId") && dr["DocumentTypeId"] != DBNull.Value)
+            {
+                objEntity.DocumentTypeId = Convert.ToInt32(dr["DocumentTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("DocumentPath") && dr["DocumentPath"] != DBNull.Value)
+            {
+                objEntity.DocumentPath = Convert.ToString(dr["DocumentPath"]);
+            }
             return objEntity;
         }
     }

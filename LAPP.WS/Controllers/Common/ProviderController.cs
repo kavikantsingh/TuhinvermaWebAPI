@@ -1,20 +1,29 @@
 ﻿using LAPP.BAL;
-using LAPP.BAL.Common;
+using LAPP.BAL.Backoffice.IndividualFolder;
 using LAPP.ENTITY;
 using LAPP.ENTITY.Enumeration;
+using LAPP.GlobalFunctions;
+using LAPP.LOGING;
 using LAPP.WS.App_Helper;
 using LAPP.WS.App_Helper.Common;
+using LAPP.WS.ValidateController.Backoffice;
+using LAPP.WS.ValidateController.User;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
+using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
-using LAPP.WS.ValidateController.Login;
-using LAPP.GlobalFunctions;
-using LAPP.LOGING;
-using LAPP.WS.ValidateController.User;
+using EO.Pdf;
+using System.Drawing;
+using System.Net.Http.Headers;
+using System.Web.Http.Description;
+using System.Data.OleDb;
+using System.Data;
+using LAPP.WS.Controllers.Common;
 
 namespace LAPP.WS.Controllers.Common
 {
@@ -504,7 +513,7 @@ namespace LAPP.WS.Controllers.Common
                 lstProviderDocumentGET = objBAL.Get_ProviderDocument_By_ProviderId_DocumentId(ProviderId, DocumentId);
                 if (lstProviderDocumentGET != null && lstProviderDocumentGET.Count > 0)
                 {
-                    objResponse.ResponseReason = "To Get All Page Modules";
+                    objResponse.ResponseReason = "To Get ProviderDocument+DocumentMaster Records";
                     objResponse.Status = true;
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
@@ -515,7 +524,84 @@ namespace LAPP.WS.Controllers.Common
                         DocumentId = ProvDoc.DocumentId,
                         ProviderDocumentId = ProvDoc.ProviderDocumentId,
                         DocumentTypeIdName = ProvDoc.DocumentTypeIdName,
-                        DocumentTypeDesc = ProvDoc.DocumentTypeDesc
+                        DocumentTypeDesc = ProvDoc.DocumentTypeDesc,
+                        DocumentName = ProvDoc.DocumentName,
+                        OtherDocumentTypeName = ProvDoc.OtherDocumentTypeName,
+                        DocumentTypeId = ProvDoc.DocumentTypeId,
+                        DocumentPath = ProvDoc.DocumentPath
+                    }
+                    ).ToList();
+
+                    objResponse.ProviderDocumentGET = lstProviderDocumentGETSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ProviderDocumentGET = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderGetProviderDocumentByProviderIdAndDocumentId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ProviderDocumentGET = null;
+            }
+
+            return objResponse;
+        }
+
+        /// <summary>
+        /// This API is used to GET Provider Document based on Provider Id and Document Id
+        /// </summary>
+        /// <param name="Key">API Security Key</param>
+        /// <param name="ProviderId">Provider Id.</param>
+        /// <param name="DocumentId">Document Id</param>
+        /// <param name="ApplicationId">Application Id</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ProviderGetProviderDocumentByProviderIdAndDocumentId")]
+        public ProviderDocumentGETResponse ProviderGetProviderDocumentByProviderIdDocumentIdAndApplcationId(string Key, int ProviderId, int DocumentId, int ApplicationId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ProviderDocumentGETResponse objResponse = new ProviderDocumentGETResponse();
+            ProviderDocumentBAL objBAL = new ProviderDocumentBAL();
+            ProviderDocumentGET objEntity = new ProviderDocumentGET();
+            List<ProviderDocumentGET> lstProviderDocumentGET = new List<ProviderDocumentGET>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ProviderDocumentGET = null;
+                    return objResponse;
+                }
+                lstProviderDocumentGET = objBAL.Get_ProviderDocument_By_ProviderId_DocumentId_ApplicationId(ProviderId, DocumentId, ApplicationId);
+                if (lstProviderDocumentGET != null && lstProviderDocumentGET.Count > 0)
+                {
+                    objResponse.ResponseReason = "To Get ProviderDocument+DocumentMaster Records";
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstProviderDocumentGETSelected = lstProviderDocumentGET.Select(ProvDoc => new ProviderDocumentGET
+                    {
+                        ProviderId = ProvDoc.ProviderId,
+                        DocumentId = ProvDoc.DocumentId,
+                        ProviderDocumentId = ProvDoc.ProviderDocumentId,
+                        DocumentTypeIdName = ProvDoc.DocumentTypeIdName,
+                        DocumentTypeDesc = ProvDoc.DocumentTypeDesc,
+                        DocumentName = ProvDoc.DocumentName,
+                        OtherDocumentTypeName = ProvDoc.OtherDocumentTypeName,
+                        DocumentTypeId = ProvDoc.DocumentTypeId,
+                        DocumentPath = ProvDoc.DocumentPath
                     }
                     ).ToList();
 
@@ -547,10 +633,11 @@ namespace LAPP.WS.Controllers.Common
         /// </summary>
         /// <param name="Key">API Security Key</param>
         /// <param name="objProviderDocument">object ProviderDocument</param>
-        /// <param name="flag">Flag to check documented is to be inserted or modified</param>
+        /// <param name="Base64Str">File Base64 String</param>
+        /// <param name="ext">File extension</param>
         [AcceptVerbs("POST")]
         [ActionName("ProviderDocumentSave")]
-        public ProviderDocumentGETResponse ProviderDocumentSave(string Key, ProviderDocument objProviderDocument, int flag)
+        public ProviderDocumentGETResponse ProviderDocumentSave(string Key, ProviderDocument objProviderDocument, string Base64Str,string ext)
         {
             int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
 
@@ -594,13 +681,20 @@ namespace LAPP.WS.Controllers.Common
                     objEntity.ModifiedBy= objProviderDocument.ModifiedBy;
                     objEntity.ModifiedOn= objProviderDocument.ModifiedOn;
                     objEntity.ProviderDocumentGuid= objProviderDocument.ProviderDocumentGuid;
+                    //--file save process--//
+                    string FilePath = ProviderDocumentSaveProcess(Base64Str, objEntity.DocumentName, ext);
+                    //--file save process--//
+                    if(FilePath!=null)
+                    { 
+                        objBAL.Save_ProviderDocument(objEntity);
+                        objResponse.ProviderDocumentGET[0].ProviderDocumentId = objProviderDocument.ProviderDocumentId;
+                        objResponse.Message = "Successful";
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                        objResponse.ResponseReason = "";
+                    }
 
-                    objBAL.Save_ProviderDocument(objEntity);
-                    objResponse.ProviderDocumentGET[0].ProviderDocumentId = objProviderDocument.ProviderDocumentId;
-                    objResponse.Message = "Successful";
-                    objResponse.Status = true;
-                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
-                    objResponse.ResponseReason = "";
+
                 }
                 else
                 {
@@ -620,6 +714,18 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Message = ex.Message;
             }
             return objResponse;
+        }
+
+        private string ProviderDocumentSaveProcess(string Base64Str, string filename, string extension)
+        {
+            if (Base64Str!=null && filename!=null && extension!=null)
+            {
+                string FilePath = ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "SchoolApplication\\";
+                Byte[] bytes = Convert.FromBase64String(Base64Str);
+                File.WriteAllBytes(FilePath + filename + extension, bytes);
+                return FilePath + filename + extension;
+            }
+            return null;
         }
 
         /// <summary>
@@ -659,6 +765,70 @@ namespace LAPP.WS.Controllers.Common
                     objEntity.ModifiedBy = UserId;
                     objEntity.ModifiedOn = DateTime.Now;
                     objProviderDocumentBAL.Delete_ProviderDocument_By_ProviderDocId_And_ProviderId(ProviderDocId, ProviderId, UserId);
+                    objResponse.Message = Messages.DeleteSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Message = "Invalid Object.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "ProviderDocumentDelete", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// This API is used to GET Provider Document based on Provider Id and Document Id
+        /// </summary>
+        /// <param name="Key">API Security Key</param>
+        /// <param name="ProviderDocId">ProviderDocument Id.</param>
+        /// <param name="UserId">User Id</param>
+        /// <param name="ProviderId">Provider Id</param>
+        /// <param name="ApplicationId">Application Id</param>
+        [AcceptVerbs("POST")]
+        [ActionName("ProviderDocumentDelete")]
+        public ProviderDocumentResponse ProviderDocumentDelete(string Key, int? ProviderDocId, int? UserId, int? ProviderId, int? ApplicationId)
+        {
+            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo();
+
+            ProviderDocumentResponse objResponse = new ProviderDocumentResponse();
+
+            ProviderDocumentBAL objProviderDocumentBAL = new ProviderDocumentBAL();
+            ProviderDocument objEntity = new ProviderDocument();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Message = "User session has expired.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                if (ProviderDocId != null && UserId != null && ProviderId != null && ApplicationId!=null)// && CourseTitleName!=null && CourseHours!=null)
+                {
+                    objEntity.IsActive = false;
+                    objEntity.IsDeleted = true;
+                    objEntity.ModifiedBy = UserId;
+                    objEntity.ModifiedOn = DateTime.Now;
+                    objProviderDocumentBAL.Delete_ProviderDocument_By_ProviderDocId_And_ProviderId(ProviderDocId, ProviderId, UserId);
+                    objResponse.ProviderDocument.ProviderId=(int)ProviderId;
                     objResponse.Message = Messages.DeleteSuccess;
                     objResponse.Status = true;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
