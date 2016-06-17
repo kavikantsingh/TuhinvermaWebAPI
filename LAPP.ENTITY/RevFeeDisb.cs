@@ -43,6 +43,8 @@ namespace LAPP.ENTITY
         public string FeeName { get; set; }
         public decimal FeePaidAmount { get; set; }
         public decimal OrigFeeAmount { get; set; }
+        public string Description { get; set; }
+
     }
 
     public class RevFeeDisb : RevFeeDisbResponse
