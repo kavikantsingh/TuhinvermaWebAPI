@@ -129,7 +129,8 @@ namespace LAPP.ENTITY
         public string Address { get; set; }
         public int IndividualId { get; set; }
         public bool IsActive { get; set; }
-
+        public string StatusColorCode { get; set; }
+        public string LicenseStatusTypeName { get; set; }
 
     }
 

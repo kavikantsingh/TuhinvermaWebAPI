@@ -325,6 +325,8 @@ namespace LAPP.WS.Controllers.Backoffice
                         Email = RenewalGetSelectedRes.Email,
                         SSN = RenewalGetSelectedRes.SSN,
                         Phone = RenewalGetSelectedRes.Phone,
+                        StatusColorCode = RenewalGetSelectedRes.StatusColorCode,
+                        LicenseStatusTypeName = RenewalGetSelectedRes.LicenseStatusTypeName,
 
                     }).ToList();
 
