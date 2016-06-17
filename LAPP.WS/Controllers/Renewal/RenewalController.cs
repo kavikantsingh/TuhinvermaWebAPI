@@ -188,7 +188,7 @@ namespace LAPP.WS.Controllers.Renewal
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    
+
                     return objResponse;
                 }
 

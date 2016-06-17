@@ -32,12 +32,12 @@ namespace LAPP.ENTITY
         public bool IsActive { get; set; }
         public string ApplicationType { get; set; }
         public string ApplicationStatus { get; set; }
+        public bool IsPaid { get; set; }
     }
 
     public class Application : ApplicationResponse
 
     {
-
         public bool IsDeleted { get; set; }
         public bool IsArchive { get; set; }
         public int CreatedBy { get; set; }

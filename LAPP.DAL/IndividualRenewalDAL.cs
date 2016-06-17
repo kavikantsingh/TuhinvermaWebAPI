@@ -219,6 +219,10 @@ namespace LAPP.DAL
                 objEntity.Phone = Convert.ToString(dr["Phone"]);
             }
 
+            if (dr.Table.Columns.Contains("IsPaid") && dr["IsPaid"] != DBNull.Value)
+            {
+                objEntity.IsPaid = Convert.ToBoolean(dr["IsPaid"]);
+            }
 
             if (dr.Table.Columns.Contains("LicenseNumber") && dr["LicenseNumber"] != DBNull.Value)
             {
