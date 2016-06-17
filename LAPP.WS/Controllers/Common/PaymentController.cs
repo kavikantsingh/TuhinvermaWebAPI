@@ -28,8 +28,12 @@ namespace LAPP.WS.Controllers.Common
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("ProcessPayment")]
-        public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest, string AffirmativeAction)
+        public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest, string AffirmativeAction="")
         {
+            if(string.IsNullOrEmpty(AffirmativeAction))
+            {
+                AffirmativeAction = "";
+            }
 
             LogingHelper.SaveAuditInfo(Key);
 
