@@ -3145,7 +3145,7 @@ namespace LAPP.BAL.Renewal
 
         }
 
-        public static void ChangeLicenseStatus(int IndividualLicenseId, int ApplicationId, int RequestedLicenseStatusTypeId, string AffirmativeAction,  Token objToken)
+        public static void ChangeLicenseStatus(int IndividualLicenseId, int ApplicationId, int RequestedLicenseStatusTypeId, string AffirmativeAction, Token objToken)
         {
             try
             {
@@ -3268,22 +3268,54 @@ namespace LAPP.BAL.Renewal
                     {
                         objApplication.SubmittedDate = DateTime.Now;
                         objApplication.ApplicationStatusDate = DateTime.Now;
+
+                        //if (!RenewalApprovalRequired)
+                        //{
+                        //    if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                        //    {
+                        //        objApplication.ApplicationStatusId = 3;
+                        //    }
+                        //    else
+                        //    {
+
+                        //        objApplication.ApplicationStatusId = 2;
+
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    objApplication.ApplicationStatusId = 2;
+
+                        //}
+
                         if (!RenewalApprovalRequired)
                         {
-                            if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                            if (string.IsNullOrEmpty(AffirmativeAction))
                             {
+                                if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                                {
+                                    objApplication.ApplicationStatusId = 3;
+                                }
+                                else
+                                {
+                                    objApplication.ApplicationStatusId = 10;
+                                }
+                            }
+                            else if (AffirmativeAction.ToUpper() == "Y")
+                            {
+
                                 objApplication.ApplicationStatusId = 3;
                             }
-                            else
+                            else if (AffirmativeAction.ToUpper() == "N")
                             {
 
-                                objApplication.ApplicationStatusId = 2;
-
+                                objApplication.ApplicationStatusId = 10;
                             }
                         }
                         else
                         {
-                            objApplication.ApplicationStatusId = 2;
+
+                            objApplication.ApplicationStatusId = 10;
 
                         }
 
@@ -3307,9 +3339,9 @@ namespace LAPP.BAL.Renewal
         }
 
 
-        public static string ConfirmAndApprove(ConfirmAndApproveRequest objRequest,  Token objToken)
+        public static string ConfirmAndApprove(ConfirmAndApproveRequest objRequest, Token objToken)
         {
-            
+
             string Result = "";
             int IndividualLicenseId = objRequest.IndividualLicenseID;
             int ApplicationId = objRequest.ApplicationId;
@@ -3360,7 +3392,7 @@ namespace LAPP.BAL.Renewal
                                 objPedningLicense.LicenseStatusTypeId = 6;
                             }
                         }
-                        else if(objRequest.AffirmativeAction.ToUpper() == "Y" )
+                        else if (objRequest.AffirmativeAction.ToUpper() == "Y")
                         {
                             objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;
                         }
@@ -3434,24 +3466,55 @@ namespace LAPP.BAL.Renewal
                     objApplication = objApplicationBAL.Get_Application_By_ApplicationId(ApplicationId);
                     if (objApplication != null)
                     {
-                        objApplication.SubmittedDate = DateTime.Now;
-                        objApplication.ApplicationStatusDate = DateTime.Now;
+                        //objApplication.SubmittedDate = DateTime.Now;
+                        //objApplication.ApplicationStatusDate = DateTime.Now;
+                        //if (!RenewalApprovalRequired)
+                        //{
+                        //    if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                        //    {
+                        //        objApplication.ApplicationStatusId = 3;
+                        //    }
+                        //    else
+                        //    {
+
+                        //        objApplication.ApplicationStatusId = 2;
+
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    objApplication.ApplicationStatusId = 2;
+
+                        //}
+
                         if (!RenewalApprovalRequired)
                         {
-                            if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                            if (string.IsNullOrEmpty(objRequest.AffirmativeAction))
                             {
+                                if (!RenewalApprovalRequiredifLegalInfoIsYes)
+                                {
+                                    objApplication.ApplicationStatusId = 3;
+                                }
+                                else
+                                {
+                                    objApplication.ApplicationStatusId = 10;
+                                }
+                            }
+                            else if (objRequest.AffirmativeAction.ToUpper() == "Y")
+                            {
+
                                 objApplication.ApplicationStatusId = 3;
                             }
-                            else
+                            else if (objRequest.AffirmativeAction.ToUpper() == "N")
                             {
 
-                                objApplication.ApplicationStatusId = 2;
-
+                                objApplication.ApplicationStatusId = 10;
                             }
                         }
                         else
                         {
-                            objApplication.ApplicationStatusId = 2;
+
+                            objApplication.ApplicationStatusId = 10;
 
                         }
 
@@ -3475,6 +3538,6 @@ namespace LAPP.BAL.Renewal
 
             return Result;
         }
-        
+
     }
 }
