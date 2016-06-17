@@ -24,5 +24,15 @@ namespace LAPP.BAL
         {
             return objDAL.Delete_ProviderDocument_By_ProviderDocId_And_ProviderId(ProviderDocId, ProviderId, ModBy);
         }
+
+        public List<ProviderDocumentGET> Get_ProviderDocument_By_ProviderId_DocumentId_ApplicationId(int ProviderId, int DocumentId, int ApplicationId)
+        {
+            return objDAL.Get_ProviderDocument_By_ProviderId_DocumentId_ApplicationId(ProviderId, DocumentId, ApplicationId);
+        }
+
+        public int Delete_ProviderDocument_By_ProviderDocId_ProviderId_And_ApplicationId(int? ProviderDocId, int? ProviderId, int? ModBy, int? AppId)
+        {
+            return objDAL.Delete_ProviderDocument_By_ProviderDocId_ProviderId_And_ApplicationId(ProviderDocId, ProviderId, ModBy, AppId);
+        }
     }
 }

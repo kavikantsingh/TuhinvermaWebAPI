@@ -61,6 +61,26 @@ namespace LAPP.DAL
                 objEntity = FetchEntity(dr);
                 if (objEntity != null)
                     lstEntity.Add(objEntity);
+                objEntity.FeeDetailList = Get_RevFeeDisb_Fee_Detail_by_TransactionId(objEntity.TransactionId);
+            }
+            return lstEntity;
+        }
+
+        public List<FeeDetail> Get_RevFeeDisb_Fee_Detail_by_TransactionId(int TransactionId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_TransactionId", TransactionId));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "RevFeeDisb_GET_Fee_Detail_BY_TransactionId", lstParameter.ToArray());
+            List<FeeDetail> lstEntity = new List<FeeDetail>();
+            FeeDetail objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntityFeeDetail(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
             }
             return lstEntity;
         }
@@ -266,6 +286,44 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("PaymentStatus") && dr["PaymentStatus"] != DBNull.Value)
             {
                 objEntity.PaymentStatus = Convert.ToString(dr["PaymentStatus"]);
+            }
+
+            if (dr.Table.Columns.Contains("ApplicationNumber") && dr["ApplicationNumber"] != DBNull.Value)
+            {
+                objEntity.ApplicationNumber = Convert.ToString(dr["ApplicationNumber"]);
+            }
+            if (dr.Table.Columns.Contains("TransactionDate") && dr["TransactionDate"] != DBNull.Value)
+            {
+                objEntity.TransactionDate = Convert.ToDateTime(dr["TransactionDate"]);
+            }
+            if (dr.Table.Columns.Contains("PaymentMode") && dr["PaymentMode"] != DBNull.Value)
+            {
+                objEntity.PaymentMode = Convert.ToString(dr["PaymentMode"]);
+            }
+            return objEntity;
+
+        }
+
+        private FeeDetail FetchEntityFeeDetail(DataRow dr)
+        {
+            FeeDetail objEntity = new FeeDetail();
+
+            if (dr.Table.Columns.Contains("RevFeeDisbId") && dr["RevFeeDisbId"] != DBNull.Value)
+            {
+                objEntity.RevFeeDisbId = Convert.ToInt32(dr["RevFeeDisbId"]);
+            }
+            if (dr.Table.Columns.Contains("FeePaidAmount") && dr["FeePaidAmount"] != DBNull.Value)
+            {
+                objEntity.FeePaidAmount = Convert.ToDecimal(dr["FeePaidAmount"]);
+            }
+            if (dr.Table.Columns.Contains("OrigFeeAmount") && dr["OrigFeeAmount"] != DBNull.Value)
+            {
+                objEntity.OrigFeeAmount = Convert.ToDecimal(dr["OrigFeeAmount"]);
+            }
+
+            if (dr.Table.Columns.Contains("FeeName") && dr["FeeName"] != DBNull.Value)
+            {
+                objEntity.FeeName = Convert.ToString(dr["FeeName"]);
             }
 
             return objEntity;

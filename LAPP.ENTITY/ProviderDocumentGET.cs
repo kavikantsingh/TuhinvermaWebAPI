@@ -14,6 +14,7 @@ namespace LAPP.ENTITY
         public int DocumentId { get; set; }
         public string DocumentCd { get; set; }
         public int DocumentTypeId { get; set; }
+        public string DocumentTypeIdName { get; set; }
         public int DocumentLkToPageTabSectionId { get; set; }
         public string DocumentLkToPageTabSectionCode { get; set; }
         public string DocumentName { get; set; }
@@ -45,6 +46,10 @@ namespace LAPP.ENTITY
         public int ProviderDocumentId { get; set;}
         public string DocumentTypeIdName { get; set; }
         public string DocumentTypeDesc { get; set; }
+        public string DocumentName { get; set; }
+        public string OtherDocumentTypeName { get; set; }
+        public int DocumentTypeId { get; set; }
+        public string DocumentPath { get; set; }
     }
 
     public class ProviderDocumentGETResponse: BaseEntityServiceResponse
