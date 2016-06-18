@@ -85,7 +85,7 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, Max Length: 36 (char)")]
         public string UserGuid { get; set; }
 
-  
+
         public bool TemporaryPassword { get; set; }
 
 
@@ -147,6 +147,8 @@ namespace LAPP.ENTITY
 
         public string IndividualGuid { get; set; }
         public string Authenticator { get; set; }
+        public int Total_Recard { get; set; }
+
     }
 
     public class UsersRequest : BaseEntity
@@ -229,6 +231,7 @@ namespace LAPP.ENTITY
         public int? UserStatusId { get; set; }
 
         public int? SourceId { get; set; }
+        public int? RoleId { get; set; }
 
         public string Gender { get; set; }
 
@@ -254,16 +257,18 @@ namespace LAPP.ENTITY
 
         public string SourceName { get; set; }
 
-
+        public int Total_Recard { get; set; }
         public string UserTypeName { get; set; }
 
         public string UserStatusName { get; set; }
+        public string RoleName { get; set; }
     }
 
 
 
     public class UsersSearchResponse : BaseEntityServiceResponse
     {
+        public int Total_Recard { get; set; }
         public object Users { get; set; }
     }
 

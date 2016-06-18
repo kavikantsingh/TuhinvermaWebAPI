@@ -169,7 +169,7 @@ namespace LAPP.DAL
         //    return returnValue;
         //}
 
-        public List<UsersSearch> Search_Users(UsersSearch objUsers)
+        public List<Users> Search_Users(UsersSearch objUsers)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
@@ -193,17 +193,55 @@ namespace LAPP.DAL
 
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "User_By_Search", lstParameter.ToArray());
 
-            List<UsersSearch> lstEntity = new List<UsersSearch>();
-            UsersSearch objEntity = null;
+            List<Users> lstEntity = new List<Users>();
+            Users objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                objEntity = FetchUsersSearchEntity(dr);
+                objEntity = FetchEntity(dr);
                 if (objEntity != null)
                     lstEntity.Add(objEntity);
             }
             return lstEntity;
 
 
+        }
+
+        public List<Users> Search_Users_WithPager(UsersSearch objUsers, int CurrentPage, int PagerSize)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            lstParameter.Add(new MySqlParameter("UserName", objUsers.UserName));
+            lstParameter.Add(new MySqlParameter("UserTypeId", objUsers.UserTypeId));
+            lstParameter.Add(new MySqlParameter("FirstName", objUsers.FirstName));
+            lstParameter.Add(new MySqlParameter("LastName", objUsers.LastName));
+            lstParameter.Add(new MySqlParameter("Phone", objUsers.Phone));
+            lstParameter.Add(new MySqlParameter("PositionTitle", objUsers.PositionTitle));
+            lstParameter.Add(new MySqlParameter("Email", objUsers.Email));
+            lstParameter.Add(new MySqlParameter("SourceId", objUsers.SourceId));
+            lstParameter.Add(new MySqlParameter("UserStatusId", objUsers.UserStatusId));
+            lstParameter.Add(new MySqlParameter("IsPending", objUsers.IsPending));
+            lstParameter.Add(new MySqlParameter("RoleId", objUsers.RoleId));
+
+            lstParameter.Add(new MySqlParameter("Gender", objUsers.Gender));
+            lstParameter.Add(new MySqlParameter("DateOfBirth", objUsers.DateOfBirth));
+            lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
+            lstParameter.Add(new MySqlParameter("Pager", PagerSize));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "User_By_Search_WithPager", lstParameter.ToArray());
+
+            List<Users> lstEntity = new List<Users>();
+            Users objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
         }
 
         public Users Get_Users_byUserId(int ID)
@@ -477,95 +515,96 @@ namespace LAPP.DAL
                 objEntity.UserStatusName = Convert.ToString(dr["UserStatusName"]);
             }
 
+            if (dr.Table.Columns.Contains("Total_Recard") && dr["Total_Recard"] != DBNull.Value)
+            {
+                objEntity.Total_Recard = Convert.ToInt32(dr["Total_Recard"]);
+            }
+
             return objEntity;
         }
 
-        private UsersSearch FetchUsersSearchEntity(DataRow dr)
-        {
-            UsersSearch objEntity = new UsersSearch();
+        //private UsersSearch FetchUsersSearchEntity(DataRow dr)
+        //{
+        //    UsersSearch objEntity = new UsersSearch();
+
+        //    if (dr.Table.Columns.Contains("UserName") && dr["UserName"] != DBNull.Value)
+        //    {
+        //        objEntity.UserName = Convert.ToString(dr["UserName"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("UserTypeId") && dr["UserTypeId"] != DBNull.Value)
+        //    {
+        //        objEntity.UserTypeId = Convert.ToInt32(dr["UserTypeId"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("FirstName") && dr["FirstName"] != DBNull.Value)
+        //    {
+        //        objEntity.FirstName = Convert.ToString(dr["FirstName"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("LastName") && dr["LastName"] != DBNull.Value)
+        //    {
+        //        objEntity.LastName = Convert.ToString(dr["LastName"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("Phone") && dr["Phone"] != DBNull.Value)
+        //    {
+        //        objEntity.Phone = Convert.ToString(dr["Phone"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("PositionTitle") && dr["PositionTitle"] != DBNull.Value)
+        //    {
+        //        objEntity.PositionTitle = Convert.ToString(dr["PositionTitle"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("Email") && dr["Email"] != DBNull.Value)
+        //    {
+        //        objEntity.Email = Convert.ToString(dr["Email"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("DateOfBirth") && dr["DateOfBirth"] != DBNull.Value)
+        //    {
+        //        objEntity.DateOfBirth = Convert.ToDateTime(dr["DateOfBirth"]);
+        //    }
+        //    if (dr.Table.Columns.Contains("Gender") && dr["Gender"] != DBNull.Value)
+        //    {
+        //        objEntity.Gender = Convert.ToString(dr["Gender"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("UserStatusId") && dr["UserStatusId"] != DBNull.Value)
+        //    {
+        //        objEntity.UserStatusId = Convert.ToInt32(dr["UserStatusId"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("SourceId") && dr["SourceId"] != DBNull.Value)
+        //    {
+        //        objEntity.SourceId = Convert.ToInt32(dr["SourceId"]);
+        //    }
+
+        //    if (dr.Table.Columns.Contains("IsPending") && dr["IsPending"] != DBNull.Value)
+        //    {
+        //        objEntity.IsPending = Convert.ToBoolean(dr["IsPending"]);
+        //    }
 
 
+        //    // Joined  Field For View Only
 
-            if (dr.Table.Columns.Contains("UserName") && dr["UserName"] != DBNull.Value)
-            {
-                objEntity.UserName = Convert.ToString(dr["UserName"]);
-            }
+        //    if (dr.Table.Columns.Contains("SourceName") && dr["SourceName"] != DBNull.Value)
+        //    {
+        //        objEntity.SourceName = Convert.ToString(dr["SourceName"]);
+        //    }
 
-            if (dr.Table.Columns.Contains("UserTypeId") && dr["UserTypeId"] != DBNull.Value)
-            {
-                objEntity.UserTypeId = Convert.ToInt32(dr["UserTypeId"]);
-            }
-
-            if (dr.Table.Columns.Contains("FirstName") && dr["FirstName"] != DBNull.Value)
-            {
-                objEntity.FirstName = Convert.ToString(dr["FirstName"]);
-            }
-
-            if (dr.Table.Columns.Contains("LastName") && dr["LastName"] != DBNull.Value)
-            {
-                objEntity.LastName = Convert.ToString(dr["LastName"]);
-            }
-
-            if (dr.Table.Columns.Contains("Phone") && dr["Phone"] != DBNull.Value)
-            {
-                objEntity.Phone = Convert.ToString(dr["Phone"]);
-            }
-
-            if (dr.Table.Columns.Contains("PositionTitle") && dr["PositionTitle"] != DBNull.Value)
-            {
-                objEntity.PositionTitle = Convert.ToString(dr["PositionTitle"]);
-            }
-
-            if (dr.Table.Columns.Contains("Email") && dr["Email"] != DBNull.Value)
-            {
-                objEntity.Email = Convert.ToString(dr["Email"]);
-            }
+        //    if (dr.Table.Columns.Contains("UserTypeName") && dr["UserTypeName"] != DBNull.Value)
+        //    {
+        //        objEntity.UserTypeName = Convert.ToString(dr["UserTypeName"]);
+        //    }
+        //    if (dr.Table.Columns.Contains("UserStatusName") && dr["UserStatusName"] != DBNull.Value)
+        //    {
+        //        objEntity.UserStatusName = Convert.ToString(dr["UserStatusName"]);
+        //    }
 
 
-            if (dr.Table.Columns.Contains("DateOfBirth") && dr["DateOfBirth"] != DBNull.Value)
-            {
-                objEntity.DateOfBirth = Convert.ToDateTime(dr["DateOfBirth"]);
-            }
-            if (dr.Table.Columns.Contains("Gender") && dr["Gender"] != DBNull.Value)
-            {
-                objEntity.Gender = Convert.ToString(dr["Gender"]);
-            }
-
-            if (dr.Table.Columns.Contains("UserStatusId") && dr["UserStatusId"] != DBNull.Value)
-            {
-                objEntity.UserStatusId = Convert.ToInt32(dr["UserStatusId"]);
-            }
-
-            if (dr.Table.Columns.Contains("SourceId") && dr["SourceId"] != DBNull.Value)
-            {
-                objEntity.SourceId = Convert.ToInt32(dr["SourceId"]);
-            }
-
-
-            if (dr.Table.Columns.Contains("IsPending") && dr["IsPending"] != DBNull.Value)
-            {
-                objEntity.IsPending = Convert.ToBoolean(dr["IsPending"]);
-            }
-
-
-            // Joined  Field For View Only
-
-            if (dr.Table.Columns.Contains("SourceName") && dr["SourceName"] != DBNull.Value)
-            {
-                objEntity.SourceName = Convert.ToString(dr["SourceName"]);
-            }
-
-            if (dr.Table.Columns.Contains("UserTypeName") && dr["UserTypeName"] != DBNull.Value)
-            {
-                objEntity.UserTypeName = Convert.ToString(dr["UserTypeName"]);
-            }
-            if (dr.Table.Columns.Contains("UserStatusName") && dr["UserStatusName"] != DBNull.Value)
-            {
-                objEntity.UserStatusName = Convert.ToString(dr["UserStatusName"]);
-            }
-
-
-            return objEntity;
-        }
+        //    return objEntity;
+        //}
     }
 }
