@@ -686,8 +686,12 @@ namespace LAPP.WS.Controllers.Common
                     //--file save process--//
                     if(FilePath!=null)
                     { 
-                        objBAL.Save_ProviderDocument(objEntity);
-                        objResponse.ProviderDocumentGET[0].ProviderDocumentId = objProviderDocument.ProviderDocumentId;
+                        int ReturnProviderId=objBAL.Save_ProviderDocument(objEntity);
+                        List<ProviderDocumentGET> lstTempProviderDoccumentGET = new List<ProviderDocumentGET>();
+                        ProviderDocumentGET objTempEntity = new ProviderDocumentGET();
+                        objTempEntity.ProviderDocumentId = ReturnProviderId;
+                        lstTempProviderDoccumentGET.Add(objTempEntity);
+                        objResponse.ProviderDocumentGET = lstTempProviderDoccumentGET;
                         objResponse.Message = "Successful";
                         objResponse.Status = true;
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
@@ -720,7 +724,8 @@ namespace LAPP.WS.Controllers.Common
         {
             if (Base64Str!=null && filename!=null && extension!=null)
             {
-                string FilePath = ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "SchoolApplication\\";
+                string FilePath= ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "SchoolApplication\\";
+                //FilePath = @"D:\sample workspace\stuffstestfolder";
                 Byte[] bytes = Convert.FromBase64String(Base64Str);
                 File.WriteAllBytes(FilePath + filename + extension, bytes);
                 return FilePath + filename + extension;

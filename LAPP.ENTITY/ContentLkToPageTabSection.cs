@@ -28,6 +28,6 @@ namespace LAPP.ENTITY
 
     public class ContentLkToPageTabSectionResponse : BaseEntityServiceResponse
     {
-        public object ContentLkToPageTabSection { get; set; }
+        public List<ContentLkToPageTabSection> ContentLkToPageTabSection { get; set; }
     }
 }

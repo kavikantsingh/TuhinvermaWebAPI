@@ -27,5 +27,10 @@ namespace LAPP.BAL
             return objDal.Get_ContentLkToPageTabSection_By_ContentLkToPageTabSectionId(ID);
         }
 
+        public List<ContentLkToPageTabSection> Get_ContentLkToPageTabSection_By_PageModId_PageTabSecId_PageModTabSubModId(int PageModId, int PageTabSecId, int PageModTabSubModId)
+        {
+            return objDal.Get_ContentLkToPageTabSection_By_PageModId_PageTabSecId_PageModTabSubModId(PageModId, PageTabSecId, PageModTabSubModId);
+        }
+
     }
 }
