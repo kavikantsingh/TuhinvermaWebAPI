@@ -54,7 +54,7 @@ namespace LAPP.DAL
         {
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            //lstParameter.Add(new MySqlParameter("ProviderDocumentId", objProvDoc.ProviderDocumentId));
+            lstParameter.Add(new MySqlParameter("ProviderDocumentId", objProvDoc.ProviderDocumentId));
             lstParameter.Add(new MySqlParameter("ProviderId", objProvDoc.ProviderId));
             lstParameter.Add(new MySqlParameter("ApplicationId", objProvDoc.ApplicationId));
             lstParameter.Add(new MySqlParameter("DocumentId", objProvDoc.DocumentId));
@@ -78,7 +78,12 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ModifiedOn", objProvDoc.ModifiedOn));
             lstParameter.Add(new MySqlParameter("ProviderDocumentGuid", objProvDoc.ProviderDocumentGuid));
 
-            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderDocument_Save", lstParameter.ToArray());
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderDocument_Save",true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
 

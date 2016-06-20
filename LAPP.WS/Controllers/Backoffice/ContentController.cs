@@ -51,7 +51,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentItemLk
                     {
                         ContentItemLkId = Cont.ContentItemLkId,
                         ContentLkToPageTabSectionId = Cont.ContentLkToPageTabSectionId,
@@ -133,7 +133,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentItemLk
                     {
                         ContentItemLkId = Cont.ContentItemLkId,
                         ContentLkToPageTabSectionId = Cont.ContentLkToPageTabSectionId,
@@ -215,7 +215,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentItemLk
                     {
                         ContentItemLkDesc = Cont.ContentItemLkDesc
                     }
@@ -277,7 +277,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentItemLk
                     {
                         ContentItemHash = Cont.ContentItemHash,
                         ContentItemLkDesc = Cont.ContentItemLkDesc
@@ -340,7 +340,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentItemLk
                     {
                         ContentItemHash = Cont.ContentItemHash,
                         ContentItemLkDesc = Cont.ContentItemLkDesc
@@ -403,7 +403,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Message = "";
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
 
-                    var lstContentItemLkSelected = lstContent.Select(Cont => new
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentItemLk
                     {
                         ContentItemHash = Cont.ContentItemHash,
                         ContentItemLkDesc = Cont.ContentItemLkDesc
@@ -428,6 +428,241 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.Message = ex.Message;
                 objResponse.ContentItemLk = null;
             }
+            return objResponse;
+        }
+        /// <summary>
+        /// Get Content Type Name
+        /// </summary>
+        /// <param name="Key">API security key</param>
+        /// <returns>ContentLkToPageTabSection</returns>
+        [AcceptVerbs("GET")]
+        [ActionName("ContentGetContentTypeName")]
+        public ContentLkToPageTabSectionResponse ContentGetContentTypeName(string Key)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ContentLkToPageTabSectionResponse objResponse = new ContentLkToPageTabSectionResponse();
+            ContentLkToPageTabSectionBAL objBAL = new ContentLkToPageTabSectionBAL();
+            ContentLkToPageTabSection objEntity = new ContentLkToPageTabSection();
+            List<ContentLkToPageTabSection> lstContent = new List<ContentLkToPageTabSection>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ContentLkToPageTabSection = null;
+                    return objResponse;
+                }
+
+                lstContent = objBAL.Get_All_ContentLkToPageTabSection();
+                if (lstContent != null && lstContent.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentLkToPageTabSection
+                    {
+                        ContentLkToPageTabSectionId = Cont.ContentLkToPageTabSectionId,
+                        ContentTypeName = Cont.ContentTypeName,
+                        MasterTransactionId = Cont.MasterTransactionId,
+                        PageModuleId = Cont.PageModuleId,
+                        PageModuleTabSubModuleId = Cont.PageModuleTabSubModuleId,
+                        PageTabSectionId = Cont.PageTabSectionId,
+                        EffectiveDate = Cont.EffectiveDate,
+                        EndDate = Cont.EndDate,
+                        IsEnabled = Cont.IsEnabled,
+                        IsEditable = Cont.IsEditable,
+                        IsActive = Cont.IsActive,
+                        IsDeleted = Cont.IsDeleted,
+                        CreatedBy = Cont.CreatedBy,
+                        CreatedOn = Cont.CreatedOn,
+                        ModifiedBy = Cont.ModifiedBy,
+                        ModifiedOn = Cont.ModifiedOn
+                    }
+                    ).ToList();
+
+                    objResponse.ContentLkToPageTabSection = lstContentItemLkSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ContentLkToPageTabSection = null;
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ContentGetContentTypeName", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ContentLkToPageTabSection = null;
+            }
+
+            return objResponse;
+        }
+
+        /// <summary>
+        /// Get Content Type Name By Page Tab Section Id
+        /// </summary>
+        /// <param name="Key">API security key</param>
+        /// <param name="PageModId">Page Module Id</param>
+        ///<param name="PageTabSecId">Page Tab Section Id</param>
+        ///<param name="PageModTabSubModId">Page Module Tab Sub Module Id</param>
+        /// <returns>ContentLkToPageTabSection</returns>
+        [AcceptVerbs("GET")]
+        [ActionName("ContentGetContentTypeNameByPageTabSectionId")]
+        public ContentLkToPageTabSectionResponse ContentGetContentTypeNameByPageTabSectionId(string Key, int PageModId,  int PageTabSecId, int PageModTabSubModId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ContentLkToPageTabSectionResponse objResponse = new ContentLkToPageTabSectionResponse();
+            ContentLkToPageTabSectionBAL objBAL = new ContentLkToPageTabSectionBAL();
+            ContentLkToPageTabSection objEntity = new ContentLkToPageTabSection();
+            List<ContentLkToPageTabSection> lstContent = new List<ContentLkToPageTabSection>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ContentLkToPageTabSection = null;
+                    return objResponse;
+                }
+
+                lstContent = objBAL.Get_ContentLkToPageTabSection_By_PageModId_PageTabSecId_PageModTabSubModId(PageModId, PageTabSecId, PageModTabSubModId);
+                if (lstContent != null && lstContent.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentLkToPageTabSection
+                    {
+                        ContentLkToPageTabSectionId = Cont.ContentLkToPageTabSectionId,
+                        ContentTypeName = Cont.ContentTypeName,
+                        MasterTransactionId = Cont.MasterTransactionId,
+                        PageModuleId = Cont.PageModuleId,
+                        PageModuleTabSubModuleId = Cont.PageModuleTabSubModuleId,
+                        PageTabSectionId = Cont.PageTabSectionId,
+                        EffectiveDate = Cont.EffectiveDate,
+                        EndDate = Cont.EndDate,
+                        IsEnabled = Cont.IsEnabled,
+                        IsEditable = Cont.IsEditable,
+                        IsActive = Cont.IsActive,
+                        IsDeleted = Cont.IsDeleted,
+                        CreatedBy = Cont.CreatedBy,
+                        CreatedOn = Cont.CreatedOn,
+                        ModifiedBy = Cont.ModifiedBy,
+                        ModifiedOn = Cont.ModifiedOn
+                    }
+                    ).ToList();
+
+                    objResponse.ContentLkToPageTabSection = lstContentItemLkSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ContentLkToPageTabSection = null;
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ContentGetContentTypeName", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ContentLkToPageTabSection = null;
+            }
+
+            return objResponse;
+        }
+
+        public ContentItemLkResponse ContentGetContentInformation(string Key, int PageModuleId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ContentItemLkResponse objResponse = new ContentItemLkResponse();
+            ContentItemLkBAL objBAL = new ContentItemLkBAL();
+            ContentItemLk objEntity = new ContentItemLk();
+            List<ContentItemLk> lstContent = new List<ContentItemLk>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ContentItemLk = null;
+                    return objResponse;
+                }
+
+                lstContent = objBAL.Get_ContentItemLk_By_PageModuleId(PageModuleId);
+                if (lstContent != null && lstContent.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstContentItemLkSelected = lstContent.Select(Cont => new ContentItemLk
+                    {
+                        ContentItemLkId = Cont.ContentItemLkId,
+                        ContentLkToPageTabSectionId = Cont.ContentLkToPageTabSectionId,
+                        ContentItemLkCode = Cont.ContentItemLkCode,
+                        ContentItemHash = Cont.ContentItemHash,
+                        ContentItemLkDesc = Cont.ContentItemLkDesc,
+                        SortOrder = Cont.SortOrder,
+                        EffectiveDate = Cont.EffectiveDate,
+                        EndDate = Cont.EndDate,
+                        IsEnabled = Cont.IsEnabled,
+                        IsEditable = Cont.IsEditable,
+                        IsActive = Cont.IsActive,
+                        IsDeleted = Cont.IsDeleted,
+                        CreatedBy = Cont.CreatedBy,
+                        CreatedOn = Cont.CreatedOn,
+                        ModifiedBy = Cont.ModifiedBy,
+                        ModifiedOn = Cont.ModifiedOn
+                    }
+                    ).ToList();
+
+                    objResponse.ContentItemLk = lstContentItemLkSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ContentItemLk = null;
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ContentItemLk_Get_All", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ContentItemLk = null;
+            }
+
             return objResponse;
         }
         #endregion

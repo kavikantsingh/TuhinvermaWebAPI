@@ -126,6 +126,24 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<ContentItemLk> Get_ContentItemLk_By_PageModuleId(int PageModuleId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("PageModuleId", PageModuleId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ContentItemLk_By_PageModuleId", lstParameter.ToArray());
+            List<ContentItemLk> lstEntity = new List<ContentItemLk>();
+            ContentItemLk objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         private ContentItemLk FetchEntity(DataRow dr)
         {
             ContentItemLk objEntity = new ContentItemLk();

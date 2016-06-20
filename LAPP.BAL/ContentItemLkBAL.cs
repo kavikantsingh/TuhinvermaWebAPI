@@ -46,5 +46,10 @@ namespace LAPP.BAL
         {
             return objDal.Get_ContentItemLk_By_ContentLkToPageTabSectionId(PageTabSectionId);
         }
+
+        public List<ContentItemLk> Get_ContentItemLk_By_PageModuleId(int PageModuleId)
+        {
+            return objDal.Get_ContentItemLk_By_PageModuleId(PageModuleId);
+        }
     }
 }

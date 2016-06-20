@@ -72,6 +72,26 @@ namespace LAPP.DAL
             return objEntity;
         }
 
+        public List<ContentLkToPageTabSection> Get_ContentLkToPageTabSection_By_PageModId_PageTabSecId_PageModTabSubModId(int PageModId, int PageTabSecId, int PageModTabSubModId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("PageModId", PageModId));
+            lstParameter.Add(new MySqlParameter("PageTabSecId", PageTabSecId));
+            lstParameter.Add(new MySqlParameter("PageModTabSubModId", PageModTabSubModId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ContentLkToPageTabSection_BY_PageTabSecId", lstParameter.ToArray());
+            List<ContentLkToPageTabSection> lstEntity = new List<ContentLkToPageTabSection>();
+            ContentLkToPageTabSection objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         private ContentLkToPageTabSection FetchEntity(DataRow dr)
         {
             ContentLkToPageTabSection objEntity = new ContentLkToPageTabSection();

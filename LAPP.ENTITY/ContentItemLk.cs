@@ -27,6 +27,6 @@ namespace LAPP.ENTITY
 
     public class ContentItemLkResponse : BaseEntityServiceResponse
     {
-        public object ContentItemLk { get; set; }
+        public List<ContentItemLk> ContentItemLk { get; set; }
     }
 }
