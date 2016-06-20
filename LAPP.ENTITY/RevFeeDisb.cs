@@ -30,25 +30,36 @@ namespace LAPP.ENTITY
 
         public string ApplicationName { get; set; }
         public string PaymentStatus { get; set; }
+        public string ApplicationNumber { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string PaymentMode { get; set; }
+
+        public List<FeeDetail> FeeDetailList { get; set; }
     }
 
+    public class FeeDetail
+    {
+        public int RevFeeDisbId { get; set; }
+        public string FeeName { get; set; }
+        public decimal FeePaidAmount { get; set; }
+        public decimal OrigFeeAmount { get; set; }
+        public string Description { get; set; }
+
+    }
 
     public class RevFeeDisb : RevFeeDisbResponse
 
     {
-        
         public string ReferenceNumber { get; set; }
-
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public string RevFeeDisbGuid { get; set; }
-       
     }
 
     public class RevFeeDisbAPIResponse : BaseEntityServiceResponse
 
     {
-        
+
         public List<RevFeeDisbResponse> RevFeeDisbResponseList { get; set; }
     }
 }

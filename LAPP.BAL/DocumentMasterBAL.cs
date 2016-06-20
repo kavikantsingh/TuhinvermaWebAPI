@@ -16,5 +16,9 @@ namespace LAPP.BAL
         {
             return objDAL.Get_DocumentMaster_By_DocId_And_DocCode(DocId, DocCode);
         }
+        public List<DocumentMasterGET> Get_All_DocumentMaster()
+        {
+            return objDAL.Get_All_DocumentMaster();
+        }
     }
 }

@@ -30,6 +30,10 @@ namespace LAPP.WS.Controllers.Common
         [ActionName("ProcessPayment")]
         public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest, string AffirmativeAction="")
         {
+            if(string.IsNullOrEmpty(AffirmativeAction))
+            {
+                AffirmativeAction = "";
+            }
 
             LogingHelper.SaveAuditInfo(Key);
 
@@ -65,7 +69,7 @@ namespace LAPP.WS.Controllers.Common
                     {
                         // this is executed only in the debug version
                         string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objPaymentRequest);
-                        LogingHelper.SaveRequestJson(requestStr, "Process Payment");
+                        LogingHelper.SaveRequestJson(requestStr, ( "Process Payment request. AffirmativeAction=" + AffirmativeAction));
                     }
                    
                 }
@@ -137,7 +141,7 @@ namespace LAPP.WS.Controllers.Common
                     {
                         // this is executed only in the debug version
                         string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objInitiatePaymentRequest);
-                        LogingHelper.SaveRequestJson(requestStr, "Initiate Payment");
+                        LogingHelper.SaveRequestJson(requestStr, "Initiate Payment Request");
                     }
 
                 }

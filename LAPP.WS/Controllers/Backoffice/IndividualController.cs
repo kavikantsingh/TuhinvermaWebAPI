@@ -325,6 +325,8 @@ namespace LAPP.WS.Controllers.Backoffice
                         Email = RenewalGetSelectedRes.Email,
                         SSN = RenewalGetSelectedRes.SSN,
                         Phone = RenewalGetSelectedRes.Phone,
+                        StatusColorCode = RenewalGetSelectedRes.StatusColorCode,
+                        LicenseStatusTypeName = RenewalGetSelectedRes.LicenseStatusTypeName,
 
                     }).ToList();
 
@@ -4359,8 +4361,12 @@ namespace LAPP.WS.Controllers.Backoffice
                         RevFeeDisbId = obj.RevFeeDisbId,
                         ShoppingCartId = obj.ShoppingCartId,
                         ApplicationName = obj.ApplicationName,
+                        PaymentMode = obj.PaymentMode,
+                        ApplicationNumber = obj.ApplicationNumber,
+                        TransactionDate = obj.TransactionDate,
                         PaymentStatus = "Paid",
-                        FeeName = obj.FeeName
+                        FeeName = obj.FeeName,
+                        FeeDetailList = obj.FeeDetailList
                     }).ToList();
 
 

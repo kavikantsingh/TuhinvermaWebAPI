@@ -36,7 +36,22 @@ namespace LAPP.DAL
             }
             return lstEntity;
         }
-
+        public List<DocumentMasterGET> Get_All_DocumentMaster()
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "documentmaster_Get_All", lstParameter.ToArray());
+            List<DocumentMasterGET> lstEntity = new List<DocumentMasterGET>();
+            DocumentMasterGET objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntityGET(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
         private DocumentMaster FetchEntity(DataRow dr)
         {
             DocumentMaster objEntity = new DocumentMaster();
@@ -136,6 +151,22 @@ namespace LAPP.DAL
         private DocumentMasterGET FetchEntityGET(DataRow dr)
         {
             DocumentMasterGET objEntity = new DocumentMasterGET();
+            if (dr.Table.Columns.Contains("DocumentMasterId") && dr["DocumentMasterId"] != DBNull.Value)
+            {
+                objEntity.DocumentMasterId = Convert.ToInt32(dr["DocumentMasterId"]);
+            }
+            if (dr.Table.Columns.Contains("DocumentId") && dr["DocumentId"] != DBNull.Value)
+            {
+                objEntity.DocumentId = Convert.ToInt32(dr["DocumentId"]);
+            }
+            if (dr.Table.Columns.Contains("DocumentCd") && dr["DocumentCd"] != DBNull.Value)
+            {
+                objEntity.DocumentCd = Convert.ToString(dr["DocumentCd"]);
+            }
+            if (dr.Table.Columns.Contains("DocumentName") && dr["DocumentName"] != DBNull.Value)
+            {
+                objEntity.DocumentName = Convert.ToString(dr["DocumentName"]);
+            }
             if (dr.Table.Columns.Contains("DocumentTypeId") && dr["DocumentTypeId"] != DBNull.Value)
             {
                 objEntity.DocumentTypeId = Convert.ToInt32(dr["DocumentTypeId"]);
@@ -152,7 +183,10 @@ namespace LAPP.DAL
             {
                 objEntity.Max_size = Convert.ToInt32(dr["Max_size"]);
             }
-
+            if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
+            {
+                objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);
+            }
             return objEntity;
         }
     }

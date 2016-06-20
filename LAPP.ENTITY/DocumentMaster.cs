@@ -39,10 +39,16 @@ namespace LAPP.ENTITY
 
     public class DocumentMasterGET : BaseEntity
     {
+
+        public int DocumentMasterId { get; set; }
+        public int DocumentId { get; set; }
+        public string DocumentCd { get; set; }
+        public string DocumentName { get; set; }
         public int DocumentTypeId { get; set; }
         public string DocumentTypeIdName { get; set; }
         public string DocumentTypeDesc { get; set; }
         public int Max_size { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public class DocumentMasterGETResponse : BaseEntityServiceResponse

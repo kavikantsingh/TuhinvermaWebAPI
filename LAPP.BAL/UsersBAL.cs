@@ -53,11 +53,15 @@ namespace LAPP.BAL
             return objDAL.Get_All_Users();
         }
 
-        public List<UsersSearch> Search_Users(UsersSearch objUsers)
+        public List<Users> Search_Users(UsersSearch objUsers)
         {
             return objDAL.Search_Users(objUsers);
         }
 
+        public List<Users> Search_Users_WithPager(UsersSearch objUsers, int CurrentPage, int PagerSize)
+        {
+            return objDAL.Search_Users_WithPager(objUsers, CurrentPage, PagerSize);
+        }
         public Users Get_Users_byIndividualId(int individualId)
         {
             return objDAL.Get_Users_byIndividualId(individualId);

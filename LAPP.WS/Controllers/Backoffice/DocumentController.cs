@@ -83,5 +83,76 @@ namespace LAPP.WS.Controllers.Backoffice
 
             return objResponse;
         }
+
+        /// <summary>
+        /// Get Method to get ALL DocumentMaster.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("DocumentMasterGetALL")]
+        public DocumentMasterGETResponse DocumentMasterGetALL(string Key)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            DocumentMasterGETResponse objResponse = new DocumentMasterGETResponse();
+            DocumentMasterBAL objBAL = new DocumentMasterBAL();
+            DocumentMasterGET objEntity = new DocumentMasterGET();
+            List<DocumentMasterGET> lstDocumentMaster = new List<DocumentMasterGET>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.DocumentMasterGET = null;
+                    return objResponse;
+                }
+                lstDocumentMaster = objBAL.Get_All_DocumentMaster();
+                if (lstDocumentMaster != null && lstDocumentMaster.Count > 0)
+                {
+                    objResponse.ResponseReason = "To Get All Document Master";
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstDocumentMasterGETSelected = lstDocumentMaster.Select(DocMaster => new DocumentMasterGET
+                    {
+                        DocumentMasterId = DocMaster.DocumentMasterId,
+                        DocumentId = DocMaster.DocumentId,
+                        DocumentCd = DocMaster.DocumentCd,
+                        DocumentName = DocMaster.DocumentName,
+                        DocumentTypeId = DocMaster.DocumentTypeId,
+                        DocumentTypeIdName = DocMaster.DocumentTypeIdName,
+                        DocumentTypeDesc = DocMaster.DocumentTypeDesc,
+                        Max_size = DocMaster.Max_size,
+                        IsActive = DocMaster.IsActive
+                    }
+                    ).ToList();
+
+                    objResponse.DocumentMasterGET = lstDocumentMasterGETSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.DocumentMasterGET = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "DocumentMasterGetALL", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.DocumentMasterGET = null;
+            }
+
+            return objResponse;
+        }
+
     }
 }

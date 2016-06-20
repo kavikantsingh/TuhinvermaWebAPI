@@ -252,16 +252,19 @@ namespace LAPP.WS.Controllers.User
         /// </summary>
         /// <param name="Key">API security key.</param>
         /// <param name="objUsersSearch">Record ID.</param>
+        /// <param name="PageNumber">Record ID.</param>
+        /// <param name="NoOfRecords">Record ID.</param>
         [AcceptVerbs("POST")]
         [ActionName("UsersSearch")]
-        public UsersSearchResponse UsersSearch(string Key, UsersSearch objUsersSearch)
+        public UsersSearchResponse UsersSearch(string Key, UsersSearch objUsersSearch, int PageNumber, int NoOfRecords)
         {
             LogingHelper.SaveAuditInfo(Key);
 
             UsersSearchResponse objResponse = new UsersSearchResponse();
             UsersBAL objBAL = new UsersBAL();
             Users objEntity = new Users();
-            List<UsersSearch> lstUsers = new List<UsersSearch>();
+            List<UsersSearch> lstUsersSearch = new List<UsersSearch>();
+            List<Users> lstUsers = new List<Users>();
             try
             {
                 if (!TokenHelper.ValidateToken(Key))
@@ -273,7 +276,7 @@ namespace LAPP.WS.Controllers.User
                     return objResponse;
                 }
 
-                lstUsers = objBAL.Search_Users(objUsersSearch);
+                lstUsers = objBAL.Search_Users_WithPager(objUsersSearch, PageNumber, NoOfRecords);
                 if (lstUsers != null && lstUsers.Count > 0)
                 {
                     objResponse.Status = true;
@@ -299,7 +302,7 @@ namespace LAPP.WS.Controllers.User
 
                         IsPending = menu.IsPending,
                     }).ToList();
-
+                    objResponse.Total_Recard = lstUsers[0].Total_Recard;
                     objResponse.Users = lstUsersSelected;
                 }
                 else
@@ -452,7 +455,7 @@ namespace LAPP.WS.Controllers.User
                 }
                 else
                 {
-                    string TempPassword= GeneralFunctions.GetTempPassword();
+                    string TempPassword = GeneralFunctions.GetTempPassword();
                     objEntity = new Users();
 
                     objEntity.FirstName = objUsers.FirstName;
@@ -542,7 +545,7 @@ namespace LAPP.WS.Controllers.User
 
                     #region Send Email of user creation
 
-                    if(EmailHelper.SendMail(objUsers.Email, "Temporary Password", "Email: "+ objUsers.Email +" <br/> Temporary Password: "+ TempPassword, true))
+                    if (EmailHelper.SendMail(objUsers.Email, "Temporary Password", "Email: " + objUsers.Email + " <br/> Temporary Password: " + TempPassword, true))
                     {
                         LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Temporary Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Temporary Password email has been sent", EmailHelper.GetSenderAddress(), objUsers.Email, null, null, objUsers.UserId, null, null, null);
                     }

@@ -122,14 +122,15 @@ namespace LAPP.ENTITY
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string LicenseNumber { get; set; }
         public string SSN { get; set; }
         public string MiddleName { get; set; }
         public string Address { get; set; }
         public int IndividualId { get; set; }
         public bool IsActive { get; set; }
-
+        public string StatusColorCode { get; set; }
+        public string LicenseStatusTypeName { get; set; }
 
     }
 

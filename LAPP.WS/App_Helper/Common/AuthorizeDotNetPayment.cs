@@ -58,7 +58,13 @@ namespace LAPP.WS.App_Helper.Common
                 decimal Amount = 0;
                 List<RevFeeDue> lstFeeDue = new List<RevFeeDue>();
                 lstFeeDue = objFeeDueBAL.Get_RevFeeDue_by_TransactionId(objPaymentRequest.TransactionObject.TransactionId);
-                if (lstFeeDue != null)
+
+                if (lstFeeDue != null && lstFeeDue.Count() <= 0)
+                {
+                    throw new Exception("Invalid Transaction id sent. please sent the transaction object which you received on payment initiate call.");
+                }
+
+                if (lstFeeDue != null && lstFeeDue.Count() > 0 )
                 {
 
                     foreach (RevFeeDue objRevFeeDue in lstFeeDue)
@@ -68,17 +74,16 @@ namespace LAPP.WS.App_Helper.Common
                     }
                 }
 
+                if (Amount <= 0)
+                {
+                    throw new Exception("Invalid Transaction id sent. please sent the transaction object which you received on payment initiate call.");
+                }
+
                 string InvoiceNumber = lstFeeDue[0].InvoiceNo;
 
                 if(!string.IsNullOrEmpty(InvoiceNumber))
                 {
                     DescriptionText += " and Invoice Number - " + InvoiceNumber;
-                }
-
-
-                if (Amount <= 0)
-                {
-                    throw new Exception("Invalid Transaction id sent. please sent the transaction object which you received on payment initiate call.");
                 }
 
 
