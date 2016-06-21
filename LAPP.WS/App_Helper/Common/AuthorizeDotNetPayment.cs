@@ -136,6 +136,8 @@ namespace LAPP.WS.App_Helper.Common
                 post_values.Add("x_exp_date", objPaymentRequest.ExpirationMonths.ToString() + objPaymentRequest.ExpirationYears.ToString()); // ddlExpirationMonths.SelectedValue + ddlExpirationYears.SelectedValue);
                                                                                                                                              //post_values.Add("x_exp_date", ddlExpirationMonths.SelectedItem.Text/ddlExpirationYears.SelectedItem.Text);
 
+                post_values.Add("x_card_code", objPaymentRequest.CVV.ToString());
+
                 //post_values.Add("x_amount", objPaymentRequest.Amount.ToString()); //this.TotalAmount.ToString()
                 post_values.Add("x_amount", Amount.ToString()); //this.TotalAmount.ToString()
 
