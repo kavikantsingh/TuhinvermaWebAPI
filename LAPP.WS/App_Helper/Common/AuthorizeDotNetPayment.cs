@@ -42,6 +42,9 @@ namespace LAPP.WS.App_Helper.Common
                 if (objApplication == null)
                     throw new Exception("Invalid ApplicationId sent to API. ");
 
+                if(objApplication != null && objApplication.IsPaid == true)
+                    throw new Exception("There is no pending amount to process payment for this application.");
+
                 string DescriptionText = "";
                 IndividualLicenseBAL objIndLicenseBAL = new IndividualLicenseBAL();
                 IndividualLicense objIndLicense = objIndLicenseBAL.Get_IndividualLicense_By_ApplicationId(objApplication.ApplicationId);

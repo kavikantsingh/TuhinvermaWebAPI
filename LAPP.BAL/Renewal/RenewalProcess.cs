@@ -3266,7 +3266,10 @@ namespace LAPP.BAL.Renewal
                     objApplication = objApplicationBAL.Get_Application_By_ApplicationId(ApplicationId);
                     if (objApplication != null)
                     {
-                        objApplication.SubmittedDate = DateTime.Now;
+                        if (objApplication.SubmittedDate == null)
+                        {
+                            objApplication.SubmittedDate = DateTime.Now;
+                        }
                         objApplication.ApplicationStatusDate = DateTime.Now;
 
                         //if (!RenewalApprovalRequired)
@@ -3349,6 +3352,23 @@ namespace LAPP.BAL.Renewal
 
             try
             {
+                ApplicationBAL objApplicationBAL = new ApplicationBAL();
+                Application objApplication = objApplicationBAL.Get_Application_By_ApplicationId(ApplicationId);
+
+                if(objApplication != null && objApplication.ApplicationId > 0 )
+                {
+                    if(objApplication.ApplicationStatusId == 3)
+                    {
+                        Result = "This application has been already approved.";
+                        return Result;
+                    }
+                }
+                else
+                {
+                    Result = "ApplicationId is not valid.";
+                    return Result;
+                }
+
                 if (RequestedLicenseStatusTypeId == 0)
                 {
                     RequestedLicenseStatusTypeId = 1;//default Active if 0
@@ -3461,8 +3481,6 @@ namespace LAPP.BAL.Renewal
                 }
                 try
                 {
-                    Application objApplication = new Application();
-                    ApplicationBAL objApplicationBAL = new ApplicationBAL();
                     objApplication = objApplicationBAL.Get_Application_By_ApplicationId(ApplicationId);
                     if (objApplication != null)
                     {

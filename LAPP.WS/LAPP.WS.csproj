@@ -215,6 +215,7 @@
     <Compile Include="App_Helper\CheckModelForNullAttribute.cs" />
     <Compile Include="Controllers\Backoffice\ConfigurationController.cs" />
     <Compile Include="Controllers\Backoffice\ContentController.cs" />
+    <Compile Include="Controllers\Backoffice\DashboardController.cs" />
     <Compile Include="Controllers\Backoffice\DocumentController.cs" />
     <Compile Include="Controllers\Backoffice\IndividualController.cs" />
     <Compile Include="Controllers\Backoffice\PageController.cs" />

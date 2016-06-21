@@ -193,6 +193,18 @@ namespace LAPP.WS.Controllers.Renewal
                 }
 
                 string Result = RenewalProcess.ConfirmAndApprove(objRequest, TokenHelper.GetTokenByKey(Key));
+                if(string.IsNullOrEmpty(Result))
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "Approve Success.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = Result;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                }
 
             }
             catch (Exception ex)
