@@ -63,7 +63,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 {
                     ApplicationCount objEntityForRenewal = new ApplicationCount();
 
-                    objEntityForRenewal.ApplicationType = "Licensee";
+                    objEntityForRenewal.ApplicationType = "Applications";
                     objEntityForRenewal.ApplicationsApproved = objEntity.ApplicationsApproved;
                     objEntityForRenewal.ApplicationsDenied = objEntity.ApplicationsDenied;
                     objEntityForRenewal.ApplicationsUnderReview = objEntity.ApplicationsUnderReview;
