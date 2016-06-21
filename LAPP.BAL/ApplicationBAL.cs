@@ -31,6 +31,9 @@ namespace LAPP.BAL
         {
             return objDal.Get_Application_By_ApplicationId(applicationId);
         }
-
+        public ApplicationCount Get_DashboardApplicationCount()
+        {
+            return objDal.Get_DashboardApplicationCount();
+        }
     }
 }
