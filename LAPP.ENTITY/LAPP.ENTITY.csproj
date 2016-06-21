@@ -106,10 +106,10 @@
     <Compile Include="ProvClinicHours.cs" />
     <Compile Include="Provider.cs" />
     <Compile Include="ProviderAddress.cs" />
-    <Compile Include="ProviderApplication.cs" />
+    <Compile Include="ProviderApplicationGET.cs" />
     <Compile Include="IndividualComment.cs" />
     <Compile Include="ProviderContact.cs" />
-    <Compile Include="ProviderDocumentGET.cs" />
+    <Compile Include="ProviderDocument.cs" />
     <Compile Include="ProviderIndividual.cs" />
     <Compile Include="ProviderIndividualName.cs" />
     <Compile Include="ProviderInformations.cs" />

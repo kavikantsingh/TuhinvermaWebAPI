@@ -637,7 +637,7 @@ namespace LAPP.WS.Controllers.Common
         /// <param name="ext">File extension</param>
         [AcceptVerbs("POST")]
         [ActionName("ProviderDocumentSave")]
-        public ProviderDocumentGETResponse ProviderDocumentSave(string Key, ProviderDocument objProviderDocument, string Base64Str,string ext)
+        public ProviderDocumentGETResponse ProviderDocumentSave(string Key, ProviderDocument objProviderDocument)
         {
             int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
 
@@ -680,9 +680,11 @@ namespace LAPP.WS.Controllers.Common
                     objEntity.CreatedOn= objProviderDocument.CreatedOn;
                     objEntity.ModifiedBy= objProviderDocument.ModifiedBy;
                     objEntity.ModifiedOn= objProviderDocument.ModifiedOn;
-                    objEntity.ProviderDocumentGuid= objProviderDocument.ProviderDocumentGuid;
+                    objEntity.ProviderDocumentGuid= Guid.NewGuid().ToString();
+                    objEntity.Base64Str = objProviderDocument.Base64Str;
+                    objEntity.Extension = objProviderDocument.Extension;
                     //--file save process--//
-                    string FilePath = ProviderDocumentSaveProcess(Base64Str, objEntity.DocumentName, ext);
+                    string FilePath = ProviderDocumentSaveProcess(objEntity.Base64Str, objEntity.DocumentName, objEntity.Extension);
                     //--file save process--//
                     if(FilePath!=null)
                     { 
@@ -722,13 +724,20 @@ namespace LAPP.WS.Controllers.Common
 
         private string ProviderDocumentSaveProcess(string Base64Str, string filename, string extension)
         {
-            if (Base64Str!=null && filename!=null && extension!=null)
+            try
+            { 
+                if (Base64Str!=null && filename!=null && extension!=null)
+                {
+                    string FilePath= ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "SchoolApplication\\";
+                    //FilePath = @"D:\sample workspace\stuffstestfolder";
+                    Byte[] bytes = Convert.FromBase64String(Base64Str);
+                    File.WriteAllBytes(FilePath + filename + extension, bytes);
+                    return FilePath + filename + extension;
+                }
+            }
+            catch(Exception ex)
             {
-                string FilePath= ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "SchoolApplication\\";
-                //FilePath = @"D:\sample workspace\stuffstestfolder";
-                Byte[] bytes = Convert.FromBase64String(Base64Str);
-                File.WriteAllBytes(FilePath + filename + extension, bytes);
-                return FilePath + filename + extension;
+                return null;
             }
             return null;
         }
@@ -832,8 +841,11 @@ namespace LAPP.WS.Controllers.Common
                     objEntity.IsDeleted = true;
                     objEntity.ModifiedBy = UserId;
                     objEntity.ModifiedOn = DateTime.Now;
-                    objProviderDocumentBAL.Delete_ProviderDocument_By_ProviderDocId_And_ProviderId(ProviderDocId, ProviderId, UserId);
-                    objResponse.ProviderDocument.ProviderId=(int)ProviderId;
+                    objProviderDocumentBAL.Delete_ProviderDocument_By_ProviderDocId_ProviderId_And_ApplicationId(ProviderDocId, UserId, ProviderId, ApplicationId);//Delete_ProviderDocument_By_ProviderDocId_And_ProviderId(ProviderDocId, ProviderId, UserId);
+
+                    ProviderDocument tempEntity = new ProviderDocument();
+                    tempEntity.ProviderId = (int)ProviderId;
+                    objResponse.ProviderDocument = tempEntity;
                     objResponse.Message = Messages.DeleteSuccess;
                     objResponse.Status = true;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");

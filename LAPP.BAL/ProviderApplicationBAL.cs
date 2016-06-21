@@ -11,12 +11,12 @@ namespace LAPP.BAL
 public class ProviderApplicationBAL:BaseBAL
 {
 ProviderApplicationDAL objDal = new ProviderApplicationDAL();
-public int Save_ProviderApplication(ProviderApplication objProviderApplication)
+public int Save_ProviderApplication(ProviderApplicationGET objProviderApplication)
 {
 return objDal.Save_ProviderApplication(objProviderApplication);
 }
 
-public List<ProviderApplication> Get_All_ProviderApplication()
+public List<ProviderApplicationGET> Get_All_ProviderApplication()
 {
 return objDal.Get_All_ProviderApplication();
 }

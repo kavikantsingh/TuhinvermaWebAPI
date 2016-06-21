@@ -131,7 +131,7 @@ namespace LAPP.DAL
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("PageModuleId", PageModuleId));
+            lstParameter.Add(new MySqlParameter("PageModId", PageModuleId));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ContentItemLk_By_PageModuleId", lstParameter.ToArray());
             List<ContentItemLk> lstEntity = new List<ContentItemLk>();
             ContentItemLk objEntity = null;

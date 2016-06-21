@@ -47,9 +47,30 @@ namespace LAPP.ENTITY
 
         public string ApplicationGuid { get; set; }
     }
+
+    public class ApplicationCount : BaseEntity
+    {
+        public string ApplicationType { get; set; }
+
+        public int ApplicationsSubmittedCount { get; set; }
+        public int ApplicationsApproved { get; set; }
+        public int ApplicationsUnderReview { get; set; }
+        public int ApplicationsDenied { get; set; }
+
+        public int RenewalSubmittedCount { get; set; }
+        public int LicenseeApproved { get; set; }
+        public int LicenseeUnderReview { get; set; }
+        public int LicenseeDenied { get; set; }
+
+    }
+
     public class ApplicationResponseGet : BaseEntityServiceResponse
     {
         public List<ApplicationResponse> ApplicationResponseList { get; set; }
     }
 
+    public class ApplicationCountResponse : BaseEntityServiceResponse
+    {
+        public List<ApplicationCount> ApplicationCount { get; set; }
+    }
 }
