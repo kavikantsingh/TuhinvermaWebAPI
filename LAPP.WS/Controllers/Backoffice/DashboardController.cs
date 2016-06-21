@@ -42,28 +42,34 @@ namespace LAPP.WS.Controllers.Backoffice
 
 
 
-                objEntity = objAppBAL.Get_DashboardApplicationCount();
+                objEntity = objAppBAL.Get_DashboardApplicationCountRenewal();
                 if (objEntity != null)
                 {
                     ApplicationCount objEntityForRenewal = new ApplicationCount();
 
                     objEntityForRenewal.ApplicationType = "Licensee";
-                    objEntityForRenewal.LicenseeApproved = objEntity.LicenseeApproved;
-                    objEntityForRenewal.LicenseeDenied = objEntity.LicenseeDenied;
-                    objEntityForRenewal.LicenseeUnderReview = objEntity.LicenseeUnderReview;
-                    objEntityForRenewal.RenewalSubmittedCount = objEntity.RenewalSubmittedCount;
+                    objEntityForRenewal.ApplicationsApproved = objEntity.ApplicationsApproved;
+                    objEntityForRenewal.ApplicationsDenied = objEntity.ApplicationsDenied;
+                    objEntityForRenewal.ApplicationsUnderReview = objEntity.ApplicationsUnderReview;
+                    objEntityForRenewal.ApplicationsSubmittedCount = objEntity.ApplicationsSubmittedCount;
 
                     lstApplicationCount.Add(objEntityForRenewal);
-                    ApplicationCount objEntityForApplication = new ApplicationCount();
+                }
 
-                    objEntityForApplication.ApplicationType = "Applications";
-                    objEntityForApplication.ApplicationsApproved = objEntity.ApplicationsApproved;
-                    objEntityForApplication.ApplicationsDenied = objEntity.ApplicationsDenied;
-                    objEntityForApplication.ApplicationsUnderReview = objEntity.ApplicationsUnderReview;
-                    objEntityForApplication.ApplicationsSubmittedCount = objEntity.ApplicationsSubmittedCount;
+                objEntity = new ApplicationCount();
 
-                    lstApplicationCount.Add(objEntityForApplication);
+                objEntity = objAppBAL.Get_DashboardApplicationCountApplications();
+                if (objEntity != null)
+                {
+                    ApplicationCount objEntityForRenewal = new ApplicationCount();
 
+                    objEntityForRenewal.ApplicationType = "Licensee";
+                    objEntityForRenewal.ApplicationsApproved = objEntity.ApplicationsApproved;
+                    objEntityForRenewal.ApplicationsDenied = objEntity.ApplicationsDenied;
+                    objEntityForRenewal.ApplicationsUnderReview = objEntity.ApplicationsUnderReview;
+                    objEntityForRenewal.ApplicationsSubmittedCount = objEntity.ApplicationsSubmittedCount;
+
+                    lstApplicationCount.Add(objEntityForRenewal);
                 }
 
                 if (lstApplicationCount != null && lstApplicationCount.Count > 0)
