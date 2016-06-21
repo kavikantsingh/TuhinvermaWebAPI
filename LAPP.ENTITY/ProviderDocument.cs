@@ -32,6 +32,10 @@ namespace LAPP.ENTITY
         public int? ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
         public string ProviderDocumentGuid { get; set; }
+
+        //---added additional properties which are not in table---//
+        public string Base64Str { get; set; }
+        public string Extension { get; set; }
     }
 
     public class ProviderDocumentResponse : BaseEntityServiceResponse

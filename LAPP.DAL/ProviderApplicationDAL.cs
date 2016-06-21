@@ -10,7 +10,7 @@ namespace LAPP.DAL
 {
     public class ProviderApplicationDAL : BaseDAL
     {
-        public int Save_ProviderApplication(ProviderApplication objProviderApplication)
+        public int Save_ProviderApplication(ProviderApplicationGET objProviderApplication)
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("ProviderId", objProviderApplication.ProviderId));
@@ -26,13 +26,13 @@ namespace LAPP.DAL
             return returnValue;
         }
 
-        public List<ProviderApplication> Get_All_ProviderApplication()
+        public List<ProviderApplicationGET> Get_All_ProviderApplication()
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "PROVIDERAPPLICATION_GET_ALL");
-            List<ProviderApplication> lstEntity = new List<ProviderApplication>();
-            ProviderApplication objEntity = null;
+            List<ProviderApplicationGET> lstEntity = new List<ProviderApplicationGET>();
+            ProviderApplicationGET objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 objEntity = FetchEntity(dr);
@@ -42,9 +42,9 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-        private ProviderApplication FetchEntity(DataRow dr)
+        private ProviderApplicationGET FetchEntity(DataRow dr)
         {
-            ProviderApplication objEntity = new ProviderApplication();
+            ProviderApplicationGET objEntity = new ProviderApplicationGET();
             if (dr.Table.Columns.Contains("ProviderId") && dr["ProviderId"] != DBNull.Value)
             {
                 objEntity.ProviderId = Convert.ToInt32(dr["ProviderId"]);

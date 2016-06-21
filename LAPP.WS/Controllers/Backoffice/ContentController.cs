@@ -593,6 +593,14 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+        /// <summary>
+        /// Get Content Type Name By Page Tab Section Id
+        /// </summary>
+        /// <param name="Key">API security key</param>
+        /// <param name="PageModuleId">Page Module Id</param>
+        /// <returns>ContentItemLkResponse</returns>
+        [AcceptVerbs("GET")]
+        [ActionName("ContentGetContentInformation")]
         public ContentItemLkResponse ContentGetContentInformation(string Key, int PageModuleId)
         {
             LogingHelper.SaveAuditInfo(Key);
