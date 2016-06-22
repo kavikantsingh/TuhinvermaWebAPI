@@ -309,9 +309,12 @@ namespace LAPP.BAL.Renewal
                                     objIndContact.IsPreferredContact = objContactResponse.IsPreferredContact;
                                     objIndContact.IsMobile = objContactResponse.IsMobile;
                                     objIndContact.IsActive = true;
+                                    objIndContact.IsDeleted = false;
                                     objIndContact.BeginDate = DateTime.Now;
-                                    objIndContact.ModifiedBy = objToken.UserId;
-                                    objIndContact.ModifiedOn = DateTime.Now;
+                                    objIndContact.CreatedBy = objToken.UserId;
+                                    objIndContact.CreatedOn = DateTime.Now;
+                                    objIndContact.ModifiedBy = null;
+                                    objIndContact.ModifiedOn = null;
                                     objIndContact.IndividualId = IndividualId;
                                     objIndContactBAL.Save_IndividualContact(objIndContact);
 
@@ -3355,9 +3358,9 @@ namespace LAPP.BAL.Renewal
                 ApplicationBAL objApplicationBAL = new ApplicationBAL();
                 Application objApplication = objApplicationBAL.Get_Application_By_ApplicationId(ApplicationId);
 
-                if(objApplication != null && objApplication.ApplicationId > 0 )
+                if (objApplication != null && objApplication.ApplicationId > 0)
                 {
-                    if(objApplication.ApplicationStatusId == 3)
+                    if (objApplication.ApplicationStatusId == 3)
                     {
                         Result = "This application has been already approved.";
                         return Result;
