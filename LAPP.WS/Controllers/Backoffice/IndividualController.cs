@@ -299,6 +299,25 @@ namespace LAPP.WS.Controllers.Backoffice
 
             try
             {
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objSearch);
+                        LogingHelper.SaveRequestJson(requestStr, "IndividualSearchWithPage Request");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualSearchWithPage object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
+
+
+
                 if (!TokenHelper.ValidateToken(Key))
                 {
                     objResponse.Status = false;
@@ -399,7 +418,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 }
                 catch (Exception ex)
                 {
-                    LogingHelper.SaveExceptionInfo(Key, ex, "ProcessPayment object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualSave object serialization", ENTITY.Enumeration.eSeverity.Critical);
                 }
 
                 if (!string.IsNullOrEmpty(ValidationResponse))
