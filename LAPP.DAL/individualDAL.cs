@@ -162,11 +162,17 @@ namespace LAPP.DAL
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
 
             string Name = "";
+            string DOB = "";
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             if (!string.IsNullOrEmpty(obj.Name))
             {
                 Name = obj.Name.ToLower().Trim();
             }
+            if (!string.IsNullOrEmpty(obj.DateOfBirth.ToString()))
+            {
+                DOB = Convert.ToDateTime(obj.DateOfBirth).ToShortDateString();
+            }
+
             lstParameter.Add(new MySqlParameter("_Name", Name));
             lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
             lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
@@ -174,7 +180,8 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
             lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
             lstParameter.Add(new MySqlParameter("_Email", obj.Email));
-            lstParameter.Add(new MySqlParameter("_DOB", obj.DateOfBirth));
+            lstParameter.Add(new MySqlParameter("_DOB", DOB));
+            lstParameter.Add(new MySqlParameter("_Address", obj.Address));
             lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
             lstParameter.Add(new MySqlParameter("Pager", PagerSize));
 
