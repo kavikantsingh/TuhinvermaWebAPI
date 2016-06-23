@@ -51,6 +51,6 @@ namespace LAPP.ENTITY
         public List<Address> ListOfPreviousAddress { get; set; }
         public List<ProviderNames> ListOfPreviousSchool { get; set; }
         public List<Address> ListOfSatliteSchool { get; set; }
-
+        public List<ProviderStaff> ListOfProviderStaffDetails { get; set; }
     }
 }

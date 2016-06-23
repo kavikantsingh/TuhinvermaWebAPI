@@ -1421,5 +1421,215 @@ namespace LAPP.WS.Controllers.Common
 
         }
 
+        #region Shekhar 
+
+        /// <summary>
+        /// This method is to Save the School Informations
+        /// </summary>
+        /// <param name="Key">Security Key for API.</param>
+        /// <param name="ObjProviderStaff">Request object for Provider Instruction.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("SaveProviderStaff")]
+        public BaseEntityServiceResponse SaveProviderStaff(string Key, ProviderStaff ObjProviderStaff)
+        {
+            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo();
+
+            BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+
+            List<UsersRequest> lstEntity = new List<UsersRequest>();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            if (ObjProviderStaff == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+
+                #region IndividualName
+
+                IndividualNameBAL objIndNameBAL = new IndividualNameBAL();
+                IndividualName objIndName = new IndividualName();
+
+                objIndName.IndividualNameId = 0;
+                objIndName.IndividualId = 0;
+                objIndName.FirstName = ObjProviderStaff.ProviderStaffFirstName;
+                objIndName.MiddleName = "";
+                objIndName.LastName = ObjProviderStaff.ProviderStaffFirstName;
+                objIndName.IndividualNameStatusId = 22;
+                objIndName.IsActive = true;
+                objIndName.IsDeleted = false;
+                objIndName.CreatedBy = 0;
+                objIndName.CreatedOn = DateTime.Now;
+                objIndName.IndividualNameGuid = Guid.NewGuid().ToString();
+                objIndName.IndividualNameTypeId = 13;
+
+                int IndividualNameId = objIndNameBAL.Save_IndividualName(objIndName);
+
+                #endregion
+
+                #region Provider Individual Name Info
+
+                // Insert IndividualId as 0 and IndividualNameId from IndividualName table
+
+                ProviderIndividualName objProviderIndName = new ProviderIndividualName();
+                ProviderIndividualNameBAL objProviderIndNameBAL = new ProviderIndividualNameBAL();
+
+                objProviderIndName.ProviderIndvNameInfoId = 0;
+                objProviderIndName.ProviderId = ObjProviderStaff.ProviderId;
+                objProviderIndName.IndividualId = 0;
+                objProviderIndName.IndividualNameId = IndividualNameId;
+                objProviderIndName.ApplicationId = ObjProviderStaff.ApplicationId;
+                objProviderIndName.IsActive = true;
+                objProviderIndName.IsDeleted = false;
+                objProviderIndName.CreatedBy = 0;
+                objProviderIndName.CreatedOn = DateTime.Now;
+                objProviderIndName.ProviderIndvNameInfoGuid = Guid.NewGuid().ToString();
+
+                int ProviderIndvNameInfoId = objProviderIndNameBAL.Save_ProviderIndividualName(objProviderIndName);
+
+                #endregion
+
+                #region Provider Staff
+
+                ProviderStaff objProvStaff = new ProviderStaff();
+                ProviderBAL objProviderStaffBAL = new ProviderBAL();
+
+                objProvStaff.ProviderStaffId = 0;
+                objProvStaff.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
+                objProvStaff.ProviderId = ObjProviderStaff.ProviderId;
+                objProvStaff.ApplicationId = ObjProviderStaff.ApplicationId;
+                objProvStaff.ProviderContactId = 0;
+                objProvStaff.IsBackgroundCheckReq = ObjProviderStaff.IsBackgroundCheckReq;
+                objProvStaff.CAMTCNumber = ObjProviderStaff.CAMTCNumber;
+                objProvStaff.ReferenceNumber = ObjProviderStaff.ReferenceNumber;
+                objProvStaff.IsActive = ObjProviderStaff.IsActive;
+                objProvStaff.IsDeleted = ObjProviderStaff.IsDeleted;
+                objProvStaff.CreatedBy = ObjProviderStaff.CreatedBy;
+                objProvStaff.CreatedOn = ObjProviderStaff.CreatedOn;
+                objProvStaff.ModifiedBy = ObjProviderStaff.ModifiedBy;
+                objProvStaff.ModifiedOn = ObjProviderStaff.ModifiedOn;
+                objProvStaff.ProviderStaffGuid = ObjProviderStaff.ProviderStaffGuid;
+
+                int ProviderStaffId = objProviderStaffBAL.SaveProviderStaff(objProvStaff);
+
+                #endregion
+
+                #region Provider Individual Name Title/Position
+
+                ProvIndvNameTitle objProvIndvNameTitle = new ProvIndvNameTitle();
+                ProviderBAL objProviderBAL = new ProviderBAL();
+
+                objProvIndvNameTitle.ProvIndvNameTitlePosId = 0;
+                objProvIndvNameTitle.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
+                objProvIndvNameTitle.ProviderId = ObjProviderStaff.ProviderId;
+                objProvIndvNameTitle.ApplicationId = ObjProviderStaff.ApplicationId;
+                objProvIndvNameTitle.ProviderStaffId = ProviderStaffId;
+                objProvIndvNameTitle.ProvIndvNameTitlePositionId = "0";
+                objProvIndvNameTitle.ProvIndvNameTitlePosition = "";
+
+                objProvIndvNameTitle.ReferenceNumber = "";
+                objProvIndvNameTitle.IsActive = true;
+                objProvIndvNameTitle.IsDeleted = false;
+                objProvIndvNameTitle.CreatedBy = 0;
+                objProvIndvNameTitle.CreatedOn = DateTime.Now;
+                objProvIndvNameTitle.ModifiedBy = null;
+                objProvIndvNameTitle.ModifiedOn = null;
+                objProvIndvNameTitle.ProvIndvNameTitlePosGuid = Guid.NewGuid().ToString();
+
+                int ProvIndvNameTitleId = objProviderBAL.SaveProvIndvNameTitle(objProvIndvNameTitle);
+
+                #endregion
+
+                objResponse.Message = Messages.SaveSuccess;
+                objResponse.Status = true;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderStaffSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+
+            return objResponse;
+
+
+        }
+
+        /// <summary>
+        /// This method is to Get the grid values of Provider Staff
+        /// </summary>
+        /// <param name="ObjProviderStaff">Request object for Provider Staff.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("GetAllProviderStaffDetails")]
+        public ProviderOnLoadResponse GetAllProviderStaffDetails(ProviderStaff ObjProviderStaff)
+        {
+            ProviderOnLoadResponse objResponse = new ProviderOnLoadResponse();
+            if (ObjProviderStaff == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+            try
+            {
+                ProviderBAL objProviderBAL = new ProviderBAL();
+
+                //Method to get provider staff details grid
+                List<ProviderStaff> lstProviderStaff = objProviderBAL.GetAllProviderStaffDetails(ObjProviderStaff.ApplicationId, ObjProviderStaff.ProviderId);
+                objResponse.ListOfProviderStaffDetails = lstProviderStaff;
+
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "GetProviderStaffDetails", ENTITY.Enumeration.eSeverity.Error);
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+
+            }
+            return objResponse;
+
+
+        }
+
+        #endregion
     }
 }
