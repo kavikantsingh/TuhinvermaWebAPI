@@ -385,7 +385,7 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             try
             {
-                string ValidationResponse = "";// IndividualAddressValidate.ValidateIndividualAddressObject(objIndividualAddress);
+                string ValidationResponse = IndividualValidations.ValidateIndividualObject(objIndividual);
 
                 try
                 {
