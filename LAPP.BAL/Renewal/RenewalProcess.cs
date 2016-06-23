@@ -1307,7 +1307,8 @@ namespace LAPP.BAL.Renewal
                         throw ex;
                     }
                     #endregion
-                    return SelectOrCreateResponse(objToken, IndividualId);
+                    //return SelectOrCreateResponse(objToken, IndividualId);
+                    return SelectRenewalResponseByApplicationId(objToken, IndividualId, ApplicationId);
 
                 }
             }
@@ -3192,11 +3193,11 @@ namespace LAPP.BAL.Renewal
                                 objPedningLicense.LicenseStatusTypeId = 6;
                             }
                         }
-                        else if (AffirmativeAction.ToUpper() == "Y")
+                        else if (AffirmativeAction.ToUpper() == "N")
                         {
                             objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;
                         }
-                        else if (AffirmativeAction.ToUpper() == "N")
+                        else if (AffirmativeAction.ToUpper() == "Y")
                         {
                             objPedningLicense.LicenseStatusTypeId = 6;
                         }
@@ -3304,12 +3305,12 @@ namespace LAPP.BAL.Renewal
                                     objApplication.ApplicationStatusId = 10;
                                 }
                             }
-                            else if (AffirmativeAction.ToUpper() == "Y")
+                            else if (AffirmativeAction.ToUpper() == "N")
                             {
 
                                 objApplication.ApplicationStatusId = 3;
                             }
-                            else if (AffirmativeAction.ToUpper() == "N")
+                            else if (AffirmativeAction.ToUpper() == "Y")
                             {
 
                                 objApplication.ApplicationStatusId = 10;
@@ -3412,11 +3413,11 @@ namespace LAPP.BAL.Renewal
                                 objPedningLicense.LicenseStatusTypeId = 6;
                             }
                         }
-                        else if (objRequest.AffirmativeAction.ToUpper() == "Y")
+                        else if (objRequest.AffirmativeAction.ToUpper() == "N")
                         {
                             objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;
                         }
-                        else if (objRequest.AffirmativeAction.ToUpper() == "N")
+                        else if (objRequest.AffirmativeAction.ToUpper() == "Y")
                         {
                             objPedningLicense.LicenseStatusTypeId = 6;
                         }
@@ -3518,12 +3519,12 @@ namespace LAPP.BAL.Renewal
                                     objApplication.ApplicationStatusId = 10;
                                 }
                             }
-                            else if (objRequest.AffirmativeAction.ToUpper() == "Y")
+                            else if (objRequest.AffirmativeAction.ToUpper() == "N")
                             {
 
                                 objApplication.ApplicationStatusId = 3;
                             }
-                            else if (objRequest.AffirmativeAction.ToUpper() == "N")
+                            else if (objRequest.AffirmativeAction.ToUpper() == "Y")
                             {
 
                                 objApplication.ApplicationStatusId = 10;
