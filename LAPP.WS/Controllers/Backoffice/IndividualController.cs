@@ -141,7 +141,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     return objResponse;
                 }
 
-                lstIndividualAddress = objBAL.Get_IndividualAddress_By_IndividualId(IndividualId);
+                lstIndividualAddress = objBAL.Get_ALL_IndividualAddress_By_IndividualId(IndividualId);
                 if (lstIndividualAddress != null)
                 {
                     List<IndividualAddressResponse> lstAddressResponse = lstIndividualAddress

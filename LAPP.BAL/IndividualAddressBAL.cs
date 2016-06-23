@@ -29,10 +29,13 @@ namespace LAPP.BAL
         {
             return objDal.Get_IndividualAddress_By_IndividualAddressId(ID);
         }
-
         public List<IndividualAddress> Get_IndividualAddress_By_IndividualId(int IndividualId)
         {
             return objDal.Get_IndividualAddress_By_IndividualId(IndividualId);
+        }
+        public List<IndividualAddress> Get_ALL_IndividualAddress_By_IndividualId(int IndividualId)
+        {
+            return objDal.Get_ALL_IndividualAddress_By_IndividualId(IndividualId);
         }
     }
 }
