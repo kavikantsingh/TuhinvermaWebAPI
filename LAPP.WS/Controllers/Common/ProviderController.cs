@@ -46,14 +46,14 @@ namespace LAPP.WS.Controllers.Common
 
             List<UsersRequest> lstEntity = new List<UsersRequest>();
 
-            if (!TokenHelper.ValidateToken(Key))
-            {
-                objResponse.Message = "User session has expired.";
-                objResponse.Status = false;
-                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                objResponse.ResponseReason = "";
-                return objResponse;
-            }
+            //if (!TokenHelper.ValidateToken(Key))
+            //{
+            //    objResponse.Message = "User session has expired.";
+            //    objResponse.Status = false;
+            //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+            //    objResponse.ResponseReason = "";
+            //    return objResponse;
+            //}
 
             if (ObjRegisterInfo == null)
             {
@@ -70,7 +70,7 @@ namespace LAPP.WS.Controllers.Common
 
                 ObjReasonList = Validations.IsValidEmailFromUser(nameof(ObjRegisterInfo.Email), ObjRegisterInfo.Email, ObjReasonList);
 
-                in if (ObjReasonList.Count() > 0)
+                if (ObjReasonList.Count() > 0)
                 {
                     objResponse.Message = ObjReasonList[0].Message;
                     objResponse.Status = false;
@@ -370,7 +370,7 @@ namespace LAPP.WS.Controllers.Common
         [ActionName("ProviderLogin")]
         public ProviderLoginResponse ProviderLogin(string Key, ProviderLogin ObjProviderLogin)
         {
-            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            int CreateOrModify = 0; //  TokenHelper.GetTokenByKey(Key).UserId;
 
             LogingHelper.SaveAuditInfo();
 
@@ -382,14 +382,14 @@ namespace LAPP.WS.Controllers.Common
             Users objEntity = new Users();
             List<UsersRequest> lstEntity = new List<UsersRequest>();
 
-            if (!TokenHelper.ValidateToken(Key))
-            {
-                objResponse.Message = "User session has expired.";
-                objResponse.Status = false;
-                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
-                objResponse.ResponseReason = "";
-                return objResponse;
-            }
+            //if (!TokenHelper.ValidateToken(Key))
+            //{
+            //    objResponse.Message = "User session has expired.";
+            //    objResponse.Status = false;
+            //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+            //    objResponse.ResponseReason = "";
+            //    return objResponse;
+            //}
 
             if (ObjProviderLogin == null)
             {
