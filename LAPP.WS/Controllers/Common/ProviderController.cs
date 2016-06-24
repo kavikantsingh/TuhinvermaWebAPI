@@ -38,7 +38,7 @@ namespace LAPP.WS.Controllers.Common
         [ActionName("ProviderRegister")]
         public BaseEntityServiceResponse ProviderRegister(string Key, ProviderRegister ObjRegisterInfo)
         {
-            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            int CreateOrModify = 0; // TokenHelper.GetTokenByKey(Key).UserId;
 
             LogingHelper.SaveAuditInfo();
 
@@ -70,7 +70,7 @@ namespace LAPP.WS.Controllers.Common
 
                 ObjReasonList = Validations.IsValidEmailFromUser(nameof(ObjRegisterInfo.Email), ObjRegisterInfo.Email, ObjReasonList);
 
-                if (ObjReasonList.Count() > 0)
+                in if (ObjReasonList.Count() > 0)
                 {
                     objResponse.Message = ObjReasonList[0].Message;
                     objResponse.Status = false;
