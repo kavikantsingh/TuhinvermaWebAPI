@@ -17,7 +17,7 @@ namespace LAPP.WS.App_Helper.Common
     public class AuthorizeDotNetPayment
     {
 
-        public static PaymentResponse ProcessPayment(PaymentRequest objPaymentRequest, int CreatedBy, string AffirmativeAction, Token objToken)
+        public static PaymentResponse ProcessPayment(PaymentRequest objPaymentRequest, int CreatedBy, string AffirmativeAction, Token objToken, bool IsBackofficePayment = false)
         {
             if (objPaymentRequest == null)
                 throw new Exception("Invalid request object. please check with API request signature.");
@@ -257,7 +257,7 @@ namespace LAPP.WS.App_Helper.Common
 
                     if (objTrans != null)
                     {
-                        InitiatePayment.ProcessApprovedPayment(objTrans, objAuthResponse, objToken, objPaymentRequest.RequestedLicenseStatusTypeId, AffirmativeAction);
+                        InitiatePayment.ProcessApprovedPayment(objTrans, objAuthResponse, objToken, objPaymentRequest.RequestedLicenseStatusTypeId, AffirmativeAction, IsBackofficePayment);
 
                         //string ReceiptNumber = SerialsBAL.Get_Receipt_No();
                         //IndividualBAL objIndividualBAL = new IndividualBAL();
