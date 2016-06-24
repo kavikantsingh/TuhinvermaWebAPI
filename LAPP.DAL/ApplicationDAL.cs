@@ -290,11 +290,26 @@ namespace LAPP.DAL
 
         // Application Count for Dashboard
 
-        public ApplicationCount Get_DashboardApplicationCount()
+        public ApplicationCount Get_DashboardApplicationCountRenewal()
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "application_count");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "application_Renewal_count");
+            ApplicationCount objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntityApplicationCount(dr);
+            }
+            return objEntity;
+        }
+
+        public ApplicationCount Get_DashboardApplicationCountApplications()
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "application_Application_count");
             ApplicationCount objEntity = null;
             DataTable dt = ds.Tables[0];
             if (dt.Rows.Count > 0)
@@ -308,6 +323,7 @@ namespace LAPP.DAL
         private ApplicationCount FetchEntityApplicationCount(DataRow dr)
         {
             ApplicationCount objEntity = new ApplicationCount();
+
             if (dr.Table.Columns.Contains("ApplicationsSubmittedCount") && dr["ApplicationsSubmittedCount"] != DBNull.Value)
             {
                 objEntity.ApplicationsSubmittedCount = Convert.ToInt32(dr["ApplicationsSubmittedCount"]);
@@ -325,30 +341,11 @@ namespace LAPP.DAL
                 objEntity.ApplicationsDenied = Convert.ToInt32(dr["ApplicationsDenied"]);
             }
 
-            if (dr.Table.Columns.Contains("RenewalSubmittedCount") && dr["RenewalSubmittedCount"] != DBNull.Value)
-            {
-                objEntity.RenewalSubmittedCount = Convert.ToInt32(dr["RenewalSubmittedCount"]);
-            }
-            if (dr.Table.Columns.Contains("LicenseeApproved") && dr["LicenseeApproved"] != DBNull.Value)
-            {
-                objEntity.LicenseeApproved = Convert.ToInt32(dr["LicenseeApproved"]);
-            }
-
-            if (dr.Table.Columns.Contains("LicenseeUnderReview") && dr["LicenseeUnderReview"] != DBNull.Value)
-            {
-                objEntity.LicenseeUnderReview = Convert.ToInt32(dr["LicenseeUnderReview"]);
-            }
-
-            if (dr.Table.Columns.Contains("LicenseeDenied") && dr["LicenseeDenied"] != DBNull.Value)
-            {
-                objEntity.LicenseeDenied = Convert.ToInt32(dr["LicenseeDenied"]);
-            }
-
             if (dr.Table.Columns.Contains("ApplicationType") && dr["ApplicationType"] != DBNull.Value)
             {
                 objEntity.ApplicationType = Convert.ToString(dr["ApplicationType"]);
             }
-           
+
 
             return objEntity;
 

@@ -17,7 +17,7 @@ namespace LAPP.WS.App_Helper.Common
     public class AuthorizeDotNetPayment
     {
 
-        public static PaymentResponse ProcessPayment(PaymentRequest objPaymentRequest, int CreatedBy, string AffirmativeAction, Token objToken)
+        public static PaymentResponse ProcessPayment(PaymentRequest objPaymentRequest, int CreatedBy, string AffirmativeAction, Token objToken, bool IsBackofficePayment = false)
         {
             if (objPaymentRequest == null)
                 throw new Exception("Invalid request object. please check with API request signature.");
@@ -135,6 +135,8 @@ namespace LAPP.WS.App_Helper.Common
                 post_values.Add("x_card_num", objPaymentRequest.CardNumber);
                 post_values.Add("x_exp_date", objPaymentRequest.ExpirationMonths.ToString() + objPaymentRequest.ExpirationYears.ToString()); // ddlExpirationMonths.SelectedValue + ddlExpirationYears.SelectedValue);
                                                                                                                                              //post_values.Add("x_exp_date", ddlExpirationMonths.SelectedItem.Text/ddlExpirationYears.SelectedItem.Text);
+
+                post_values.Add("x_card_code", objPaymentRequest.CVV.ToString());
 
                 //post_values.Add("x_amount", objPaymentRequest.Amount.ToString()); //this.TotalAmount.ToString()
                 post_values.Add("x_amount", Amount.ToString()); //this.TotalAmount.ToString()
@@ -255,7 +257,7 @@ namespace LAPP.WS.App_Helper.Common
 
                     if (objTrans != null)
                     {
-                        InitiatePayment.ProcessApprovedPayment(objTrans, objAuthResponse, objToken, objPaymentRequest.RequestedLicenseStatusTypeId, AffirmativeAction);
+                        InitiatePayment.ProcessApprovedPayment(objTrans, objAuthResponse, objToken, objPaymentRequest.RequestedLicenseStatusTypeId, AffirmativeAction, IsBackofficePayment);
 
                         //string ReceiptNumber = SerialsBAL.Get_Receipt_No();
                         //IndividualBAL objIndividualBAL = new IndividualBAL();

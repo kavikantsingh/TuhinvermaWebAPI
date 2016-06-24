@@ -72,6 +72,26 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public List<IndividualAddress> Get_ALL_IndividualAddress_By_IndividualId(int IndividualId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALADDRESS_GETALL_BY_IndividualId", lstParameter.ToArray());
+            List<IndividualAddress> lstEntity = new List<IndividualAddress>();
+            IndividualAddress objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
         public IndividualAddress Get_Current_IndividualAddress_By_IndividualId(int IndividualId)
         {
             DataSet ds = new DataSet("DS");

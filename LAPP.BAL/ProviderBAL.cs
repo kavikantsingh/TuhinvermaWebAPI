@@ -32,5 +32,24 @@ namespace LAPP.BAL
         {
             return objDal.SaveSchoolInformation(objProvider);
         }
+
+        #region Shekhar 
+
+        public int SaveProviderStaff(ProviderStaff objProviderStaff)
+        {
+            return objDal.SaveProviderStaff(objProviderStaff);
+        }
+
+        public int SaveProvIndvNameTitle(ProvIndvNameTitle objProviderIndName)
+        {
+            return objDal.SaveProvIndvNameTitle(objProviderIndName);
+        }
+
+        public List<ProviderStaff> GetAllProviderStaffDetails(int ApplicationId, int ProviderId)
+        {
+            return objDal.GetAllProviderStaffDetails(ApplicationId, ProviderId);
+        }
+
+        #endregion
     }
 }

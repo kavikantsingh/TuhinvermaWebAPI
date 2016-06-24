@@ -32,7 +32,28 @@ namespace LAPP.WS.ValidateController.Backoffice
             }
         }
 
+        public static string ValidateIndividualObject(IndividualResponse objIndi)
+        {
+            List<ResponseReason> objResponseList = new List<ResponseReason>();
 
+            //objResponseList = Validations.IsRequiredProperty(nameof(objUsers.UserName), objUsers.UserName, objResponseList, 128);
+
+            objResponseList = Validations.IsRequiredPropertyMaxLength(nameof(objIndi.PlaceofBirthState), objIndi.PlaceofBirthState, objResponseList, 2);
+            objResponseList = Validations.IsRequiredPropertyMaxLength(nameof(objIndi.Gender), objIndi.Gender, objResponseList, 1);
+            if (!string.IsNullOrEmpty(objIndi.Email))
+            {
+                objResponseList = Validations.IsValidEmailProperty(nameof(objIndi.Email), objIndi.Email, objResponseList, 320);
+            }
+
+            if (objResponseList.Count() > 0)
+            {
+                return GeneralFunctions.GetJsonStringFromList(objResponseList);
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
 
         #region Individual Document
         public static string ValidateIndividualDocument(List<DocumentToUpload> lstDocumentToUpload, int IndividualId)

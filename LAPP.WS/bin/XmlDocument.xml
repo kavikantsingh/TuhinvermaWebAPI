@@ -734,14 +734,6 @@
             <param name="PageModTabSubModId">Page Module Tab Sub Module Id</param>
              <returns>ContentLkToPageTabSection</returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentGetContentInformation(System.String,System.Int32)">
-            <summary>
-            Get Content Type Name By Page Tab Section Id
-            </summary>
-            <param name="Key">API security key</param>
-            <param name="PageModuleId">Page Module Id</param>
-            <returns>ContentItemLkResponse</returns>
-        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.DocumentController.DocumentGetDocumentTypeName(System.String,System.Int32,System.String)">
             <summary>
             Get Method to get DocumentTypeName by key, DocumentId and DocumentCode.
@@ -749,12 +741,6 @@
             <param name="Key">API security key.</param>
             <param name="DocId">Document ID.</param>
             <param name="DocCode">Document Code.</param>
-        </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.DocumentController.DocumentMasterGetALL(System.String)">
-            <summary>
-            Get Method to get ALL DocumentMaster.
-            </summary>
-            <param name="Key">API security key.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualAddressSave(System.String,LAPP.ENTITY.IndividualAddressResponse)">
             <summary>
@@ -1271,7 +1257,7 @@
             <param name="DocumentId">Document Id</param>
             <param name="ApplicationId">Application Id</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderController.ProviderDocumentSave(System.String,LAPP.ENTITY.ProviderDocument)">
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.ProviderDocumentSave(System.String,LAPP.ENTITY.ProviderDocument,System.String,System.String)">
             <summary>
             This API is used to GET Provider Document based on Provider Id and Document Id
             </summary>
@@ -1712,14 +1698,12 @@
             <param name="Key">API security key.</param>
             <param name="ID">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.User.UsersController.UsersSearch(System.String,LAPP.ENTITY.UsersSearch,System.Int32,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.User.UsersController.UsersSearch(System.String,LAPP.ENTITY.UsersSearch)">
             <summary>
             Method to Search Users by key and objUsersSearch.
             </summary>
             <param name="Key">API security key.</param>
             <param name="objUsersSearch">Record ID.</param>
-            <param name="PageNumber">Record ID.</param>
-            <param name="NoOfRecords">Record ID.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.User.UsersController.UsersSave(System.String,LAPP.ENTITY.UsersRequest)">
             <summary>
