@@ -1578,26 +1578,32 @@ namespace LAPP.WS.Controllers.Common
         /// <summary>
         /// This method is to Get the grid values of Provider Staff
         /// </summary>
-        /// <param name="ObjProviderStaff">Request object for Provider Staff.</param>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ApplicationId">Application Id</param>
+        /// <param name="ProviderId">Provider Id</param>
+
         [AcceptVerbs("GET")]
         [ActionName("GetAllProviderStaffDetails")]
-        public ProviderOnLoadResponse GetAllProviderStaffDetails(ProviderStaff ObjProviderStaff)
+        public ProviderOnLoadResponse GetAllProviderStaffDetails(string Key, int ApplicationId, int ProviderId)
         {
             ProviderOnLoadResponse objResponse = new ProviderOnLoadResponse();
-            if (ObjProviderStaff == null)
-            {
-                objResponse.Message = "Invalid Object.";
-                objResponse.Status = false;
-                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
-                objResponse.ResponseReason = "";
-                return objResponse;
-            }
+
+            LogingHelper.SaveAuditInfo(Key);
+
             try
             {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    return objResponse;
+                }
+
                 ProviderBAL objProviderBAL = new ProviderBAL();
 
                 //Method to get provider staff details grid
-                List<ProviderStaff> lstProviderStaff = objProviderBAL.GetAllProviderStaffDetails(ObjProviderStaff.ApplicationId, ObjProviderStaff.ProviderId);
+                List<ProviderStaff> lstProviderStaff = objProviderBAL.GetAllProviderStaffDetails(ApplicationId, ProviderId);
                 objResponse.ListOfProviderStaffDetails = lstProviderStaff;
 
                 if (objResponse != null)
