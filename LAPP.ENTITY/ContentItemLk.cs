@@ -29,4 +29,13 @@ namespace LAPP.ENTITY
     {
         public List<ContentItemLk> ContentItemLk { get; set; }
     }
+
+    public class ContentItemLkPost : BaseEntity
+    {
+        public int ContentItemLkId { get; set; }
+        public int ContentItemHash { get; set; }
+        public string ContentItemLkDesc { get; set; }
+        public DateTime EffectiveDate { get; set; }
+        public DateTime EndDate { get; set; }
+    }
 }
