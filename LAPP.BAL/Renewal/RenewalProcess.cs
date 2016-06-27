@@ -939,7 +939,7 @@ namespace LAPP.BAL.Renewal
                         {
                             IndividualAffidavit objIndividualAffidavit = new IndividualAffidavit();
 
-                            objIndividualAffidavit = objIndividualAffidavitBAL.Get_address_By_IndividualAffidavitId(objIndividualAffidavitResponse.IndividualAffidavitId);
+                            objIndividualAffidavit = objIndividualAffidavitBAL.Get_IndividualAffidavit_By_IndividualAffidavitId(objIndividualAffidavitResponse.IndividualAffidavitId);
 
                             if (objIndividualAffidavit != null)
                             {
@@ -1031,7 +1031,7 @@ namespace LAPP.BAL.Renewal
                                     foreach (IndividualVeteranBranchResponse objBranchResp in lstBranchResp)
                                     {
                                         IndividualVeteranBranch objBranch = new IndividualVeteranBranch();
-                                        objBranch = objBranchBAL.Get_address_By_IndividualVeteranBranchId(objBranchResp.IndividualVeteranBranchId);
+                                        objBranch = objBranchBAL.Get_IndividualVeteranBranch_By_IndividualVeteranBranchId(objBranchResp.IndividualVeteranBranchId);
                                         if (objBranch != null)
                                         {
                                             objBranch.ModifiedBy = objToken.UserId;

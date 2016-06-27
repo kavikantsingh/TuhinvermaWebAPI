@@ -673,6 +673,75 @@ namespace LAPP.WS.Controllers.Backoffice
 
             return objResponse;
         }
+
+        /// <summary>
+        /// Updates ContentItemLk Table
+        /// </summary>
+        /// <param name="Key">API security key</param>
+        /// <param name="objContentItemLkPost">ContentItemLkPost</param>
+        /// <returns>ContentItemLkResponse</returns>
+        [AcceptVerbs("POST")]
+        [ActionName("ContentUpdateContentInfo")]
+        public ContentItemLkResponse ContentUpdateContentInfo(string Key, ContentItemLkPost objContentItemLkPost)
+        {
+            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo();
+            ContentItemLkResponse objResponse = new ContentItemLkResponse();
+            ContentItemLkPost objEntity = new ContentItemLkPost();
+            ContentItemLkBAL objBAL = new ContentItemLkBAL();
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+                if (objContentItemLkPost != null)
+                {
+                    objEntity.ContentItemLkId = objContentItemLkPost.ContentItemLkId;
+                    objEntity.ContentItemHash = objContentItemLkPost.ContentItemHash;
+                    objEntity.ContentItemLkDesc = objContentItemLkPost.ContentItemLkDesc;
+                    objEntity.EffectiveDate = objContentItemLkPost.EffectiveDate;
+                    objEntity.EndDate = objContentItemLkPost.EndDate;
+
+                    int ReturnContentItemLkId = objBAL.Update_ContentItemLk(objEntity);
+                    List<ContentItemLk> lstTemp = new List<ContentItemLk>();
+                    ContentItemLk objTempEntity = new ContentItemLk();
+                    objTempEntity.ContentItemLkId = ReturnContentItemLkId;
+                    lstTemp.Add(objTempEntity);
+                    objResponse.ContentItemLk = lstTemp;
+                    objResponse.Message = "Successful";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+
+
+
+                }
+                else
+                {
+                    objResponse.Message = "ContentItemLk object cannot be null.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "ContentUpdateContentInfo", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+            }
+            return objResponse;
+        }
         #endregion
     }
 }

@@ -28,9 +28,9 @@ namespace LAPP.BAL
             return objProviderNameDAL.SavePreviousSchoolDetails(objProviderInstructions);
         }
 
-        public List<ProviderNames> GetAllPreviousSchools(int applicationId)
+        public List<ProviderNames> GetAllPreviousSchools(int applicationId,int providerid)
         {
-            return objProviderNameDAL.GetAllPreviousSchools(applicationId);
+            return objProviderNameDAL.GetAllPreviousSchools(applicationId, providerid);
         }
 
 
