@@ -125,7 +125,7 @@ namespace LAPP.BAL.Payment
             return objTransaction;
         }
 
-        public static bool ProcessApprovedPayment(LAPP.ENTITY.Transaction objTrans, AuthorizeDotNetGateWayResponse objAuthResponse, Token objToken, int RequestedLicenseStatusTypeId, string AffirmativeAction)
+        public static bool ProcessApprovedPayment(LAPP.ENTITY.Transaction objTrans, AuthorizeDotNetGateWayResponse objAuthResponse, Token objToken, int RequestedLicenseStatusTypeId, string AffirmativeAction, bool IsBackofficePayment = false)
         {
             bool Success = false;
             RevFeeDueBAL objFeeDueBAL = new RevFeeDueBAL();
@@ -250,8 +250,10 @@ namespace LAPP.BAL.Payment
                             objTrans.TransactionInterruptReasonId = 0;
                             objTranBal.Save_Transaction(objTrans);
 
-
-                            LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId, objTrans.ApplicationId, RequestedLicenseStatusTypeId, AffirmativeAction, objToken);
+                            if (IsBackofficePayment == false)
+                            {
+                                LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId, objTrans.ApplicationId, RequestedLicenseStatusTypeId, AffirmativeAction, objToken);
+                            }
 
 
                         }

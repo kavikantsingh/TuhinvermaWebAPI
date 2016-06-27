@@ -144,6 +144,23 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public int Update_ContentItemLk(ContentItemLkPost objContentItemLkPost)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ContentItemLkId", objContentItemLkPost.ContentItemLkId));
+            lstParameter.Add(new MySqlParameter("ContentItemHash", objContentItemLkPost.ContentItemHash));
+            lstParameter.Add(new MySqlParameter("ContentItemLkDesc", objContentItemLkPost.ContentItemLkDesc));
+            lstParameter.Add(new MySqlParameter("EffectiveDate", objContentItemLkPost.EffectiveDate));
+            lstParameter.Add(new MySqlParameter("EndDate", objContentItemLkPost.EndDate));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "contentitemlk_Update", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
         private ContentItemLk FetchEntity(DataRow dr)
         {
             ContentItemLk objEntity = new ContentItemLk();

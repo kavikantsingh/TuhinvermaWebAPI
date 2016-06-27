@@ -24,65 +24,66 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
             int? applicantID = null;
             try
             {
-                if (objAddressResponse.AddressId > 0)
+                if (objAddressResponse.IndividualAddressId > 0)
                 {
-                    objAddress = new Address();
-                    objAddress = objAddressBAL.Get_address_By_AddressId(objAddressResponse.AddressId);
-                    if (objAddress != null)
+                    // Update IndividualAddress
+                    objIndAddress = new IndividualAddress();
+                    objIndAddress = objIndAddressBAL.Get_IndividualAddress_By_IndividualAddressId(objAddressResponse.IndividualAddressId);
+                    if (objIndAddress != null)
                     {
-                        // Update Address
-
-                        objAddress.Addressee = "";
-                        objAddress.City = objAddressResponse.City;
-                        objAddress.StreetLine1 = objAddressResponse.StreetLine1;
-                        objAddress.StreetLine2 = objAddressResponse.StreetLine2;
-                        objAddress.StateCode = objAddressResponse.StateCode;
-                        objAddress.Zip = objAddressResponse.Zip;
-                        objAddress.BadAddress = objAddressResponse.BadAddress;
-
-                        objAddress.ModifiedBy = objToken.UserId;
-                        objAddress.ModifiedOn = DateTime.Now;
-                        objAddress.CountryId = 235;
-
-                        objAddress.IsActive = objAddressResponse.IsActive;
-                        objAddress.IsDeleted = objAddressResponse.IsDeleted;
-                        objAddress.UseUserAddress = false;
-                        objAddress.UseVerifiedAddress = false;
-
-                        objAddressBAL.Save_address(objAddress);
-
-                        //End Update Address
-
-                        // Update IndividualAddress
-
-                        objIndAddress = objIndAddressBAL.Get_IndividualAddress_By_IndividualAddressId(objAddressResponse.IndividualAddressId);
-                        if (objIndAddress != null)
-                        {
-                            objIndAddress.IndividualAddressId = objAddressResponse.IndividualAddressId;
-                            objIndAddress.AddressId = objAddress.AddressId;
-                            objIndAddress.AddressTypeId = objAddressResponse.AddressTypeId;
-                            objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
-                            objIndAddress.ModifiedBy = objToken.UserId;
-                            objIndAddress.ModifiedOn = DateTime.Now;
-                            objIndAddress.IndividualId = individualID;
-                            objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
-                            objIndAddress.IsActive = objAddressResponse.IsActive;
-                            objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
-                            objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
-                            objIndAddressBAL.Save_IndividualAddress(objIndAddress);
-                        }
+                        objIndAddress.IndividualAddressId = objAddressResponse.IndividualAddressId;
+                        objIndAddress.AddressId = objAddressResponse.AddressId;
+                        objIndAddress.AddressTypeId = objAddressResponse.AddressTypeId;
+                        objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
+                        objIndAddress.ModifiedBy = objToken.UserId;
+                        objIndAddress.ModifiedOn = DateTime.Now;
+                        objIndAddress.IndividualId = individualID;
+                        objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
+                        objIndAddress.IsActive = objAddressResponse.IsActive;
+                        objIndAddress.EndDate = objAddressResponse.EndDate;
+                        objIndAddress.BeginDate = objAddressResponse.BeginDate;
+                        objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
+                        objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
+                        objIndAddressBAL.Save_IndividualAddress(objIndAddress);
 
                         //End  Update IndividualAddress
 
-                        objResponse.Message = MessagesClass.UpdateSuccess;
-                        objResponse.Status = true;
-                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                        objAddress = new Address();
+                        objAddress = objAddressBAL.Get_address_By_AddressId(objIndAddress.AddressId);
+                        if (objAddress != null)
+                        {
+                            // Update Address
 
-                        string logText = "Individual Address updated successfully. Updated on " + DateTime.Now.ToShortDateString();
-                        string logSource = eCommentLogSource.WSAPI.ToString();
-                        LogHelper.SaveIndividualLog(individualID, applicantID, logSource, logText, objToken.UserId, null, null, null);
+                            objAddress.Addressee = String.IsNullOrEmpty(objAddressResponse.Addressee) ? "" : objAddressResponse.Addressee;
+                            objAddress.City = objAddressResponse.City;
+                            objAddress.StreetLine1 = objAddressResponse.StreetLine1;
+                            objAddress.StreetLine2 = objAddressResponse.StreetLine2;
+                            objAddress.StateCode = objAddressResponse.StateCode;
+                            objAddress.Zip = objAddressResponse.Zip;
+                            objAddress.BadAddress = objAddressResponse.BadAddress;
+
+                            objAddress.ModifiedBy = objToken.UserId;
+                            objAddress.ModifiedOn = DateTime.Now;
+                            objAddress.CountryId = 235;
+
+                            objAddress.IsActive = objAddressResponse.IsActive;
+                            objAddress.IsDeleted = objAddressResponse.IsDeleted;
+                            objAddress.UseUserAddress = false;
+                            objAddress.UseVerifiedAddress = false;
+
+                            objAddressBAL.Save_address(objAddress);
+
+                            //End Update Address
+
+                            objResponse.Message = MessagesClass.UpdateSuccess;
+                            objResponse.Status = true;
+                            objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                            string logText = "Individual Address updated successfully. Updated on " + DateTime.Now.ToShortDateString();
+                            string logSource = eCommentLogSource.WSAPI.ToString();
+                            LogHelper.SaveIndividualLog(individualID, applicantID, logSource, logText, objToken.UserId, null, null, null);
+                        }
                     }
-
                 }
                 else
                 {
@@ -91,7 +92,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
                     objAddress = new Address();
 
-                    objAddress.Addressee = "";
+                    objAddress.Addressee = String.IsNullOrEmpty(objAddressResponse.Addressee) ? "" : objAddressResponse.Addressee;
                     objAddress.AddressGuid = Guid.NewGuid().ToString();
                     objAddress.Authenticator = Guid.NewGuid().ToString();
                     objAddress.CountryId = 235;
@@ -128,7 +129,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
                     objIndAddress.IsActive = objAddressResponse.IsActive;
                     objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
-                    objIndAddress.BeginDate = DateTime.Now;
+                    objIndAddress.BeginDate = objAddressResponse.BeginDate;
+                    objIndAddress.EndDate = objAddressResponse.EndDate;
                     objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
                     objIndAddressBAL.Save_IndividualAddress(objIndAddress);
 

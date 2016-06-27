@@ -16,5 +16,11 @@ namespace LAPP.BAL
         {
             return objDAL.Save_ProvClinicHours(objProvClinicHours);
         }
+
+        public ProvClinicHours Get_ProvClinicHours(int ProviderId)
+        {
+            return objDAL.Get_ProvClinicHours(ProviderId);
+        }
     }
+
 }

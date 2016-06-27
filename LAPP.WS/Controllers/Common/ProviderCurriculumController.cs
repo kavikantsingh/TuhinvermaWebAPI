@@ -140,9 +140,9 @@ namespace LAPP.WS.Controllers.Common
                     objProvReqCourseTitleEntity.IsDeleted = objProvReqCourseTitle.IsDeleted;
                     objProvReqCourseTitleEntity.CreatedBy = objProvReqCourseTitle.CreatedBy;
                     objProvReqCourseTitleEntity.CreatedOn = objProvReqCourseTitle.CreatedOn;
-                    objProvReqCourseTitleEntity.ModifiedBy = objProvReqCourseTitle.ModifiedBy;
-                    objProvReqCourseTitleEntity.ModifiedOn = objProvReqCourseTitle.ModifiedOn;
-                    objProvReqCourseTitleEntity.ProviderOtherProgramGuid = objProvReqCourseTitle.ProviderOtherProgramGuid;
+                    //objProvReqCourseTitleEntity.ModifiedBy = objProvReqCourseTitle.ModifiedBy;
+                    //objProvReqCourseTitleEntity.ModifiedOn = objProvReqCourseTitle.ModifiedOn;
+                    objProvReqCourseTitleEntity.ProviderOtherProgramGuid = Guid.NewGuid().ToString();//objProvReqCourseTitle.ProviderOtherProgramGuid;
 
                     objProvReqCourseTitleBAL.Save_ProvReqCourseTitle(objProvReqCourseTitleEntity);
 
@@ -255,8 +255,6 @@ namespace LAPP.WS.Controllers.Common
         /// </summary>
         /// <param name="Key">API Security Key</param>
         /// <param name="objProvClinicHours">object to receive all values</param>
-
-
         [AcceptVerbs("POST")]
         [ActionName("ProvClinicHours")]
         public ProvClinicHoursResponse ProvClinicHours(string Key, ProvClinicHours objProvClinicHours)
@@ -291,9 +289,9 @@ namespace LAPP.WS.Controllers.Common
                     objProvClinicHoursEntity.IsDeleted = objProvClinicHours.IsDeleted;
                     objProvClinicHoursEntity.CreatedBy = objProvClinicHours.CreatedBy;
                     objProvClinicHoursEntity.CreatedOn = objProvClinicHours.CreatedOn;
-                    objProvClinicHoursEntity.ModifiedBy = objProvClinicHours.ModifiedBy;
-                    objProvClinicHoursEntity.ModifiedOn = objProvClinicHours.ModifiedOn;
-                    objProvClinicHoursEntity.ProvClinicHoursGuid = objProvClinicHours.ProvClinicHoursGuid;
+                    //objProvClinicHoursEntity.ModifiedBy = objProvClinicHours.ModifiedBy;
+                    //objProvClinicHoursEntity.ModifiedOn = objProvClinicHours.ModifiedOn;
+                    objProvClinicHoursEntity.ProvClinicHoursGuid = Guid.NewGuid().ToString();// objProvClinicHours.ProvClinicHoursGuid;
 
                     objProvReqCourseTitleBAL.Save_ProvClinicHours(objProvClinicHoursEntity);
 
@@ -323,5 +321,63 @@ namespace LAPP.WS.Controllers.Common
             }
             return objResponse;
         }
+
+        /// <summary>
+        /// This API used to save clinic hours in ProvClinicHours table in database.
+        /// </summary>
+        /// <param name="Key">API Security Key</param>
+        /// <param name="ProviderId">Provider Id</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ProvClinicHoursGetByProviderId")]
+        public ProvClinicHoursResponse ProvClinicHoursGetByProviderId(string Key, int ProviderId)
+        {
+            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo();
+
+            ProvClinicHoursResponse objResponse = new ProvClinicHoursResponse();
+
+            ProvClinicHoursBAL objProvClinicHoursBAL = new ProvClinicHoursBAL();
+            ProvClinicHours objEntity = new ProvClinicHours();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Message = "User session has expired.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                objEntity = objProvClinicHoursBAL.Get_ProvClinicHours(ProviderId);
+                if (objEntity != null)
+                {
+                    objResponse.ResponseReason = "To Get ProvClinicHours by ProviderId";
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ProvClinicHours = objEntity;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ProvClinicHours = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProvClinicHoursGetByProviderId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ProvClinicHours= null;
+            }
+            return objResponse;
+        }
+
+
     }
 }

@@ -119,6 +119,7 @@
     <Compile Include="ProviderLogin.cs" />
     <Compile Include="ProviderName.cs" />
     <Compile Include="ProviderRegister.cs" />
+    <Compile Include="ProviderStaff.cs" />
     <Compile Include="ProviderStatusType.cs" />
     <Compile Include="ProviderUser.cs" />
     <Compile Include="ProvReqCourseOfStudy.cs" />

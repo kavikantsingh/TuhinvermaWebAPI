@@ -25,10 +25,11 @@ namespace LAPP.WS.Controllers.Common
         /// <param name="Key"></param>
         /// <param name="objPaymentRequest"></param>
         /// <param name="AffirmativeAction"></param>
+        /// <param name="IsBackofficePayment"></param>
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("ProcessPayment")]
-        public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest, string AffirmativeAction="")
+        public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest, string AffirmativeAction="", bool IsBackofficePayment=false)
         {
             if(string.IsNullOrEmpty(AffirmativeAction))
             {
@@ -83,7 +84,7 @@ namespace LAPP.WS.Controllers.Common
                 //{
                 Token objToken = TokenHelper.GetTokenByKey(Key);
 
-                objResponse = AuthorizeDotNetPayment.ProcessPayment(objPaymentRequest, objToken.UserId, AffirmativeAction, objToken);
+                objResponse = AuthorizeDotNetPayment.ProcessPayment(objPaymentRequest, objToken.UserId, AffirmativeAction, objToken, IsBackofficePayment);
                 // transScope.Complete();
                 //}
 
