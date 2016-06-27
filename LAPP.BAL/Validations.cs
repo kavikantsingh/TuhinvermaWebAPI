@@ -491,6 +491,34 @@ namespace LAPP.BAL.ValidateClass
         /// <param name="PropertyValue"></param>
         /// <param name="ObjReasonList"></param> /// <param name="Maxlength"></param>
         /// <returns></returns>
+        /// 
+        public static List<ResponseReason> IsValidIntDecimalGraterThenZero(string PropertyName, string PropertyValue, List<ResponseReason> ObjReasonList, int Maxlength = 0)
+        {
+
+            string Code = "FR";
+            if (!string.IsNullOrEmpty(IsValidIntDecimal(PropertyValue)))
+            {
+                ResponseReason objValidationResponse = new ResponseReason();
+                objValidationResponse.Code = Code;
+                objValidationResponse.PropertyName = PropertyName;
+                objValidationResponse.Message = "Please enter valid " + GeneralFunctions.GetSplitedCamelCase(PropertyName).ToLower() + ". " + ValidateLength(PropertyValue, Maxlength);
+
+                ObjReasonList.Add(objValidationResponse);
+
+            }
+            if (Convert.ToDecimal(PropertyValue) <= 0)
+            {
+                ResponseReason objValidationResponse = new ResponseReason();
+                objValidationResponse.Code = Code;
+                objValidationResponse.PropertyName = PropertyName;
+                objValidationResponse.Message = GeneralFunctions.GetSplitedCamelCase(PropertyName).ToLower() + " " + "is required. Should be greater than 0. ";
+
+                ObjReasonList.Add(objValidationResponse);
+            }
+            return ObjReasonList;
+
+        }
+
         public static List<ResponseReason> IsValidIntDecimalProperty(string PropertyName, string PropertyValue, List<ResponseReason> ObjReasonList, int Maxlength = 0)
         {
 
@@ -508,6 +536,8 @@ namespace LAPP.BAL.ValidateClass
             return ObjReasonList;
 
         }
+
+
         private static string IsValidIntDecimal(string inputInt, string errormessag = "error")
         {
             string result = "";
