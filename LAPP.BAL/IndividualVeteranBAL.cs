@@ -26,7 +26,7 @@ namespace LAPP.BAL
         {
             return objDal.Get_IndividualVeteran_By_IndividualVeteranId(ID);
         }
- public IndividualVeteran Get_IndividualVeteran_By_IndividualId(int ID)
+        public IndividualVeteran Get_IndividualVeteran_By_IndividualId(int ID)
         {
             return objDal.Get_IndividualVeteran_By_IndividualId(ID);
         }

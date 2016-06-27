@@ -26,8 +26,8 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("IsDeleted", objProvReqCourseTitle.IsDeleted));
             lstParameter.Add(new MySqlParameter("CreatedBy", objProvReqCourseTitle.CreatedBy));
             lstParameter.Add(new MySqlParameter("CreatedOn", objProvReqCourseTitle.CreatedOn));
-            lstParameter.Add(new MySqlParameter("ModifiedBy", objProvReqCourseTitle.ModifiedBy));
-            lstParameter.Add(new MySqlParameter("ModifiedOn", objProvReqCourseTitle.ModifiedOn));
+            //lstParameter.Add(new MySqlParameter("ModifiedBy", objProvReqCourseTitle.ModifiedBy));
+            //lstParameter.Add(new MySqlParameter("ModifiedOn", objProvReqCourseTitle.ModifiedOn));
             lstParameter.Add(new MySqlParameter("ProviderOtherProgramGuid", objProvReqCourseTitle.ProviderOtherProgramGuid));
 
             //MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);

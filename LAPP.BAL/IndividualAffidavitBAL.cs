@@ -22,7 +22,7 @@ namespace LAPP.BAL
             return objDal.Get_All_IndividualAffidavit();
         }
 
-        public IndividualAffidavit Get_address_By_IndividualAffidavitId(int ID)
+        public IndividualAffidavit Get_IndividualAffidavit_By_IndividualAffidavitId(int ID)
         {
             return objDal.Get_IndividualAffidavit_By_IndividualAffidavitId(ID);
         }

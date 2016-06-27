@@ -14,6 +14,7 @@ namespace LAPP.DAL
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("ApplicationId", objProvider.ApplicationId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProvider.ProviderId));
             lstParameter.Add(new MySqlParameter("IndividualId", objProvider.IndividualId));
             lstParameter.Add(new MySqlParameter("ProviderName", objProvider.ProviderName));
             lstParameter.Add(new MySqlParameter("DateofNameChange", objProvider.DateofNameChange));
@@ -36,7 +37,7 @@ namespace LAPP.DAL
         }
 
 
-        public List<ProviderNames> GetAllPreviousSchools(int applicationId)
+        public List<ProviderNames> GetAllPreviousSchools(int applicationId,int providerid)
         {
 
             DataSet ds = new DataSet("DS");
@@ -45,6 +46,7 @@ namespace LAPP.DAL
 
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             lstParameter.Add(new MySqlParameter("ApplicationId", applicationId));
+            lstParameter.Add(new MySqlParameter("ProviderId", providerid));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Provider_Get_PreviousSchools", lstParameter.ToArray());
             List<ProviderNames> lstEntity = new List<ProviderNames>();
             ProviderNames objEntity = null;

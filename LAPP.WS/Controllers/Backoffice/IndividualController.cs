@@ -1802,6 +1802,17 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.IndividualDocumentGetList = null;
                     return objResponse;
                 }
+                try
+                {
+                    string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(ID);
+                    LogingHelper.SaveRequestJson(requestStr, "IndividualDocumentDeleteByID Request");
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "IndividualDocumentDeleteByID object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
+
 
                 objIndividualDocument = objIndividualDocumentBAL.Get_IndividualDocument_By_IndividualDocumentId(ID);
                 if (objIndividualDocument != null)
@@ -1864,17 +1875,14 @@ namespace LAPP.WS.Controllers.Backoffice
 
             try
             {
-                if (System.Web.HttpContext.Current.IsDebuggingEnabled)
-                {
-                    // this is executed only in the debug version
-                    string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualDocumentResponse);
-                    LogingHelper.SaveRequestJson("none only capture Transaction Id", ("Document upload object-" + objIndividualDocumentResponse.TransactionId.ToString()));
-                }
+                // this is executed only in the debug version
+                string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualDocumentResponse);
+                LogingHelper.SaveRequestJson("none only capture Transaction Id", ("IndividualDocumentSave upload object-" + objIndividualDocumentResponse.TransactionId.ToString() + objIndividualDocumentResponse.IndividualId.ToString()));
 
             }
             catch (Exception ex)
             {
-                LogingHelper.SaveExceptionInfo(Key, ex, ("Document upload object failed- " + objIndividualDocumentResponse.TransactionId.ToString()), ENTITY.Enumeration.eSeverity.Critical);
+                LogingHelper.SaveExceptionInfo(Key, ex, ("IndividualDocumentSave upload object failed- " + objIndividualDocumentResponse.TransactionId.ToString() + objIndividualDocumentResponse.IndividualId.ToString()), ENTITY.Enumeration.eSeverity.Critical);
             }
 
 
@@ -2236,17 +2244,15 @@ namespace LAPP.WS.Controllers.Backoffice
 
                 try
                 {
-                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
-                    {
-                        // this is executed only in the debug version
-                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualDocumentResponse);
-                        LogingHelper.SaveRequestJson(requestStr, ("HTML Document upload object  -" + objIndividualDocumentResponse.TransactionId.ToString()));
-                    }
+
+                    // this is executed only in the debug version
+                    string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualDocumentResponse);
+                    LogingHelper.SaveRequestJson(requestStr, ("IndividualDocumentSaveByHTML upload object  -" + objIndividualDocumentResponse.IndividualId.ToString()));
 
                 }
                 catch (Exception ex)
                 {
-                    LogingHelper.SaveExceptionInfo(Key, ex, (" HTML Document upload object failed- " + objIndividualDocumentResponse.TransactionId.ToString()), ENTITY.Enumeration.eSeverity.Critical);
+                    LogingHelper.SaveExceptionInfo(Key, ex, ("IndividualDocumentSaveByHTML upload object failed- " + objIndividualDocumentResponse.IndividualId.ToString()), ENTITY.Enumeration.eSeverity.Critical);
                 }
 
 
