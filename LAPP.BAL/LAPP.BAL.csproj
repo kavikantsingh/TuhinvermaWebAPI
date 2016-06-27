@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApprovalAgencyBAL.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualAddressCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualCorrespondenceCS.cs" />
     <Compile Include="Backoffice\IndividualFolder\IndividualDocumentCS.cs" />

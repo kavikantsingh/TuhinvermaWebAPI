@@ -9,3 +9,17 @@ D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.LOGING\bin\Debug\LAP
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.LOGING\obj\Debug\LAPP.LOGING.csprojResolveAssemblyReference.cache
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.LOGING\obj\Debug\LAPP.LOGING.dll
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.LOGING\obj\Debug\LAPP.LOGING.pdb
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\LAPP.LOGING.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\LAPP.LOGING.pdb
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\LAPP.DAL.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\LAPP.ENTITY.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\MySql.Data.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\Newtonsoft.Json.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\LAPP.DAL.pdb
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\LAPP.ENTITY.pdb
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\System.Web.Http.xml
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.xml
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\obj\Debug\LAPP.LOGING.csprojResolveAssemblyReference.cache
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\obj\Debug\LAPP.LOGING.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.LOGING\obj\Debug\LAPP.LOGING.pdb

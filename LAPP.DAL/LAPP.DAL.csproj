@@ -96,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApprovalAgencyDAL.cs" />
     <Compile Include="DocumentMasterDAL.cs" />
     <Compile Include="GetNullByDataType.cs" />
     <Compile Include="IndividualCommentLogDAL.cs" />

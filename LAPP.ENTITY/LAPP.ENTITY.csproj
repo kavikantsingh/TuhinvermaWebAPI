@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="AddressType.cs" />
+    <Compile Include="ApprovalAgency.cs" />
     <Compile Include="ContentLkToPageTabSection.cs" />
     <Compile Include="ContentItemLk.cs" />
     <Compile Include="DocumentMaster.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="ProvClinicHours.cs" />
     <Compile Include="Provider.cs" />
     <Compile Include="ProviderAddress.cs" />
+    <Compile Include="ProviderAddressCommonEntity.cs" />
     <Compile Include="ProviderApplicationGET.cs" />
     <Compile Include="IndividualComment.cs" />
     <Compile Include="ProviderContact.cs" />

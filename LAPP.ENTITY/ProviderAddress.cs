@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LAPP.ENTITY
 {
-    public class ProviderAddress : BaseEntity
+    public class ProviderAddress : AddressResponse
 
     {
         public int ProviderAddressId { get; set; }
