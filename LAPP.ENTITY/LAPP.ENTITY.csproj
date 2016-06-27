@@ -132,6 +132,7 @@
     <Compile Include="Template.cs" />
     <Compile Include="ShoppingCart.cs" />
     <Compile Include="RevFeeMaster.cs" />
+    <Compile Include="TemplateAppliesToType.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="TemplateAttachment.cs" />
     <Compile Include="TemplateType.cs" />

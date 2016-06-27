@@ -16,9 +16,9 @@ namespace LAPP.BAL
             return objDal.Save_TemplateType(objTemplateType);
         }
 
-        public List<TemplateType> Get_All_TemplateType()
+        public List<TemplateType> GetAllTemplateType()
         {
-            return objDal.Get_All_TemplateType();
+            return objDal.GetAllTemplateType();
         }
 
 

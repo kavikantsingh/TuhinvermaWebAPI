@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using System.Data;
-using MySql.Data.MySqlClient;
 using LAPP.ENTITY;
+using MySql.Data.MySqlClient;
+
 namespace LAPP.DAL
 {
     public class TemplateTypeDAL : BaseDAL
@@ -29,11 +27,11 @@ namespace LAPP.DAL
             return returnValue;
         }
 
-        public List<TemplateType> Get_All_TemplateType()
+        public List<TemplateType> GetAllTemplateType()
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "TEMPLATETYPE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "sp_templatetype_selectAll");
             List<TemplateType> lstEntity = new List<TemplateType>();
             TemplateType objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

@@ -219,6 +219,7 @@
     <Compile Include="Controllers\Backoffice\DocumentController.cs" />
     <Compile Include="Controllers\Backoffice\IndividualController.cs" />
     <Compile Include="Controllers\Backoffice\PageController.cs" />
+    <Compile Include="Controllers\Backoffice\TemplateController.cs" />
     <Compile Include="Controllers\Common\CommonController.cs" />
     <Compile Include="Controllers\Common\CountryController.cs" />
     <Compile Include="Controllers\Common\EmployerController.cs" />

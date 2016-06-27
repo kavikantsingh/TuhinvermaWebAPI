@@ -1,19 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace LAPP.ENTITY
 {
     public class Template : BaseEntity
-
     {
         public int TemplateId { get; set; }
         public string TemplateCode { get; set; }
         public string TemplateName { get; set; }
+        public string TemplateDesc { get; set; }
         public string TemplateSubject { get; set; }
         public string TemplateMessage { get; set; }
         public int TemplateTypeId { get; set; }
+        public int TemplateAppliesToTypeId { get; set; }
+        public int ApplicationTypeId { get; set; }
         public int MasterTransactionId { get; set; }
         public int PageModuleId { get; set; }
         public int PageModuleTabSubModuleId { get; set; }

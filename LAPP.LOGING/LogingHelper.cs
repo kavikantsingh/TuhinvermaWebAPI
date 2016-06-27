@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LAPP.LOGING.ENTITY;
-using LAPP.LOGING.DAL;
 using System.Web;
 using LAPP.ENTITY;
 using LAPP.ENTITY.Enumeration;
+using LAPP.LOGING.DAL;
+using LAPP.LOGING.ENTITY;
+using Newtonsoft.Json;
 
 namespace LAPP.LOGING
 {
@@ -32,7 +29,7 @@ namespace LAPP.LOGING
                 objAuditInfo.IsCrawler = obj.Crawler;
                 objAuditInfo.IsJavascriptEnabled = obj.JavaScript;
                 objAuditInfo.RequestUrl = HttpContext.Current.Request.Url.AbsoluteUri;
-                objAuditInfo.Platform = System.Environment.OSVersion.VersionString;
+                objAuditInfo.Platform = Environment.OSVersion.VersionString;
                 objAuditInfo.SessionID = "";
                 objAuditInfo.TimeStamp = DateTime.Now;
                 objAuditInfo.UserId = 0;
@@ -94,7 +91,6 @@ namespace LAPP.LOGING
             catch (Exception ex)
             {
 
-
             }
             return objLog;
         }
@@ -118,7 +114,7 @@ namespace LAPP.LOGING
                 objLog.AppDomainName = HttpContext.Current.Request.Url.OriginalString;
                 objLog.RequestUrlReferrer = HttpContext.Current.Request.UrlReferrer != null ? HttpContext.Current.Request.UrlReferrer.AbsoluteUri : "";
                 objLog.Timestamp = DateTime.Now;
-                objLog.Exception = Newtonsoft.Json.JsonConvert.SerializeObject(objRenewalRequest);
+                objLog.Exception = JsonConvert.SerializeObject(objRenewalRequest);
                 objLog.Application = "LAPP";
                 objLog.AppDomainName = AppDomainName;
                 objLog.CreatedOn = DateTime.Now;
