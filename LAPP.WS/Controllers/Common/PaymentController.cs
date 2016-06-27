@@ -108,6 +108,94 @@ namespace LAPP.WS.Controllers.Common
 
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="objPaymentRequest"></param>
+        /// <param name="AffirmativeAction"></param>
+        /// <param name="IsBackofficePayment"></param>
+        /// <returns></returns>
+        [AcceptVerbs("POST")]
+        [ActionName("ProcessManualPayment")]
+        public ManualPaymentResponse ProcessManualPayment(string Key, ManualPaymentRequest objPaymentRequest, string AffirmativeAction = "", bool IsBackofficePayment = false)
+        {
+            if (string.IsNullOrEmpty(AffirmativeAction))
+            {
+                AffirmativeAction = "";
+            }
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            ManualPaymentResponse objResponse = new ManualPaymentResponse();
+            PaymentAuthResponse objAuthorization = new PaymentAuthResponse();
+
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    return objResponse;
+                }
+
+
+                #region Validation
+                PaymentResponse objValidationResponse = new PaymentResponse();
+                //objValidationResponse = PaymentValidation.ValidateRequest(objPaymentRequest);
+                //if (objValidationResponse != null)
+                //{
+                //    return objValidationResponse;
+                //}
+
+                #endregion
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objPaymentRequest);
+                        LogingHelper.SaveRequestJson(requestStr, ("Process Payment request. AffirmativeAction=" + AffirmativeAction));
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ProcessPayment object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
+
+                //using (TransactionScope transScope = new TransactionScope(new TransactionScopeOption {ti))
+                //{
+                Token objToken = TokenHelper.GetTokenByKey(Key);
+
+                objResponse = BAL.Payment.InitiatePayment.ProcessManualPayment(objPaymentRequest, objToken.UserId, AffirmativeAction, objToken, IsBackofficePayment);
+                // transScope.Complete();
+                //}
+
+                return objResponse;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProcessPayment", ENTITY.Enumeration.eSeverity.Critical);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+
+            }
+            return objResponse;
+
+
+        }
+
         /// <summary>
         /// 
         /// </summary>
