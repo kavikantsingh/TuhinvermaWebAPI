@@ -15,16 +15,19 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("TemplateId", objTemplate.TemplateId));
             lstParameter.Add(new MySqlParameter("TemplateCode", objTemplate.TemplateCode));
+            lstParameter.Add(new MySqlParameter("TemplateDesc", objTemplate.TemplateDesc));
             lstParameter.Add(new MySqlParameter("TemplateName", objTemplate.TemplateName));
             lstParameter.Add(new MySqlParameter("TemplateSubject", objTemplate.TemplateSubject));
             lstParameter.Add(new MySqlParameter("TemplateMessage", objTemplate.TemplateMessage));
             lstParameter.Add(new MySqlParameter("TemplateTypeId", objTemplate.TemplateTypeId));
+            lstParameter.Add(new MySqlParameter("TemplateAppliesToTypeId", objTemplate.TemplateAppliesToTypeId));
+            lstParameter.Add(new MySqlParameter("ApplicationTypeId", objTemplate.ApplicationTypeId));
             lstParameter.Add(new MySqlParameter("MasterTransactionId", objTemplate.MasterTransactionId));
             lstParameter.Add(new MySqlParameter("PageModuleId", objTemplate.PageModuleId));
             lstParameter.Add(new MySqlParameter("PageModuleTabSubModuleId", objTemplate.PageModuleTabSubModuleId));
             lstParameter.Add(new MySqlParameter("PageTabSectionId", objTemplate.PageTabSectionId));
-            lstParameter.Add(new MySqlParameter("EffectiveDate", objTemplate.EffectiveDate));
-            lstParameter.Add(new MySqlParameter("EndDate", objTemplate.EndDate));
+            lstParameter.Add(new MySqlParameter("EffectiveDate", objTemplate.EffectiveDate.ToLocalTime()));
+            lstParameter.Add(new MySqlParameter("EndDate", objTemplate.EndDate.ToLocalTime()));
             lstParameter.Add(new MySqlParameter("IsEnabled", objTemplate.IsEnabled));
             lstParameter.Add(new MySqlParameter("IsEditable", objTemplate.IsEditable));
             lstParameter.Add(new MySqlParameter("IsActive", objTemplate.IsActive));
@@ -45,7 +48,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "TEMPLATE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "sp_template_selectAll");
             List<Template> lstEntity = new List<Template>();
             Template objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -68,6 +71,10 @@ namespace LAPP.DAL
             {
                 objEntity.TemplateCode = Convert.ToString(dr["TemplateCode"]);
             }
+            if (dr.Table.Columns.Contains("TemplateDesc") && dr["TemplateDesc"] != DBNull.Value)
+            {
+                objEntity.TemplateDesc = Convert.ToString(dr["TemplateDesc"]);
+            }
             if (dr.Table.Columns.Contains("TemplateName") && dr["TemplateName"] != DBNull.Value)
             {
                 objEntity.TemplateName = Convert.ToString(dr["TemplateName"]);
@@ -83,6 +90,14 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("TemplateTypeId") && dr["TemplateTypeId"] != DBNull.Value)
             {
                 objEntity.TemplateTypeId = Convert.ToInt32(dr["TemplateTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("TemplateAppliesToTypeId") && dr["TemplateAppliesToTypeId"] != DBNull.Value)
+            {
+                objEntity.TemplateAppliesToTypeId = Convert.ToInt32(dr["TemplateAppliesToTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationTypeId") && dr["ApplicationTypeId"] != DBNull.Value)
+            {
+                objEntity.ApplicationTypeId = Convert.ToInt32(dr["ApplicationTypeId"]);
             }
             if (dr.Table.Columns.Contains("MasterTransactionId") && dr["MasterTransactionId"] != DBNull.Value)
             {
@@ -142,6 +157,41 @@ namespace LAPP.DAL
             }
             return objEntity;
 
+        }
+
+        public Template GetTemplateById(int id)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EntityId", id));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "sp_template_selectById", lstParameter.ToArray());
+            Template objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+
+        public void DeleteTemplateById(int id)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EntityId", id));
+            objDB.ExecuteDataSet(CommandType.StoredProcedure, "sp_template_deleteById", lstParameter.ToArray());
+        }
+
+        public void UpdateTemplate(Template template)
+        {
+            Save_Template(template);
+        }
+
+        public int CreateTemplate(Template template)
+        {
+            return Save_Template(template);
         }
     }
 }

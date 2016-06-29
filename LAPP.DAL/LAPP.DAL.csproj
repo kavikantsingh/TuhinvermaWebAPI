@@ -119,6 +119,7 @@
     <Compile Include="RevFeeDisbDAL.cs" />
     <Compile Include="ShoppingCartDAL.cs" />
     <Compile Include="RevFeeCollectDAL.cs" />
+    <Compile Include="TemplateAppliesToTypeDAL.cs" />
     <Compile Include="TransactionDAL.cs" />
     <Compile Include="IndividualRenewalDAL.cs" />
     <Compile Include="EmployerTypeDAL.cs" />

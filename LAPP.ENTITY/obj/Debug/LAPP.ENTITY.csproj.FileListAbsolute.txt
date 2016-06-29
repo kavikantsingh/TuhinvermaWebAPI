@@ -3,8 +3,3 @@ D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.ENTITY\bin\Debug\LAP
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.csprojResolveAssemblyReference.cache
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.dll
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.pdb
-C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.dll
-C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.pdb
-C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.csprojResolveAssemblyReference.cache
-C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.dll
-C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.pdb
