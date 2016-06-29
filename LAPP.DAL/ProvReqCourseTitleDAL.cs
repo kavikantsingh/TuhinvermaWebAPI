@@ -43,7 +43,7 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("CourseOfStudyId", CourseOfStudyId));
-            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("ProvId", ProviderId));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ProvReqCourseTitle_Get_All", lstParameter.ToArray());
             List<ProvReqCourseTitle> lstEntity = new List<ProvReqCourseTitle>();
             ProvReqCourseTitle objEntity = null;
