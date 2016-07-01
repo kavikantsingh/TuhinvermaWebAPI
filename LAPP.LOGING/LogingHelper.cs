@@ -5,6 +5,9 @@ using LAPP.ENTITY.Enumeration;
 using LAPP.LOGING.DAL;
 using LAPP.LOGING.ENTITY;
 using Newtonsoft.Json;
+using System.Configuration;
+using LAPP.GlobalFunctions;
+using System.Linq;
 
 namespace LAPP.LOGING
 {
@@ -32,7 +35,16 @@ namespace LAPP.LOGING
                 objAuditInfo.Platform = Environment.OSVersion.VersionString;
                 objAuditInfo.SessionID = "";
                 objAuditInfo.TimeStamp = DateTime.Now;
-                objAuditInfo.UserId = 0;
+
+                if (!string.IsNullOrEmpty(Key))
+                {
+                    objAuditInfo.UserId = GetTokenByKey(Key).UserId; 
+                }
+                else
+                {
+                    objAuditInfo.UserId = 0;
+                }
+
                 objAuditInfo.UserName = "";
                 objAuditInfo.IndividualId = 0;
                 objAuditInfo.EntityId = 0;
@@ -193,6 +205,59 @@ namespace LAPP.LOGING
 
             }
 
+        }
+
+        private static Token GetTokenByKey(string Key)
+        {
+            
+            if (ConfigurationManager.AppSettings["DevelopmentMode"] == "true")
+            {
+                Token tc = new Token();
+                tc.UserHostIPAdress = "27:0:0:1";
+                tc.UserId = 0;
+                tc.TokenId = 123;
+                tc.RequestBrowsertypeVersion = "DevBrowser-4.0";
+                return tc;
+            }
+
+            try
+            {
+                string decryptedStr = Encryption.Base64Decrypt(Key);
+                string[] valueArray = decryptedStr.Split('|');
+
+                if (valueArray != null && valueArray.Count() > 0)
+                {
+                    Int64 KeyTokenID = 0; int KeyUserID = 0; string KeyUserHostIPAddress = ""; string KeyRequestBrowsertypeVersion = "";
+                    if (valueArray[0] != null)
+                    {
+                        KeyTokenID = Convert.ToInt64(valueArray[0].ToString());
+                    }
+                    if (valueArray[1] != null)
+                    {
+                        KeyUserID = Convert.ToInt32(valueArray[1].ToString());
+                    }
+                    if (valueArray[2] != null)
+                    {
+                        KeyUserHostIPAddress = valueArray[2];
+                    }
+                    if (valueArray[3] != null)
+                    {
+                        KeyRequestBrowsertypeVersion = valueArray[3];
+                    }
+
+                    Token tc = new Token();
+                    tc.UserHostIPAdress = KeyUserHostIPAddress;
+                    tc.UserId = KeyUserID;
+                    tc.TokenId = KeyTokenID;
+                    tc.RequestBrowsertypeVersion = KeyRequestBrowsertypeVersion;
+                    return tc;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return null;
         }
     }
 }
