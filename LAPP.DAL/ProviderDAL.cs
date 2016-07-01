@@ -364,6 +364,346 @@ namespace LAPP.DAL
 
         }
 
+
+        public int SaveProviderOtherProgram(ProviderOtherProgramName objProviderOthrPrgrm)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ProviderOtherProgramId", objProviderOthrPrgrm.ProviderOtherProgramId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProviderOthrPrgrm.ProviderId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objProviderOthrPrgrm.ApplicationId));
+            lstParameter.Add(new MySqlParameter("ProgramOtherName", objProviderOthrPrgrm.ProgramOtherName));
+            lstParameter.Add(new MySqlParameter("ReferenceNumber", objProviderOthrPrgrm.ReferenceNumber));
+            lstParameter.Add(new MySqlParameter("IsActive", objProviderOthrPrgrm.IsActive));
+            lstParameter.Add(new MySqlParameter("IsDeleted", objProviderOthrPrgrm.IsDeleted));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objProviderOthrPrgrm.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objProviderOthrPrgrm.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objProviderOthrPrgrm.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objProviderOthrPrgrm.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("ProviderOtherProgramGuid", objProviderOthrPrgrm.ProviderOtherProgramGuid));
+            lstParameter.Add(new MySqlParameter("Actions", objProviderOthrPrgrm.Action));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "providerOtherProgram_Save", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
+        public List<ProviderOtherProgramName> GetAllProviderOtherProgram(int ApplicationId, int ProviderId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", ApplicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Get_ProviderProgramNameByProviderId", lstParameter.ToArray());
+            List<ProviderOtherProgramName> lstEntity = new List<ProviderOtherProgramName>();
+            ProviderOtherProgramName objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchOtherProgram(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private ProviderOtherProgramName FetchOtherProgram(DataRow dr)
+        {
+            ProviderOtherProgramName objEntity = new ProviderOtherProgramName();
+            if (dr.Table.Columns.Contains("ProviderOtherProgramId") && dr["ProviderOtherProgramId"] != DBNull.Value)
+            {
+                objEntity.ProviderOtherProgramId = Convert.ToInt32(dr["ProviderOtherProgramId"]);
+            }
+            if (dr.Table.Columns.Contains("ProviderId") && dr["ProviderId"] != DBNull.Value)
+            {
+                objEntity.ProviderId = Convert.ToInt32(dr["ProviderId"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationId") && dr["ApplicationId"] != DBNull.Value)
+            {
+                objEntity.ApplicationId = Convert.ToInt32(dr["ApplicationId"]);
+            }
+            if (dr.Table.Columns.Contains("ProgramOtherName") && dr["ProgramOtherName"] != DBNull.Value)
+            {
+                objEntity.ProgramOtherName = Convert.ToString(dr["ProgramOtherName"]);
+            }
+            if (dr.Table.Columns.Contains("ReferenceNumber") && dr["ReferenceNumber"] != DBNull.Value)
+            {
+                objEntity.ReferenceNumber = Convert.ToString(dr["ReferenceNumber"]);
+            }
+            if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
+            {
+                objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);
+            }
+            if (dr.Table.Columns.Contains("IsDeleted") && dr["IsDeleted"] != DBNull.Value)
+            {
+                objEntity.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedBy") && dr["CreatedBy"] != DBNull.Value)
+            {
+                objEntity.CreatedBy = Convert.ToInt32(dr["CreatedBy"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedOn") && dr["CreatedOn"] != DBNull.Value)
+            {
+                objEntity.CreatedOn = Convert.ToDateTime(dr["CreatedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedBy") && dr["ModifiedBy"] != DBNull.Value)
+            {
+                objEntity.ModifiedBy = Convert.ToInt32(dr["ModifiedBy"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedOn") && dr["ModifiedOn"] != DBNull.Value)
+            {
+                objEntity.ModifiedOn = Convert.ToDateTime(dr["ModifiedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ProviderOtherProgramGuid") && dr["ProviderOtherProgramGuid"] != DBNull.Value)
+            {
+                objEntity.ProviderOtherProgramGuid = Convert.ToString(dr["ProviderOtherProgramGuid"]);
+            }
+            return objEntity;
+
+        }
+
+
+        public int SaveProviderGraduatesNumber(ProviderGraduatesNumber objProviderGraduatesNo)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ProviderGraduatesNumberId", objProviderGraduatesNo.ProviderGraduatesNumberId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProviderGraduatesNo.ProviderId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objProviderGraduatesNo.ApplicationId));
+            lstParameter.Add(new MySqlParameter("CalendarYear", objProviderGraduatesNo.CalendarYear));
+            lstParameter.Add(new MySqlParameter("CalendarYearEstGradCount", objProviderGraduatesNo.CalendarYearEstGradCount));
+            lstParameter.Add(new MySqlParameter("CalendarYearActualGradCount", objProviderGraduatesNo.CalendarYearActualGradCount));
+            lstParameter.Add(new MySqlParameter("IsActive", objProviderGraduatesNo.IsActive));
+            lstParameter.Add(new MySqlParameter("IsDeleted", objProviderGraduatesNo.IsDeleted));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objProviderGraduatesNo.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objProviderGraduatesNo.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objProviderGraduatesNo.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objProviderGraduatesNo.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("ProviderGraduatesNumberGuid", objProviderGraduatesNo.ProviderGraduatesNumberGuid));
+            lstParameter.Add(new MySqlParameter("Action", objProviderGraduatesNo.Action));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "providerGraduatesNumber_Save", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
+        public List<ProviderGraduatesNumber> GetAllProviderGraduatesNumber(int ApplicationId, int ProviderId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", ApplicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Get_ProviderGraduatesNumberByProviderId", lstParameter.ToArray());
+            List<ProviderGraduatesNumber> lstEntity = new List<ProviderGraduatesNumber>();
+            ProviderGraduatesNumber objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchGraduatesNumber(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private ProviderGraduatesNumber FetchGraduatesNumber(DataRow dr)
+        {
+            ProviderGraduatesNumber objEntity = new ProviderGraduatesNumber();
+            if (dr.Table.Columns.Contains("ProviderGraduatesNumberId") && dr["ProviderGraduatesNumberId"] != DBNull.Value)
+            {
+                objEntity.ProviderGraduatesNumberId = Convert.ToInt32(dr["ProviderGraduatesNumberId"]);
+            }
+            if (dr.Table.Columns.Contains("ProviderId") && dr["ProviderId"] != DBNull.Value)
+            {
+                objEntity.ProviderId = Convert.ToInt32(dr["ProviderId"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationId") && dr["ApplicationId"] != DBNull.Value)
+            {
+                objEntity.ApplicationId = Convert.ToInt32(dr["ApplicationId"]);
+            }
+            if (dr.Table.Columns.Contains("CalendarYear") && dr["CalendarYear"] != DBNull.Value)
+            {
+                objEntity.CalendarYear = Convert.ToInt32(dr["CalendarYear"]);
+            }
+            if (dr.Table.Columns.Contains("CalendarYearEstGradCount") && dr["CalendarYearEstGradCount"] != DBNull.Value)
+            {
+                objEntity.CalendarYearEstGradCount = Convert.ToInt32(dr["CalendarYearEstGradCount"]);
+            }
+            if (dr.Table.Columns.Contains("CalendarYearActualGradCount") && dr["CalendarYearActualGradCount"] != DBNull.Value)
+            {
+                objEntity.CalendarYearActualGradCount = Convert.ToInt32(dr["CalendarYearActualGradCount"]);
+            }
+            if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
+            {
+                objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);
+            }
+            if (dr.Table.Columns.Contains("IsDeleted") && dr["IsDeleted"] != DBNull.Value)
+            {
+                objEntity.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedBy") && dr["CreatedBy"] != DBNull.Value)
+            {
+                objEntity.CreatedBy = Convert.ToInt32(dr["CreatedBy"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedOn") && dr["CreatedOn"] != DBNull.Value)
+            {
+                objEntity.CreatedOn = Convert.ToDateTime(dr["CreatedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedBy") && dr["ModifiedBy"] != DBNull.Value)
+            {
+                objEntity.ModifiedBy = Convert.ToInt32(dr["ModifiedBy"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedOn") && dr["ModifiedOn"] != DBNull.Value)
+            {
+                objEntity.ModifiedOn = Convert.ToDateTime(dr["ModifiedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ProviderGraduatesNumberGuid") && dr["ProviderGraduatesNumberGuid"] != DBNull.Value)
+            {
+                objEntity.ProviderGraduatesNumberGuid = Convert.ToString(dr["ProviderGraduatesNumberGuid"]);
+            }
+            return objEntity;
+
+        }
+
+
+        public int SaveProviderBusinessType(ProviderBusinessType objProviderBusinessType)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ProviderBusinessTypeId", objProviderBusinessType.ProviderBusinessTypeId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProviderBusinessType.ProviderId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objProviderBusinessType.ApplicationId));
+            lstParameter.Add(new MySqlParameter("BusinessOrgTypeId", objProviderBusinessType.BusinessOrgTypeId));
+            lstParameter.Add(new MySqlParameter("IsActive", objProviderBusinessType.IsActive));
+            lstParameter.Add(new MySqlParameter("IsDeleted", objProviderBusinessType.IsDeleted));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objProviderBusinessType.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objProviderBusinessType.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objProviderBusinessType.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objProviderBusinessType.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("ProviderBusinessTypeGuid", objProviderBusinessType.ProviderBusinessTypeGuid));
+            lstParameter.Add(new MySqlParameter("Action", objProviderBusinessType.Action));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "providerBusinessType_Save", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
+        public List<ProviderBusinessType> GetAllProviderBusinessType(int ApplicationId, int ProviderId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", ApplicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Get_ProviderBusinessTypeByProviderId", lstParameter.ToArray());
+            List<ProviderBusinessType> lstEntity = new List<ProviderBusinessType>();
+            ProviderBusinessType objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchBusinessType(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private ProviderBusinessType FetchBusinessType(DataRow dr)
+        {
+            ProviderBusinessType objEntity = new ProviderBusinessType();
+            if (dr.Table.Columns.Contains("ProviderBusinessTypeId") && dr["ProviderBusinessTypeId"] != DBNull.Value)
+            {
+                objEntity.ProviderBusinessTypeId = Convert.ToInt32(dr["ProviderBusinessTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("ProviderId") && dr["ProviderId"] != DBNull.Value)
+            {
+                objEntity.ProviderId = Convert.ToInt32(dr["ProviderId"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationId") && dr["ApplicationId"] != DBNull.Value)
+            {
+                objEntity.ApplicationId = Convert.ToInt32(dr["ApplicationId"]);
+            }
+            if (dr.Table.Columns.Contains("BusinessOrgTypeId") && dr["BusinessOrgTypeId"] != DBNull.Value)
+            {
+                objEntity.BusinessOrgTypeId = Convert.ToInt32(dr["BusinessOrgTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
+            {
+                objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);
+            }
+            if (dr.Table.Columns.Contains("IsDeleted") && dr["IsDeleted"] != DBNull.Value)
+            {
+                objEntity.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedBy") && dr["CreatedBy"] != DBNull.Value)
+            {
+                objEntity.CreatedBy = Convert.ToInt32(dr["CreatedBy"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedOn") && dr["CreatedOn"] != DBNull.Value)
+            {
+                objEntity.CreatedOn = Convert.ToDateTime(dr["CreatedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedBy") && dr["ModifiedBy"] != DBNull.Value)
+            {
+                objEntity.ModifiedBy = Convert.ToInt32(dr["ModifiedBy"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedOn") && dr["ModifiedOn"] != DBNull.Value)
+            {
+                objEntity.ModifiedOn = Convert.ToDateTime(dr["ModifiedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ProviderBusinessTypeGuid") && dr["ProviderBusinessTypeGuid"] != DBNull.Value)
+            {
+                objEntity.ProviderBusinessTypeGuid = Convert.ToString(dr["ProviderBusinessTypeGuid"]);
+            }
+            return objEntity;
+
+        }
+
+        public List<ProviderTabStatusGetResponse> GetAllProviderTabStatus(int ApplicationId, int ProviderId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", ApplicationId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Get_ProviderTabStatusByProviderId", lstParameter.ToArray());
+            List<ProviderTabStatusGetResponse> lstEntity = new List<ProviderTabStatusGetResponse>();
+            ProviderTabStatusGetResponse objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchTabStatus(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private ProviderTabStatusGetResponse FetchTabStatus(DataRow dr)
+        {
+            ProviderTabStatusGetResponse objEntity = new ProviderTabStatusGetResponse();
+            if (dr.Table.Columns.Contains("TabName") && dr["TabName"] != DBNull.Value)
+            {
+                objEntity.TabName = Convert.ToString(dr["TabName"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationTabStatus") && dr["ApplicationTabStatus"] != DBNull.Value)
+            {
+                objEntity.ApplicationTabStatus = Convert.ToBoolean(dr["ApplicationTabStatus"]);
+            }
+            return objEntity;
+
+        }
+
         #endregion
+
+
     }
 }

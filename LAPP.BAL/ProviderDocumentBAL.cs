@@ -34,5 +34,10 @@ namespace LAPP.BAL
         {
             return objDAL.Delete_ProviderDocument_By_ProviderDocId_ProviderId_And_ApplicationId(ProviderDocId, ProviderId, ModBy, AppId);
         }
+
+        public ProviderDocumentGET Get_ProviderDocument_By_ProviderDocumentId(int ID)
+        {
+            return objDAL.Get_ProviderDocument_By_ProviderDocumentId(ID);
+        }
     }
 }

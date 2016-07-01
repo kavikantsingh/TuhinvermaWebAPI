@@ -61,4 +61,21 @@ namespace LAPP.ENTITY
     {
         public List<ProviderNameResponse> ProviderNameResponseList { get; set; }
     }
+
+    public class ProviderTabStatusGet
+    {
+        public string TabName { get; set; }
+        public bool ApplicationTabStatus { get; set; }
+    }
+
+    public class ProviderTabStatusGetResponse : BaseEntityServiceResponse
+    {
+        public string TabName { get; set; }
+        public bool ApplicationTabStatus { get; set; }
+    }
+
+    public class ProviderTabStatusGetResponseRequest : ProviderTabStatusGetResponse
+    {
+        public List<ProviderTabStatusGetResponse> ProviderTabStatusList { get; set; }
+    }
 }
