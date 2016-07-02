@@ -11,15 +11,30 @@ namespace LAPP.BAL
 {
     public class ProvReqCourseTitleBAL
     {
-        ProvReqCourseTitleDAL objBAL = new ProvReqCourseTitleDAL();
+        ProvReqCourseTitleDAL objDAL = new ProvReqCourseTitleDAL();
         public int Save_ProvReqCourseTitle(ProvReqCourseTitle objProvReqCourseTitle)
         {
-            return objBAL.Save_ProvReqCourseTitle(objProvReqCourseTitle);
+            return objDAL.Save_ProvReqCourseTitle(objProvReqCourseTitle);
         }
 
         public List<ProvReqCourseTitle> Get_All_ProvReqCourseTitle_By_CourseOfStudyId(int CourseOfStudyId, int ProviderId)
         {
-            return objBAL.Get_All_ProvReqCourseTitle_By_CourseOfStudyId(CourseOfStudyId, ProviderId);
+            return objDAL.Get_All_ProvReqCourseTitle_By_CourseOfStudyId(CourseOfStudyId, ProviderId);
+        }
+
+        public int Update_ProvReqCourseTitle(ProvReqCourseTitle objProvReqCourseTitle)
+        {
+            return objDAL.Update_ProvReqCourseTitle(objProvReqCourseTitle);
+        }
+
+        public int Delete_ProvReqCourseTitle(ProvReqCourseTitle objProvReqCourseTitle)
+        {
+            return objDAL.Delete_ProvReqCourseTitle(objProvReqCourseTitle);
+        }
+
+        public List<ProvReqCourseTitle> Get_ProvReqCourseTitle_By_ProvReqCourseTitleId(int CourseTitleId, int ProviderId)
+        {
+            return objDAL.Get_ProvReqCourseTitle_By_ProvReqCourseTitleId(CourseTitleId, ProviderId);
         }
     }
 }

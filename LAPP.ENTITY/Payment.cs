@@ -174,4 +174,43 @@ namespace LAPP.ENTITY
         public int IndividualLicenseId { get; set; }
         public string Description { get; set; }
     }
+
+
+    public class ManualPaymentRequest : BaseEntity
+    {
+        [Display(Description = "Required: Yes, Max Length:50 (string)")]
+        public string ApplicationNumber { get; set; }
+
+        [Display(Description = "Required: Yes,  (Integer)")]
+        public int ApplicationId { get; set; }
+
+        [Display(Description = "Required: Yes,  (Integer)")]
+        public int IndividualId { get; set; }
+
+        [Display(Description = "Required: Yes,   For example Money Order = MO ")]
+        public string PaymentMode { get; set; }
+
+        [Display(Description = "Required: No,   Please enter payment mode number. ")]
+        public string PaymentModeNumber { get; set; }
+
+        [Display(Description = "Required: No,   Please enter payment bank name. ")]
+        public string PaymentBankName { get; set; }
+
+        [Display(Description = "Required: Yes, (decimal)")]
+        public decimal Amount { get; set; }
+
+        [Display(Description = "Required: Yes,  Max Length:200 (string)")]
+        public string Description { get; set; }
+
+        [Display(Description = "Required: Yes, Max Length:40 (string)")]
+        public string InvoiceNumber { get; set; }
+
+        public Transaction TransactionObject { get; set; }
+        public int RequestedLicenseStatusTypeId { get; set; }
+    }
+
+    public class ManualPaymentResponse: BaseEntityServiceResponse
+    {
+        
+    }
 }

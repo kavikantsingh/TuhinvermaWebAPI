@@ -21,6 +21,25 @@ namespace LAPP.BAL
             return objDal.Get_All_Template();
         }
 
+        public Template GetTemplateById(int id)
+        {
+            return objDal.GetTemplateById(id);
+        }
+
+        public void DeleteTemplateById(int id)
+        {
+            objDal.DeleteTemplateById(id);
+        }
+
+        public void UpdateTemplate(Template template)
+        {
+            objDal.UpdateTemplate(template);
+        }
+
+        public int CreateTemplate(Template template)
+        {
+            return objDal.CreateTemplate(template);
+        }
 
     }
 }

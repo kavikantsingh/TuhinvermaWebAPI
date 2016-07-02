@@ -29,9 +29,9 @@ namespace LAPP.WS.Controllers.Common
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("ProcessPayment")]
-        public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest, string AffirmativeAction="", bool IsBackofficePayment=false)
+        public PaymentResponse ProcessPayment(string Key, PaymentRequest objPaymentRequest, string AffirmativeAction = "", bool IsBackofficePayment = false)
         {
-            if(string.IsNullOrEmpty(AffirmativeAction))
+            if (string.IsNullOrEmpty(AffirmativeAction))
             {
                 AffirmativeAction = "";
             }
@@ -70,11 +70,11 @@ namespace LAPP.WS.Controllers.Common
                     {
                         // this is executed only in the debug version
                         string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objPaymentRequest);
-                        LogingHelper.SaveRequestJson(requestStr, ( "Process Payment request. AffirmativeAction=" + AffirmativeAction));
+                        LogingHelper.SaveRequestJson(requestStr, ("Process Payment request. AffirmativeAction=" + AffirmativeAction));
                     }
-                   
+
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     LogingHelper.SaveExceptionInfo(Key, ex, "ProcessPayment object serialization", ENTITY.Enumeration.eSeverity.Critical);
                 }
@@ -101,6 +101,95 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.PaymentAuthResponse = null;
+
+            }
+            return objResponse;
+
+
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="objPaymentRequest"></param>
+        /// <param name="AffirmativeAction"></param>
+        /// <param name="IsBackofficePayment"></param>
+        /// <returns></returns>
+        [AcceptVerbs("POST")]
+        [ActionName("ProcessManualPayment")]
+        public ManualPaymentResponse ProcessManualPayment(string Key, ManualPaymentRequest objPaymentRequest, string AffirmativeAction = "", bool IsBackofficePayment = false)
+        {
+            if (string.IsNullOrEmpty(AffirmativeAction))
+            {
+                AffirmativeAction = "";
+            }
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            ManualPaymentResponse objResponse = new ManualPaymentResponse();
+            PaymentAuthResponse objAuthorization = new PaymentAuthResponse();
+
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    return objResponse;
+                }
+
+
+                #region Validation
+
+                ManualPaymentResponse objValidationResponse = new ManualPaymentResponse();
+                objValidationResponse = PaymentValidation.ValidateProcessManualPayment(objPaymentRequest);
+                if (objValidationResponse != null)
+                {
+                    return objValidationResponse;
+                }
+
+                #endregion
+
+                try
+                {
+                    if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                    {
+                        // this is executed only in the debug version
+                        string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objPaymentRequest);
+                        LogingHelper.SaveRequestJson(requestStr, ("Process Payment request. AffirmativeAction=" + AffirmativeAction));
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ProcessPayment object serialization", ENTITY.Enumeration.eSeverity.Critical);
+                }
+
+
+                //using (TransactionScope transScope = new TransactionScope(new TransactionScopeOption {ti))
+                //{
+                Token objToken = TokenHelper.GetTokenByKey(Key);
+
+                objResponse = BAL.Payment.InitiatePayment.ProcessManualPayment(objPaymentRequest, objToken.UserId, AffirmativeAction, objToken, IsBackofficePayment);
+                // transScope.Complete();
+                //}
+
+                return objResponse;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProcessPayment", ENTITY.Enumeration.eSeverity.Critical);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
 
             }
             return objResponse;
@@ -151,7 +240,7 @@ namespace LAPP.WS.Controllers.Common
                     LogingHelper.SaveRequestJson(ex.Message, " error in Initiate Payment request");
                 }
 
-               
+
                 Token objToken = TokenHelper.GetTokenByKey(Key);
 
                 LAPP.ENTITY.Transaction objTransaction = LAPP.BAL.Payment.InitiatePayment.InitiatePaymentTransaction(objInitiatePaymentRequest, objToken.UserId);
@@ -219,7 +308,7 @@ namespace LAPP.WS.Controllers.Common
                 for (int i = 1; i < 13; i++)
                 {
                     ListItems items = new ListItems();
-                    items.Text = CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i-1];
+                    items.Text = CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i - 1];
                     items.Value = i.ToString();
                     objItems.Add(items);
                 }

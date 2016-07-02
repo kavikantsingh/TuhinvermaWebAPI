@@ -95,6 +95,7 @@
     <Compile Include="RevFeeMasterBAL.cs" />
     <Compile Include="RevFeeCollectBAL.cs" />
     <Compile Include="IndividualDocumentBAL.cs" />
+    <Compile Include="TemplateAppliesToTypeBAL.cs" />
     <Compile Include="TransactionBAL.cs" />
     <Compile Include="IndividualRenewalBAL.cs" />
     <Compile Include="EmployerTypeBAL.cs" />

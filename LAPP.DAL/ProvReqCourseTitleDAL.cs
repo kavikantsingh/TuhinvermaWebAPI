@@ -43,7 +43,7 @@ namespace LAPP.DAL
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("CourseOfStudyId", CourseOfStudyId));
-            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            lstParameter.Add(new MySqlParameter("ProvId", ProviderId));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ProvReqCourseTitle_Get_All", lstParameter.ToArray());
             List<ProvReqCourseTitle> lstEntity = new List<ProvReqCourseTitle>();
             ProvReqCourseTitle objEntity = null;
@@ -55,6 +55,78 @@ namespace LAPP.DAL
             }
             return lstEntity;
         }
+
+        public List<ProvReqCourseTitle> Get_ProvReqCourseTitle_By_ProvReqCourseTitleId(int CourseTitleId, int ProviderId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("CourseTitleId", CourseTitleId));
+            lstParameter.Add(new MySqlParameter("ProviderId", ProviderId));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ProvReqCourseTitle_Get_By_CourseTitleId", lstParameter.ToArray());
+            List<ProvReqCourseTitle> lstEntity = new List<ProvReqCourseTitle>();
+            ProvReqCourseTitle objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        public int Update_ProvReqCourseTitle(ProvReqCourseTitle objProvReqCourseTitle)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("CourseTitleId", objProvReqCourseTitle.ProvReqCourseTitleId));
+            //lstParameter.Add(new MySqlParameter("ProvReqCourseofStudyId", objProvReqCourseTitle.ProvReqCourseofStudyId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProvReqCourseTitle.ProviderId));
+            //lstParameter.Add(new MySqlParameter("ApplicationId", objProvReqCourseTitle.ApplicationId));
+            lstParameter.Add(new MySqlParameter("CourseTitleName", objProvReqCourseTitle.CourseTitleName));
+            lstParameter.Add(new MySqlParameter("CourseHours", objProvReqCourseTitle.CourseHours));
+            //lstParameter.Add(new MySqlParameter("ReferenceNumber", objProvReqCourseTitle.ReferenceNumber));
+            //lstParameter.Add(new MySqlParameter("IsActive", objProvReqCourseTitle.IsActive));
+            //lstParameter.Add(new MySqlParameter("IsDeleted", objProvReqCourseTitle.IsDeleted));
+            //lstParameter.Add(new MySqlParameter("CreatedBy", objProvReqCourseTitle.CreatedBy));
+            //lstParameter.Add(new MySqlParameter("CreatedOn", objProvReqCourseTitle.CreatedOn));
+            //lstParameter.Add(new MySqlParameter("ModifiedBy", objProvReqCourseTitle.ModifiedBy));
+            //lstParameter.Add(new MySqlParameter("ModifiedOn", objProvReqCourseTitle.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("ProviderOtherProgramGuid", objProvReqCourseTitle.ProviderOtherProgramGuid));
+
+            //MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            //returnParam.Direction = ParameterDirection.ReturnValue;
+            //lstParameter.Add(returnParam);
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProvReqCourseTitle_Update", lstParameter.ToArray());
+            return returnValue;
+        }
+
+        public int Delete_ProvReqCourseTitle(ProvReqCourseTitle objProvReqCourseTitle)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("CourseTitleId", objProvReqCourseTitle.ProvReqCourseTitleId));
+            //lstParameter.Add(new MySqlParameter("ProvReqCourseofStudyId", objProvReqCourseTitle.ProvReqCourseofStudyId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProvReqCourseTitle.ProviderId));
+            //lstParameter.Add(new MySqlParameter("ApplicationId", objProvReqCourseTitle.ApplicationId));
+            //lstParameter.Add(new MySqlParameter("CourseTitleName", objProvReqCourseTitle.CourseTitleName));
+            //lstParameter.Add(new MySqlParameter("CourseHours", objProvReqCourseTitle.CourseHours));
+            //lstParameter.Add(new MySqlParameter("ReferenceNumber", objProvReqCourseTitle.ReferenceNumber));
+            //lstParameter.Add(new MySqlParameter("IsActive", objProvReqCourseTitle.IsActive));
+            //lstParameter.Add(new MySqlParameter("IsDeleted", objProvReqCourseTitle.IsDeleted));
+            //lstParameter.Add(new MySqlParameter("CreatedBy", objProvReqCourseTitle.CreatedBy));
+            //lstParameter.Add(new MySqlParameter("CreatedOn", objProvReqCourseTitle.CreatedOn));
+            //lstParameter.Add(new MySqlParameter("ModifiedBy", objProvReqCourseTitle.ModifiedBy));
+            //lstParameter.Add(new MySqlParameter("ModifiedOn", objProvReqCourseTitle.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("ProviderOtherProgramGuid", objProvReqCourseTitle.ProviderOtherProgramGuid));
+
+            //MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            //returnParam.Direction = ParameterDirection.ReturnValue;
+            //lstParameter.Add(returnParam);
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProvReqCourseTitle_Delete", lstParameter.ToArray());
+            return returnValue;
+        }
+
         private ProvReqCourseTitle FetchEntity(DataRow dr)
         {
             ProvReqCourseTitle objEntity = new ProvReqCourseTitle();

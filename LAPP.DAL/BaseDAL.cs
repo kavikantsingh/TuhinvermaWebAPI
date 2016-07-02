@@ -454,5 +454,21 @@ namespace LAPP.DAL
             return clonedParms;
         }
         #endregion
+
+        #region Helpers
+
+        public List<MySqlParameter> GenerateParameters(object entity, string pref = "")
+        {
+            List<MySqlParameter> result = new List<MySqlParameter>();
+
+            foreach (var prop in entity.GetType().GetProperties())
+            {
+                result.Add(new MySqlParameter(pref + prop.Name, prop.GetValue(entity, null)));
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }

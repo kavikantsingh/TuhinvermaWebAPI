@@ -691,6 +691,8 @@ namespace LAPP.WS.Controllers.Common
                     //--file save process--//
                     if (FilePath != null)
                     {
+                        objEntity.DocumentPath = FilePath;
+
                         int ReturnProviderId = objBAL.Save_ProviderDocument(objEntity);
                         List<ProviderDocumentGET> lstTempProviderDoccumentGET = new List<ProviderDocumentGET>();
                         ProviderDocumentGET objTempEntity = new ProviderDocumentGET();
@@ -878,6 +880,52 @@ namespace LAPP.WS.Controllers.Common
 
         #endregion ProviderDocument
 
+        #region Provider Document Download
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="ProviderDocumentId"></param>
+        /// <returns></returns>
+        [AcceptVerbs("GET")]
+        [ActionName("ProviderDocumentByProviderDocumentId")]
+        public HttpResponseMessage PdfDocumentByIndividualDocumentId(string Key, int ProviderDocumentId)
+        {
+            try
+            {
+                //IndividualDocumentByHtmlResponse objResponse = new IndividualDocumentByHtmlResponse();
+
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                ProviderDocumentGET objDocument = new ProviderDocumentGET();
+                ProviderDocumentBAL objDocumentBAL = new ProviderDocumentBAL();
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    HttpError myCustomError = new HttpError("User session has expired.") { { "CustomErrorCode", Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00") } };
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, myCustomError);
+                }
+
+                objDocument = objDocumentBAL.Get_ProviderDocument_By_ProviderDocumentId(ProviderDocumentId);
+                if (objDocument != null)
+                {
+
+                    var stream = new FileStream(objDocument.DocumentPath, FileMode.Open);
+                    result.Content = new StreamContent(stream);
+                    result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                    result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(objDocument.DocumentPath);
+                    //   result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+                    result.Content.Headers.ContentLength = stream.Length;
+
+                }
+                return result;
+            }
+            catch (Exception ex)
+            { return null; }
+        }
+
+        #endregion
+
+
         /// <summary>
         /// This method is to return the current tab that is active and show tick to all other tabs
         /// </summary>
@@ -1030,9 +1078,7 @@ namespace LAPP.WS.Controllers.Common
                 //Method to Save click information on Provider Instructor Table
                 objProviderNames.ProviderNameStatusId = 2;
                 objProviderNames.ProviderNameTypeId = 1;
-
-                if (objProviderNames.ProviderNameId == 0)
-                    objProviderNames.ProviderNameGuid = Guid.NewGuid().ToString();
+                objProviderNames.ProviderNameGuid= Guid.NewGuid().ToString();
                 ProviderInstructionsBAL objProviderInstructionBAL = new ProviderInstructionsBAL();
                 int output = objProviderInstructionBAL.SavePreviousSchoolDetails(objProviderNames);
 
@@ -1987,7 +2033,7 @@ namespace LAPP.WS.Controllers.Common
         /// <param name="objProvidersitevisittype"></param>
         /// <returns></returns>
         [AcceptVerbs("POST")]
-        [ActionName("Save_providermblex")]
+        [ActionName("Save_Providersitevisittype")]
         public ProvidersitevisittypeRequestResponse Save_Providersitevisittype(string Key, Providersitevisittype objProvidersitevisittype)
         {
             LogingHelper.SaveAuditInfo(Key);
@@ -2786,6 +2832,310 @@ namespace LAPP.WS.Controllers.Common
 
         }
 
+        /// <summary>
+        /// This method is to Save the Other Program in "About the School" Tab
+        /// </summary>
+        /// <param name="Key">Security Key for API.</param>
+        /// <param name="ObjProviderOtherProgram">Request object for Provider Instruction.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("SaveProviderOtherProgram")]
+        public BaseEntityServiceResponse SaveProviderOtherProgramName(string Key, ProviderOtherProgramName ObjProviderOtherProgram)
+        {
+            int CreateOrModify = 0;
+            try
+            {
+                CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            }
+            catch { }
+
+            LogingHelper.SaveAuditInfo();
+
+            BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            if (ObjProviderOtherProgram == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+                ProviderBAL objProviderOtherProgramBAL = new ProviderBAL();
+                int ProviderOtherProgramId = objProviderOtherProgramBAL.SaveProviderOtherProgram(ObjProviderOtherProgram);
+
+                objResponse.Message = Messages.SaveSuccess;
+                objResponse.Status = true;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderOtherProgramNameSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+
+            return objResponse;
+
+
+        }
+
+        /// <summary>
+        /// This method is to Get the grid values of Provider Other Program
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ApplicationId">Application Id</param>
+        /// <param name="ProviderId">Provider Id</param>
+        [AcceptVerbs("GET")]
+        [ActionName("GetAllProviderOtherProgram")]
+        public ProviderOtherProgramNameGetResponse GetAllProviderOtherProgram(string Key, int ApplicationId, int ProviderId)
+        {
+            ProviderOtherProgramNameGetResponse objResponse = new ProviderOtherProgramNameGetResponse();
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    return objResponse;
+                }
+
+                ProviderBAL objProviderBAL = new ProviderBAL();
+
+                //Method to get provider staff details grid
+                List<ProviderOtherProgramName> lstProviderOtherProgram = objProviderBAL.GetAllProviderOtherProgram(ApplicationId, ProviderId);
+                objResponse.ProviderOtherProgramList = lstProviderOtherProgram;
+
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "GetProviderOtherProgram", ENTITY.Enumeration.eSeverity.Error);
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+
+            }
+            return objResponse;
+
+
+        }
+
+
+        /// <summary>
+        /// This method is to Save the Other Program in "About the School" Tab
+        /// </summary>
+        /// <param name="Key">Security Key for API.</param>
+        /// <param name="ObjProviderGraduatesNumber">Request object for Provider Instruction.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("SaveProviderGraduatesNumber")]
+        public BaseEntityServiceResponse SaveProviderGraduatesNumber(string Key, ProviderGraduatesNumber ObjProviderGraduatesNumber)
+        {
+            int CreateOrModify = 0;
+            try
+            {
+                CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            }
+            catch { }
+
+            LogingHelper.SaveAuditInfo();
+
+            BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            if (ObjProviderGraduatesNumber == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+                ProviderBAL objProviderGraduatesNumberBAL = new ProviderBAL();
+                int ProviderGraduatesNumberId = objProviderGraduatesNumberBAL.SaveProviderGraduatesNumber(ObjProviderGraduatesNumber);
+
+                objResponse.Message = Messages.SaveSuccess;
+                objResponse.Status = true;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderOtherProgramNameSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+
+            return objResponse;
+
+
+        }
+
+        /// <summary>
+        /// This method is to Get the grid values of Provider Other Program
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ApplicationId">Application Id</param>
+        /// <param name="ProviderId">Provider Id</param>
+        [AcceptVerbs("GET")]
+        [ActionName("GetAllProviderGraduatesNumber")]
+        public ProviderGraduatesNumberGetResponse GetAllProviderGraduatesNumber(string Key, int ApplicationId, int ProviderId)
+        {
+            ProviderGraduatesNumberGetResponse objResponse = new ProviderGraduatesNumberGetResponse();
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    return objResponse;
+                }
+
+                ProviderBAL objProviderBAL = new ProviderBAL();
+
+                //Method to get provider staff details grid
+                List<ProviderGraduatesNumber> lstProviderGraduatesNumber = objProviderBAL.GetAllProviderGraduatesNumber(ApplicationId, ProviderId);
+                objResponse.ProviderGraduatesNumberList = lstProviderGraduatesNumber;
+
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "GetProviderGraduatesNumber", ENTITY.Enumeration.eSeverity.Error);
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+
+            }
+            return objResponse;
+
+
+        }
+
+
+        /// <summary>
+        /// This method is to Get the Tab Status
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ApplicationId">Application Id</param>
+        /// <param name="ProviderId">Provider Id</param>
+        [AcceptVerbs("GET")]
+        [ActionName("GetAllProviderTabStatus")]
+        public ProviderTabStatusGetResponse GetAllProviderTabStatus(string Key, int ApplicationId, int ProviderId)
+        {
+            ProviderTabStatusGetResponseRequest objResponse = new ProviderTabStatusGetResponseRequest();
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    return objResponse;
+                }
+
+                ProviderBAL objProviderBAL = new ProviderBAL();
+
+                //Method to get provider staff details grid
+                List<ProviderTabStatusGetResponse> lstProviderOtherProgram = objProviderBAL.GetAllProviderTabStatus(ApplicationId, ProviderId);
+                objResponse.ProviderTabStatusList = lstProviderOtherProgram;
+
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "GetProviderTabStatus", ENTITY.Enumeration.eSeverity.Error);
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+
+            }
+            return objResponse;
+        }
         #endregion
+
     }
 }

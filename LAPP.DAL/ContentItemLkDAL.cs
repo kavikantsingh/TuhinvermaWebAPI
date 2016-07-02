@@ -147,11 +147,11 @@ namespace LAPP.DAL
         public int Update_ContentItemLk(ContentItemLkPost objContentItemLkPost)
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("ContentItemLkId", objContentItemLkPost.ContentItemLkId));
-            lstParameter.Add(new MySqlParameter("ContentItemHash", objContentItemLkPost.ContentItemHash));
-            lstParameter.Add(new MySqlParameter("ContentItemLkDesc", objContentItemLkPost.ContentItemLkDesc));
-            lstParameter.Add(new MySqlParameter("EffectiveDate", objContentItemLkPost.EffectiveDate));
-            lstParameter.Add(new MySqlParameter("EndDate", objContentItemLkPost.EndDate));
+            lstParameter.Add(new MySqlParameter("ContItemLkId", objContentItemLkPost.ContentItemLkId));
+            lstParameter.Add(new MySqlParameter("ContItemHash", objContentItemLkPost.ContentItemHash));
+            lstParameter.Add(new MySqlParameter("ContItemLkDesc", objContentItemLkPost.ContentItemLkDesc));
+            lstParameter.Add(new MySqlParameter("EffectiveDt", objContentItemLkPost.EffectiveDate));
+            lstParameter.Add(new MySqlParameter("EndDt", objContentItemLkPost.EndDate));
 
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;

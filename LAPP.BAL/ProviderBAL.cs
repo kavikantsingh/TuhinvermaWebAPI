@@ -50,6 +50,34 @@ namespace LAPP.BAL
             return objDal.GetAllProviderStaffDetails(ApplicationId, ProviderId);
         }
 
+        public int SaveProviderOtherProgram(ProviderOtherProgramName objProviderOtherProgram)
+        {
+            return objDal.SaveProviderOtherProgram(objProviderOtherProgram);
+        }
+
+        public List<ProviderOtherProgramName> GetAllProviderOtherProgram(int ApplicationId, int ProviderId)
+        {
+            return objDal.GetAllProviderOtherProgram(ApplicationId, ProviderId);
+        }
+
+
+        public int SaveProviderGraduatesNumber(ProviderGraduatesNumber objProviderGraduatesNumber)
+        {
+            return objDal.SaveProviderGraduatesNumber(objProviderGraduatesNumber);
+        }
+
+        public List<ProviderGraduatesNumber> GetAllProviderGraduatesNumber(int ApplicationId, int ProviderId)
+        {
+            return objDal.GetAllProviderGraduatesNumber(ApplicationId, ProviderId);
+        }
+
+        public List<ProviderTabStatusGetResponse> GetAllProviderTabStatus(int ApplicationId, int ProviderId)
+        {
+            return objDal.GetAllProviderTabStatus(ApplicationId, ProviderId);
+        }
+
         #endregion
+
     }
 }
+

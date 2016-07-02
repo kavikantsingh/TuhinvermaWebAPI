@@ -174,7 +174,7 @@ namespace LAPP.WS.Controllers.Common
         }
 
         /// <summary>
-        /// This API used for Provider Login.
+        /// This API used to get Provider Required Of Study Id
         /// </summary>
         /// <param name="Key">API Security Key</param>
         /// <param name="CourseOfStudyId">Course of Study Id</param>
@@ -246,6 +246,233 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.Message = ex.Message;
                 objResponse.ProvReqCourseTitle = null;
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// This API used for Provider Login.
+        /// </summary>
+        /// <param name="Key">API Security Key</param>
+        /// <param name="CourseTitleId">Course Title Id</param>
+        /// <param name="ProviderId">Provider Id</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ProvReqCourseTitleGetByCourseTitleId")]
+        public ProvReqCourseTitleResponse ProvReqCourseTitleGetByCourseTitleId(string Key, int CourseTitleId, int ProviderId)
+        {
+            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo();
+
+            ProvReqCourseTitleResponse objResponse = new ProvReqCourseTitleResponse();
+
+            ProvReqCourseTitleBAL objProvReqCourseTitleBAL = new ProvReqCourseTitleBAL();
+            List<ProvReqCourseTitle> lstProvReqCourseTitle = new List<ProvReqCourseTitle>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Message = "User session has expired.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                lstProvReqCourseTitle = objProvReqCourseTitleBAL.Get_ProvReqCourseTitle_By_ProvReqCourseTitleId(CourseTitleId, ProviderId);
+                if (lstProvReqCourseTitle != null && lstProvReqCourseTitle.Count > 0)
+                {
+                    objResponse.ResponseReason = "To Get ProvReqCourseTitle by Course Title Id";
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstProvReqCourseTitleSelected = lstProvReqCourseTitle.Select(CourseTitle => new
+                    {
+                        ProvReqCourseTitleId = CourseTitle.ProvReqCourseTitleId,
+                        ProvReqCourseofStudyId = CourseTitle.ProvReqCourseofStudyId,
+                        ProviderId = CourseTitle.ProviderId,
+                        ApplicationId = CourseTitle.ApplicationId,
+                        CourseTitleName = CourseTitle.CourseTitleName,
+                        CourseHours = CourseTitle.CourseHours,
+                        ReferenceNumber = CourseTitle.ReferenceNumber,
+                        IsActive = CourseTitle.IsActive,
+                        IsDeleted = CourseTitle.IsDeleted,
+                        CreatedBy = CourseTitle.CreatedBy,
+                        CreatedOn = CourseTitle.CreatedOn,
+                        ModifiedBy = CourseTitle.ModifiedBy,
+                        ModifiedOn = CourseTitle.ModifiedOn,
+                        ProviderOtherProgramGuid = CourseTitle.ProviderOtherProgramGuid
+                    }
+                    ).ToList();
+
+                    objResponse.ProvReqCourseTitle = lstProvReqCourseTitleSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ProvReqCourseTitle = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProvReqCourseTitleGetByCourseTitleId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ProvReqCourseTitle = null;
+            }
+            return objResponse;
+        }
+
+
+        /// <summary>
+        /// This API used to update Prov Req Course Title.
+        /// </summary>
+        /// <param name="Key">API Security Key</param>
+        /// <param name="objProvReqCourseTitle">object objProvReqCourseTitle</param>
+        [AcceptVerbs("POST")]
+        [ActionName("ProvReqCourseTitleEdit")]
+        public ProvReqCourseTitleResponse ProvReqCourseTitleEdit(string Key, ProvReqCourseTitle objProvReqCourseTitle)
+        {
+            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo();
+
+            ProvReqCourseTitleResponse objResponse = new ProvReqCourseTitleResponse();
+
+            ProvReqCourseTitleBAL objProvReqCourseTitleBAL = new ProvReqCourseTitleBAL();
+            //List<ProvReqCourseTitle> lstProvReqCourseOfStudy = new List<ProvReqCourseTitle>();
+            ProvReqCourseTitle objEntity = new ProvReqCourseTitle();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Message = "User session has expired.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                if (objProvReqCourseTitle != null)// && CourseTitleName!=null && CourseHours!=null)
+                {
+                    objProvReqCourseTitle.ProvReqCourseTitleId = objProvReqCourseTitle.ProvReqCourseTitleId;
+                   // objEntity.ProvReqCourseofStudyId = objProvReqCourseTitle.ProvReqCourseofStudyId;
+                    objEntity.ProviderId = objProvReqCourseTitle.ProviderId;
+                    //objEntity.ApplicationId = objProvReqCourseTitle.ApplicationId;
+                    objEntity.CourseTitleName = objProvReqCourseTitle.CourseTitleName;
+                    objEntity.CourseHours = objProvReqCourseTitle.CourseHours;
+                    //objEntity.ReferenceNumber = objProvReqCourseTitle.ReferenceNumber;
+                    //objEntity.IsActive = objProvReqCourseTitle.IsActive;
+                    //objEntity.IsDeleted = objProvReqCourseTitle.IsDeleted;
+                    //objEntity.CreatedBy = objProvReqCourseTitle.CreatedBy;
+                    //objEntity.CreatedOn = objProvReqCourseTitle.CreatedOn;
+                    //objProvClinicHoursEntity.ModifiedBy = objProvClinicHours.ModifiedBy;
+                    //objProvClinicHoursEntity.ModifiedOn = objProvClinicHours.ModifiedOn;
+                    objEntity.ProviderOtherProgramGuid = Guid.NewGuid().ToString();// objProvClinicHours.ProvClinicHoursGuid;
+
+                    objProvReqCourseTitleBAL.Update_ProvReqCourseTitle(objProvReqCourseTitle);
+
+                    objResponse.Message = Messages.SaveSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    //objProvReqCourseTitleEntity.
+                }
+                else
+                {
+                    objResponse.Message = "Invalid Object.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                    objResponse.ResponseReason = "To edit Prov Req Course Title";
+                    return objResponse;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "ProvReqCourseTitleEdit", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// This API used to delete single from record Prov Req Course Title.
+        /// </summary>
+        /// <param name="Key">API Security Key</param>
+        /// <param name="objProvReqCourseTitle">object objProvReqCourseTitle</param>
+        [AcceptVerbs("POST")]
+        [ActionName("ProvReqCourseTitleDelete")]
+        public ProvReqCourseTitleResponse ProvReqCourseTitleDelete(string Key, ProvReqCourseTitle objProvReqCourseTitle)
+        {
+            int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo();
+
+            ProvReqCourseTitleResponse objResponse = new ProvReqCourseTitleResponse();
+
+            ProvReqCourseTitleBAL objProvReqCourseTitleBAL = new ProvReqCourseTitleBAL();
+            //List<ProvReqCourseTitle> lstProvReqCourseOfStudy = new List<ProvReqCourseTitle>();
+            ProvReqCourseTitle objEntity = new ProvReqCourseTitle();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Message = "User session has expired.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                if (objProvReqCourseTitle != null)// && CourseTitleName!=null && CourseHours!=null)
+                {
+                    objProvReqCourseTitle.ProvReqCourseTitleId = objProvReqCourseTitle.ProvReqCourseTitleId;
+                    // objEntity.ProvReqCourseofStudyId = objProvReqCourseTitle.ProvReqCourseofStudyId;
+                    objEntity.ProviderId = objProvReqCourseTitle.ProviderId;
+                    //objEntity.ApplicationId = objProvReqCourseTitle.ApplicationId;
+                    //objEntity.CourseTitleName = objProvReqCourseTitle.CourseTitleName;
+                    //objEntity.CourseHours = objProvReqCourseTitle.CourseHours;
+                    //objEntity.ReferenceNumber = objProvReqCourseTitle.ReferenceNumber;
+                    //objEntity.IsActive = objProvReqCourseTitle.IsActive;
+                    //objEntity.IsDeleted = objProvReqCourseTitle.IsDeleted;
+                    //objEntity.CreatedBy = objProvReqCourseTitle.CreatedBy;
+                    //objEntity.CreatedOn = objProvReqCourseTitle.CreatedOn;
+                    //objProvClinicHoursEntity.ModifiedBy = objProvClinicHours.ModifiedBy;
+                    //objProvClinicHoursEntity.ModifiedOn = objProvClinicHours.ModifiedOn;
+                    objEntity.ProviderOtherProgramGuid = Guid.NewGuid().ToString();// objProvClinicHours.ProvClinicHoursGuid;
+
+                    objProvReqCourseTitleBAL.Delete_ProvReqCourseTitle(objProvReqCourseTitle);
+
+                    objResponse.Message = Messages.SaveSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    //objProvReqCourseTitleEntity.
+                }
+                else
+                {
+                    objResponse.Message = "Invalid Object.";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                    objResponse.ResponseReason = "To delete record from Prov Req Course Title";
+                    return objResponse;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "ProvReqCourseTitleDelete", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
             }
             return objResponse;
         }
