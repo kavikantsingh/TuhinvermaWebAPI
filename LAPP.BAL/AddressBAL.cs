@@ -36,5 +36,10 @@ namespace LAPP.BAL
             return objDal.GetAllPreviousAddress(addressTypeId, providerId);
         }
 
+        public int DeleteaddressRequestFromSchoolInformationTab(Address objaddress)
+        {
+            return objDal.DeleteaddressRequestFromSchoolInformationTab(objaddress);
+        }
+        
     }
 }

@@ -52,5 +52,10 @@ namespace LAPP.BAL
         {
             return objDal.Save_IndividualProvider(objIndividual);
         }
+
+        public List<IndividualName> Get_IndividualProvider(int providerid,int induvidualtypeid)
+        {
+            return objDal.Get_IndividualProvider(providerid, induvidualtypeid);
+        }
     }
 }

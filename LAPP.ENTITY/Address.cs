@@ -12,6 +12,7 @@ namespace LAPP.ENTITY
     {
         [Display(Description = "Required: Yes, Desc: Auto Generate")]
         public int AddressId { get; set; }
+        public int ApplicationId { get; set; }
 
         [Display(Description = "Required: No, Max Length:100 (string)")]
         public string Addressee { get; set; }
