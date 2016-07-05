@@ -48,9 +48,13 @@ namespace LAPP.ENTITY
     {
         public bool IsPasswordChange { get; set; }
         public ProviderInformation ProviderInformationDetails { get; set; }
+        public List<Address> SchoolAddress { get; set; }
+        public List<Address> MailingAddress { get; set; }
         public List<Address> ListOfPreviousAddress { get; set; }
         public List<ProviderNames> ListOfPreviousSchool { get; set; }
         public List<Address> ListOfSatliteSchool { get; set; }
         public List<ProviderStaff> ListOfProviderStaffDetails { get; set; }
+        public List<IndividualName> ListOfContactJobTitle { get; set; }
+        public List<IndividualName> ListOfDirectorJobTitle { get; set; }
     }
 }

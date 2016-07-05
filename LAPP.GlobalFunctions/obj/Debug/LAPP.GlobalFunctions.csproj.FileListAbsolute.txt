@@ -5,3 +5,10 @@ D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.GlobalFunctions\bin\
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
 D:\BASU_PROJECS_INLUMON\LAPP\LicensingProjectWS\LAPPWS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb
+C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.pdb
+C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.xml
+C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache
+C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
+C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb

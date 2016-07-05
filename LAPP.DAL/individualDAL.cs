@@ -231,38 +231,63 @@ namespace LAPP.DAL
 
         }
 
-        //public List<Individual> Search_RenewalWithPager(RenewalApplication obj, int CurrentPage, int PagerSize)
-        //{
-        //    DataSet ds = new DataSet("DS");
-        //    DBHelper objDB = new DBHelper();
-        //    List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+        private IndividualName FetchEntityIndividualName(DataRow dr)
+        {
+            IndividualName objEntity = new IndividualName();
+            if (dr.Table.Columns.Contains("IndividualId") && dr["IndividualId"] != DBNull.Value)
+            {
+                objEntity.IndividualId = Convert.ToInt32(dr["IndividualId"]);
+            }
+            if (dr.Table.Columns.Contains("FirstName") && dr["FirstName"] != DBNull.Value)
+            {
+                objEntity.FirstName = Convert.ToString(dr["FirstName"]);
+            }
+            if (dr.Table.Columns.Contains("MiddleName") && dr["MiddleName"] != DBNull.Value)
+            {
+                objEntity.MiddleName = Convert.ToString(dr["MiddleName"]);
+            }
+            if (dr.Table.Columns.Contains("LastName") && dr["LastName"] != DBNull.Value)
+            {
+                objEntity.LastName = Convert.ToString(dr["LastName"]);
+            }
+            if (dr.Table.Columns.Contains("SuffixId") && dr["SuffixId"] != DBNull.Value)
+            {
+                objEntity.SuffixId = Convert.ToInt32(dr["SuffixId"]);
+            }
+           
+            if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
+            {
+                objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);
+            }
+            if (dr.Table.Columns.Contains("IsDeleted") && dr["IsDeleted"] != DBNull.Value)
+            {
+                objEntity.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedBy") && dr["CreatedBy"] != DBNull.Value)
+            {
+                objEntity.CreatedBy = Convert.ToInt32(dr["CreatedBy"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedOn") && dr["CreatedOn"] != DBNull.Value)
+            {
+                objEntity.CreatedOn = Convert.ToDateTime(dr["CreatedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedBy") && dr["ModifiedBy"] != DBNull.Value)
+            {
+                objEntity.ModifiedBy = Convert.ToInt32(dr["ModifiedBy"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedOn") && dr["ModifiedOn"] != DBNull.Value)
+            {
+                objEntity.ModifiedOn = Convert.ToDateTime(dr["ModifiedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ProvIndvJobTitle") && dr["ProvIndvJobTitle"] != DBNull.Value)
+            {
+                objEntity.ProvIndvJobTitle = Convert.ToString(dr["ProvIndvJobTitle"]);
+            }
+            
 
-        //    lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            return objEntity;
 
-        //    lstParameter.Add(new MySqlParameter("_Name", obj.Name));
-        //    lstParameter.Add(new MySqlParameter("_FirstName", obj.FirstName));
-        //    lstParameter.Add(new MySqlParameter("_LastName", obj.LastName));
-        //    lstParameter.Add(new MySqlParameter("_Phone", obj.Phone));
-        //    lstParameter.Add(new MySqlParameter("_LicenseNumber", obj.LicenseNumber));
-        //    lstParameter.Add(new MySqlParameter("_SSN", obj.SSN));
-        //    lstParameter.Add(new MySqlParameter("_StatusId", obj.StatusId));
-        //    lstParameter.Add(new MySqlParameter("PageNo", CurrentPage));
-        //    lstParameter.Add(new MySqlParameter("Pager", PagerSize));
-
-        //    ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Renewal_By_Search_WithPager", lstParameter.ToArray());
-
-        //    List<Individual> lstEntity = new List<Individual>();
-        //    Individual objEntity = null;
-        //    foreach (DataRow dr in ds.Tables[0].Rows)
-        //    {
-        //        objEntity = FetchEntity(dr);
-        //        if (objEntity != null)
-        //            lstEntity.Add(objEntity);
-        //    }
-        //    return lstEntity;
-
-
-        //}
+        }
 
 
         private Individual FetchEntity(DataRow dr)
@@ -494,18 +519,77 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("LastName", objIndividual.LastName.NullString()));
             lstParameter.Add(new MySqlParameter("CreatedBy", objIndividual.CreatedBy));
             lstParameter.Add(new MySqlParameter("CreatedOn", DateTime.Now));
-            lstParameter.Add(new MySqlParameter("IndividualNameTypeId", objIndividual.IndividualNameTypeId));
-            lstParameter.Add(new MySqlParameter("IndividualId", objIndividual.IndividualId));
-            lstParameter.Add(new MySqlParameter("ProviderId", objIndividual.ProviderId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("IndividualNameType_Id", objIndividual.IndividualNameTypeId));
+            lstParameter.Add(new MySqlParameter("Individual_Id", objIndividual.IndividualId));
+            lstParameter.Add(new MySqlParameter("IndividualName_Id", objIndividual.IndividualNameId));
+            lstParameter.Add(new MySqlParameter("Provider_Id", objIndividual.ProviderId));
             lstParameter.Add(new MySqlParameter("ApplicationId", objIndividual.ApplicationId));
             lstParameter.Add(new MySqlParameter("ProvIndvJobTitle", objIndividual.ProvIndvJobTitle));
 
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
-            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualname_SaveIndividualProvider", true, lstParameter.ToArray());
-            int returnValue = Convert.ToInt32(returnParam.Value);
+            
+            //objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualname_SaveIndividualProvider", true, lstParameter.ToArray());   change
+
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "individualname_SaveIndividualProviderSchoolInfo", true, lstParameter.ToArray()); int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
+
+        public List<IndividualName> Get_IndividualProvider(int providerid, int induvidualtypeid)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            lstParameter.Add(new MySqlParameter("ProviderId", providerid));
+            lstParameter.Add(new MySqlParameter("IndividualNameTypeId", induvidualtypeid));
+            
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Induvidual_Get_InduvidualAndProviderInduvidualByProviderId", lstParameter.ToArray());
+
+            List<IndividualName> lstEntity = new List<IndividualName>();
+            IndividualName objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntityIndividualName(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+
+        }
+
+        //public ProviderIndividualName Get_Individual_ForSchoolInfo(int ProviderId, int InduvidualTypeId)
+        //{
+        //    IndividualAddressDAL objADAL = new IndividualAddressDAL();
+        //    IndividualContactDAL objCDAL = new IndividualContactDAL();
+
+        //    DataSet ds = new DataSet("DS");
+        //    DBHelper objDB = new DBHelper();
+        //    List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+        //    lstParameter.Add(new MySqlParameter("_ProviderId", ProviderId));
+        //    lstParameter.Add(new MySqlParameter("_InduvidualTypeId", InduvidualTypeId));
+        //    lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+        //    ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUAL_GET_BY_IndividualId", lstParameter.ToArray());
+        //    Individual objEntity = null;
+        //    DataTable dt = ds.Tables[0];
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        DataRow dr = ds.Tables[0].Rows[0];
+        //        objEntity = FetchEntity(dr);
+
+        //        //objEntity.objIndividualAddress = objADAL.Get_Current_IndividualAddress_By_IndividualId(objEntity.IndividualId);
+        //        //objEntity.objIndividualContact = objCDAL.Get_Primary_IndividualContact_By_IndividualId(objEntity.IndividualId);
+
+        //    }
+        //    return objEntity;
+
+
+        //}
+
     }
 }

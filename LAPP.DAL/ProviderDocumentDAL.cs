@@ -152,5 +152,22 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+
+        public ProviderDocumentGET Get_ProviderDocument_By_ProviderDocumentId(int ID)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_ProviderDocumentId", ID));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ProviderDocument_GET_BY_ProviderDocumentId", lstParameter.ToArray());
+            ProviderDocumentGET objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntityGET(dr);
+            }
+            return objEntity;
+        }
     }
 }

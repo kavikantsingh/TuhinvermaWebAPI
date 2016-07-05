@@ -23,9 +23,15 @@ namespace LAPP.BAL
         }
 
         ProviderNameDAL objProviderNameDAL = new ProviderNameDAL();
+
         public int SavePreviousSchoolDetails(ProviderNames objProviderInstructions)
         {
             return objProviderNameDAL.SavePreviousSchoolDetails(objProviderInstructions);
+        }
+
+        public int DeletePreviousSchoolDetails(ProviderNames objProviderInstructions)
+        {
+            return objProviderNameDAL.DeletePreviousSchoolDetails(objProviderInstructions);
         }
 
         public List<ProviderNames> GetAllPreviousSchools(int applicationId,int providerid)

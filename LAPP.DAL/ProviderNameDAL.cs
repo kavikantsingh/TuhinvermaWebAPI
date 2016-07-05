@@ -13,6 +13,8 @@ namespace LAPP.DAL
         public int SavePreviousSchoolDetails(ProviderNames objProvider)
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("ProviderName_Id", objProvider.ProviderNameId));
             lstParameter.Add(new MySqlParameter("ApplicationId", objProvider.ApplicationId));
             lstParameter.Add(new MySqlParameter("ProviderId", objProvider.ProviderId));
             lstParameter.Add(new MySqlParameter("IndividualId", objProvider.IndividualId));
@@ -31,13 +33,27 @@ namespace LAPP.DAL
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
-            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderName_Save", true, lstParameter.ToArray());
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderName_SaveSchoolInfo", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
 
+        public int DeletePreviousSchoolDetails(ProviderNames objProvider)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
 
-        public List<ProviderNames> GetAllPreviousSchools(int applicationId,int providerid)
+            lstParameter.Add(new MySqlParameter("ProviderNameId", objProvider.ProviderNameId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objProvider.ApplicationId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProvider.ProviderId));
+            
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderName_DeleteSchoolInfo", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+        public List<ProviderNames> GetAllPreviousSchools(int applicationId, int providerid)
         {
 
             DataSet ds = new DataSet("DS");
@@ -76,6 +92,10 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("ProviderName") && dr["ProviderName"] != DBNull.Value)
             {
                 objEntity.ProviderName = Convert.ToString(dr["ProviderName"]);
+            }
+            if (dr.Table.Columns.Contains("ProviderNameId") && dr["ProviderNameId"] != DBNull.Value)
+            {
+                objEntity.ProviderNameId = Convert.ToInt32(dr["ProviderNameId"]);
             }
 
             return objEntity;

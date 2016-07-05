@@ -216,6 +216,9 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("CreatedBy", objaddress.CreatedBy));
             lstParameter.Add(new MySqlParameter("CreatedOn", DateTime.Now));
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("IsDeleted", objaddress.IsDeleted));
+            lstParameter.Add(new MySqlParameter("IsActive", objaddress.IsActive));
+             
             //To Fill the provider Address Table
             lstParameter.Add(new MySqlParameter("ProviderId", objaddress.ProviderId));
             lstParameter.Add(new MySqlParameter("AddressTypeId", objaddress.AddressTypeId));
@@ -224,10 +227,27 @@ namespace LAPP.DAL
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
-            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "address_SaveSchoolAddress", true, lstParameter.ToArray());
+            //objDB.ExecuteNonQuery(CommandType.StoredProcedure, "address_SaveSchoolAddress", true, lstParameter.ToArray()); change
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "address_SaveSchoolAddressSchoolInfo", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
+        public int DeleteaddressRequestFromSchoolInformationTab(Address objaddress)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("AddressId", objaddress.AddressId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objaddress.ApplicationId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objaddress.ProviderId));
+            
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "Deleteaddress_SaveSchoolAddressSchoolInfo", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+        
 
         public List<Address> GetAllPreviousAddress(int addressTypeId, int providerId)
         {

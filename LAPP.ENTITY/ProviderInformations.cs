@@ -13,7 +13,7 @@ namespace LAPP.ENTITY
         public bool IsSchoolTelephoneMobile { get; set; }
         public string SchoolWebsite { get; set; }
 
-
+        public int SchoolAddressId { get; set; }
         public string SchoolAddressStreet1 { get; set; }
         public string SchoolAddressStreet2 { get; set; }
         public string SchoolAddressCity { get; set; }
@@ -22,6 +22,7 @@ namespace LAPP.ENTITY
         public bool SchoolAddressIsVerifiedClicked { get; set; }
         public bool SchoolAddressIsNotVerifiedClicked { get; set; }
 
+        public int MailingAddressId { get; set; }
         public string MailingAddressStreet1 { get; set; }
         public string MailingAddressStreet2 { get; set; }
         public string MailingAddressCity { get; set; }
@@ -30,7 +31,7 @@ namespace LAPP.ENTITY
         public bool MailingAddressIsVerifiedClicked { get; set; }
         public bool MailingAddressIsNotVerifiedClicked { get; set; }
 
-
+        public int DirectorIndividualId { get; set; }
         public string DirectorFirstName { get; set; }
         public string DirectorLastName { get; set; }
         public string DirectorAdministratorEmail { get; set; }
@@ -40,6 +41,7 @@ namespace LAPP.ENTITY
         public string DirectorSecondaryNumber { get; set; }
         public bool DirectorSecondaryNumberIsMobile { get; set; }
 
+        public int ContactNameIndividualId { get; set; }
         public string ContactNameFirstName { get; set; }
         public string ContactNameLastName { get; set; }
         public string ContactNameAdministratorEmail { get; set; }
@@ -71,6 +73,6 @@ namespace LAPP.ENTITY
         public string AddressTypeId { get; set; }
         public bool IsMailingSameasPhysical { get; set; }
         public int IndividualId { get; set; }
-        
+
     }
 }
