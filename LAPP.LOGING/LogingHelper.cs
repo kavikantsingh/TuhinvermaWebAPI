@@ -61,6 +61,7 @@ namespace LAPP.LOGING
         public static Log SaveExceptionInfo(string Key, Exception exception, string Title, eSeverity Severity, int Priority = -1)
         {
             Log objLog = new Log();
+            LogDAL objDal = new LogDAL();
             try
             {
 
@@ -97,12 +98,51 @@ namespace LAPP.LOGING
                 objLog.FormattedMessage = "";
                 objLog.EventID = 0;
 
-                LogDAL objDal = new LogDAL();
                 objLog.LogID = objDal.Save_Log(objLog);
             }
             catch (Exception ex)
             {
+                try
+                {
+                    objLog = new Log();
+                    objLog.MachineName = "";
+                    objLog.UserHostName = "";
+                    objLog.RequestBrowserTypeVersion = "";
+                    objLog.UserHostAddress = "";
+                    objLog.RequestUrl = "";
+                    objLog.UserId = 0;
+                    objLog.UserName = "";
+                    objLog.IndividualId = 0;
+                    objLog.EntityId = 0;
+                    objLog.AppDomainName = "";
+                    objLog.RequestUrlReferrer = "";
+                    objLog.Timestamp = DateTime.Now;
+                    objLog.Exception = ex.ToString();
+                    objLog.Application = "LAPP";
+                    objLog.AppDomainName = "";
+                    objLog.CreatedOn = DateTime.Now;
+                    objLog.ElapsedMs = 0;
+                    objLog.UserAgent = "";
+                    objLog.Win32ThreadId = "";
+                    objLog.StackTrace = ex.StackTrace;
+                    objLog.Severity = Severity.ToString();
+                    objLog.Title = Title;
+                    objLog.ThreadName = "";
+                    objLog.Source = (eSource.WS).ToString();
+                    objLog.ProcessName = "";
+                    objLog.ProcessID = "";
+                    objLog.Priority = Priority;
+                    objLog.Message = ex.Message;
+                    objLog.IsDebug = false;
+                    objLog.FormattedMessage = "";
+                    objLog.EventID = 0;
 
+                    objLog.LogID = objDal.Save_Log(objLog);
+                }
+                catch(Exception ex1)
+                {
+
+                }
             }
             return objLog;
         }
@@ -201,7 +241,7 @@ namespace LAPP.LOGING
             }
             catch (Exception ex)
             {
-
+                throw ex;
 
             }
 

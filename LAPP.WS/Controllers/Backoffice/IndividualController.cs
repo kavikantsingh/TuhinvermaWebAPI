@@ -1875,9 +1875,9 @@ namespace LAPP.WS.Controllers.Backoffice
 
             try
             {
-                // this is executed only in the debug version
+                
                 string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objIndividualDocumentResponse);
-                LogingHelper.SaveRequestJson("none only capture Transaction Id", ("IndividualDocumentSave upload object-" + objIndividualDocumentResponse.TransactionId.ToString() + objIndividualDocumentResponse.IndividualId.ToString()));
+                LogingHelper.SaveRequestJson(requestStr, ("IndividualDocumentSave upload object-" + objIndividualDocumentResponse.IndividualId.ToString()));
 
             }
             catch (Exception ex)
