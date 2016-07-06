@@ -109,7 +109,9 @@
     <Compile Include="ProviderDocumentDAL.cs" />
     <Compile Include="ProviderIndividualNameDAL.cs" />
     <Compile Include="ProviderInstructionDAL.cs" />
+    <Compile Include="ProvidermblexDAL.cs" />
     <Compile Include="ProviderNameDAL.cs" />
+    <Compile Include="ProvidersitevisittypeDAL.cs" />
     <Compile Include="ProviderUserDAL.cs" />
     <Compile Include="ProvReqCourseOfStudyDAL.cs" />
     <Compile Include="ProvReqCourseTitleDAL.cs" />

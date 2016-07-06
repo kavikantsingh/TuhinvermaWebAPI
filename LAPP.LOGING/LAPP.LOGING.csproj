@@ -77,6 +77,10 @@
       <Project>{71a49425-f6ae-41f2-a0fd-8989a02e69b0}</Project>
       <Name>LAPP.ENTITY</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LAPP.GlobalFunctions\LAPP.GlobalFunctions.csproj">
+      <Project>{241a69de-5464-4251-9fe8-e69ab8fd5891}</Project>
+      <Name>LAPP.GlobalFunctions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
