@@ -70,7 +70,7 @@ namespace LAPP.WS.Controllers.Common
                     {
                         // this is executed only in the debug version
                         string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objPaymentRequest);
-                        LogingHelper.SaveRequestJson(requestStr, ("Process Payment request. AffirmativeAction=" + AffirmativeAction));
+                        LogingHelper.SaveRequestJson(requestStr, ("Process Payment request. AffirmativeAction=" + AffirmativeAction + "- IsBackofficePayment=" + IsBackofficePayment.ToString()));
                     }
 
                 }
@@ -119,7 +119,7 @@ namespace LAPP.WS.Controllers.Common
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("ProcessManualPayment")]
-        public ManualPaymentResponse ProcessManualPayment(string Key, ManualPaymentRequest objPaymentRequest, string AffirmativeAction = "", bool IsBackofficePayment = false)
+        public ManualPaymentResponse ProcessManualPayment(string Key, ManualPaymentRequest objPaymentRequest, string AffirmativeAction = "", bool IsBackofficePayment = true)
         {
             if (string.IsNullOrEmpty(AffirmativeAction))
             {

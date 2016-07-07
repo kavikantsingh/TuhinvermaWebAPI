@@ -1331,6 +1331,1322 @@ namespace LAPP.BAL.Renewal
             return objResponse;
         }
 
+        public static IndividualRenewalResponse PtBoardSaveAndValidateRequest(Token objToken, IndividualRenewalResponse objRenewalRequest)
+        {
+            IndividualRenewalResponse objResponse = new IndividualRenewalResponse();
+            IndividualRenewal objIndividualRenewal = new IndividualRenewal();
+            objIndividualRenewal = objRenewalRequest.IndividualRenewal;
+            try
+            {
+                #region Validation
+                IndividualRenewalResponse objValidationResponse = new IndividualRenewalResponse();
+                objValidationResponse = ValidateRenewalRequest.PtBoardValidate(objRenewalRequest);
+                if (objValidationResponse != null)
+                {
+                    return objValidationResponse;
+                }
+
+                #endregion
+                int ApplicationId = objIndividualRenewal.Application.ApplicationId;
+                int IndividualId = objIndividualRenewal.Individual.IndividualId;
+
+                IndividualBAL objIndividualBAL = new IndividualBAL();
+                IndividualResponse objIndividualResponse = new IndividualResponse();
+                objIndividualResponse = objRenewalRequest.IndividualRenewal.Individual;
+                if (objIndividualResponse != null)
+                {
+
+                    //Application
+                    #region Application Process
+                    ApplicationResponse objApplicationResponse = new ApplicationResponse();
+                    ApplicationBAL objApplicationBAL = new ApplicationBAL();
+
+                    objApplicationResponse = objRenewalRequest.IndividualRenewal.Application;
+                    if (objApplicationResponse != null)
+                    {
+                        Application objApplication = objApplicationBAL.Get_Application_By_ApplicationId(objApplicationResponse.ApplicationId);
+                        if (objApplication != null)
+                        {
+                            if (objApplication.ApplicationStatusId == 3)//approved
+                            {
+
+
+                                objResponse.Status = false;
+                                objResponse.Message = "This application is already approved.";
+                                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                                objResponse.IndividualRenewal = objRenewalRequest.IndividualRenewal;
+                                return objResponse;
+                            }
+                            objApplication.ApplicationStatusDate = DateTime.Now;
+                            objApplication.ApplicationStatusId = objApplicationResponse.ApplicationStatusId;
+                            objApplication.ApplicationStatusReasonId = 1;
+                            objApplication.LicenseTypeId = 1;
+
+                            objApplication.ModifiedBy = objToken.UserId;
+                            objApplication.ModifiedOn = DateTime.Now;
+                            objApplicationBAL.Save_Application(objApplication);
+                        }
+
+                    }
+                    #endregion
+
+
+                    #region Individual Proccess
+                    Individual objIndividual = new Individual();
+                    objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(IndividualId);
+                    if (objIndividual != null)
+                    {
+                        objIndividual.FirstName = objIndividualResponse.FirstName;
+                        objIndividual.LastName = objIndividualResponse.LastName;
+                        objIndividual.MiddleName = objIndividualResponse.MiddleName;
+                        objIndividual.DateOfBirth = objIndividualResponse.DateOfBirth;
+
+                        objIndividual.ModifiedBy = objToken.UserId;
+                        objIndividual.ModifiedOn = DateTime.Now;
+
+                        objIndividualBAL.Save_Individual(objIndividual);
+
+                        Users objUseres = new Users();
+                        UsersBAL objUsersBAL = new UsersBAL();
+                        objUseres = objUsersBAL.Get_Users_byIndividualId(objIndividual.IndividualId);
+                        if (objUseres != null)
+                        {
+                            objUseres.Email = objIndividualResponse.Email;
+                            objUseres.ModifiedBy = objToken.UserId;
+                            objUseres.ModifiedOn = DateTime.Now;
+                            objUsersBAL.Save_Users(objUseres);
+                        }
+
+                    }
+                    #endregion
+
+
+
+                    #region Address
+                    try
+                    {
+                        List<IndividualAddressResponse> lstIndividualAddress = new List<IndividualAddressResponse>();
+                        IndividualAddressBAL objIndividualAddressBAL = new IndividualAddressBAL();
+                        lstIndividualAddress = objIndividualRenewal.IndividualAddress;
+                        if (lstIndividualAddress != null && lstIndividualAddress.Count > 0)
+                        {
+                            AddressBAL objAddressBAL = new AddressBAL();
+                            Address objAddress = new Address();
+                            foreach (IndividualAddressResponse objAddressResponse in lstIndividualAddress)
+                            {
+
+
+
+                                if (objAddressResponse.AddressId > 0)
+                                {
+                                    objAddress = new Address();
+                                    objAddress = objAddressBAL.Get_address_By_AddressId(objAddressResponse.AddressId);
+                                    if (objAddress != null)
+                                    {
+                                        objAddress.Addressee = "";
+                                        objAddress.City = objAddressResponse.City;
+                                        objAddress.StreetLine1 = objAddressResponse.StreetLine1;
+                                        objAddress.StreetLine2 = objAddressResponse.StreetLine2;
+                                        objAddress.StateCode = objAddressResponse.StateCode;
+                                        objAddress.Zip = objAddressResponse.Zip;
+
+                                        objAddress.ModifiedBy = objToken.UserId;
+                                        objAddress.ModifiedOn = DateTime.Now;
+                                        objAddress.CountryId = 235;
+                                        objAddress.BadAddress = objAddressResponse.BadAddress;
+                                        objAddress.IsActive = true;
+                                        objAddress.IsDeleted = false;
+                                        objAddress.UseUserAddress = false;
+                                        objAddress.UseVerifiedAddress = false;
+
+                                        objAddressBAL.Save_address(objAddress);
+
+
+
+                                        IndividualAddress objIndAddress = new IndividualAddress();
+                                        IndividualAddressBAL objIndAddressBAL = new IndividualAddressBAL();
+                                        objIndAddress = objIndAddressBAL.Get_IndividualAddress_By_IndividualAddressId(objAddressResponse.IndividualAddressId);
+                                        if (objIndAddress != null)
+                                        {
+                                            objIndAddress.IndividualAddressId = objAddressResponse.IndividualAddressId;
+                                            objIndAddress.AddressId = objAddress.AddressId;
+                                            objIndAddress.AddressTypeId = objAddressResponse.AddressTypeId;
+                                            objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
+                                            objIndAddress.ModifiedBy = objToken.UserId;
+                                            objIndAddress.ModifiedOn = DateTime.Now;
+                                            objIndAddress.IndividualId = IndividualId;
+                                            objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
+                                            objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
+                                            objIndAddressBAL.Save_IndividualAddress(objIndAddress);
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    objAddress = new Address();
+                                    objAddress.Addressee = "";
+                                    objAddress.AddressGuid = Guid.NewGuid().ToString();
+                                    objAddress.Authenticator = Guid.NewGuid().ToString();
+                                    objAddress.CountryId = 235;
+
+                                    objAddress.IsActive = true;
+                                    objAddress.IsDeleted = false;
+                                    objAddress.UseUserAddress = false;
+                                    objAddress.UseVerifiedAddress = false;
+
+                                    objAddress.City = objAddressResponse.City;
+                                    objAddress.StreetLine1 = objAddressResponse.StreetLine1;
+                                    objAddress.StreetLine2 = objAddressResponse.StreetLine2;
+                                    objAddress.StateCode = objAddressResponse.StateCode;
+                                    objAddress.Zip = objAddressResponse.Zip;
+                                    objAddress.BadAddress = objAddressResponse.BadAddress;
+                                    objAddress.CreatedBy = objToken.UserId;
+                                    objAddress.CreatedOn = DateTime.Now;
+
+
+                                    objAddress.AddressId = objAddressBAL.Save_address(objAddress);
+
+                                    IndividualAddress objIndAddress = new IndividualAddress();
+                                    IndividualAddressBAL objIndAddressBAL = new IndividualAddressBAL();
+                                    objIndAddress.AddressId = objAddress.AddressId;
+                                    objIndAddress.AddressTypeId = objAddressResponse.AddressTypeId;
+                                    objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
+                                    objIndAddress.CreatedBy = objToken.UserId;
+                                    objIndAddress.CreatedOn = DateTime.Now;
+                                    objIndAddress.IndividualId = IndividualId;
+                                    objIndAddress.IndividualAddressGuid = Guid.NewGuid().ToString();
+                                    objIndAddress.IsActive = true;
+                                    objIndAddress.BeginDate = DateTime.Now;
+                                    objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
+                                    objIndAddressBAL.Save_IndividualAddress(objIndAddress);
+
+                                }
+
+
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Individual Address", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+
+                    #endregion
+
+                    #region Contact
+                    try
+                    {
+                        List<IndividualContactResponse> lstIndividualContact = new List<IndividualContactResponse>();
+                        IndividualContactBAL objIndividualContactBAL = new IndividualContactBAL();
+                        lstIndividualContact = objIndividualRenewal.Contact;
+                        if (lstIndividualContact != null && lstIndividualContact.Count > 0)
+                        {
+                            ContactBAL objContactBAL = new ContactBAL();
+                            Contact objContact = new Contact();
+                            foreach (IndividualContactResponse objContactResponse in lstIndividualContact)
+                            {
+                                if (objContactResponse.ContactId > 0)
+                                {
+                                    objContact = new Contact();
+                                    objContact = objContactBAL.Get_Contact_By_ContactId(objContactResponse.ContactId);
+                                    if (objContact != null)
+                                    {
+                                        objContact.Code = objContactResponse.Code;
+                                        objContact.ContactFirstName = "";
+                                        objContact.ContactLastName = "";
+                                        objContact.ContactMiddleName = "";
+                                        objContact.ContactTypeId = objContactResponse.ContactTypeId;
+                                        objContact.ContactInfo = objContactResponse.ContactInfo;
+
+
+
+                                        objContact.ModifiedBy = objToken.UserId;
+                                        objContact.ModifiedOn = DateTime.Now;
+
+
+                                        objContactBAL.Save_Contact(objContact);
+
+
+
+                                        IndividualContact objIndContact = new IndividualContact();
+                                        IndividualContactBAL objIndContactBAL = new IndividualContactBAL();
+                                        objIndContact = objIndContactBAL.Get_IndividualContact_By_IndividualContactId(objContactResponse.IndividualContactId);
+                                        if (objIndContact != null)
+                                        {
+                                            objIndContact.IndividualContactId = objContactResponse.IndividualContactId;
+                                            objIndContact.ContactId = objContact.ContactId;
+                                            objIndContact.ContactTypeId = objContactResponse.ContactTypeId;
+                                            objIndContact.IsPreferredContact = objContactResponse.IsPreferredContact;
+                                            objIndContact.IsMobile = objContactResponse.IsMobile;
+
+                                            objIndContact.ModifiedBy = objToken.UserId;
+                                            objIndContact.ModifiedOn = DateTime.Now;
+                                            objIndContact.IndividualId = IndividualId;
+                                            objIndContact.IndividualContactGuid = Guid.NewGuid().ToString();
+
+                                            objIndContactBAL.Save_IndividualContact(objIndContact);
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    objContact = new Contact();
+
+                                    objContact.ContactGuid = Guid.NewGuid().ToString();
+                                    objContact.Authenticator = Guid.NewGuid().ToString();
+
+                                    objContact.IsActive = true;
+                                    objContact.IsDeleted = false;
+                                    objContact.Code = objContactResponse.Code;
+                                    objContact.ContactFirstName = "";
+                                    objContact.ContactLastName = "";
+                                    objContact.ContactMiddleName = "";
+                                    objContact.ContactTypeId = objContactResponse.ContactTypeId;
+                                    objContact.ContactInfo = objContactResponse.ContactInfo;
+
+
+                                    objContact.CreatedBy = objToken.UserId;
+                                    objContact.CreatedOn = DateTime.Now;
+
+
+                                    objContact.ContactId = objContactBAL.Save_Contact(objContact);
+
+                                    IndividualContact objIndContact = new IndividualContact();
+                                    IndividualContactBAL objIndContactBAL = new IndividualContactBAL();
+
+                                    objIndContact.IndividualId = IndividualId;
+                                    objIndContact.IndividualContactGuid = Guid.NewGuid().ToString();
+                                    objIndContact.IndividualContactId = objContactResponse.IndividualContactId;
+                                    objIndContact.ContactId = objContact.ContactId;
+                                    objIndContact.ContactTypeId = objContactResponse.ContactTypeId;
+                                    objIndContact.IsPreferredContact = objContactResponse.IsPreferredContact;
+                                    objIndContact.IsMobile = objContactResponse.IsMobile;
+                                    objIndContact.IsActive = true;
+                                    objIndContact.IsDeleted = false;
+                                    objIndContact.BeginDate = DateTime.Now;
+                                    objIndContact.CreatedBy = objToken.UserId;
+                                    objIndContact.CreatedOn = DateTime.Now;
+                                    objIndContact.ModifiedBy = null;
+                                    objIndContact.ModifiedOn = null;
+                                    objIndContact.IndividualId = IndividualId;
+                                    objIndContactBAL.Save_IndividualContact(objIndContact);
+
+                                }
+
+
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Contact", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+
+
+                    #endregion
+
+                    #region Individual Legal
+                    try
+                    {
+                        List<IndividualLegalResponse> objIndividualLegalResponse = new List<IndividualLegalResponse>();
+                        IndividualLegalBAL objIndividualLegalBAL = new IndividualLegalBAL();
+
+                        objIndividualLegalResponse = objIndividualRenewal.IndividualLegal;
+
+                        if (objIndividualLegalResponse != null && objIndividualLegalResponse.Count > 0)
+                        {
+                            foreach (IndividualLegalResponse objNewBLResponse in objIndividualLegalResponse)
+                            {
+                                if (objNewBLResponse.IndividualLegalId > 0 && objNewBLResponse != null)
+                                {
+                                    IndividualLegal objLegal = new IndividualLegal();
+
+                                    objLegal = objIndividualLegalBAL.Get_address_By_IndividualLegalId(objNewBLResponse.IndividualLegalId);
+
+                                    if (objLegal != null)
+                                    {
+                                        objLegal.IndividualId = objNewBLResponse.IndividualId;
+                                        objLegal.ContentItemLkId = objNewBLResponse.ContentItemLkId;
+                                        objLegal.ContentItemNumber = objNewBLResponse.ContentItemNumber;
+                                        objLegal.ContentItemResponse = objNewBLResponse.ContentItemResponse;
+                                        objLegal.Desc = objNewBLResponse.Desc;
+                                        objLegal.ModifiedBy = objToken.UserId;
+                                        objLegal.ModifiedOn = DateTime.Now;
+
+                                        objIndividualLegalBAL.Save_IndividualLegal(objLegal);
+
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Individual Legal", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
+
+                    #region Individual BusinessLicense
+                    try
+                    {
+                        List<IndividualNVBusinessLicenseResponse> objIndividualNVBusinessLicenseResponse = new List<IndividualNVBusinessLicenseResponse>();
+                        IndividualNVBusinessLicenseBAL objIndividualNVBusinessLicenseBAL = new IndividualNVBusinessLicenseBAL();
+
+                        objIndividualNVBusinessLicenseResponse = objIndividualRenewal.BusinessLicenseInformation;
+
+                        if (objIndividualNVBusinessLicenseResponse != null && objIndividualNVBusinessLicenseResponse.Count > 0)
+                        {
+                            foreach (IndividualNVBusinessLicenseResponse objNewBLResponse in objIndividualNVBusinessLicenseResponse)
+                            {
+                                if (objNewBLResponse.IndividualNVBusinessLicenseId > 0 && objNewBLResponse != null)
+                                {
+                                    IndividualNVBusinessLicense objBusinessLice = new IndividualNVBusinessLicense();
+
+                                    objBusinessLice = objIndividualNVBusinessLicenseBAL.Get_address_By_IndividualNVBusinessLicenseId(objNewBLResponse.IndividualNVBusinessLicenseId);
+
+                                    if (objBusinessLice != null)
+                                    {
+                                        objBusinessLice.IndividualId = objNewBLResponse.IndividualId;
+                                        objBusinessLice.ContentItemLkId = objNewBLResponse.ContentItemLkId;
+                                        objBusinessLice.ContentItemHash = objNewBLResponse.ContentItemHash;
+                                        objBusinessLice.ContentItemResponse = objNewBLResponse.ContentItemResponse;
+                                        objBusinessLice.Status = objNewBLResponse.Status;
+                                        objBusinessLice.NameonBusinessLicense = objNewBLResponse.NameonBusinessLicense;
+                                        objBusinessLice.BusinessLicenseNumber = objNewBLResponse.BusinessLicenseNumber;
+                                        objBusinessLice.IsActive = objNewBLResponse.IsActive;
+                                        objBusinessLice.ModifiedBy = objToken.UserId;
+                                        objBusinessLice.ModifiedOn = DateTime.Now;
+
+                                        objIndividualNVBusinessLicenseBAL.Save_IndividualNVBusinessLicense(objBusinessLice);
+
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - NV Business License", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
+
+                    #region Individual Certification
+
+                    try
+                    {
+                        IndividualCertificationResponse objCertificationResponse = new IndividualCertificationResponse();
+                        IndividualCertificationBAL objCertificationBAL = new IndividualCertificationBAL();
+
+                        objCertificationResponse = objIndividualRenewal.IndividualCertification;
+                        if (objCertificationResponse != null && objCertificationResponse.CertificationTypeId != null)
+                        {
+                            if (objCertificationResponse.IndividualCertificationId > 0)
+                            {
+                                IndividualCertification objCertificate = new IndividualCertification();
+                                objCertificate = objCertificationBAL.Get_IndividualCertification_By_IndividualId(IndividualId);
+                                if (objCertificate != null)
+                                {
+                                    objCertificate.IndividualId = IndividualId;
+                                    objCertificate.CertificationTypeId = objCertificationResponse.CertificationTypeId;
+                                    objCertificate.ClinicalComptence = objCertificationResponse.ClinicalComptence;
+                                    objCertificate.IsClinicalComptence = objCertificationResponse.IsClinicalComptence;
+                                    objCertificate.DateIssued = objCertificationResponse.DateIssued;
+                                    objCertificate.ABAMember = objCertificationResponse.ABAMember;
+                                    objCertificate.PraxisExam = objCertificationResponse.PraxisExam;
+                                    objCertificate.NoChanges = objCertificationResponse.NoChanges;
+                                    objCertificate.IsNBCHIS = objCertificationResponse.IsNBCHIS;
+                                    objCertificate.NBCHISAccount = objCertificationResponse.NBCHISAccount;
+                                    objCertificate.NBCHISCertificate = objCertificationResponse.NBCHISCertificate;
+                                    objCertificate.DatePassed = objCertificationResponse.DatePassed;
+                                    objCertificate.ASHA = objCertificationResponse.ASHA;
+                                    objCertificate.ABA = objCertificationResponse.ABA;
+
+                                    objCertificate.IsNBCOTAppliedforRenewal = objCertificationResponse.IsNBCOTAppliedforRenewal;
+                                    objCertificate.IsNBCOTCertified = objCertificationResponse.IsNBCOTCertified;
+                                    objCertificate.IsNBCOTExamScheduled = objCertificationResponse.IsNBCOTExamScheduled;
+                                    objCertificate.IsActive = objCertificationResponse.IsActive;
+
+                                    objCertificate.NBCOTDateTaken = objCertificationResponse.NBCOTDateTaken;
+                                    objCertificate.NBCOTDatePassed = objCertificationResponse.NBCOTDatePassed;
+                                    objCertificate.NBCOTDateScheduled = objCertificationResponse.NBCOTDateScheduled;
+                                    objCertificate.ModifiedOn = DateTime.Now;
+                                    objCertificate.ModifiedBy = objToken.UserId;
+
+                                    objCertificationBAL.Save_IndividualCertification(objCertificate);
+                                }
+
+                            }
+                            else
+                            {
+                                IndividualCertification objCertificate = new IndividualCertification();
+                                objCertificate.IndividualId = IndividualId;
+                                objCertificate.CertificationTypeId = objCertificationResponse.CertificationTypeId;
+                                objCertificate.ClinicalComptence = objCertificationResponse.ClinicalComptence;
+                                objCertificate.IsClinicalComptence = objCertificationResponse.IsClinicalComptence;
+                                objCertificate.DateIssued = objCertificationResponse.DateIssued;
+                                objCertificate.ABAMember = objCertificationResponse.ABAMember;
+                                objCertificate.PraxisExam = objCertificationResponse.PraxisExam;
+                                objCertificate.NoChanges = objCertificationResponse.NoChanges;
+                                objCertificate.IsNBCHIS = objCertificationResponse.IsNBCHIS;
+                                objCertificate.NBCHISAccount = objCertificationResponse.NBCHISAccount;
+                                objCertificate.NBCHISCertificate = objCertificationResponse.NBCHISCertificate;
+                                objCertificate.DatePassed = objCertificationResponse.DatePassed;
+                                objCertificate.ASHA = objCertificationResponse.ASHA;
+                                objCertificate.ABA = objCertificationResponse.ABA;
+
+                                objCertificate.IsNBCOTAppliedforRenewal = objCertificationResponse.IsNBCOTAppliedforRenewal;
+                                objCertificate.IsNBCOTCertified = objCertificationResponse.IsNBCOTCertified;
+                                objCertificate.IsNBCOTExamScheduled = objCertificationResponse.IsNBCOTExamScheduled;
+                                objCertificate.IsActive = objCertificationResponse.IsActive;
+
+                                objCertificate.NBCOTDateTaken = objCertificationResponse.NBCOTDateTaken;
+                                objCertificate.NBCOTDatePassed = objCertificationResponse.NBCOTDatePassed;
+                                objCertificate.NBCOTDateScheduled = objCertificationResponse.NBCOTDateScheduled;
+
+
+                                objCertificate.IsDeleted = false;
+                                objCertificate.IndividualCertificationGuid = Guid.NewGuid().ToString();
+                                objCertificate.CreatedOn = DateTime.Now;
+                                objCertificate.ModifiedOn = null;
+                                objCertificate.ModifiedBy = null;
+                                objCertificate.CreatedBy = objToken.UserId;
+
+
+                                objCertificationBAL.Save_IndividualCertification(objCertificate);
+
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Certification", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
+
+                    #region Individual CE Course
+                    try
+                    {
+                        List<IndividualCECourseResponse> lstCECourseResponse = new List<IndividualCECourseResponse>();
+                        IndividualCECourseBAL objCECourseBAL = new IndividualCECourseBAL();
+                        lstCECourseResponse = objIndividualRenewal.IndividualCECourse;
+                        if (lstCECourseResponse != null && lstCECourseResponse.Count > 0)
+                        {
+                            foreach (IndividualCECourseResponse objCehResponse in lstCECourseResponse)
+                            {
+                                objCehResponse.IndividualLicenseId = objIndividualRenewal.IndividualLicense[0].IndividualLicenseId;
+                                if (objCehResponse.IndividualCECourseId > 0)
+                                {
+                                    IndividualCECourse objCehCourse = objCECourseBAL.Get_IndividualCECourse_By_IndividualCECourseId(objCehResponse.IndividualCECourseId);
+                                    if (objCehCourse != null)
+                                    {
+                                        objCehCourse.IndividualId = IndividualId;
+                                        objCehCourse.ApplicationId = objCehResponse.ApplicationId;
+                                        objCehCourse.CECourseTypeId = objCehResponse.CECourseTypeId;
+                                        objCehCourse.CECourseActivityTypeId = objCehResponse.CECourseActivityTypeId;
+                                        objCehCourse.CECourseStartDate = objCehResponse.CECourseStartDate;
+                                        objCehCourse.CECourseEndDate = objCehResponse.CECourseEndDate;
+                                        objCehCourse.CECourseDueDate = objCehResponse.CECourseDueDate;
+                                        objCehCourse.CECourseDate = objCehResponse.CECourseDate;
+                                        objCehCourse.CECourseHours = objCehResponse.CECourseHours;
+                                        objCehCourse.CECourseUnits = objCehResponse.CECourseUnits;
+                                        objCehCourse.ProgramSponsor = objCehResponse.ProgramSponsor;
+                                        objCehCourse.CourseNameTitle = objCehResponse.CourseNameTitle;
+                                        objCehCourse.CourseSponsor = objCehResponse.CourseSponsor;
+                                        objCehCourse.CECourseReportingYear = objCehResponse.CECourseReportingYear;
+                                        objCehCourse.CECourseStatusId = objCehResponse.CECourseStatusId;
+                                        objCehCourse.InstructorBiography = objCehResponse.InstructorBiography;
+                                        objCehCourse.ActivityDesc = objCehResponse.ActivityDesc;
+                                        objCehCourse.ReferenceNumber = objCehResponse.ReferenceNumber;
+                                        objCehCourse.IsActive = objCehResponse.IsActive;
+                                        objCehCourse.IsDeleted = objCehResponse.IsDeleted;
+                                        objCehCourse.IndividualLicenseId = objCehResponse.IndividualLicenseId;
+
+                                        objCehCourse.ModifiedBy = objToken.UserId;
+                                        objCehCourse.ModifiedOn = DateTime.Now;
+
+                                        objCECourseBAL.Save_IndividualCECourse(objCehCourse);
+
+
+                                    }
+                                }
+                                else
+                                {
+                                    IndividualCECourse objCehCourse = new IndividualCECourse();
+
+                                    objCehCourse.IndividualId = IndividualId;
+                                    objCehCourse.ApplicationId = objCehResponse.ApplicationId;
+                                    objCehCourse.CECourseTypeId = objCehResponse.CECourseTypeId;
+                                    objCehCourse.CECourseActivityTypeId = objCehResponse.CECourseActivityTypeId;
+                                    objCehCourse.CECourseStartDate = objCehResponse.CECourseStartDate;
+                                    objCehCourse.CECourseEndDate = objCehResponse.CECourseEndDate;
+                                    objCehCourse.CECourseDueDate = objCehResponse.CECourseDueDate;
+                                    objCehCourse.CECourseDate = objCehResponse.CECourseDate;
+                                    objCehCourse.CECourseHours = objCehResponse.CECourseHours;
+                                    objCehCourse.CECourseUnits = objCehResponse.CECourseUnits;
+                                    objCehCourse.ProgramSponsor = objCehResponse.ProgramSponsor;
+                                    objCehCourse.CourseNameTitle = objCehResponse.CourseNameTitle;
+                                    objCehCourse.CourseSponsor = objCehResponse.CourseSponsor;
+                                    objCehCourse.CECourseReportingYear = objCehResponse.CECourseReportingYear;
+                                    objCehCourse.CECourseStatusId = objCehResponse.CECourseStatusId;
+                                    objCehCourse.InstructorBiography = objCehResponse.InstructorBiography;
+                                    objCehCourse.ActivityDesc = objCehResponse.ActivityDesc;
+                                    objCehCourse.ReferenceNumber = objCehResponse.ReferenceNumber;
+                                    objCehCourse.IsActive = objCehResponse.IsActive;
+                                    objCehCourse.IsDeleted = objCehResponse.IsDeleted;
+                                    objCehCourse.IndividualLicenseId = objCehResponse.IndividualLicenseId;
+
+
+                                    objCehCourse.CreatedBy = objToken.UserId;
+                                    objCehCourse.CreatedOn = DateTime.Now;
+                                    objCehCourse.ModifiedBy = null;
+                                    objCehCourse.ModifiedOn = null;
+                                    objCehCourse.IndividualCECourseGuid = Guid.NewGuid().ToString();
+
+                                    objCehCourse.IndividualCECourseId = objCECourseBAL.Save_IndividualCECourse(objCehCourse);
+
+                                }
+
+
+                            }
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - CE Course", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
+
+                    #region Employment Information
+                    try
+                    {
+                        List<IndividualEmploymentResponse> lstIndividualEmploymentResponse = new List<IndividualEmploymentResponse>();
+                        IndividualEmploymentBAL objEmploymentBAL = new IndividualEmploymentBAL();
+
+                        lstIndividualEmploymentResponse = objIndividualRenewal.IndividualEmployment;
+                        if (lstIndividualEmploymentResponse != null)
+                        {
+                            IndividualEmploymentContactBAL objEmpContactBAL = new IndividualEmploymentContactBAL();
+                            IndividualEmploymentAddressBAL objEmpAdressBAL = new IndividualEmploymentAddressBAL();
+                            ProviderBAL objProviderBAL = new ProviderBAL();
+                            Provider objProvider = new Provider();
+
+                            foreach (IndividualEmploymentResponse objEmpResponse in lstIndividualEmploymentResponse)
+                            {
+                                List<IndividualEmploymentContact> lstEmpContactResponse = objEmpResponse.EmploymentContact;
+                                List<IndividualEmploymentAddress> lstEmpAddress = objEmpResponse.EmploymentAddress;
+
+                                IndividualEmployment objIndEmployment = new IndividualEmployment();
+                                IndividualEmploymentBAL objIndEmploymentBAL = new IndividualEmploymentBAL();
+
+                                if (!string.IsNullOrEmpty(objEmpResponse.EmployerName))
+                                {
+                                    objProvider = objProviderBAL.Get_Provider_By_ProviderId(objEmpResponse.ProviderId);
+                                    if (objProvider != null)
+                                    {
+                                        // Update Provider
+
+                                        objProvider.ModifiedBy = objToken.UserId;
+                                        objProvider.ModifiedOn = DateTime.Now;
+                                        objProvider.ProviderName = objEmpResponse.EmployerName;
+                                        objProvider.IsDeleted = objEmpResponse.IsDeleted;
+                                        objProviderBAL.Save_Provider(objProvider);
+
+
+                                        //End Update Provider
+
+                                        // Update IndividualEmployment
+
+                                        objIndEmployment = objIndEmploymentBAL.Get_IndividualEmployment_By_IndividualEmploymentId(objEmpResponse.IndividualEmploymentId);
+                                        if (objIndEmployment != null)
+                                        {
+                                            objIndEmployment.ApplicationId = objEmpResponse.ApplicationId;
+                                            objIndEmployment.IndividualId = objEmpResponse.IndividualId;
+                                            objIndEmployment.ReferenceNumber = "";
+                                            objIndEmployment.Role = "";
+                                            objIndEmployment.IsWorkinginFieldofApplication = false;
+                                            objIndEmployment.EverWorkedinFieldofApplication = false;
+                                            objIndEmployment.EmploymentHistoryTypeId = 1;
+                                            objIndEmployment.ModifiedBy = objToken.UserId;
+                                            objIndEmployment.ModifiedOn = DateTime.Now;
+                                            objIndEmployment.IsDeleted = objEmpResponse.IsDeleted;
+                                            objIndEmployment.IndividualEmploymentId = objIndEmploymentBAL.Save_IndividualEmployment(objIndEmployment);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Save Provider
+                                        objProvider = new Provider();
+
+                                        objProvider.BillingNumber = "";
+                                        objProvider.IsDeleted = objEmpResponse.IsDeleted;
+                                        objProvider.DepartmentId = 2;
+                                        objProvider.CreatedBy = objToken.UserId;
+                                        objProvider.CreatedOn = DateTime.Now;
+                                        objProvider.IsActive = true;
+
+                                        objProvider.IsEnabled = true;
+                                        objProvider.LicenseNumber = "";
+                                        objProvider.OwnershipCompany = "";
+                                        objProvider.ProviderDBAName = "";
+                                        objProvider.ProviderGuid = Guid.NewGuid().ToString();
+
+                                        objProvider.ProviderName = objEmpResponse.EmployerName;
+                                        objProvider.ProviderNumber = "";
+                                        objProvider.ProviderStatusTypeId = 1;
+                                        objProvider.ProviderTypeId = 5;
+                                        objProvider.ReferenceNumber = "";
+                                        objProvider.TaxId = "";
+
+                                        objProvider.ProviderId = objProviderBAL.Save_Provider(objProvider);
+
+                                        //End Save provider
+
+                                        // save IndividualEmployment
+
+                                        objIndEmployment = new IndividualEmployment();
+
+                                        objIndEmployment.ProviderId = objProvider.ProviderId;
+                                        objIndEmployment.CreatedBy = objToken.UserId;
+                                        objIndEmployment.CreatedOn = DateTime.Now;
+                                        objIndEmployment.EmploymentStartDate = DateTime.Now;
+                                        objIndEmployment.IsActive = true;
+                                        objIndEmployment.IsDeleted = objEmpResponse.IsDeleted;
+                                        objIndEmployment.EmploymentHistoryTypeId = 1;
+                                        objIndEmployment.IndividualEmploymentGuid = Guid.NewGuid().ToString();
+                                        objIndEmployment.ApplicationId = objEmpResponse.ApplicationId;
+                                        objIndEmployment.IndividualId = objEmpResponse.IndividualId;
+                                        objIndEmployment.PositionId = objEmpResponse.PositionId;
+                                        objIndEmployment.EmploymentStatusId = objEmpResponse.EmploymentStatusId;
+                                        objIndEmployment.EmploymentTypeId = objEmpResponse.EmploymentTypeId;
+                                        objIndEmployment.ReferenceNumber = "";
+                                        objIndEmployment.Role = "";
+                                        objIndEmployment.IsWorkinginFieldofApplication = false;
+                                        objIndEmployment.EverWorkedinFieldofApplication = false;
+
+                                        //objIndEmployment.ModifiedBy = objToken.UserId;
+                                        //objIndEmployment.ModifiedOn = DateTime.Now;
+
+                                        objIndEmployment.IndividualEmploymentId = objIndEmploymentBAL.Save_IndividualEmployment(objIndEmployment);
+
+                                        //End save IndividualEmployment
+                                    }
+
+
+                                    objEmpResponse.IndividualEmploymentId = objIndEmployment.IndividualEmploymentId;
+                                    if (lstEmpAddress != null && lstEmpAddress.Count > 0)
+                                    {
+                                        AddressBAL objAddressBAL = new AddressBAL();
+                                        Address objAddress = new Address();
+                                        foreach (IndividualEmploymentAddressResponse objAddressResponse in lstEmpAddress)
+                                        {
+                                            if (objAddressResponse.AddressId > 0)
+                                            {
+                                                objAddress = new Address();
+                                                objAddress = objAddressBAL.Get_address_By_AddressId(objAddressResponse.AddressId);
+                                                if (objAddress != null)
+                                                {
+                                                    objAddress.City = objAddressResponse.City;
+                                                    objAddress.StreetLine1 = objAddressResponse.StreetLine1;
+                                                    objAddress.StreetLine2 = objAddressResponse.StreetLine2;
+                                                    objAddress.StateCode = objAddressResponse.StateCode;
+                                                    objAddress.Zip = objAddressResponse.Zip;
+                                                    objAddress.BadAddress = objAddressResponse.BadAddress;
+                                                    objAddress.ModifiedBy = objToken.UserId;
+                                                    objAddress.ModifiedOn = DateTime.Now;
+
+
+                                                    objAddressBAL.Save_address(objAddress);
+
+
+
+                                                    IndividualEmploymentAddress objIndAddress = new IndividualEmploymentAddress();
+                                                    IndividualEmploymentAddressBAL objIndAddressBAL = new IndividualEmploymentAddressBAL();
+                                                    objIndAddress = objIndAddressBAL.Get_IndividualEmploymentAddress_By_IndividualEmploymentAddressId(objAddressResponse.IndividualEmploymentAddressId);
+                                                    if (objIndAddress != null)
+                                                    {
+                                                        objIndAddress.IndividualEmploymentAddressId = objAddressResponse.IndividualEmploymentAddressId;
+                                                        objIndAddress.AddressId = objAddress.AddressId;
+                                                        objIndAddress.AddressTypeId = objAddressResponse.AddressTypeId;
+                                                        objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
+                                                        objIndAddress.ModifiedBy = objToken.UserId;
+                                                        objIndAddress.ModifiedOn = DateTime.Now;
+                                                        objIndAddress.IndividualId = IndividualId;
+                                                        objIndAddress.IndividualEmploymentAddressGuid = Guid.NewGuid().ToString();
+                                                        objIndAddress.IndividualEmploymentId = objEmpResponse.IndividualEmploymentId;
+
+                                                        objIndAddressBAL.Save_IndividualEmploymentAddress(objIndAddress);
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                objAddress = new Address();
+                                                objAddress.Addressee = "";
+                                                objAddress.AddressGuid = Guid.NewGuid().ToString();
+                                                objAddress.Authenticator = Guid.NewGuid().ToString();
+                                                objAddress.CountryId = 235;
+
+                                                objAddress.IsActive = true;
+                                                objAddress.IsDeleted = false;
+                                                objAddress.UseUserAddress = false;
+                                                objAddress.UseVerifiedAddress = false;
+
+                                                objAddress.City = objAddressResponse.City;
+                                                objAddress.StreetLine1 = objAddressResponse.StreetLine1;
+                                                objAddress.StreetLine2 = objAddressResponse.StreetLine2;
+                                                objAddress.StateCode = objAddressResponse.StateCode;
+                                                objAddress.Zip = objAddressResponse.Zip;
+                                                objAddress.BadAddress = objAddressResponse.BadAddress;
+                                                objAddress.CreatedBy = objToken.UserId;
+                                                objAddress.CreatedOn = DateTime.Now;
+
+
+                                                objAddress.AddressId = objAddressBAL.Save_address(objAddress);
+
+
+                                                IndividualEmploymentAddress objIndAddress = new IndividualEmploymentAddress();
+                                                IndividualEmploymentAddressBAL objIndAddressBAL = new IndividualEmploymentAddressBAL();
+
+                                                objIndAddress.AddressId = objAddress.AddressId;
+                                                objIndAddress.AddressTypeId = objAddressResponse.AddressTypeId;
+                                                objIndAddress.IsMailingSameasPhysical = objAddressResponse.IsMailingSameasPhysical;
+                                                objIndAddress.CreatedBy = objToken.UserId;
+                                                objIndAddress.CreatedOn = DateTime.Now;
+                                                objIndAddress.IndividualId = IndividualId;
+                                                objIndAddress.IndividualEmploymentAddressGuid = Guid.NewGuid().ToString();
+                                                objIndAddress.IsActive = true;
+                                                objIndAddress.BeginDate = DateTime.Now;
+                                                objIndAddress.IndividualEmploymentId = objEmpResponse.IndividualEmploymentId;
+                                                objIndAddressBAL.Save_IndividualEmploymentAddress(objIndAddress);
+                                            }
+                                        }
+                                    }
+
+                                    if (lstEmpContactResponse != null && lstEmpContactResponse.Count > 0)
+                                    {
+                                        ContactBAL objContactBAL = new ContactBAL();
+                                        Contact objContact = new Contact();
+                                        foreach (IndividualEmploymentContactResponse objContactResponse in lstEmpContactResponse)
+                                        {
+                                            if (objContactResponse.ContactId > 0)
+                                            {
+                                                objContact = new Contact();
+                                                objContact = objContactBAL.Get_Contact_By_ContactId(objContactResponse.ContactId);
+                                                if (objContact != null)
+                                                {
+                                                    objContact.Code = objContactResponse.Code;
+                                                    objContact.ContactFirstName = "";
+                                                    objContact.ContactLastName = "";
+                                                    objContact.ContactMiddleName = "";
+                                                    objContact.ContactTypeId = objContactResponse.ContactTypeId;
+                                                    objContact.ContactInfo = objContactResponse.ContactInfo;
+
+
+
+                                                    objContact.ModifiedBy = objToken.UserId;
+                                                    objContact.ModifiedOn = DateTime.Now;
+
+
+                                                    objContactBAL.Save_Contact(objContact);
+
+
+
+                                                    IndividualEmploymentContact objIndContact = new IndividualEmploymentContact();
+                                                    IndividualEmploymentContactBAL objIndContactBAL = new IndividualEmploymentContactBAL();
+
+                                                    objIndContact = objIndContactBAL.Get_IndividualEmploymentContact_By_IndividualEmploymentContactId(objContactResponse.IndividualEmploymentContactId);
+                                                    if (objIndContact != null)
+                                                    {
+                                                        objIndContact.IndividualEmploymentContactId = objContactResponse.IndividualEmploymentContactId;
+                                                        objIndContact.ContactId = objContact.ContactId;
+                                                        objIndContact.ContactTypeId = objContactResponse.ContactTypeId;
+                                                        objIndContact.IsPreferredContact = objContactResponse.IsPreferredContact;
+                                                        objIndContact.IsMobile = objContactResponse.IsMobile;
+
+                                                        objIndContact.ModifiedBy = objToken.UserId;
+                                                        objIndContact.ModifiedOn = DateTime.Now;
+                                                        objIndContact.IndividualId = IndividualId;
+                                                        objIndContact.IndividualEmploymentContactGuid = Guid.NewGuid().ToString();
+                                                        objIndContact.IndividualEmploymentId = objEmpResponse.IndividualEmploymentId;
+                                                        objIndContactBAL.Save_IndividualEmploymentContact(objIndContact);
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                objContact = new Contact();
+
+                                                objContact.ContactGuid = Guid.NewGuid().ToString();
+                                                objContact.Authenticator = Guid.NewGuid().ToString();
+
+                                                objContact.IsActive = true;
+                                                objContact.IsDeleted = false;
+                                                objContact.Code = objContactResponse.Code;
+                                                objContact.ContactFirstName = "";
+                                                objContact.ContactLastName = "";
+                                                objContact.ContactMiddleName = "";
+                                                objContact.ContactTypeId = objContactResponse.ContactTypeId;
+                                                objContact.ContactInfo = objContactResponse.ContactInfo;
+
+
+                                                objContact.CreatedBy = objToken.UserId;
+                                                objContact.CreatedOn = DateTime.Now;
+
+
+                                                objContact.ContactId = objContactBAL.Save_Contact(objContact);
+
+                                                IndividualEmploymentContact objIndContact = new IndividualEmploymentContact();
+                                                IndividualEmploymentContactBAL objIndContactBAL = new IndividualEmploymentContactBAL();
+
+                                                objIndContact.IndividualEmploymentId = objEmpResponse.IndividualEmploymentId;
+                                                objIndContact.IndividualId = IndividualId;
+                                                objIndContact.IndividualEmploymentContactGuid = Guid.NewGuid().ToString();
+                                                objIndContact.IndividualEmploymentContactId = objContactResponse.IndividualEmploymentContactId;
+                                                objIndContact.ContactId = objContact.ContactId;
+                                                objIndContact.ContactTypeId = objContactResponse.ContactTypeId;
+                                                objIndContact.IsPreferredContact = objContactResponse.IsPreferredContact;
+                                                objIndContact.IsMobile = objContactResponse.IsMobile;
+                                                objIndContact.IsActive = true;
+                                                objIndContact.BeginDate = DateTime.Now;
+                                                objIndContact.ModifiedBy = objToken.UserId;
+                                                objIndContact.ModifiedOn = DateTime.Now;
+                                                objIndContact.IndividualId = IndividualId;
+                                                objIndContactBAL.Save_IndividualEmploymentContact(objIndContact);
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Employer Information", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
+
+                    #region IndividualAffidavit
+                    try
+                    {
+                        IndividualAffidavitResponse objIndividualAffidavitResponse = new IndividualAffidavitResponse();
+                        IndividualAffidavitBAL objIndividualAffidavitBAL = new IndividualAffidavitBAL();
+
+                        objIndividualAffidavitResponse = objIndividualRenewal.IndividualAffidavit;
+
+                        if (objIndividualAffidavitResponse != null)
+                        {
+                            IndividualAffidavit objIndividualAffidavit = new IndividualAffidavit();
+
+                            objIndividualAffidavit = objIndividualAffidavitBAL.Get_IndividualAffidavit_By_IndividualAffidavitId(objIndividualAffidavitResponse.IndividualAffidavitId);
+
+                            if (objIndividualAffidavit != null)
+                            {
+                                objIndividualAffidavit.IndividualId = objIndividualAffidavitResponse.IndividualId;
+                                objIndividualAffidavit.ApplicationId = ApplicationId;
+                                //objIndividualAffidavit.ContentItemNumber = objIndividualAffidavitResponse.ContentItemNumber;
+                                objIndividualAffidavit.ContentItemResponse = objIndividualAffidavitResponse.ContentItemResponse;
+                                objIndividualAffidavit.Desc = objIndividualAffidavitResponse.Desc;
+                                objIndividualAffidavit.Name = objIndividualAffidavitResponse.Name;
+                                objIndividualAffidavit.SignatureName = objIndividualAffidavitResponse.SignatureName;
+                                objIndividualAffidavit.Date = objIndividualAffidavitResponse.Date;
+                                objIndividualAffidavit.ModifiedBy = objToken.UserId;
+                                objIndividualAffidavit.ModifiedOn = DateTime.Now;
+
+                                objIndividualAffidavitBAL.Save_IndividualAffidavit(objIndividualAffidavit);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Individual Affidavit", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+
+                    #endregion
+
+                    #region Child Support Declaration
+                    try
+                    {
+                        List<IndividualChildSupportResponse> lstChildSupportResponse = new List<IndividualChildSupportResponse>();
+                        IndividualChildSupportBAL objChildBAL = new IndividualChildSupportBAL();
+
+                        lstChildSupportResponse = objIndividualRenewal.IndividualChildSupport;
+                        if (lstChildSupportResponse != null)
+                        {
+                            foreach (IndividualChildSupportResponse objResp in lstChildSupportResponse)
+                            {
+                                IndividualChildSupport objChild = objChildBAL.Get_address_By_IndividualChildSupportId(objResp.IndividualChildSupportId);
+                                if (objChild != null)
+                                {
+                                    objChild.ModifiedBy = objToken.UserId;
+                                    objChild.ModifiedOn = DateTime.Now;
+                                    objChild.ContentItemResponse = objResp.ContentItemResponse;
+
+                                    objChildBAL.Save_IndividualChildSupport(objChild);
+                                }
+                            }
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Child Support", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
+
+                    #region Individual Vetran
+
+                    try
+                    {
+                        IndividualVeteranResponse objIndividualVetranResp = new IndividualVeteranResponse();
+                        IndividualVeteranBAL objIndividualVetranBAL = new IndividualVeteranBAL();
+                        objIndividualVetranResp = objIndividualRenewal.IndividualVeteran;
+                        if (objIndividualVetranResp != null)
+                        {
+                            IndividualVeteran objVeteran = new IndividualVeteran();
+                            objVeteran = objIndividualVetranBAL.Get_IndividualVeteran_By_IndividualId(IndividualId);
+                            if (objVeteran != null)
+                            {
+
+                                objVeteran.ModifiedBy = objToken.UserId;
+                                objVeteran.ModifiedOn = DateTime.Now;
+                                objVeteran.IndividualId = IndividualId;
+                                objVeteran.MilitaryOccupationSpeciality = objIndividualVetranResp.MilitaryOccupationSpeciality != null ? objIndividualVetranResp.MilitaryOccupationSpeciality : "";
+                                objVeteran.ServedInMilitary = objIndividualVetranResp.ServedInMilitary;
+                                objVeteran.ServiceDateFrom = objIndividualVetranResp.ServiceDateFrom;
+                                objVeteran.ServiceDateTo = objIndividualVetranResp.ServiceDateTo;
+                                objVeteran.SpouseofActiveMilitaryMember = objIndividualVetranResp.SpouseofActiveMilitaryMember;
+                                objIndividualVetranBAL.Save_IndividualVeteran(objVeteran);
+
+                                List<IndividualVeteranBranchResponse> lstBranchResp = new List<IndividualVeteranBranchResponse>();
+                                lstBranchResp = objIndividualVetranResp.VeteranBranches;
+
+                                if (lstBranchResp != null && lstBranchResp.Count > 0)
+                                {
+                                    IndividualVeteranBranchBAL objBranchBAL = new IndividualVeteranBranchBAL();
+                                    foreach (IndividualVeteranBranchResponse objBranchResp in lstBranchResp)
+                                    {
+                                        IndividualVeteranBranch objBranch = new IndividualVeteranBranch();
+                                        objBranch = objBranchBAL.Get_IndividualVeteranBranch_By_IndividualVeteranBranchId(objBranchResp.IndividualVeteranBranchId);
+                                        if (objBranch != null)
+                                        {
+                                            objBranch.ModifiedBy = objToken.UserId;
+                                            objBranch.ModifiedOn = DateTime.Now;
+                                            objBranch.BranchofServicesIdResponse = objBranchResp.BranchofServicesIdResponse;
+                                            objBranchBAL.Save_IndividualVeteranBranch(objBranch);
+                                        }
+                                    }
+                                }
+                            }
+
+
+
+                        }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Veteran", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+
+
+                    #endregion
+
+                    #region Sponsor
+                    try
+                    {
+                        List<SponsorInformationResponse> lstSupervisoryInfoRes = new List<SponsorInformationResponse>();
+
+                        IndividualSupervisoryInfoBAL objIndividualSupervisoryInfoBAL = new IndividualSupervisoryInfoBAL();
+                        lstSupervisoryInfoRes = objIndividualRenewal.SponsorInformation;
+                        if (lstSupervisoryInfoRes != null)
+                        {
+                            foreach (SponsorInformationResponse objSupervisoryInfoRes in lstSupervisoryInfoRes)
+                            {
+
+                                #region Sponsor Address
+                                Address objAddress = new Address();
+                                AddressBAL objAddressBAL = new AddressBAL();
+                                if (objSupervisoryInfoRes.SponsorAddress != null && objSupervisoryInfoRes.SponsorAddress.Count > 0)
+                                {
+                                    SponsorAddressResponse objAddressResp = objSupervisoryInfoRes.SponsorAddress[0];
+                                    if (objAddressResp.AddressId > 0)
+                                    {
+                                        objAddress = objAddressBAL.Get_address_By_AddressId(objAddressResp.AddressId);
+                                        if (objAddress != null)
+                                        {
+
+                                            objAddress.City = objAddressResp.City;
+                                            objAddress.StreetLine1 = objAddressResp.StreetLine1;
+                                            objAddress.StreetLine2 = !string.IsNullOrEmpty(objAddressResp.StreetLine2) ? objAddressResp.StreetLine2 : "";
+                                            objAddress.StateCode = objAddressResp.StateCode;
+                                            objAddress.Zip = objAddressResp.Zip;
+
+                                            objAddress.ModifiedBy = objToken.UserId;
+                                            objAddress.ModifiedOn = DateTime.Now;
+                                            objAddress.CountryId = 235;
+                                            // objAddress.BadAddress = objAddressResponse.BadAddress;
+                                            objAddress.IsActive = true;
+                                            objAddress.IsDeleted = false;
+                                            objAddress.UseUserAddress = false;
+                                            objAddress.UseVerifiedAddress = false;
+
+                                            objAddressBAL.Save_address(objAddress);
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        objAddress = new Address();
+                                        objAddress.Addressee = "";
+                                        objAddress.AddressGuid = Guid.NewGuid().ToString();
+                                        objAddress.Authenticator = Guid.NewGuid().ToString();
+                                        objAddress.CountryId = 235;
+
+                                        objAddress.IsActive = true;
+                                        objAddress.IsDeleted = false;
+                                        objAddress.UseUserAddress = false;
+                                        objAddress.UseVerifiedAddress = false;
+
+                                        objAddress.City = objAddressResp.City;
+                                        objAddress.StreetLine1 = objAddressResp.StreetLine1;
+                                        objAddress.StreetLine2 = !string.IsNullOrEmpty(objAddressResp.StreetLine2) ? objAddressResp.StreetLine2 : "";
+                                        objAddress.StateCode = objAddressResp.StateCode;
+                                        objAddress.Zip = objAddressResp.Zip;
+                                        // objAddress.BadAddress = objAddressResp.BadAddress;
+                                        objAddress.CreatedBy = objToken.UserId;
+                                        objAddress.CreatedOn = DateTime.Now;
+
+
+                                        objAddress.AddressId = objAddressBAL.Save_address(objAddress);
+
+
+                                    }
+                                }
+
+                                #endregion
+
+                                #region Sponsor Name
+                                IndividualName objIndividualName = new IndividualName();
+                                IndividualNameBAL objIndividualNameBAL = new IndividualNameBAL();
+                                objIndividualName = objIndividualNameBAL.Get_IndividualName_By_IndividualNameId(objSupervisoryInfoRes.IndividualNameId);
+                                if (objIndividualName != null)
+                                {
+                                    objIndividualName.FirstName = objSupervisoryInfoRes.FirstName;
+                                    objIndividualName.LastName = objSupervisoryInfoRes.LastName;
+                                    objIndividualName.MiddleName = !string.IsNullOrEmpty(objSupervisoryInfoRes.MiddleName) ? objSupervisoryInfoRes.MiddleName : "";
+                                    //objIndividualName.IndividualId = IndividualId;
+
+                                    objIndividualName.IndividualNameStatusId = Convert.ToInt32(eIndividualNameStatus.Current);
+                                    objIndividualName.IndividualNameTypeId = Convert.ToInt32(eIndividualNameType.Sponsor);
+
+                                    objIndividualName.IsActive = true;
+                                    objIndividualName.IsDeleted = false;
+                                    objIndividualName.ModifiedBy = objToken.UserId;
+                                    objIndividualName.ModifiedOn = DateTime.Now;
+
+                                    objIndividualName.IndividualNameId = objIndividualNameBAL.Save_IndividualName(objIndividualName);
+
+
+                                }
+                                else
+                                {
+                                    objIndividualName = new IndividualName();
+                                    objIndividualName.FirstName = objSupervisoryInfoRes.FirstName;
+                                    objIndividualName.LastName = objSupervisoryInfoRes.LastName;
+                                    objIndividualName.MiddleName = !string.IsNullOrEmpty(objSupervisoryInfoRes.MiddleName) ? objSupervisoryInfoRes.MiddleName : "";
+                                    //objIndividualName.IndividualId = IndividualId;
+
+                                    objIndividualName.IndividualNameStatusId = Convert.ToInt32(eIndividualNameStatus.Previous);
+                                    objIndividualName.IndividualNameTypeId = Convert.ToInt32(eIndividualNameType.Sponsor);
+
+                                    objIndividualName.IsActive = true;
+                                    objIndividualName.IsDeleted = false;
+                                    objIndividualName.CreatedBy = objToken.UserId;
+                                    objIndividualName.CreatedOn = DateTime.Now;
+                                    objIndividualName.IndividualNameGuid = Guid.NewGuid().ToString();
+                                    objIndividualName.IndividualNameId = objIndividualNameBAL.Save_IndividualName(objIndividualName);
+
+
+                                }
+
+                                #endregion
+
+
+                                IndividualSupervisoryInfo objSupervisory = new IndividualSupervisoryInfo();
+
+                                objSupervisory = objIndividualSupervisoryInfoBAL.Get_IndividualSupervisoryInfo_By_IndividualSupervisoryInfoId(objSupervisoryInfoRes.IndividualSupervisoryInfoId);
+                                if (objSupervisory != null)
+                                {
+                                    objSupervisory.SupervisorType = objSupervisoryInfoRes.SupervisorType;
+                                    objSupervisory.ApplicationId = ApplicationId;
+                                    objSupervisory.IndividualId = objSupervisoryInfoRes.IndividualId;
+                                    objSupervisory.IsActive = objSupervisoryInfoRes.IsActive;
+                                    objSupervisory.IsDeleted = objSupervisoryInfoRes.IsDeleted;
+                                    objSupervisory.SupervisorLicenseNumber = objSupervisoryInfoRes.SupervisorLicenseNumber;
+                                    objSupervisory.ModifiedBy = objToken.UserId;
+                                    objSupervisory.ModifiedOn = DateTime.Now;
+                                    objSupervisory.IndividualNameId = objIndividualName.IndividualNameId;
+                                    objSupervisory.SupervisorWorkAddressId = objAddress.AddressId;
+                                    objIndividualSupervisoryInfoBAL.Save_IndividualSupervisoryInfo(objSupervisory);
+                                }
+
+                                else
+                                {
+                                    objSupervisory = new IndividualSupervisoryInfo();
+                                    objSupervisory.ApplicationId = ApplicationId;
+                                    objSupervisory.Areyousupervised = false;
+                                    objSupervisory.CreatedBy = objToken.UserId;
+                                    objSupervisory.CreatedOn = DateTime.Now;
+                                    objSupervisory.Doyousupervise = false;
+                                    objSupervisory.IndividualSupervisoryInfoGuid = Guid.NewGuid().ToString();
+                                    objSupervisory.ReferenceNumber = "";
+                                    objSupervisory.SupervisedLicenseNumber = "";
+                                    objSupervisory.SupervisedStateLicensed = "";
+                                    objSupervisory.SupervisorStateLicensed = "";
+                                    objSupervisory.IndividualId = objSupervisoryInfoRes.IndividualId;
+                                    objSupervisory.IsActive = objSupervisoryInfoRes.IsActive;
+                                    objSupervisory.SupervisorLicenseNumber = objSupervisoryInfoRes.SupervisorLicenseNumber;
+                                    objSupervisory.IsDeleted = objSupervisoryInfoRes.IsDeleted;
+                                    objSupervisory.IndividualNameId = objIndividualName.IndividualNameId;
+                                    objSupervisory.SupervisorWorkAddressId = objAddress.AddressId;
+                                    objSupervisory.SupervisorType = objSupervisoryInfoRes.SupervisorType;
+                                    objIndividualSupervisoryInfoBAL.Save_IndividualSupervisoryInfo(objSupervisory);
+                                }
+                            }
+                        }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Individual Sponsor", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
+
+                    #region Individual CE Hours
+
+                    try
+                    {
+                        List<IndividualCEHResponse> lstCEHoursResp = new List<IndividualCEHResponse>();
+                        IndividualCEHoursBAL objCEHoursBAL = new IndividualCEHoursBAL();
+                        IndividualCEHours objCehCourse = new IndividualCEHours();
+                        lstCEHoursResp = objIndividualRenewal.IndividualCEH;
+                        if (lstCEHoursResp != null && lstCEHoursResp.Count > 0)
+                        {
+                            IndividualCEHResponse objCECourseResponse = lstCEHoursResp[0];
+                            objCECourseResponse.IndividualLicenseId = objIndividualRenewal.IndividualLicense[0].IndividualLicenseId;
+                            objCehCourse = objCEHoursBAL.Get_IndividualCEHours_By_IndividualCEHoursId(objCECourseResponse.IndividualCEHoursId);
+                            if (objCehCourse != null)
+                            {
+                                objCehCourse.IndividualId = IndividualId;
+                                objCehCourse.ApplicationId = ApplicationId;
+                                objCehCourse.CEHoursTypeId = objCECourseResponse.CEHoursTypeId;
+                                objCehCourse.CEHoursStartDate = objCECourseResponse.CEHoursStartDate;
+                                objCehCourse.CEHoursEndDate = objCECourseResponse.CEHoursEndDate;
+                                objCehCourse.CEHoursDueDate = objCECourseResponse.CEHoursDueDate;
+                                objCehCourse.CEHoursReportingYear = objCECourseResponse.CEHoursReportingYear;
+                                objCehCourse.CEHoursStatusId = objCECourseResponse.CEHoursStatusId;
+                                objCehCourse.CECarryInHours = objCECourseResponse.CECarryInHours;
+                                objCehCourse.CERequiredHours = objCECourseResponse.CERequiredHours;
+                                objCehCourse.CECurrentReportedHours = objCECourseResponse.CECurrentReportedHours;
+                                objCehCourse.CERolloverHours = objCECourseResponse.CERolloverHours;
+                                objCehCourse.ReferenceNumber = "";
+                                objCehCourse.IsActive = objCECourseResponse.IsActive;
+                                objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
+                                objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
+                                objCehCourse.ModifiedBy = objToken.UserId;
+                                objCehCourse.ModifiedOn = DateTime.Now;
+
+                                objCEHoursBAL.Save_IndividualCEHours(objCehCourse);
+
+
+                            }
+
+                            else
+                            {
+                                objCehCourse = new IndividualCEHours();
+
+                                objCehCourse.IndividualId = IndividualId;
+                                objCehCourse.ApplicationId = ApplicationId;
+                                objCehCourse.CEHoursTypeId = objCECourseResponse.CEHoursTypeId;
+                                objCehCourse.CEHoursStartDate = objCECourseResponse.CEHoursStartDate;
+                                objCehCourse.CEHoursEndDate = objCECourseResponse.CEHoursEndDate;
+                                objCehCourse.CEHoursDueDate = objCECourseResponse.CEHoursDueDate;
+                                objCehCourse.CEHoursReportingYear = objCECourseResponse.CEHoursReportingYear;
+                                objCehCourse.CEHoursStatusId = objCECourseResponse.CEHoursStatusId;
+                                objCehCourse.CECarryInHours = objCECourseResponse.CECarryInHours;
+                                objCehCourse.CERequiredHours = objCECourseResponse.CERequiredHours;
+                                objCehCourse.CECurrentReportedHours = objCECourseResponse.CECurrentReportedHours;
+                                objCehCourse.CERolloverHours = objCECourseResponse.CERolloverHours;
+                                objCehCourse.ReferenceNumber = "";
+
+                                objCehCourse.IsActive = objCECourseResponse.IsActive;
+                                objCehCourse.IsDeleted = objCECourseResponse.IsDeleted;
+                                objCehCourse.IndividualLicenseId = objCECourseResponse.IndividualLicenseId;
+
+                                objCehCourse.CreatedBy = objToken.UserId;
+                                objCehCourse.CreatedOn = DateTime.Now;
+                                objCehCourse.ModifiedBy = null;
+                                objCehCourse.ModifiedOn = null;
+                                objCehCourse.IndividualCEHoursGuid = Guid.NewGuid();
+
+                                objCehCourse.IndividualCEHoursId = objCEHoursBAL.Save_IndividualCEHours(objCehCourse);
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogingHelper.SaveExceptionInfo("", ex, "Renewal Process - Individual CE Hours", ENTITY.Enumeration.eSeverity.Error);
+                        throw ex;
+                    }
+                    #endregion
+                    //return SelectOrCreateResponse(objToken, IndividualId);
+                    return SelectRenewalResponseByApplicationId(objToken, IndividualId, ApplicationId);
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogingHelper.SaveExceptionInfo("", ex, "SaveAndValidateRequest", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualRenewal = null;
+
+
+            }
+            return objResponse;
+        }
+
         public static IndividualRenewalResponse SelectOrCreateResponse(Token objToken, int IndividualId, int ApplicationTypeId = 1)
         {
             int ApplicationId = 0;
@@ -1614,6 +2930,10 @@ namespace LAPP.BAL.Renewal
                                     else if(objLatestLicense.LicenseStatusTypeId == 4)
                                     {
                                         objPendingLicense.LicenseStatusTypeId = 8;
+                                    }
+                                    else if(objLatestLicense.LicenseStatusTypeId == 22)
+                                    {
+                                        objPendingLicense.LicenseStatusTypeId = 24;
                                     }
 
                                     
@@ -3730,8 +5050,29 @@ namespace LAPP.BAL.Renewal
 
                         using (TransactionScope transScope = new TransactionScope(TransactionScopeOption.Required, new TimeSpan(0, 20, 0)))
                         {
+                            string LicenseStatusTypeName = "";
 
-                            objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;
+                            if (objPedningLicense.LicenseStatusTypeId==5)
+                            {
+                                objPedningLicense.LicenseStatusTypeId = 1;
+                                LicenseStatusTypeName = "Active";
+                            }
+                            else if(objPedningLicense.LicenseStatusTypeId==8)
+                            {
+                                objPedningLicense.LicenseStatusTypeId = 4;
+                                LicenseStatusTypeName = "Inactive";
+                            }
+                            else if(objPedningLicense.LicenseStatusTypeId == 23)
+                            {
+                                objPedningLicense.LicenseStatusTypeId = 22;
+                                LicenseStatusTypeName = "Active on Probation";
+                            }
+                            else
+                            {
+                                objPedningLicense.LicenseStatusTypeId = RequestedLicenseStatusTypeId;
+                            }
+
+                            
                             objPedningLicense.ModifiedOn = DateTime.Now;
                             objPedningLicense.ModifiedBy = objToken.UserId;
 
@@ -3763,8 +5104,8 @@ namespace LAPP.BAL.Renewal
 
                             objPendingLicenseBAL.Save_IndividualLicense(objPedningLicense);
 
-                            string LicenseStatusTypeName = objPedningLicense.LicenseStatusTypeId == 1 ? "Active" :
-                                                             objPedningLicense.LicenseStatusTypeId == 4 ? "Inactive" : "";
+                            //string LicenseStatusTypeName = objPedningLicense.LicenseStatusTypeId == 1 ? "Active" :
+                            //                                 objPedningLicense.LicenseStatusTypeId == 4 ? "Inactive" : "";
 
                             LogHelper.SaveIndividualLog(objPedningLicense.IndividualId, objPedningLicense.ApplicationId, (eCommentLogSource.WSAPI).ToString(), "Renewal has been approved, Start Date:" + objPedningLicense.LicenseEffectiveDate.ToShortDateString() + ", End Date: " + objPedningLicense.LicenseExpirationDate.ToShortDateString() + ",  Updated To: " + LicenseStatusTypeName + ", Updated On: " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt"), objToken.UserId);
 

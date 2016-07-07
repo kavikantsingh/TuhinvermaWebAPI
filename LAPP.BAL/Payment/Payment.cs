@@ -255,6 +255,41 @@ namespace LAPP.BAL.Payment
                             {
                                 LAPP.BAL.Renewal.RenewalProcess.ChangeLicenseStatus(objTrans.IndividualLicenseId, objTrans.ApplicationId, RequestedLicenseStatusTypeId, AffirmativeAction, objToken);
                             }
+                            else
+                            {
+                                ApplicationBAL objApplicationBAL = new ApplicationBAL();
+                                Application objApplication = objApplicationBAL.Get_Application_By_ApplicationId(objTrans.ApplicationId);
+                                if (objApplication != null && objApplication.ApplicationId > 0)
+                                {
+                                    objApplication.ApplicationStatusId = 10;
+                                    objApplication.ModifiedOn = DateTime.Now;
+                                    objApplication.SubmittedDate = DateTime.Now;
+                                    objApplicationBAL.Save_Application(objApplication);
+                                }
+
+                                IndividualLicenseBAL objLicenseBAL = new IndividualLicenseBAL();
+                                IndividualLicense objPendingLicense = objLicenseBAL.Get_Pending_IndividualLicense_By_IndividualId(objTrans.IndividualId);
+                                if (objPendingLicense != null && objPendingLicense.IndividualLicenseId > 0)
+                                {
+                                    if (objPendingLicense.LicenseStatusTypeId == 5)
+                                    {
+                                        objPendingLicense.LicenseStatusTypeId = 6;
+                                    }
+                                    else if (objPendingLicense.LicenseStatusTypeId == 8)
+                                    {
+                                        objPendingLicense.LicenseStatusTypeId = 23;
+                                    }
+                                    else if (objPendingLicense.LicenseStatusTypeId == 24)
+                                    {
+                                        objPendingLicense.LicenseStatusTypeId = 25;
+                                    }
+
+                                    objPendingLicense.ModifiedOn = DateTime.Now;
+                                    objPendingLicense.ModifiedBy = objToken.UserId;
+
+                                    objLicenseBAL.Save_IndividualLicense(objPendingLicense);
+                                }
+                            }
 
 
                         }
@@ -277,7 +312,7 @@ namespace LAPP.BAL.Payment
         }
 
 
-        public static ManualPaymentResponse ProcessManualPayment(ManualPaymentRequest objPaymentRequest, int CreatedBy, string AffirmativeAction, Token objToken, bool IsBackofficePayment = false)
+        public static ManualPaymentResponse ProcessManualPayment(ManualPaymentRequest objPaymentRequest, int CreatedBy, string AffirmativeAction, Token objToken, bool IsBackofficePayment = true)
         {
             if (objPaymentRequest == null)
                 throw new Exception("Invalid request object. please check with API request signature.");
@@ -352,6 +387,8 @@ namespace LAPP.BAL.Payment
 
                 if(CompleteManulPaymentResponse)
                 {
+
+
                     objPaymentResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
                     objPaymentResponse.Status = true;
                     objPaymentResponse.Message = "Manual payment successfull.";
@@ -398,7 +435,7 @@ namespace LAPP.BAL.Payment
 
         }
 
-        private static bool CompleteManulPayment(LAPP.ENTITY.Transaction objTrans, ManualPaymentRequest objManualPaymentRequest, Token objToken, int RequestedLicenseStatusTypeId, string AffirmativeAction, bool IsBackofficePayment = false)
+        private static bool CompleteManulPayment(LAPP.ENTITY.Transaction objTrans, ManualPaymentRequest objManualPaymentRequest, Token objToken, int RequestedLicenseStatusTypeId, string AffirmativeAction, bool IsBackofficePayment = true)
         {
             bool Success = false;
             RevFeeDueBAL objFeeDueBAL = new RevFeeDueBAL();
@@ -518,6 +555,40 @@ namespace LAPP.BAL.Payment
                             objTrans.TransactionStatus = "C";
                             objTrans.TransactionInterruptReasonId = 0;
                             objTranBal.Save_Transaction(objTrans);
+
+                            ApplicationBAL objApplicationBAL = new ApplicationBAL();
+                            Application objApplication = objApplicationBAL.Get_Application_By_ApplicationId(objManualPaymentRequest.ApplicationId);
+                            if(objApplication != null && objApplication.ApplicationId > 0)
+                            {
+                                objApplication.ApplicationStatusId = 10;
+                                objApplication.ModifiedOn = DateTime.Now;
+                                objApplication.SubmittedDate = DateTime.Now;
+                                objApplicationBAL.Save_Application(objApplication);
+                            }
+
+                            IndividualLicenseBAL objLicenseBAL = new IndividualLicenseBAL();
+                            IndividualLicense objPendingLicense = objLicenseBAL.Get_Pending_IndividualLicense_By_IndividualId(objManualPaymentRequest.IndividualId);
+                            if(objPendingLicense != null && objPendingLicense.IndividualLicenseId > 0)
+                            {
+                                if (objPendingLicense.LicenseStatusTypeId == 5)
+                                {
+                                    objPendingLicense.LicenseStatusTypeId = 6;
+                                }
+                                else if (objPendingLicense.LicenseStatusTypeId == 8)
+                                {
+                                    objPendingLicense.LicenseStatusTypeId = 23;
+                                }
+                                else if (objPendingLicense.LicenseStatusTypeId == 24)
+                                {
+                                    objPendingLicense.LicenseStatusTypeId = 25;
+                                }
+
+                                objPendingLicense.ModifiedOn = DateTime.Now;
+                                
+                                objPendingLicense.ModifiedBy = objToken.UserId;
+
+                                objLicenseBAL.Save_IndividualLicense(objPendingLicense);
+                            }
 
                             //if (IsBackofficePayment == false)
                             //{
