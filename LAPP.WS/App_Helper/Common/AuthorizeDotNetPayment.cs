@@ -235,7 +235,7 @@ namespace LAPP.WS.App_Helper.Common
                 if (objAuthResponse != null && objAuthResponse.Response_Code.ToLower() == "1")
                 {
                     objPaymentResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
-                    objPaymentResponse.Message = "Payment Succesful.";
+                    objPaymentResponse.Message = "Payment successfull.";
                     objPaymentResponse.Status = true;
 
                     objPaymentResponse.PaymentAuthResponse = new PaymentAuthResponse();
