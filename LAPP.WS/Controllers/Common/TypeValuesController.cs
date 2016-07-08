@@ -365,6 +365,75 @@ namespace LAPP.WS.Controllers.Common
 
         #endregion
 
+        #region ApplicationStatus
+
+        /// <summary>
+        /// Looks up all data by Key For Application Status.
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ApplicationStatusGetAll")]
+        public ApplicationStatusGetResponse ApplicationStatusGetAll(string Key)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ApplicationStatusGetResponse objResponse = new ApplicationStatusGetResponse();
+            ApplicationStatusBAL objBAL = new ApplicationStatusBAL();
+            ApplicationStatus objEntity = new ApplicationStatus();
+            List<ApplicationStatus> lstApplicationType = new List<ApplicationStatus>();
+            try
+            {
+                //if (!TokenHelper.ValidateToken(Key))
+                //{
+                //    objResponse.Status = false;
+                //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                //    objResponse.Message = "User session has expired.";
+                //    objResponse.ApplicationTypeGetList = null;
+                //    return objResponse;
+
+                //}
+
+                lstApplicationType = objBAL.Get_All_ApplicationStatus();
+                if (lstApplicationType != null && lstApplicationType.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    List<ApplicationStatusGet> lstApplicationStatusSelected = lstApplicationType.Select(ApplicationStatus => new ApplicationStatusGet
+                    {
+                        ApplicationStatusId = ApplicationStatus.ApplicationStatusId,
+                        SortOrder = ApplicationStatus.SortOrder,
+                        Name = ApplicationStatus.Name,
+                        IsActive = ApplicationStatus.IsActive
+                    }).ToList();
+
+                    objResponse.ApplicationStatusList = lstApplicationStatusSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ApplicationStatusList = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ApplicationStatusGetAll", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ApplicationStatusList = null;
+            }
+            return objResponse;
+
+
+        }
+
+        #endregion
+
         #region CertificationType
 
         /// <summary>
