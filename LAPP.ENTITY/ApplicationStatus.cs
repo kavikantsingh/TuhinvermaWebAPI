@@ -19,4 +19,18 @@ namespace LAPP.ENTITY
         public int ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
     }
+
+    public class ApplicationStatusGet : BaseEntity
+    {
+        public int ApplicationStatusId { get; set; }
+        public string Name { get; set; }
+        public int SortOrder { get; set; }
+        public bool IsActive { get; set; }
+    }
+
+
+    public class ApplicationStatusGetResponse : BaseEntityServiceResponse
+    {
+        public List<ApplicationStatusGet> ApplicationStatusList { get; set; }
+    }
 }

@@ -143,6 +143,81 @@ namespace LAPP.WS.Controllers.Renewal
 
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="objRenewalRequest"></param>
+        /// <returns></returns>
+        [AcceptVerbs("Post")]
+        [ActionName("PtBoardIndividualRenewalSave")]
+        public IndividualRenewalResponse PtBoardIndividualRenewalSave(string Key, IndividualRenewalResponse objRenewalRequest)
+        {
+            IndividualRenewalResponse objResponse = new IndividualRenewalResponse();
+            LogingHelper.SaveAuditInfo(Key);
+
+            if (objRenewalRequest == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+
+
+            }
+
+            try
+            {
+                if (System.Web.HttpContext.Current.IsDebuggingEnabled)
+                {
+                    // this is executed only in the debug version
+                    LogingHelper.SaveExceptionInfo(objRenewalRequest);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveRequestJson(ex.Message, " error in Save renewal request");
+            }
+
+
+
+
+
+            IndividualRenewal objIndividualRenewal = new IndividualRenewal();
+
+            try
+            {
+
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualRenewal = null;
+                    return objResponse;
+                }
+
+                return RenewalProcess.PtBoardSaveAndValidateRequest(TokenHelper.GetTokenByKey(Key), objRenewalRequest);
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualRenewalSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualRenewal = null;
+
+            }
+            return objResponse;
+
+
+        }
+
         /// <summary>
         /// 
         /// </summary>

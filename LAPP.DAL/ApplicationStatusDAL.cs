@@ -37,7 +37,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ADDRESSTYPE_GET_ALL");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "applicationStatus_GetAll");
             List<ApplicationStatus> lstEntity = new List<ApplicationStatus>();
             ApplicationStatus objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -49,13 +49,13 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-        public ApplicationStatus Get_ApplicationStatus_byApplicationStatusId(int AddressId)
+        public ApplicationStatus Get_ApplicationStatus_byApplicationStatusId(int ApplicationStatusID)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParam = new List<MySqlParameter>();
-            lstParam.Add(new MySqlParameter("G_ApplicationStatusId", AddressId));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "addresstype_Get_By_ApplicationStatusId");
+            lstParam.Add(new MySqlParameter("G_ApplicationStatusId", ApplicationStatusID));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "applicationStatus_GetByApplicationStatusId");
 
             ApplicationStatus objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
