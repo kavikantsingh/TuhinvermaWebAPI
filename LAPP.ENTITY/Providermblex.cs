@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LAPP.ENTITY
 {
-    public class Providermblex : ProvidermblexResponse
+    public class ProviderMblex : ProvidermblexResponse
     {
-
+        public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
@@ -27,13 +27,6 @@ namespace LAPP.ENTITY
         public int PassingYear { get; set; }
         public DateTime DateEntered { get; set; }
         public string PassingHalf { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
-        public int CreatedBy { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public int ModifiedBy { get; set; }
-        public DateTime ModifiedOn { get; set; }
-        public string MblexGuid { get; set; }
     }
 
 

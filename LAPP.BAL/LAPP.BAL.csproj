@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.5.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\LAPP.WS\LIB\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -77,14 +81,20 @@
     <Compile Include="IndividualCommentLogBAL.cs" />
     <Compile Include="IndividualCommunicationToLogBAL.cs" />
     <Compile Include="IndividualCommunicationLogBAL.cs" />
+    <Compile Include="IndividualOtherNameBAL.cs" />
     <Compile Include="Payment\Payment.cs" />
     <Compile Include="IndividualLogBAL.cs" />
     <Compile Include="IndividualCommentBAL.cs" />
     <Compile Include="ProvClinicHoursBAL.cs" />
+    <Compile Include="ProviderApprovalAgencyBAL.cs" />
     <Compile Include="ProviderDocumentBAL.cs" />
+    <Compile Include="ProviderEligibilityBAL.cs" />
     <Compile Include="ProviderIndividualNameBAL.cs" />
     <Compile Include="ProviderInstructionBAL.cs" />
+    <Compile Include="providermblexBAL.cs" />
     <Compile Include="ProviderNameBAL.cs" />
+    <Compile Include="ProviderProgramBAL.cs" />
+    <Compile Include="ProvidersitevisittypeBAL.cs" />
     <Compile Include="ProviderUserBAL.cs" />
     <Compile Include="ProvReqCourseOfStudyBAL.cs" />
     <Compile Include="ProvReqCourseTitleBAL.cs" />
