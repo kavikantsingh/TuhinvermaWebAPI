@@ -131,6 +131,7 @@
     <Compile Include="ProviderProgram.cs" />
     <Compile Include="Providerprogramstatus.cs" />
     <Compile Include="ProviderRegister.cs" />
+    <Compile Include="ProviderRelatedSchools.cs" />
     <Compile Include="Providersitevisittype.cs" />
     <Compile Include="ProviderStaff.cs" />
     <Compile Include="ProviderStatusType.cs" />

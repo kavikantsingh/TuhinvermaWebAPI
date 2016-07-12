@@ -3265,7 +3265,7 @@ namespace LAPP.WS.Controllers.Common
 
 
         /// <summary>
-        /// This method is to Save the Other Program in "About the School" Tab
+        /// This method is to Save the Graduates Number in "About the School" Tab
         /// </summary>
         /// <param name="Key">Security Key for API.</param>
         /// <param name="ObjProviderGraduatesNumber">Request object for Provider Instruction.</param>
@@ -3327,7 +3327,7 @@ namespace LAPP.WS.Controllers.Common
         }
 
         /// <summary>
-        /// This method is to Get the grid values of Provider Other Program
+        /// This method is to Get the grid values of Provider Graduates Number in "About the School" Tab
         /// </summary>
         /// <param name="Key">API security key.</param>
         /// <param name="ApplicationId">Application Id</param>
@@ -3444,6 +3444,267 @@ namespace LAPP.WS.Controllers.Common
             }
             return objResponse;
         }
+
+        /// <summary>
+        /// This method is to Get the checked values of Type of Business Organisation in "About the School" Tab
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ApplicationId">Application Id</param>
+        /// <param name="ProviderId">Provider Id</param>
+        [AcceptVerbs("GET")]
+        [ActionName("GetProviderBusinessTypeByProviderId")]
+        public ProviderBusinessTypeGetResponse GetProviderBusinessTypeByProviderId(string Key, int ApplicationId, int ProviderId)
+        {
+            ProviderBusinessTypeGetResponse objResponse = new ProviderBusinessTypeGetResponse();
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    return objResponse;
+                }
+
+                ProviderBAL objProviderBAL = new ProviderBAL();
+
+                List<ProviderBusinessType> lstProviderBusinessType = objProviderBAL.GetProviderBusinessTypeByProviderId(ApplicationId, ProviderId);
+                objResponse.ProviderBusinessTypeList = lstProviderBusinessType;
+
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "GetProviderBusinessType", ENTITY.Enumeration.eSeverity.Error);
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+
+            }
+            return objResponse;
+
+
+        }
+
+
+        /// <summary>
+        /// This method is to Save the Business Type in "About the School" Tab
+        /// </summary>
+        /// <param name="Key">Security Key for API.</param>
+        /// <param name="objProviderBusinessType">Request object for Provider Business Type.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("SaveProviderBusinessType")]
+        public BaseEntityServiceResponse SaveProviderBusinessType(string Key, List<ProviderBusinessType> objProviderBusinessType)
+        {
+            int CreateOrModify = 0;
+            try
+            {
+                CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            }
+            catch { }
+
+            LogingHelper.SaveAuditInfo();
+
+            BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            if (objProviderBusinessType == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+                ProviderBAL objProviderBAL = new ProviderBAL();
+                int ProviderBusinessTypeId = 0;  
+
+                if (objProviderBusinessType.Count > 0)
+                {
+                    for(int i = 0; i < objProviderBusinessType.Count; i++)
+                    {
+                        ProviderBusinessTypeId = objProviderBAL.SaveProviderBusinessType(objProviderBusinessType[i]);
+                    }
+                }
+                
+                objResponse.Message = Messages.SaveSuccess;
+                objResponse.Status = true;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderBusinessTypeSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+
+            return objResponse;
+
+
+        }
+
+
+        /// <summary>
+        /// This method is to Save the Related Schools in "About the School" Tab
+        /// </summary>
+        /// <param name="Key">Security Key for API.</param>
+        /// <param name="ObjProviderOtherProgram">Request object for Provider Instruction.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("SaveProviderRelatedSchools")]
+        public BaseEntityServiceResponse SaveProviderRelatedSchools(string Key, ProviderOtherProgramName ObjProviderOtherProgram)
+        {
+            int CreateOrModify = 0;
+            try
+            {
+                CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            }
+            catch { }
+
+            LogingHelper.SaveAuditInfo();
+
+            BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            if (ObjProviderOtherProgram == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+
+                // SAve Provider Name -> ProviderDAL.SaveProviderNames
+                // SAve Address -> AddressDAL.Save_address
+                // Save Contact -> ContactDAL.Save_Contact
+                // Save ProviderNameAddress with insert in LK table
+                // Save ProviderNameContact with insert in LK table
+
+                ProviderBAL objProviderOtherProgramBAL = new ProviderBAL();
+                int ProviderOtherProgramId = objProviderOtherProgramBAL.SaveProviderOtherProgram(ObjProviderOtherProgram);
+
+                objResponse.Message = Messages.SaveSuccess;
+                objResponse.Status = true;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderOtherProgramNameSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+
+            return objResponse;
+
+
+        }
+
+        /// <summary>
+        /// This method is to Get the grid values of Provider Related Schools
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="ApplicationId">Application Id</param>
+        /// <param name="ProviderId">Provider Id</param>
+        [AcceptVerbs("GET")]
+        [ActionName("GetAllProviderRelatedSchools")]
+        public ProviderOtherProgramNameGetResponse GetAllProviderRelatedSchools(string Key, int ApplicationId, int ProviderId)
+        {
+            ProviderOtherProgramNameGetResponse objResponse = new ProviderOtherProgramNameGetResponse();
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    return objResponse;
+                }
+
+                ProviderBAL objProviderBAL = new ProviderBAL();
+
+                //Method to get provider staff details grid
+                List<ProviderOtherProgramName> lstProviderOtherProgram = objProviderBAL.GetAllProviderOtherProgram(ApplicationId, ProviderId);
+                objResponse.ProviderOtherProgramList = lstProviderOtherProgram;
+
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo("", ex, "GetProviderOtherProgram", ENTITY.Enumeration.eSeverity.Error);
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+
+            }
+            return objResponse;
+
+
+        }
+
         #endregion
 
     }

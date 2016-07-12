@@ -586,17 +586,17 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("ModifiedBy", objProviderBusinessType.ModifiedBy));
             lstParameter.Add(new MySqlParameter("ModifiedOn", objProviderBusinessType.ModifiedOn));
             lstParameter.Add(new MySqlParameter("ProviderBusinessTypeGuid", objProviderBusinessType.ProviderBusinessTypeGuid));
-            lstParameter.Add(new MySqlParameter("Action", objProviderBusinessType.Action));
+            //lstParameter.Add(new MySqlParameter("Action", objProviderBusinessType.Action));
 
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
             lstParameter.Add(returnParam);
-            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "providerBusinessType_Save", true, lstParameter.ToArray());
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "providerbusinesstype_save", true, lstParameter.ToArray());
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
 
-        public List<ProviderBusinessType> GetAllProviderBusinessType(int ApplicationId, int ProviderId)
+        public List<ProviderBusinessType> GetProviderBusinessTypeByProviderId(int ApplicationId, int ProviderId)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
@@ -701,6 +701,36 @@ namespace LAPP.DAL
             return objEntity;
 
         }
+
+
+        public int SaveProviderNames(ProviderNames objProvider)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("ProviderName_Id", objProvider.ProviderNameId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objProvider.ApplicationId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProvider.ProviderId));
+            lstParameter.Add(new MySqlParameter("IndividualId", objProvider.IndividualId));
+            lstParameter.Add(new MySqlParameter("ProviderName", objProvider.ProviderName));
+            lstParameter.Add(new MySqlParameter("DateofNameChange", objProvider.DateofNameChange));
+            lstParameter.Add(new MySqlParameter("ProviderNameStatusId", objProvider.ProviderNameStatusId));
+            lstParameter.Add(new MySqlParameter("ProviderNameTypeId", objProvider.ProviderNameTypeId));
+            lstParameter.Add(new MySqlParameter("ReferenceNumber", objProvider.ReferenceNumber));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objProvider.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", DateTime.Now));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objProvider.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objProvider.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("ProviderNameGuid", objProvider.ProviderNameGuid));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderName_Save", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
 
         #endregion
 
