@@ -360,6 +360,15 @@ namespace LAPP.DAL
             {
                 objEntity.ProviderStaffGuid = Convert.ToString(dr["ProviderStaffGuid"]);
             }
+
+            if (dr.Table.Columns.Contains("ids") && dr["ids"] != DBNull.Value)
+            {
+                objEntity.ids = Convert.ToString(dr["ids"]);
+            }
+            if (dr.Table.Columns.Contains("titles") && dr["titles"] != DBNull.Value)
+            {
+                objEntity.titles = Convert.ToString(dr["titles"]);
+            }
             return objEntity;
 
         }
