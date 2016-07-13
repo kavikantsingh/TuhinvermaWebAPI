@@ -2935,7 +2935,7 @@ namespace LAPP.WS.Controllers.Common
         /// <param name="ObjProviderStaff">Request object for Provider Instruction.</param>
         [AcceptVerbs("POST")]
         [ActionName("SaveProviderStaff")]
-        public BaseEntityServiceResponse SaveProviderStaff(string Key, ProviderStaff ObjProviderStaff)
+        public BaseEntityServiceResponse SaveProviderStaff(string Key, ProvIndvNameTitle ObjProviderStaff)
         {
             int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
 
@@ -3040,24 +3040,34 @@ namespace LAPP.WS.Controllers.Common
                 ProvIndvNameTitle objProvIndvNameTitle = new ProvIndvNameTitle();
                 ProviderBAL objProviderBAL = new ProviderBAL();
 
-                objProvIndvNameTitle.ProvIndvNameTitlePosId = 0;
-                objProvIndvNameTitle.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
-                objProvIndvNameTitle.ProviderId = ObjProviderStaff.ProviderId;
-                objProvIndvNameTitle.ApplicationId = ObjProviderStaff.ApplicationId;
-                objProvIndvNameTitle.ProviderStaffId = ProviderStaffId;
-                objProvIndvNameTitle.ProvIndvNameTitlePositionId = "0";
-                objProvIndvNameTitle.ProvIndvNameTitlePosition = "";
+                string conId = ObjProviderStaff.ProvIndvNameTitlePositionId; ;
+                string conTitle = ObjProviderStaff.ProvIndvNameTitlePosition;
 
-                objProvIndvNameTitle.ReferenceNumber = "";
-                objProvIndvNameTitle.IsActive = true;
-                objProvIndvNameTitle.IsDeleted = false;
-                objProvIndvNameTitle.CreatedBy = 0;
-                objProvIndvNameTitle.CreatedOn = DateTime.Now;
-                objProvIndvNameTitle.ModifiedBy = null;
-                objProvIndvNameTitle.ModifiedOn = null;
-                objProvIndvNameTitle.ProvIndvNameTitlePosGuid = Guid.NewGuid().ToString();
+                string[] Id = conId.Split(',');
+                string[] Title = conTitle.Split(',');
 
-                int ProvIndvNameTitleId = objProviderBAL.SaveProvIndvNameTitle(objProvIndvNameTitle);
+                for(int i=0; i<Id.Count(); i++)
+                {
+                    objProvIndvNameTitle.ProvIndvNameTitlePosId = 0;
+                    objProvIndvNameTitle.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
+                    objProvIndvNameTitle.ProviderId = ObjProviderStaff.ProviderId;
+                    objProvIndvNameTitle.ApplicationId = ObjProviderStaff.ApplicationId;
+                    objProvIndvNameTitle.ProviderStaffId = ProviderStaffId;
+                    objProvIndvNameTitle.ProvIndvNameTitlePositionId = Id[i];
+                    objProvIndvNameTitle.ProvIndvNameTitlePosition = Title[i];
+
+                    objProvIndvNameTitle.ReferenceNumber = "";
+                    objProvIndvNameTitle.IsActive = true;
+                    objProvIndvNameTitle.IsDeleted = false;
+                    objProvIndvNameTitle.CreatedBy = 0;
+                    objProvIndvNameTitle.CreatedOn = DateTime.Now;
+                    objProvIndvNameTitle.ModifiedBy = null;
+                    objProvIndvNameTitle.ModifiedOn = null;
+                    objProvIndvNameTitle.ProvIndvNameTitlePosGuid = Guid.NewGuid().ToString();
+
+                    int ProvIndvNameTitleId = objProviderBAL.SaveProvIndvNameTitle(objProvIndvNameTitle);
+
+                }
 
                 #endregion
 
