@@ -94,6 +94,7 @@
     <Compile Include="providermblexBAL.cs" />
     <Compile Include="ProviderNameBAL.cs" />
     <Compile Include="ProviderProgramBAL.cs" />
+    <Compile Include="ProviderRelatedSchoolsBAL.cs" />
     <Compile Include="ProvidersitevisittypeBAL.cs" />
     <Compile Include="ProviderUserBAL.cs" />
     <Compile Include="ProvReqCourseOfStudyBAL.cs" />

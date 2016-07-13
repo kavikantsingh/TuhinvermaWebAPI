@@ -17,8 +17,6 @@ namespace LAPP.BAL
         }
 
 
-
-
         public List<Provider> Get_All_Provider()
         {
             return objDal.Get_All_Provider();
@@ -30,5 +28,14 @@ namespace LAPP.BAL
             return objDal.Get_Provider_By_ProviderId(ID);
         }
 
+        public int SaveProviderNameAddress(ProviderNameAddress objProvider)
+        {
+            return objDal.SaveProviderNameAddress(objProvider);
+        }
+
+        public int SaveProviderNameContact(ProviderNameContact objProvider)
+        {
+            return objDal.SaveProviderNameContact(objProvider);
+        }
     }
 }

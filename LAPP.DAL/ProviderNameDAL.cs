@@ -228,5 +228,66 @@ namespace LAPP.DAL
             return objEntity;
 
         }
+
+
+        public int SaveProviderNameAddress(ProviderNameAddress objProvider)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("ProviderNameAddressId", objProvider.ProviderNameAddressId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProvider.ProviderId));
+            lstParameter.Add(new MySqlParameter("ProviderNameId", objProvider.ProviderNameId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objProvider.ApplicationId));
+            lstParameter.Add(new MySqlParameter("AddressId", objProvider.AddressId));
+            lstParameter.Add(new MySqlParameter("AddressTypeId", objProvider.AddressTypeId));
+            lstParameter.Add(new MySqlParameter("AddressChangeDate", objProvider.AddressChangeDate));
+            lstParameter.Add(new MySqlParameter("BeginDate", objProvider.BeginDate));
+            lstParameter.Add(new MySqlParameter("EndDate", objProvider.EndDate));
+            lstParameter.Add(new MySqlParameter("IsMailingSameAsPhysical", objProvider.IsMailingSameasPhysical));
+            lstParameter.Add(new MySqlParameter("IsActive", objProvider.IsActive));
+            lstParameter.Add(new MySqlParameter("IsDeleted", objProvider.IsDeleted));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objProvider.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", DateTime.Now));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objProvider.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objProvider.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("ProviderNameAddressGuid", objProvider.ProviderNameAddressGuid));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderNameAddress_Save", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
+        public int SaveProviderNameContact(ProviderNameContact objProvider)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("ProviderNameContactId", objProvider.ProviderNameContactId));
+            lstParameter.Add(new MySqlParameter("ProviderId", objProvider.ProviderId));
+            lstParameter.Add(new MySqlParameter("ProviderNameId", objProvider.ProviderNameId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objProvider.ApplicationId));
+            lstParameter.Add(new MySqlParameter("ContactId", objProvider.ContactId));
+            lstParameter.Add(new MySqlParameter("ContactTypeId", objProvider.ContactTypeId));
+            lstParameter.Add(new MySqlParameter("BeginDate", objProvider.BeginDate));
+            lstParameter.Add(new MySqlParameter("EndDate", objProvider.EndDate));
+            lstParameter.Add(new MySqlParameter("IsPreferredContact", objProvider.IsPreferredContact));
+            lstParameter.Add(new MySqlParameter("IsMobile", objProvider.IsMobile));
+            lstParameter.Add(new MySqlParameter("IsActive", objProvider.IsActive));
+            lstParameter.Add(new MySqlParameter("IsDeleted", objProvider.IsDeleted));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objProvider.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", DateTime.Now));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objProvider.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objProvider.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("ProviderNameContactGuid", objProvider.ProviderNameContactGuid));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "ProviderNameContact_Save", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
     }
 }

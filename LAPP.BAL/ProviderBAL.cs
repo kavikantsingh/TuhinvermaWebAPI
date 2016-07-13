@@ -86,6 +86,11 @@ namespace LAPP.BAL
             return objDal.GetProviderBusinessTypeByProviderId(ApplicationId, ProviderId);
         }
 
+        public int SaveProviderNames(ProviderNames objProvider)
+        {
+            return objDal.SaveProviderNames(objProvider);
+        }
+
         #endregion
 
     }

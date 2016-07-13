@@ -12,3 +12,10 @@ C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Js
 C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache
 C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
 C:\Users\LENOVO\Music\Documents\src\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb
+E:\Projects\Tuhin\LAPP_WS\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.dll
+E:\Projects\Tuhin\LAPP_WS\LAPP.GlobalFunctions\bin\Debug\LAPP.GlobalFunctions.pdb
+E:\Projects\Tuhin\LAPP_WS\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.dll
+E:\Projects\Tuhin\LAPP_WS\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.xml
+E:\Projects\Tuhin\LAPP_WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache
+E:\Projects\Tuhin\LAPP_WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
+E:\Projects\Tuhin\LAPP_WS\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb
