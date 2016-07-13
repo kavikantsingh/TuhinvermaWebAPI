@@ -11,7 +11,7 @@ namespace LAPP.DAL
 {
     public class ProvidermblexDAL : BaseDAL
     {
-        public int Save_Providermblex(Providermblex objProvidermblex)
+        public int Save_Providermblex(ProviderMblex objProvidermblex)
         {
             DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
 
@@ -39,7 +39,7 @@ namespace LAPP.DAL
             return returnValue;
         }
 
-        public List<ProvidermblexResponse> Get_All_Providermblex(Providermblex objProvidermblex)
+        public List<ProvidermblexResponse> Get_All_Providermblex(ProviderMblex objProvidermblex)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();

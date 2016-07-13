@@ -2590,6 +2590,157 @@ namespace LAPP.WS.Controllers.Backoffice
 
         #endregion
 
+        #region  Individual Document send Email
+        [AcceptVerbs("POST")]
+        [ActionName("SendIndividualDocumentByEmail")]
+        public IndividualDocumentByHtmlResponse SendIndividualDocumentByEmail(string Key, IndividualDocumentById objIndividualDocumentById)
+        {
+            string LicenseDocName = objIndividualDocumentById.LicenseDocName;
+            int IndividualDocumentIdLicense = objIndividualDocumentById.IndividualDocumentIdLicense;
+            string ReceiptDocName = objIndividualDocumentById.ReceiptDocName;
+            int IndividualDocumentIdReceipt = objIndividualDocumentById.IndividualDocumentIdReceipt;
+            int IndividualId = objIndividualDocumentById.IndividualId;
+            int? ApplicationId = objIndividualDocumentById.ApplicationId;
+            string emailId = objIndividualDocumentById.Email;
+            string AffirmativeAction = objIndividualDocumentById.AffirmativeAction;
+
+            IndividualDocumentByHtmlResponse objResponse = new IndividualDocumentByHtmlResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.IndividualDocumentUploadList = null;
+                return objResponse;
+            }
+
+            int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
+
+            string FilePath = ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath") + "Renewal\\";
+            int ErrNo = 0;
+
+
+            List<string> SaveErrorList = new List<string>();
+
+            List<Attachment> lstAttachment = new List<Attachment>();
+
+
+            try
+            {
+                string DocFileName = IndividualDocumentIdReceipt + "-" + ReceiptDocName;
+                string DocPath = FilePath + DocFileName;
+                Attachment objAttachment = new Attachment(DocPath);
+                lstAttachment.Add(objAttachment);
+
+                DocFileName = IndividualDocumentIdLicense + "-" + LicenseDocName;
+                DocPath = FilePath + DocFileName;
+                objAttachment = new Attachment(DocPath);
+                lstAttachment.Add(objAttachment);
+
+
+                #region Process Email Content
+
+                string EmailTemplate = ""; // File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/RenewalConfirmation.html"));
+
+                if (!string.IsNullOrEmpty(AffirmativeAction) && AffirmativeAction.ToUpper() == "Y")
+                {
+                    EmailTemplate = File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/ConfirmationEmailUponSuccessfulPaymentAffirmativeActionisY.html"));
+                }
+                else if (!string.IsNullOrEmpty(AffirmativeAction) && AffirmativeAction.ToUpper() == "N")
+                {
+                    EmailTemplate = File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/ConfirmationEmailUponSuccessfulPaymentAffirmativeActionisN.html"));
+                }
+                else
+                {
+                    EmailTemplate = File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplate/RenewalConfirmation.html"));
+                }
+
+                Application objApplication = new Application();
+                ApplicationBAL objApplicationBAL = new ApplicationBAL();
+                Individual objIndividual = new Individual();
+                IndividualBAL objIndividualBAL = new IndividualBAL();
+                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(IndividualId);
+                if (objIndividual != null)
+                {
+                    EmailTemplate = EmailTemplate.Replace("#FullName#", objIndividual.FirstName + " " + objIndividual.LastName);
+                    EmailTemplate = EmailTemplate.Replace("#Date#", DateTime.Now.ToShortDateString());
+
+
+
+                    objApplication = objApplicationBAL.Get_Application_By_ApplicationId(Convert.ToInt32(ApplicationId));
+                    if (objApplication != null)
+                    {
+                        decimal Amount = 0;
+                        List<RevFeeDisb> lstFeeDisb = new List<RevFeeDisb>();
+                        RevFeeDisbBAL objFeeDisbBAL = new RevFeeDisbBAL();
+                        lstFeeDisb = objFeeDisbBAL.Get_Paid_RevFeeDisb_by_IndividualId(Convert.ToInt32(IndividualId));
+                        if (lstFeeDisb != null)
+                        {
+
+                            foreach (RevFeeDisb objFeedisb in lstFeeDisb)
+                            {
+                                Amount += objFeedisb.FeePaidAmount;
+
+                            }
+                        }
+
+                        EmailTemplate = EmailTemplate.Replace("#AmountPaid#", String.Format("{0:C}", Amount));
+                        EmailTemplate = EmailTemplate.Replace("#ApplicationNumber#", objApplication.ApplicationNumber);
+
+
+                        IndividualLicense objLatestLicense = new IndividualLicense();
+                        IndividualLicenseBAL objIndividualLicenseBAL = new IndividualLicenseBAL();
+
+                        objLatestLicense = objIndividualLicenseBAL.Get_Latest_IndividualLicense_By_IndividualId(Convert.ToInt32(IndividualId));
+                        if (objLatestLicense != null)
+                        {
+                            EmailTemplate = EmailTemplate.Replace("#LicenseNumber#", objLatestLicense.LicenseNumber);
+
+
+                        }
+                        if (EmailHelper.SendMailWithMultipleAttachment(emailId, "Online License Renewal and Payment", EmailTemplate, true, lstAttachment))
+                        {
+                            LogHelper.SaveIndividualLog(objIndividual.IndividualId, null, "Backoffice", ("Online License Renewal and Payment sent by email. Email Address: " + emailId + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
+                            LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Online License Renewal and Payment", eCommunicationStatus.Success, "Backoffice", EmailTemplate, EmailHelper.GetSenderAddress(), emailId, null, null, 0, null, null, null);
+                            objResponse.Message = "Online License Renewal and Payment sent by email";
+                            objResponse.Status = true;
+                            objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                            //LogHelper.LogCommunication(objIndividual.IndividualId, objApplication.ApplicationId, eCommunicationType.Email, "Renewal Confirmation", eCommunicationStatus.Success, "Public", "Renewal Confirmation email has been sent", EmailHelper.GetSenderAddress(), objIndividualDocumentResponse.Email, null, null, objToken.UserId, null, null, null);
+                        }
+                        else
+                        {
+                            LogHelper.SaveIndividualLog(objIndividual.IndividualId, null, "Backoffice", ("Online License Renewal and Payment sent by email failed. Email Address: " + emailId + ", Sent On: " + DateTime.Now.ToString("MM/dd/yyyy")), 0, null, null, null);
+                            LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Online License Renewal and Payment", eCommunicationStatus.Fail, "Backoffice", EmailTemplate, EmailHelper.GetSenderAddress(), emailId, null, null, 0, null, null, null);
+                            objResponse.Message = "Online License Renewal and Payment sent by email is Failed";
+                            objResponse.Status = false;
+                            objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                            //LogHelper.LogCommunication(objIndividual.IndividualId, objApplication.ApplicationId, eCommunicationType.Email, "Online License Renewal and Payment", eCommunicationStatus.Fail, "Public", "Renewal Confirmation email sending failed.", EmailHelper.GetSenderAddress(), objIndividualDocumentResponse.Email, null, null, objToken.UserId, null, null, null);
+                        }
+
+                    }
+                }
+
+                #endregion
+
+
+            }
+            catch (Exception ex)
+            {
+
+                LogingHelper.SaveExceptionInfo("", ex, "SaveIndividualDocumentHTML", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualDocumentUploadList = null;
+            }
+            return objResponse;
+
+
+        }
+
+        #endregion
 
 
         /// <summary>

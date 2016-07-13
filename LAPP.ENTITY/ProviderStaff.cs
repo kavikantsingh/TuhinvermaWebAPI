@@ -28,6 +28,8 @@ namespace LAPP.ENTITY
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
         public string ProviderStaffGuid { get; set; }
+        public string ids { get; set; }
+        public string titles { get; set; }
     }
 
     public class ProvIndvNameTitle : ProviderStaff

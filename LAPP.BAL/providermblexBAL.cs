@@ -12,12 +12,12 @@ namespace LAPP.BAL
     {
 
         ProvidermblexDAL objDal = new ProvidermblexDAL();
-        public int Save_Providermblex(Providermblex objProvidermblex)
+        public int Save_Providermblex(ProviderMblex objProvidermblex)
         {
             return objDal.Save_Providermblex(objProvidermblex);
         }
 
-        public List<ProvidermblexResponse> Get_All_Providermblex(Providermblex objProvidermblex)
+        public List<ProvidermblexResponse> Get_All_Providermblex(ProviderMblex objProvidermblex)
         {
             return objDal.Get_All_Providermblex(objProvidermblex);
         }

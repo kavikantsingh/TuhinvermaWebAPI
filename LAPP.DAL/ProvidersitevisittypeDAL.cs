@@ -34,7 +34,7 @@ namespace LAPP.DAL
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "licensetype_Get_All");
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "provider_providersitevisittype_Get_All");
             List<Providersitevisittype> lstEntity = new List<Providersitevisittype>();
             Providersitevisittype objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
