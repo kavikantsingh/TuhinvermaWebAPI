@@ -658,5 +658,245 @@ namespace LAPP.WS.Controllers.Backoffice
 
 
         #endregion
+
+        /// <summary>
+        /// DeficiencyTemplateResponseGet all data.
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        [AcceptVerbs("POST")]
+        public DeficiencyTemplateResponseGet GetDeficiencyTemplate(string Key, DeficiencyTemplateSearch search)
+        {
+            
+            LogingHelper.SaveAuditInfo(Key);
+
+            DeficiencyTemplateResponseGet objResponse = new DeficiencyTemplateResponseGet();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.ResponseReason = null;
+                return objResponse;
+            }
+
+            ConfigurationBAL objConfigurationBAL = new ConfigurationBAL();
+            
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.DeficiencyTemplateResponseList = null;
+                    return objResponse;
+                }
+
+                try
+                {
+                    objResponse.Message = "";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    string Filter = "";
+                    if (search.IsSearch)
+                    {
+                        if (search.MasterTransactionId != "-1")
+                        {
+                            Filter = Filter + " and dr.mastertransactionid=" + Convert.ToInt32(search.MasterTransactionId);
+                        }
+                        if (search.DeficiencyTemplateName != "")
+                        {
+                            Filter = Filter + " and dr.DeficiencyTemplateName Like '" + search.DeficiencyTemplateName + "%'";
+                        }
+                        if (search.IsActive)
+                        {
+                            Filter = Filter + " and dr.IsActive=1";
+                        }
+                    }
+                    string Query = "SELECT *,f.mastertransactionName FROM deficiencytemplate dr JOIN mastertransaction f ON dr.mastertransactionid=f.mastertransactionid WHERE dr.IsDeleted=0 " + Filter + " ORDER BY dr.mastertransactionid,dr.CreatedOn DESC";
+
+                    List<LAPP_DeficiencyTemplate> lstDeficiencyTemplate = objConfigurationBAL.Get_lapp_application_Deficiency_Template_By_Query_List(Query);
+                    objResponse.DeficiencyTemplateResponseList = lstDeficiencyTemplate;
+
+                    return objResponse;
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                    objResponse.Status = false;
+                    objResponse.Message = ex.Message;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                    objResponse.DeficiencyTemplateResponseList = null;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.DeficiencyTemplateResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// DeficiencyTemplateResponseGet all data.
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        [AcceptVerbs("GET")]
+        public MasterTransactionResponseGet GetAllMasterTransaction(string Key)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            MasterTransactionResponseGet objResponse = new MasterTransactionResponseGet();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.ResponseReason = null;
+                return objResponse;
+            }
+
+            ConfigurationBAL objConfigurationBAL = new ConfigurationBAL();
+
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.MasterTransactionResponseList = null;
+                    return objResponse;
+                }
+
+                try
+                {
+                    objResponse.Message = "";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+
+                    List<MasterTransaction> lstMasterTransaction = objConfigurationBAL.Get_All_MasterTransaction();
+                    objResponse.MasterTransactionResponseList = lstMasterTransaction;
+
+                    return objResponse;
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                    objResponse.Status = false;
+                    objResponse.Message = ex.Message;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                    objResponse.MasterTransactionResponseList = null;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.MasterTransactionResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// Save the data For Configuration
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        /// <param name="objlapp_deficiency_template">Object of Configuration</param>
+        [AcceptVerbs("POST")]
+        public DeficiencyTemplateResponseGet SaveDeficiencyTemplate(string Key, LAPP_DeficiencyTemplate objlapp_deficiency_template)
+        {
+            int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            DeficiencyTemplateResponseGet objResponse = new DeficiencyTemplateResponseGet();
+            ConfigurationBAL objBAL = new ConfigurationBAL();
+            LAPP_DeficiencyTemplate objEntity = new LAPP_DeficiencyTemplate();
+            List<Configuration> lstEntity = new List<Configuration>();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.DeficiencyTemplateResponseList = null;
+                return objResponse;
+            }
+            
+            try
+            {
+                if (objlapp_deficiency_template.Deficiency_Template_ID > 0)
+                {
+                    objEntity = objBAL.GetDeficiencyTemplate(objlapp_deficiency_template.Deficiency_Template_ID);
+                    if (objEntity != null)
+                    {
+                        objEntity.Modified_On = DateTime.Now;
+                        objEntity.Modified_By = CreatedOrMoifiy;
+                        objEntity.Created_On = DateTime.Now;
+                        objEntity.Created_By = CreatedOrMoifiy;
+
+                        int i = objBAL.UpdateDeficiencyTemplate(objEntity);
+                        objResponse.Message = Messages.UpdateSuccess;
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    }
+                }
+                else
+                {
+                    objEntity.Is_Deleted = false;
+                    objEntity.Created_On = DateTime.Now;
+                    objEntity.Created_By = CreatedOrMoifiy;
+                    objEntity.Modified_On = DateTime.Now;
+                    objEntity.Modified_By = CreatedOrMoifiy;
+                    int i= objBAL.SaveDeficiencyTemplate(objEntity);
+                   
+                    objResponse.Message = Messages.SaveSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                }
+                string Query = "SELECT *,f.mastertransactionName FROM deficiencytemplate dr JOIN mastertransaction f ON dr.mastertransactionid=f.mastertransactionid WHERE dr.IsDeleted=0  ORDER BY dr.mastertransactionid,dr.CreatedOn DESC";
+
+                List<LAPP_DeficiencyTemplate> lstDeficiencyTemplate = objBAL.Get_lapp_application_Deficiency_Template_By_Query_List(Query);
+                objResponse.DeficiencyTemplateResponseList = lstDeficiencyTemplate;
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ConfigurationSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.DeficiencyTemplateResponseList = null;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+            return objResponse;
+        }
     }
 }

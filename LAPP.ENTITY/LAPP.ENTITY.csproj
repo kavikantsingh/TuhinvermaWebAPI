@@ -51,6 +51,7 @@
     <Compile Include="ApprovalAgency.cs" />
     <Compile Include="ContentLkToPageTabSection.cs" />
     <Compile Include="ContentItemLk.cs" />
+    <Compile Include="DeficiencyTemplate.cs" />
     <Compile Include="DocumentMaster.cs" />
     <Compile Include="EmployerType.cs" />
     <Compile Include="IndividualCECourse.cs" />
