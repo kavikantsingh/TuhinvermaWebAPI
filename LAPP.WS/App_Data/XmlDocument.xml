@@ -675,6 +675,25 @@
             <param name="Key">The Key of the data.</param>
             <param name="objConfigurationType">Object of ConfigurationType</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ConfigurationController.GetDeficiencyTemplate(System.String,LAPP.ENTITY.DeficiencyTemplateSearch)">
+            <summary>
+            DeficiencyTemplateResponseGet all data.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ConfigurationController.GetAllMasterTransaction(System.String)">
+            <summary>
+            DeficiencyTemplateResponseGet all data.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ConfigurationController.SaveDeficiencyTemplate(System.String,LAPP.ENTITY.LAPP_DeficiencyTemplate)">
+            <summary>
+            Save the data For Configuration
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objlapp_deficiency_template">Object of Configuration</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentItemLkGetAll(System.String)">
             <summary>
             Looks up all data by Key For Content.
@@ -1563,7 +1582,7 @@
             <param name="Key"></param>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveProviderStaff(System.String,LAPP.ENTITY.ProviderStaff)">
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveProviderStaff(System.String,LAPP.ENTITY.ProvIndvNameTitle)">
             <summary>
             This method is to Save the School Informations
             </summary>
@@ -1631,12 +1650,12 @@
             <param name="Key">Security Key for API.</param>
             <param name="objProviderBusinessType">Request object for Provider Business Type.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveProviderRelatedSchools(System.String,LAPP.ENTITY.ProviderOtherProgramName)">
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveProviderRelatedSchools(System.String,LAPP.ENTITY.ProviderRelatedSchools)">
             <summary>
             This method is to Save the Related Schools in "About the School" Tab
             </summary>
             <param name="Key">Security Key for API.</param>
-            <param name="ObjProviderOtherProgram">Request object for Provider Instruction.</param>
+            <param name="ObjProviderRelatedSchools">Request object for Provider Instruction.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.ProviderController.GetAllProviderRelatedSchools(System.String,System.Int32,System.Int32)">
             <summary>
