@@ -2975,7 +2975,7 @@ namespace LAPP.WS.Controllers.Common
                 objIndName.IndividualId = 0;
                 objIndName.FirstName = ObjProviderStaff.ProviderStaffFirstName;
                 objIndName.MiddleName = "";
-                objIndName.LastName = ObjProviderStaff.ProviderStaffFirstName;
+                objIndName.LastName = ObjProviderStaff.ProviderStaffLastName;
                 objIndName.IndividualNameStatusId = 22;
                 objIndName.IsActive = true;
                 objIndName.IsDeleted = false;
@@ -3669,6 +3669,7 @@ namespace LAPP.WS.Controllers.Common
                 objAddress.IsActive = true;
                 objAddress.IsDeleted = false;
                 objAddress.AddressGuid = Guid.NewGuid().ToString();
+                objAddress.Authenticator = Guid.NewGuid().ToString();
                 AddressBAL objAddressBAL = new AddressBAL();
                 int AddressId = objAddressBAL.Save_address(objAddress);
 
@@ -3683,6 +3684,7 @@ namespace LAPP.WS.Controllers.Common
                 objContact.IsActive = true;
                 objContact.IsDeleted = false;
                 objContact.ContactGuid = Guid.NewGuid().ToString();
+                objContact.Authenticator = Guid.NewGuid().ToString();
                 ContactBAL objContactBAL = new ContactBAL();
                 int ContactId_Phone = objContactBAL.Save_Contact(objContact);
 
