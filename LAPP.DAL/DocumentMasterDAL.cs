@@ -72,11 +72,34 @@ namespace LAPP.DAL
                               PTS.PageTabSectionName,DM.DocumentName, DM.DocumentTypeIdName, DM.Max_size AS MaxSize, 
                               DM.EndDate, DM.DocumentMasterId, DM.IsEditable FROM mastertransaction MT JOIN pagemodule PM ON MT.MasterTransactionId = PM.MasterTransactionId 
                               JOIN pagemoduletabsubmodule PMSM ON PM.PageModuleId = PMSM.PageModuleId JOIN pagetabsection PTS ON 
-                              PTS.PageModuleTabSubModuleId = PMSM.PageModuleTabSubModuleId JOIN DocumentMaster DM ON DM.MasterTransactionId = MT.MasterTransactionId";
+                              PTS.PageModuleTabSubModuleId = PMSM.PageModuleTabSubModuleId JOIN DocumentMaster DM ON DM.MasterTransactionId = MT.MasterTransactionId WHERE DM.IsActive = 1";
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             ds = objDB.ExecuteDataSet(CommandType.Text, queryData);
+            List<DocumentViewModel> lstEntity = new List<DocumentViewModel>();
+            DocumentViewModel objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FatchResultSetEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        public List<DocumentViewModel> Search_GetDocumentResultSet(DocumentMaster objDocumentMaster)
+        {
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("MasterTransactionId", objDocumentMaster.MasterTransactionId));
+            lstParameter.Add(new MySqlParameter("PageModuleId", objDocumentMaster.PageModuleId));
+            lstParameter.Add(new MySqlParameter("PageModuleTabSubModuleId", objDocumentMaster.PageModuleTabSubModuleId));
+            lstParameter.Add(new MySqlParameter("PageTabSectionId", objDocumentMaster.PageTabSectionId));
+            lstParameter.Add(new MySqlParameter("DocumentId", objDocumentMaster.DocumentId));
+
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Document_Master_By_Search", lstParameter.ToArray());
             List<DocumentViewModel> lstEntity = new List<DocumentViewModel>();
             DocumentViewModel objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

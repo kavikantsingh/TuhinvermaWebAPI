@@ -299,6 +299,86 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+        /// <summary>
+        /// To get serached docment result by using filter
+        /// </summary>
+        /// <param name="Key"> application key</param>
+        /// <param name="objDocumentMaster">document master object model</param>
+        /// <returns></returns>
+        [AcceptVerbs("POST")]
+        [ActionName("Search_GetDocumentResultSet")]
+        public DocumentResultSetResponse Search_GetDocumentResultSet(string Key, DocumentMaster objDocumentMaster)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            var objResponse = new DocumentResultSetResponse();
+            var objBAL = new DocumentMasterBAL();
+            var objEntity = new DocumentViewModel();
+            var lstDocumentMaster = new List<DocumentViewModel>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.DocumentViewModel = null;
+                    return objResponse;
+                }
+                if(objDocumentMaster== null)
+                {
+                    lstDocumentMaster = objBAL.GetDocumentResultSet();
+                }
+                else
+                {
+                    lstDocumentMaster = objBAL.Search_GetDocumentResultSet(objDocumentMaster);
+                }
+                
+                if (lstDocumentMaster != null && lstDocumentMaster.Count > 0)
+                {
+                    objResponse.ResponseReason = "To Get All Document Master Result Set using Filters";
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstDocumentMasterGETSelected = lstDocumentMaster.Select(DocMaster => new DocumentViewModel
+                    {
+                        MasterTransactionName = DocMaster.MasterTransactionName,
+                        PageModuleName = DocMaster.PageModuleName,
+                        PageModuleTabSubModuleName = DocMaster.PageModuleTabSubModuleName,
+                        PageTabSectionName = DocMaster.PageTabSectionName,
+                        DocumentName = DocMaster.DocumentName,
+                        DocumentTypeIdName = DocMaster.DocumentTypeIdName,
+                        MaxSize = DocMaster.MaxSize,
+                        EndDate = DocMaster.EndDate,
+                        DocumentMasterId = DocMaster.DocumentMasterId,
+                        IsEditable = DocMaster.IsEditable
+                    }
+                    ).ToList();
+
+                    objResponse.DocumentViewModel = lstDocumentMasterGETSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.DocumentViewModel = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "Search_GetDocumentResultSet", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.DocumentViewModel = null;
+            }
+
+            return objResponse;
+        }
 
         /// <summary>
         /// To save document master record
