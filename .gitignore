@@ -1,0 +1,23 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/LAPP.LOGING/bin/Debug
+/.vs/LAPP/v14/.suo
+/.vs/LAPP/v14/.suo
+/.vs/config/applicationhost.config
+/LAPP.BAL/bin/Debug/LAPP.BAL.pdb
+/LAPP.BAL/bin/Debug/System.Web.Http.xml
+/LAPP.BAL/bin/Debug/System.Web.Http.dll
+/LAPP.BAL/bin/Debug/System.Net.Http.Formatting.xml
+/LAPP.BAL/bin/Debug/System.Net.Http.Formatting.dll
+/LAPP.BAL/bin/Debug/Newtonsoft.Json.xml
+/LAPP.BAL/bin/Debug/Newtonsoft.Json.dll
+/LAPP.BAL/bin/Debug/MySql.Data.dll
+/LAPP.BAL/bin/Debug/LAPP.LOGING.pdb
+/LAPP.BAL/bin/Debug/LAPP.LOGING.dll
+/LAPP.BAL/bin/Debug/LAPP.GlobalFunctions.pdb
+/LAPP.BAL/bin/Debug/LAPP.GlobalFunctions.dll
+/LAPP.BAL/bin/Debug/LAPP.ENTITY.pdb
+/LAPP.BAL/bin/Debug/LAPP.DAL.pdb
+/LAPP.BAL/bin/Debug/LAPP.DAL.dll
