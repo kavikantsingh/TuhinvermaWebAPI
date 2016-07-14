@@ -32,8 +32,34 @@ namespace LAPP.ENTITY
         public DateTime ModifiedOn { get; set; }
     }
 
+    public class DocumentViewModel
+    {
+        public int DocumentMasterId { get; set; }
+        public string MasterTransactionName { get; set; }
+        public string PageModuleName { get; set; }
+        public string PageModuleTabSubModuleName { get; set; }
+        public string PageTabSectionName { get; set; }
+        public string DocumentName { get; set; }
+        public string DocumentTypeIdName { get; set; }
+        public string MaxSize { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public int IsEditable { get; set; }
+    }
+    public class DocumentResultSetResponse : BaseEntityServiceResponse
+    {
+        public List<DocumentViewModel> DocumentViewModel { get; set; }
+    }
+    public class DocumentMasterSaveResponse : BaseEntityServiceResponse
+    {
+        public int DocumentMasterId { get; set; }
+    }
     public class DocumentMasterResponse : BaseEntityServiceResponse
     {
+        public DocumentMasterResponse()
+        {
+            DocumentMaster = new List<DocumentMaster>();
+        }
         public List<DocumentMaster> DocumentMaster { get; set; }
     }
 
@@ -49,6 +75,8 @@ namespace LAPP.ENTITY
         public string DocumentTypeDesc { get; set; }
         public int Max_size { get; set; }
         public bool IsActive { get; set; }
+
+        public int PageTabSectionId { get; set; }
     }
 
     public class DocumentMasterGETResponse : BaseEntityServiceResponse
