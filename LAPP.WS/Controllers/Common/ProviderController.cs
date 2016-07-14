@@ -1798,6 +1798,82 @@ namespace LAPP.WS.Controllers.Common
         }
 
         /// <summary>
+        /// Get_ProviderDetailsByID
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="providerid"></param>
+        /// <returns></returns>
+        [AcceptVerbs("GET")]
+        [ActionName("GetProviderById")]
+        public ProviderInfo Get_ProviderDetailsByID(string Key, int providerid)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ProviderInfo objResponse = new ProviderInfo();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.ResponseReason = null;
+                return objResponse;
+            }
+
+            ProviderBAL objProviderBAL = new ProviderBAL();
+            ProviderResponseRequest objProviderResponseRequest = new ProviderResponseRequest();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ProviderResponse = null;
+                    return objResponse;
+                }
+
+                try
+                {
+                    objResponse.Message = Messages.SaveSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+
+                    //Method to Get all the previous schools 
+                    Provider lstProvider = objProviderBAL.Get_Provider_By_ProviderId(providerid);
+                    objResponse.ProviderResponse = lstProvider;
+
+                    return objResponse;
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                    objResponse.Status = false;
+                    objResponse.Message = ex.Message;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                    objResponse.ProviderResponse = null;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.ProviderResponse = null;
+
+            }
+            return objResponse;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="Key"></param>
@@ -2350,7 +2426,7 @@ namespace LAPP.WS.Controllers.Common
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("DeleteProviderProgram")]
-        public ProviderProgramResponse DeleteaddressProviderProgram(string Key,ProviderProgram objProviderProgram)
+        public ProviderProgramResponse DeleteaddressProviderProgram(string Key, ProviderProgram objProviderProgram)
         {
             LogingHelper.SaveAuditInfo(Key);
             ProviderProgramResponse objResponse = new ProviderProgramResponse();
@@ -2361,7 +2437,7 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Status = false;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                 objResponse.Message = "User session has expired.";
-                objResponse.ProviderProgramResponseList= null;
+                objResponse.ProviderProgramResponseList = null;
                 return objResponse;
             }
 
@@ -2389,7 +2465,7 @@ namespace LAPP.WS.Controllers.Common
 
                     //Method to Get all the previous schools 
                     List<ProviderProgram> lstPrevAddress = objProviderProgramBAL.Get_All_ProviderProgram(objProviderProgram);
-                    objResponse.ProviderProgramResponseList= lstPrevAddress;
+                    objResponse.ProviderProgramResponseList = lstPrevAddress;
 
                     return objResponse;
                 }
@@ -2399,7 +2475,7 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = ValidationResponse;
-                    objResponse.ProviderProgramResponseList= null;
+                    objResponse.ProviderProgramResponseList = null;
                     return objResponse;
                 }
             }
@@ -2409,7 +2485,7 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Status = false;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.Message = ex.Message;
-                objResponse.ProviderProgramResponseList= null;
+                objResponse.ProviderProgramResponseList = null;
 
             }
             return objResponse;
@@ -2622,7 +2698,7 @@ namespace LAPP.WS.Controllers.Common
 
                     //Method to Get all the previous schools 
                     List<ProviderApprovalAgency> lstProviderApprovalAgency = objProviderProgramBAL.Get_All_ProviderApprovalAgency(objProviderApprovalAgency);
-                    objResponse.ProviderApprovalAgencyResponseList= lstProviderApprovalAgency;
+                    objResponse.ProviderApprovalAgencyResponseList = lstProviderApprovalAgency;
 
                     return objResponse;
                 }
@@ -2632,7 +2708,7 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = ValidationResponse;
-                    objResponse.ProviderApprovalAgencyResponseList= null;
+                    objResponse.ProviderApprovalAgencyResponseList = null;
                     return objResponse;
                 }
             }
@@ -2642,7 +2718,7 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Status = false;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.Message = ex.Message;
-                objResponse.ProviderApprovalAgencyResponseList= null;
+                objResponse.ProviderApprovalAgencyResponseList = null;
 
             }
             return objResponse;
@@ -3046,7 +3122,7 @@ namespace LAPP.WS.Controllers.Common
                 string[] Id = conId.Split(',');
                 string[] Title = conTitle.Split(',');
 
-                for(int i=0; i<Id.Count(); i++)
+                for (int i = 0; i < Id.Count(); i++)
                 {
                     objProvIndvNameTitle.ProvIndvNameTitlePosId = 0;
                     objProvIndvNameTitle.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
@@ -3062,7 +3138,7 @@ namespace LAPP.WS.Controllers.Common
                     objProvIndvNameTitle.CreatedBy = 0;
                     objProvIndvNameTitle.CreatedOn = DateTime.Now;
                     objProvIndvNameTitle.ModifiedBy = null;
-                    objProvIndvNameTitle.ModifiedOn = null; 
+                    objProvIndvNameTitle.ModifiedOn = null;
                     objProvIndvNameTitle.ProvIndvNameTitlePosGuid = Guid.NewGuid().ToString();
 
                     int ProvIndvNameTitleId = objProviderBAL.SaveProvIndvNameTitle(objProvIndvNameTitle);
@@ -3317,6 +3393,8 @@ namespace LAPP.WS.Controllers.Common
 
             try
             {
+                if (ObjProviderGraduatesNumber.ProviderGraduatesNumberId == 0)
+                    ObjProviderGraduatesNumber.ProviderGraduatesNumberGuid = Guid.NewGuid().ToString();
                 ProviderBAL objProviderGraduatesNumberBAL = new ProviderBAL();
                 int ProviderGraduatesNumberId = objProviderGraduatesNumberBAL.SaveProviderGraduatesNumber(ObjProviderGraduatesNumber);
 
@@ -3559,16 +3637,16 @@ namespace LAPP.WS.Controllers.Common
             try
             {
                 ProviderBAL objProviderBAL = new ProviderBAL();
-                int ProviderBusinessTypeId = 0;  
+                int ProviderBusinessTypeId = 0;
 
                 if (objProviderBusinessType.Count > 0)
                 {
-                    for(int i = 0; i < objProviderBusinessType.Count; i++)
+                    for (int i = 0; i < objProviderBusinessType.Count; i++)
                     {
                         ProviderBusinessTypeId = objProviderBAL.SaveProviderBusinessType(objProviderBusinessType[i]);
                     }
                 }
-                
+
                 objResponse.Message = Messages.SaveSuccess;
                 objResponse.Status = true;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
@@ -3691,6 +3769,7 @@ namespace LAPP.WS.Controllers.Common
                 objContact.Code = "P";
                 objContact.ContactInfo = ObjProviderRelatedSchools.Phone;
                 objContact.Authenticator = "";
+
                 objContact.IsActive = true;
                 objContact.IsDeleted = false;
                 objContact.ContactGuid = Guid.NewGuid().ToString();
@@ -3742,7 +3821,7 @@ namespace LAPP.WS.Controllers.Common
                 objProviderNameAddress.CreatedOn = DateTime.Now;
                 objProviderNameAddress.ProviderNameAddressGuid = Guid.NewGuid().ToString();
                 ProviderNameBAL objProvNameBAL = new ProviderNameBAL();
-                int ProviderNameAddressId  = objProvNameBAL.SaveProviderNameAddress(objProviderNameAddress);
+                int ProviderNameAddressId = objProvNameBAL.SaveProviderNameAddress(objProviderNameAddress);
 
 
                 ProviderNameContact objProviderNameContact = new ProviderNameContact();
