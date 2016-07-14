@@ -21,4 +21,8 @@ namespace LAPP.ENTITY
         public int ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
     }
+    public class MasterTransactionResponse : BaseEntityServiceResponse
+    {
+        public List<MasterTransaction> MasterTransactionList { get; set; }
+    }
 }
