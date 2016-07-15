@@ -231,6 +231,22 @@ namespace LAPP.WS.App_Helper.Common
 
                 string ResponseString = JsonConvert.SerializeObject(objAuthResponse);
 
+                try
+                {
+                    ConfigurationTypeBAL objConfigurationTypeBAL = new ConfigurationTypeBAL();
+                    ConfigurationType objconfigType = objConfigurationTypeBAL.Get_Configuration_By_Settings_object("RootDocumentPath");
+                    if (!string.IsNullOrEmpty(objconfigType.Value))
+                    {
+                        string FileNameWithPath = objconfigType.Value + "GatewayResponse.txt";
+                        string FileName = FileNameWithPath; //HttpContext.Current.Server.MapPath(FilePath);
+                        File.AppendAllText(FileName, string.Format("{0}{1}", ResponseString, Environment.NewLine));
+                    }
+                }
+                catch (Exception ex3)
+                {
+
+                }
+
 
                 if (objAuthResponse != null && objAuthResponse.Response_Code.ToLower() == "1")
                 {

@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Configuration;
 using LAPP.GlobalFunctions;
 using System.Linq;
+using System.IO;
 
 namespace LAPP.LOGING
 {
@@ -141,7 +142,21 @@ namespace LAPP.LOGING
                 }
                 catch(Exception ex1)
                 {
+                    try
+                    {
+                        string folderPath = ConfigurationHelper.GetConfigurationValueBySetting("RootDocumentPath");
+                        if (!string.IsNullOrEmpty(folderPath))
+                        {
+                            string text = ex1.Message + " || " + ex1.Source + "||" + ex1.StackTrace;
+                            string FileNameWithPath = folderPath + "ExceptionLog.txt";
+                            string FileName = FileNameWithPath; //HttpContext.Current.Server.MapPath(FilePath);
+                            File.AppendAllText(FileName, string.Format("{0}{1}", text, Environment.NewLine));
+                        }
+                    }
+                    catch(Exception ex3)
+                    {
 
+                    }
                 }
             }
             return objLog;
