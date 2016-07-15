@@ -47,4 +47,10 @@ namespace LAPP.ENTITY
         public List<Provider> ProviderResponseList { get; set; }
     }
 
+
+    public class ProviderInfo : BaseEntityServiceResponse
+    {
+        public Provider ProviderResponse { get; set; }
+    }
+
 }

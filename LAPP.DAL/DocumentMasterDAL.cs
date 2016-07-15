@@ -10,6 +10,35 @@ namespace LAPP.DAL
 {
     public class DocumentMasterDAL
     {
+        public int Save_DocumentMaster(DocumentMaster objDocumentMaster)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("DocumentMasterId", objDocumentMaster.DocumentMasterId));
+            lstParameter.Add(new MySqlParameter("DocumentId", objDocumentMaster.DocumentId));
+            lstParameter.Add(new MySqlParameter("DocumentCd", objDocumentMaster.DocumentCd));
+            lstParameter.Add(new MySqlParameter("DocumentName", objDocumentMaster.DocumentName));
+            lstParameter.Add(new MySqlParameter("DocumentTypeId", objDocumentMaster.DocumentTypeId));
+            lstParameter.Add(new MySqlParameter("DocumentTypeIdName", objDocumentMaster.DocumentTypeIdName));
+            lstParameter.Add(new MySqlParameter("DocumentTypeDesc", objDocumentMaster.DocumentTypeDesc));
+            lstParameter.Add(new MySqlParameter("MaxSize", objDocumentMaster.Max_size));
+            lstParameter.Add(new MySqlParameter("MasterTransactionId", objDocumentMaster.MasterTransactionId));
+            lstParameter.Add(new MySqlParameter("PageModuleId", objDocumentMaster.PageModuleId));
+            lstParameter.Add(new MySqlParameter("PageModuleTabSubModuleId", objDocumentMaster.PageModuleTabSubModuleId));
+            lstParameter.Add(new MySqlParameter("PageTabSectionId", objDocumentMaster.PageTabSectionId));
+            //lstParameter.Add(new MySqlParameter("EffectiveDate", objDocumentMaster.EffectiveDate));
+            lstParameter.Add(new MySqlParameter("EndDate", objDocumentMaster.EndDate));
+
+            lstParameter.Add(new MySqlParameter("CreatedBy", objDocumentMaster.CreatedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objDocumentMaster.ModifiedBy));
+
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "DocumentMaster_Save", lstParameter.ToArray());
+            //return returnValue;
+            return Convert.ToInt32(returnParam.Value);
+        }
         public List<DocumentMasterGET> Get_DocumentMaster_By_DocId_And_DocCode(int DocId, string DocCode)
         {
             DataSet ds = new DataSet("DS");
@@ -36,6 +65,51 @@ namespace LAPP.DAL
             }
             return lstEntity;
         }
+
+        public List<DocumentViewModel> GetDocumentResultSet()
+        {
+            var queryData = @"SELECT MT.MasterTransactionName,PM.PageModuleName,PMSM.PageModuleTabSubModuleName, 
+                              PTS.PageTabSectionName,DM.DocumentName, DM.DocumentTypeIdName, DM.Max_size AS MaxSize, 
+                              DM.EndDate, DM.DocumentMasterId, DM.IsEditable FROM mastertransaction MT JOIN pagemodule PM ON MT.MasterTransactionId = PM.MasterTransactionId 
+                              JOIN pagemoduletabsubmodule PMSM ON PM.PageModuleId = PMSM.PageModuleId JOIN pagetabsection PTS ON 
+                              PTS.PageModuleTabSubModuleId = PMSM.PageModuleTabSubModuleId JOIN DocumentMaster DM ON DM.MasterTransactionId = MT.MasterTransactionId WHERE DM.IsActive = 1";
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            ds = objDB.ExecuteDataSet(CommandType.Text, queryData);
+            List<DocumentViewModel> lstEntity = new List<DocumentViewModel>();
+            DocumentViewModel objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FatchResultSetEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        public List<DocumentViewModel> Search_GetDocumentResultSet(DocumentMaster objDocumentMaster)
+        {
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("MasterTransactionId", objDocumentMaster.MasterTransactionId));
+            lstParameter.Add(new MySqlParameter("PageModuleId", objDocumentMaster.PageModuleId));
+            lstParameter.Add(new MySqlParameter("PageModuleTabSubModuleId", objDocumentMaster.PageModuleTabSubModuleId));
+            lstParameter.Add(new MySqlParameter("PageTabSectionId", objDocumentMaster.PageTabSectionId));
+            lstParameter.Add(new MySqlParameter("DocumentId", objDocumentMaster.DocumentId));
+
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Document_Master_By_Search", lstParameter.ToArray());
+            List<DocumentViewModel> lstEntity = new List<DocumentViewModel>();
+            DocumentViewModel objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FatchResultSetEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
         public List<DocumentMasterGET> Get_All_DocumentMaster()
         {
             DataSet ds = new DataSet("DS");
@@ -51,6 +125,52 @@ namespace LAPP.DAL
                     lstEntity.Add(objEntity);
             }
             return lstEntity;
+        }
+
+        private DocumentViewModel FatchResultSetEntity(DataRow dr)
+        {
+            DocumentViewModel objEntity = new DocumentViewModel();
+            if (dr.Table.Columns.Contains("MasterTransactionName") && dr["MasterTransactionName"] != DBNull.Value)
+            {
+                objEntity.MasterTransactionName = Convert.ToString(dr["MasterTransactionName"]);
+            }
+            if (dr.Table.Columns.Contains("PageModuleName") && dr["PageModuleName"] != DBNull.Value)
+            {
+                objEntity.PageModuleName = Convert.ToString(dr["PageModuleName"]);
+            }
+            if (dr.Table.Columns.Contains("PageModuleTabSubModuleName") && dr["PageModuleTabSubModuleName"] != DBNull.Value)
+            {
+                objEntity.PageModuleTabSubModuleName = Convert.ToString(dr["PageModuleTabSubModuleName"]);
+            }
+            if (dr.Table.Columns.Contains("PageTabSectionName") && dr["PageTabSectionName"] != DBNull.Value)
+            {
+                objEntity.PageTabSectionName = Convert.ToString(dr["PageTabSectionName"]);
+            }
+            if (dr.Table.Columns.Contains("DocumentName") && dr["DocumentName"] != DBNull.Value)
+            {
+                objEntity.DocumentName = Convert.ToString(dr["DocumentName"]);
+            }
+            if (dr.Table.Columns.Contains("DocumentTypeIdName") && dr["DocumentTypeIdName"] != DBNull.Value)
+            {
+                objEntity.DocumentTypeIdName = Convert.ToString(dr["DocumentTypeIdName"]);
+            }
+            if (dr.Table.Columns.Contains("MaxSize") && dr["MaxSize"] != DBNull.Value)
+            {
+                objEntity.MaxSize = Convert.ToString(dr["MaxSize"]);
+            }
+            if (dr.Table.Columns.Contains("EndDate") && dr["EndDate"] != DBNull.Value)
+            {
+                objEntity.EndDate = Convert.ToDateTime(dr["EndDate"]);
+            }
+            if (dr.Table.Columns.Contains("DocumentMasterId") && dr["DocumentMasterId"] != DBNull.Value)
+            {
+                objEntity.DocumentMasterId = Convert.ToInt32(dr["DocumentMasterId"]);
+            }
+            if (dr.Table.Columns.Contains("IsEditable") && dr["IsEditable"] != DBNull.Value)
+            {
+                objEntity.IsEditable = Convert.ToInt32(dr["IsEditable"]);
+            }
+            return objEntity;
         }
         private DocumentMaster FetchEntity(DataRow dr)
         {
@@ -186,6 +306,10 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
             {
                 objEntity.IsActive = Convert.ToBoolean(dr["IsActive"]);
+            }
+            if (dr.Table.Columns.Contains("PageTabSectionId") && dr["PageTabSectionId"] != DBNull.Value)
+            {
+                objEntity.PageTabSectionId = Convert.ToInt32(dr["PageTabSectionId"]);
             }
             return objEntity;
         }

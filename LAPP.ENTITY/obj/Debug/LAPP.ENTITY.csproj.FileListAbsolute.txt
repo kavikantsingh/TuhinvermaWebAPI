@@ -8,3 +8,8 @@ C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.pdb
 C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.csprojResolveAssemblyReference.cache
 C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.dll
 C:\Users\LENOVO\Music\Documents\src\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.pdb
+E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.dll
+E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.pdb
+E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.csprojResolveAssemblyReference.cache
+E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.dll
+E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.pdb

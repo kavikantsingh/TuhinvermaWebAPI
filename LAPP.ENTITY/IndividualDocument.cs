@@ -79,6 +79,19 @@ namespace LAPP.ENTITY
 
         public List<DocumentToUploadByHTML> DocumentUploadList { get; set; }
     }
+
+    public class IndividualDocumentById : BaseEntity
+    {
+        public int IndividualDocumentIdLicense { get; set; }
+        public int IndividualDocumentIdReceipt { get; set; }
+        public string LicenseDocName { get; set; }
+        public string ReceiptDocName { get; set; }
+        public int IndividualId { get; set; }
+        public int? ApplicationId { get; set; }
+        public string Email { get; set; }
+        public string AffirmativeAction { get; set; }
+
+    }
     public class DocumentToUpload : BaseEntity
     {
         public int IndividualDocumentId { get; set; }
