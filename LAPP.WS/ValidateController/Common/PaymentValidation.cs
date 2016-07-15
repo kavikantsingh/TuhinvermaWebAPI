@@ -53,8 +53,8 @@ namespace LAPP.WS.ValidateController.Common
             objResponseList = Validations.IsIntGreaterThanZero(nameof(objManPayReq.ApplicationId), objManPayReq.ApplicationId, objResponseList);
             objResponseList = Validations.IsIntGreaterThanZero(nameof(objManPayReq.IndividualId), objManPayReq.IndividualId, objResponseList);
             objResponseList = Validations.IsRequiredPropertyMaxLength(nameof(objManPayReq.PaymentMode), objManPayReq.PaymentMode, objResponseList, 2);
-            objResponseList = Validations.IsRequiredPropertyMaxLength(nameof(objManPayReq.Description), objManPayReq.Description, objResponseList, 200);
-            objResponseList = Validations.IsRequiredPropertyMaxLength(nameof(objManPayReq.InvoiceNumber), objManPayReq.InvoiceNumber, objResponseList, 40);
+            //objResponseList = Validations.IsRequiredPropertyMaxLength(nameof(objManPayReq.Description), objManPayReq.Description, objResponseList, 200);
+            //objResponseList = Validations.IsRequiredPropertyMaxLength(nameof(objManPayReq.InvoiceNumber), objManPayReq.InvoiceNumber, objResponseList, 40);
             objResponseList = Validations.IsValidIntDecimalGraterThenZero(nameof(objManPayReq.Amount), objManPayReq.Amount.ToString(), objResponseList);
 
             if (objResponseList.Count > 0)
