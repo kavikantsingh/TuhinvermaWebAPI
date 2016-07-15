@@ -32,6 +32,19 @@ namespace LAPP.ENTITY
         public bool Is_Editable { get; set; }
     }
 
+    public class SaveDeficiencyTemplate : BaseEntity
+    {
+        
+        public int Deficiency_Template_ID { get; set; }
+        public string Deficiency_Template_Message { get; set; }
+        public string Deficiency_Template_Name { get; set; }
+        public string Deficiency_Template_Subject { get; set; }
+        public bool Is_Active { get; set; }
+        public bool Is_Deleted { get; set; }
+        public int Master_Transaction_Id { get; set; }
+       
+    }
+
     public class DeficiencyTemplateResponseGet : BaseEntityServiceResponse
     {
         public List<LAPP_DeficiencyTemplate> DeficiencyTemplateResponseList { get; set; }

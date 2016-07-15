@@ -829,7 +829,7 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <param name="Key">The Key of the data.</param>
         /// <param name="objlapp_deficiency_template">Object of Configuration</param>
         [AcceptVerbs("POST")]
-        public DeficiencyTemplateResponseGet SaveDeficiencyTemplate(string Key, LAPP_DeficiencyTemplate objlapp_deficiency_template)
+        public DeficiencyTemplateResponseGet SaveDeficiencyTemplate(string Key, SaveDeficiencyTemplate objlapp_deficiency_template)
         {
             int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
 
@@ -851,11 +851,20 @@ namespace LAPP.WS.Controllers.Backoffice
             
             try
             {
+               
                 if (objlapp_deficiency_template.Deficiency_Template_ID > 0)
                 {
                     objEntity = objBAL.GetDeficiencyTemplate(objlapp_deficiency_template.Deficiency_Template_ID);
                     if (objEntity != null)
                     {
+                        objEntity.Deficiency_Template_ID = objlapp_deficiency_template.Deficiency_Template_ID;
+                        objEntity.Deficiency_Template_Name = objlapp_deficiency_template.Deficiency_Template_Name;
+                        objEntity.Deficiency_Template_Message = objlapp_deficiency_template.Deficiency_Template_Message;
+                        objEntity.Deficiency_Template_Subject = objlapp_deficiency_template.Deficiency_Template_Subject;
+                        objEntity.Master_Transaction_Id = objlapp_deficiency_template.Master_Transaction_Id;
+                        objEntity.Is_Active = objlapp_deficiency_template.Is_Active;
+                        objEntity.Is_Deleted = objlapp_deficiency_template.Is_Deleted;
+
                         objEntity.Modified_On = DateTime.Now;
                         objEntity.Modified_By = CreatedOrMoifiy;
                         objEntity.Created_On = DateTime.Now;
@@ -869,7 +878,15 @@ namespace LAPP.WS.Controllers.Backoffice
                 }
                 else
                 {
-                    objEntity.Is_Deleted = false;
+                    objEntity.Deficiency_Template_ID = objlapp_deficiency_template.Deficiency_Template_ID;
+                    objEntity.Deficiency_Template_Name = objlapp_deficiency_template.Deficiency_Template_Name;
+                    objEntity.Deficiency_Template_Message = objlapp_deficiency_template.Deficiency_Template_Message;
+                    objEntity.Deficiency_Template_Subject = objlapp_deficiency_template.Deficiency_Template_Subject;
+                    objEntity.Master_Transaction_Id = objlapp_deficiency_template.Master_Transaction_Id;
+                    objEntity.Is_Active = objlapp_deficiency_template.Is_Active;
+                    objEntity.Is_Deleted = objlapp_deficiency_template.Is_Deleted;
+
+                    objEntity.End_Date = DateTime.Now;
                     objEntity.Created_On = DateTime.Now;
                     objEntity.Created_By = CreatedOrMoifiy;
                     objEntity.Modified_On = DateTime.Now;

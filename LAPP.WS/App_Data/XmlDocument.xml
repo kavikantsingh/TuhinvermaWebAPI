@@ -687,7 +687,7 @@
             </summary>
             <param name="Key">The Key of the data.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.ConfigurationController.SaveDeficiencyTemplate(System.String,LAPP.ENTITY.LAPP_DeficiencyTemplate)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.ConfigurationController.SaveDeficiencyTemplate(System.String,LAPP.ENTITY.SaveDeficiencyTemplate)">
             <summary>
             Save the data For Configuration
             </summary>
