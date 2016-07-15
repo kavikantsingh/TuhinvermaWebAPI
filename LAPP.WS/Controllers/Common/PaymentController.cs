@@ -121,6 +121,12 @@ namespace LAPP.WS.Controllers.Common
         [ActionName("ProcessManualPayment")]
         public ManualPaymentResponse ProcessManualPayment(string Key, ManualPaymentRequest objPaymentRequest, string AffirmativeAction = "", bool IsBackofficePayment = true)
         {
+            if (objPaymentRequest == null)
+                throw new Exception("Invalid request object. please check with API request signature.");
+
+            if (objPaymentRequest.TransactionObject == null)
+                throw new Exception("Invalid TransactionObject in payment request. please check with API request signature.");
+
             if (string.IsNullOrEmpty(AffirmativeAction))
             {
                 AffirmativeAction = "";
@@ -160,7 +166,7 @@ namespace LAPP.WS.Controllers.Common
                     {
                         // this is executed only in the debug version
                         string requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(objPaymentRequest);
-                        LogingHelper.SaveRequestJson(requestStr, ("Process Payment request. AffirmativeAction=" + AffirmativeAction));
+                        LogingHelper.SaveRequestJson(requestStr, ("Process manual Payment request. AffirmativeAction=" + AffirmativeAction));
                     }
 
                 }

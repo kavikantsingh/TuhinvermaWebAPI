@@ -28,5 +28,9 @@ namespace LAPP.BAL
         {
             return objDAL.Save_DocumentMaster(objDocumentMaster);
         }
+        public List<DocumentViewModel> Search_GetDocumentResultSet(DocumentMaster objDocumentMaster)
+        {
+            return objDAL.Search_GetDocumentResultSet(objDocumentMaster);
+        }
     }
 }
