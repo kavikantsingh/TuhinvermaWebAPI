@@ -17,8 +17,8 @@ namespace LAPP.ENTITY
         public string ReferenceNumber { get; set; }
 
         public bool IsProgramApproved { get; set; }
-        public DateTime ProgramApprovalStartDate { get; set; }
-        public DateTime ProgramApprovalEndDate { get; set; }
+        public DateTime? ProgramApprovalStartDate { get; set; }
+        public DateTime? ProgramApprovalEndDate { get; set; }
 
         public string ProviderProgramGuid { get; set; }
         public bool IsActive { get; set; }
