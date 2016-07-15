@@ -755,11 +755,11 @@ namespace LAPP.WS.Controllers.Backoffice
         /// </summary>
         /// <param name="Key">The Key of the data.</param>
         [AcceptVerbs("GET")]
-        public MasterTransactionResponseGet GetAllMasterTransaction(string Key)
+        public MasterTransactionResponse GetAllMasterTransaction(string Key)
         {
             LogingHelper.SaveAuditInfo(Key);
 
-            MasterTransactionResponseGet objResponse = new MasterTransactionResponseGet();
+            MasterTransactionResponse objResponse = new MasterTransactionResponse();
 
             if (!TokenHelper.ValidateToken(Key))
             {
@@ -780,7 +780,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.MasterTransactionResponseList = null;
+                    objResponse.MasterTransactionList = null;
                     return objResponse;
                 }
 
@@ -792,7 +792,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.ResponseReason = "";
 
                     List<MasterTransaction> lstMasterTransaction = objConfigurationBAL.Get_All_MasterTransaction();
-                    objResponse.MasterTransactionResponseList = lstMasterTransaction;
+                    objResponse.MasterTransactionList = lstMasterTransaction;
 
                     return objResponse;
 
@@ -804,7 +804,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.Message = ex.Message;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                    objResponse.MasterTransactionResponseList = null;
+                    objResponse.MasterTransactionList = null;
 
                 }
 
@@ -817,7 +817,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                objResponse.MasterTransactionResponseList = null;
+                objResponse.MasterTransactionList = null;
 
             }
             return objResponse;

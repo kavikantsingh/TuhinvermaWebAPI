@@ -25,3 +25,4 @@ D:\Work\Tuhin Verma\lappws\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.dll
 D:\Work\Tuhin Verma\lappws\LAPP.GlobalFunctions\bin\Debug\Newtonsoft.Json.xml
 D:\Work\Tuhin Verma\lappws\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.dll
 D:\Work\Tuhin Verma\lappws\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.GlobalFunctions\obj\Debug\LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache

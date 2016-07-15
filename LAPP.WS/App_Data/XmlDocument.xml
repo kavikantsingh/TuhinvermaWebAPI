@@ -789,6 +789,36 @@
             </summary>
             <param name="Key">API security key.</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.DocumentController.DocumentMasterGetByPageTabSectionId(System.String,System.Int32)">
+            <summary>
+            To get documents by using PageTabSectionId
+            </summary>
+            <param name="Key">API Key</param>
+            <param name="PageTabSectionId">PageTabSectionId</param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.DocumentController.GetDocumentResultSet(System.String)">
+            <summary>
+            To get document resultset.
+            </summary>
+            <param name="Key">API security key.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.DocumentController.Search_GetDocumentResultSet(System.String,LAPP.ENTITY.DocumentMaster)">
+            <summary>
+            To get serached docment result by using filter
+            </summary>
+            <param name="Key"> application key</param>
+            <param name="objDocumentMaster">document master object model</param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.DocumentController.DocumentMasterSave(System.String,LAPP.ENTITY.DocumentMaster)">
+            <summary>
+            To save document master record
+            </summary>
+            <param name="Key"> application key</param>
+            <param name="objDocumentMaster">document master object model</param>
+            <returns></returns>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualAddressSave(System.String,LAPP.ENTITY.IndividualAddressResponse)">
             <summary>
             Save or Update the data For IndividualAddress
@@ -1118,6 +1148,14 @@
             <param name="Key">The Key of the data.</param>
             <param name="PageModuleTabSubModuleId">The PageModule .</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.PageController.PageGetAllPageNamesByMasterTransactionId(System.String,System.Int32)">
+            <summary>
+             To get All page records by using master transaction id
+            </summary>
+            <param name="Key">Key</param>
+            <param name="MasterTransactionId">MasterTransactionId</param>
+            <returns></returns>
+        </member>
         <member name="T:LAPP.WS.Controllers.Backoffice.TemplateController">
             <summary>
             Template Controller
@@ -1215,6 +1253,13 @@
             </summary>
             <param name="Key"></param>
             <param name="objEmailRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.CommonController.GetMasterTransactions(System.String)">
+            <summary>
+            To get All master transaction records
+            </summary>
+            <param name="Key">Key</param>
             <returns></returns>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.EmployerController.EmployerTypeGetAll(System.String)">
@@ -1477,6 +1522,14 @@
             
             </summary>
             <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.Get_ProviderDetailsByID(System.String,System.Int32)">
+            <summary>
+            Get_ProviderDetailsByID
+            </summary>
+            <param name="Key"></param>
+            <param name="providerid"></param>
             <returns></returns>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.ProviderController.GetAllProvidermblex(System.String,LAPP.ENTITY.ProviderMblex)">
