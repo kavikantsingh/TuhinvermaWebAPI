@@ -164,7 +164,13 @@ namespace LAPP.GlobalFunctions
             }
             finally
             {
-                message.Attachments.ToList().ForEach(a => a.Dispose());
+                try
+                {
+                    message.Attachments.ToList().ForEach(a => a.Dispose());
+                }
+                catch (Exception ex1)
+                { }
+
             }
 
             return result;
@@ -183,7 +189,7 @@ namespace LAPP.GlobalFunctions
             }
         }
 
-        public static bool SendMailWithMultipleAttachment( string toAddress, string subject, string mailContent, bool IsBodyHtml, List<System.Net.Mail.Attachment> lstAttachment)
+        public static bool SendMailWithMultipleAttachment(string toAddress, string subject, string mailContent, bool IsBodyHtml, List<System.Net.Mail.Attachment> lstAttachment)
         {
             mailContent = SetLogo(mailContent);
             bool result = false;
@@ -229,12 +235,17 @@ namespace LAPP.GlobalFunctions
                 if (!SendUsingBackupSMTP(message))
                 {
                     result = false;
-                     
+
                 }
             }
             finally
             {
-                message.Attachments.ToList().ForEach(a => a.Dispose());
+                try
+                {
+                    message.Attachments.ToList().ForEach(a => a.Dispose());
+                }
+                catch (Exception ex1)
+                { }
             }
 
 

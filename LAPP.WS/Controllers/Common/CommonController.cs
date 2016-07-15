@@ -426,5 +426,56 @@ namespace LAPP.WS.Controllers.Common
 
             return objResponse;
         }
+
+        /// <summary>
+        /// To get All master transaction records
+        /// </summary>
+        /// <param name="Key">Key</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET")]
+        [ActionName("GetMasterTransactions")]
+        public MasterTransactionResponse GetMasterTransactions(string Key)
+        {
+            //Audit Request
+            LogingHelper.SaveAuditInfo(Key);
+
+            var objResponse = new MasterTransactionResponse();
+            var objMasterTransactionBAL = new MasterTransactionBAL();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.MasterTransactionList = null;
+                    return objResponse;
+                }
+                var lstMasterTransactions = objMasterTransactionBAL.Get_All_MasterTransaction();
+                if (lstMasterTransactions != null && lstMasterTransactions.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.Message = "";
+                    objResponse.MasterTransactionList = lstMasterTransactions;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.Message = "No record found.";
+                    objResponse.MasterTransactionList = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "GetMasterTransactions", ENTITY.Enumeration.eSeverity.Error);
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.MasterTransactionList = null;
+            }
+            return objResponse;
+        }
     }
 }

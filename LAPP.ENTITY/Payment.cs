@@ -199,10 +199,10 @@ namespace LAPP.ENTITY
         [Display(Description = "Required: Yes, (decimal)")]
         public decimal Amount { get; set; }
 
-        [Display(Description = "Required: Yes,  Max Length:200 (string)")]
+        [Display(Description = "Required: No,  Max Length:200 (string)")]
         public string Description { get; set; }
 
-        [Display(Description = "Required: Yes, Max Length:40 (string)")]
+        [Display(Description = "Required: No, Max Length:40 (string)")]
         public string InvoiceNumber { get; set; }
 
         public Transaction TransactionObject { get; set; }

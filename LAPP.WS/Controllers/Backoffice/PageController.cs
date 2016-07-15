@@ -241,5 +241,81 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             return objResponse;
         }
+
+        /// <summary>
+        ///  To get All page records by using master transaction id
+        /// </summary>
+        /// <param name="Key">Key</param>
+        /// <param name="MasterTransactionId">MasterTransactionId</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET")]
+        [ActionName("PageGetAllPageNamesByMasterTransactionId")]
+        public PageModuleResponse PageGetAllPageNamesByMasterTransactionId(string Key, int MasterTransactionId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            PageModuleResponse objResponse = new PageModuleResponse();
+            PageModuleBAL objBAL = new PageModuleBAL();
+            PageModule objEntity = new PageModule();
+            List<PageModule> lstPageModule = new List<PageModule>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.PageModule = null;
+                    return objResponse;
+                }
+                lstPageModule = objBAL.Get_All_PageModule();
+                if (lstPageModule != null && lstPageModule.Count > 0)
+                {
+                    objResponse.ResponseReason = "To Get All Page Modules";
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstPageModuleSelected = lstPageModule.Select(Page => new PageModule
+                    {
+                        PageModuleId = Page.PageModuleId,
+                        PageModuleCode = Page.PageModuleCode,
+                        PageModuleName = Page.PageModuleName,
+                        PageModuleDesc = Page.PageModuleDesc,
+                        MasterTransactionId = Page.MasterTransactionId,
+                        IsEnabled = Page.IsEnabled,
+                        IsReadOnly = Page.IsReadOnly,
+                        IsActive = Page.IsActive,
+                        IsDeleted = Page.IsDeleted,
+                        CreatedBy = Page.CreatedBy,
+                        CreatedOn = Page.CreatedOn,
+                        ModifiedBy = Page.ModifiedBy,
+                        ModifiedOn = Page.ModifiedOn
+                    }
+                    ).Where(x => x.MasterTransactionId == MasterTransactionId).ToList();
+
+                    objResponse.PageModule = lstPageModuleSelected;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.PageModule = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "PageGetAllPageNames", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.PageModule = null;
+            }
+
+            return objResponse;
+        }
     }
 }

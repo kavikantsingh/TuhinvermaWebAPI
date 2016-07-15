@@ -1798,6 +1798,82 @@ namespace LAPP.WS.Controllers.Common
         }
 
         /// <summary>
+        /// Get_ProviderDetailsByID
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="providerid"></param>
+        /// <returns></returns>
+        [AcceptVerbs("GET")]
+        [ActionName("GetProviderById")]
+        public ProviderInfo Get_ProviderDetailsByID(string Key, int providerid)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ProviderInfo objResponse = new ProviderInfo();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.ResponseReason = null;
+                return objResponse;
+            }
+
+            ProviderBAL objProviderBAL = new ProviderBAL();
+            ProviderResponseRequest objProviderResponseRequest = new ProviderResponseRequest();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ProviderResponse = null;
+                    return objResponse;
+                }
+
+                try
+                {
+                    objResponse.Message = Messages.SaveSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+
+                    //Method to Get all the previous schools 
+                    Provider lstProvider = objProviderBAL.Get_Provider_By_ProviderId(providerid);
+                    objResponse.ProviderResponse = lstProvider;
+
+                    return objResponse;
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                    objResponse.Status = false;
+                    objResponse.Message = ex.Message;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                    objResponse.ProviderResponse = null;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.ProviderResponse = null;
+
+            }
+            return objResponse;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="Key"></param>
@@ -2350,7 +2426,7 @@ namespace LAPP.WS.Controllers.Common
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("DeleteProviderProgram")]
-        public ProviderProgramResponse DeleteaddressProviderProgram(string Key,ProviderProgram objProviderProgram)
+        public ProviderProgramResponse DeleteaddressProviderProgram(string Key, ProviderProgram objProviderProgram)
         {
             LogingHelper.SaveAuditInfo(Key);
             ProviderProgramResponse objResponse = new ProviderProgramResponse();
@@ -2361,7 +2437,7 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Status = false;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                 objResponse.Message = "User session has expired.";
-                objResponse.ProviderProgramResponseList= null;
+                objResponse.ProviderProgramResponseList = null;
                 return objResponse;
             }
 
@@ -2389,7 +2465,7 @@ namespace LAPP.WS.Controllers.Common
 
                     //Method to Get all the previous schools 
                     List<ProviderProgram> lstPrevAddress = objProviderProgramBAL.Get_All_ProviderProgram(objProviderProgram);
-                    objResponse.ProviderProgramResponseList= lstPrevAddress;
+                    objResponse.ProviderProgramResponseList = lstPrevAddress;
 
                     return objResponse;
                 }
@@ -2399,7 +2475,7 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = ValidationResponse;
-                    objResponse.ProviderProgramResponseList= null;
+                    objResponse.ProviderProgramResponseList = null;
                     return objResponse;
                 }
             }
@@ -2409,7 +2485,7 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Status = false;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.Message = ex.Message;
-                objResponse.ProviderProgramResponseList= null;
+                objResponse.ProviderProgramResponseList = null;
 
             }
             return objResponse;
@@ -2622,7 +2698,7 @@ namespace LAPP.WS.Controllers.Common
 
                     //Method to Get all the previous schools 
                     List<ProviderApprovalAgency> lstProviderApprovalAgency = objProviderProgramBAL.Get_All_ProviderApprovalAgency(objProviderApprovalAgency);
-                    objResponse.ProviderApprovalAgencyResponseList= lstProviderApprovalAgency;
+                    objResponse.ProviderApprovalAgencyResponseList = lstProviderApprovalAgency;
 
                     return objResponse;
                 }
@@ -2632,7 +2708,7 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = ValidationResponse;
-                    objResponse.ProviderApprovalAgencyResponseList= null;
+                    objResponse.ProviderApprovalAgencyResponseList = null;
                     return objResponse;
                 }
             }
@@ -2642,7 +2718,7 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Status = false;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.Message = ex.Message;
-                objResponse.ProviderApprovalAgencyResponseList= null;
+                objResponse.ProviderApprovalAgencyResponseList = null;
 
             }
             return objResponse;
@@ -2966,110 +3042,141 @@ namespace LAPP.WS.Controllers.Common
             try
             {
 
-                #region IndividualName
-
-                IndividualNameBAL objIndNameBAL = new IndividualNameBAL();
-                IndividualName objIndName = new IndividualName();
-
-                objIndName.IndividualNameId = 0;
-                objIndName.IndividualId = 0;
-                objIndName.FirstName = ObjProviderStaff.ProviderStaffFirstName;
-                objIndName.MiddleName = "";
-                objIndName.LastName = ObjProviderStaff.ProviderStaffLastName;
-                objIndName.IndividualNameStatusId = 22;
-                objIndName.IsActive = true;
-                objIndName.IsDeleted = false;
-                objIndName.CreatedBy = 0;
-                objIndName.CreatedOn = DateTime.Now;
-                objIndName.IndividualNameGuid = Guid.NewGuid().ToString();
-                objIndName.IndividualNameTypeId = 13;
-
-                int IndividualNameId = objIndNameBAL.Save_IndividualName(objIndName);
-
-                #endregion
-
-                #region Provider Individual Name Info
-
-                // Insert IndividualId as 0 and IndividualNameId from IndividualName table
-
-                ProviderIndividualName objProviderIndName = new ProviderIndividualName();
-                ProviderIndividualNameBAL objProviderIndNameBAL = new ProviderIndividualNameBAL();
-
-                objProviderIndName.ProviderIndvNameInfoId = 0;
-                objProviderIndName.ProviderId = ObjProviderStaff.ProviderId;
-                objProviderIndName.IndividualId = 0;
-                objProviderIndName.IndividualNameId = IndividualNameId;
-                objProviderIndName.ApplicationId = ObjProviderStaff.ApplicationId;
-                objProviderIndName.IsActive = true;
-                objProviderIndName.IsDeleted = false;
-                objProviderIndName.CreatedBy = 0;
-                objProviderIndName.CreatedOn = DateTime.Now;
-                objProviderIndName.ProviderIndvNameInfoGuid = Guid.NewGuid().ToString();
-
-                int ProviderIndvNameInfoId = objProviderIndNameBAL.Save_ProviderIndividualName(objProviderIndName);
-
-                #endregion
-
-                #region Provider Staff
-
-                ProviderStaff objProvStaff = new ProviderStaff();
-                ProviderBAL objProviderStaffBAL = new ProviderBAL();
-
-                objProvStaff.ProviderStaffId = 0;
-                objProvStaff.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
-                objProvStaff.ProviderId = ObjProviderStaff.ProviderId;
-                objProvStaff.ApplicationId = ObjProviderStaff.ApplicationId;
-                objProvStaff.ProviderContactId = 0;
-                objProvStaff.IsBackgroundCheckReq = ObjProviderStaff.IsBackgroundCheckReq;
-                objProvStaff.CAMTCNumber = ObjProviderStaff.CAMTCNumber;
-                objProvStaff.ReferenceNumber = ObjProviderStaff.ReferenceNumber;
-                objProvStaff.IsActive = ObjProviderStaff.IsActive;
-                objProvStaff.IsDeleted = ObjProviderStaff.IsDeleted;
-                objProvStaff.CreatedBy = ObjProviderStaff.CreatedBy;
-                objProvStaff.CreatedOn = ObjProviderStaff.CreatedOn;
-                objProvStaff.ModifiedBy = ObjProviderStaff.ModifiedBy;
-                objProvStaff.ModifiedOn = ObjProviderStaff.ModifiedOn;
-                objProvStaff.ProviderStaffGuid = ObjProviderStaff.ProviderStaffGuid;
-
-                int ProviderStaffId = objProviderStaffBAL.SaveProviderStaff(objProvStaff);
-
-                #endregion
-
-                #region Provider Individual Name Title/Position
-
-                ProvIndvNameTitle objProvIndvNameTitle = new ProvIndvNameTitle();
-                ProviderBAL objProviderBAL = new ProviderBAL();
-
-                string conId = ObjProviderStaff.ProvIndvNameTitlePositionId; ;
-                string conTitle = ObjProviderStaff.ProvIndvNameTitlePosition;
-
-                string[] Id = conId.Split(',');
-                string[] Title = conTitle.Split(',');
-
-                for(int i=0; i<Id.Count(); i++)
+                if (ObjProviderStaff.ProviderStaffId == 0)
                 {
-                    objProvIndvNameTitle.ProvIndvNameTitlePosId = 0;
-                    objProvIndvNameTitle.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
-                    objProvIndvNameTitle.ProviderId = ObjProviderStaff.ProviderId;
-                    objProvIndvNameTitle.ApplicationId = ObjProviderStaff.ApplicationId;
-                    objProvIndvNameTitle.ProviderStaffId = ProviderStaffId;
-                    objProvIndvNameTitle.ProvIndvNameTitlePositionId = Id[i];
-                    objProvIndvNameTitle.ProvIndvNameTitlePosition = Title[i];
+                    #region IndividualName
 
-                    objProvIndvNameTitle.ReferenceNumber = "";
-                    objProvIndvNameTitle.IsActive = true;
-                    objProvIndvNameTitle.IsDeleted = false;
-                    objProvIndvNameTitle.CreatedBy = 0;
-                    objProvIndvNameTitle.CreatedOn = DateTime.Now;
-                    objProvIndvNameTitle.ModifiedBy = null;
-                    objProvIndvNameTitle.ModifiedOn = null; 
-                    objProvIndvNameTitle.ProvIndvNameTitlePosGuid = Guid.NewGuid().ToString();
+                    IndividualNameBAL objIndNameBAL = new IndividualNameBAL();
+                    IndividualName objIndName = new IndividualName();
 
-                    int ProvIndvNameTitleId = objProviderBAL.SaveProvIndvNameTitle(objProvIndvNameTitle);
+                    objIndName.IndividualNameId = 0;
+                    objIndName.IndividualId = 0;
+                    objIndName.FirstName = ObjProviderStaff.ProviderStaffFirstName;
+                    objIndName.MiddleName = "";
+                    objIndName.LastName = ObjProviderStaff.ProviderStaffLastName;
+                    objIndName.IndividualNameStatusId = 22;
+                    objIndName.IsActive = true;
+                    objIndName.IsDeleted = false;
+                    objIndName.CreatedBy = 0;
+                    objIndName.CreatedOn = DateTime.Now;
+                    objIndName.IndividualNameGuid = Guid.NewGuid().ToString();
+                    objIndName.IndividualNameTypeId = 13;
 
+                    int IndividualNameId = objIndNameBAL.Save_IndividualName(objIndName);
+
+                    #endregion
+
+                    #region Provider Individual Name Info
+
+                    // Insert IndividualId as 0 and IndividualNameId from IndividualName table
+
+                    ProviderIndividualName objProviderIndName = new ProviderIndividualName();
+                    ProviderIndividualNameBAL objProviderIndNameBAL = new ProviderIndividualNameBAL();
+
+                    objProviderIndName.ProviderIndvNameInfoId = 0;
+                    objProviderIndName.ProviderId = ObjProviderStaff.ProviderId;
+                    objProviderIndName.IndividualId = 0;
+                    objProviderIndName.IndividualNameId = IndividualNameId;
+                    objProviderIndName.ApplicationId = ObjProviderStaff.ApplicationId;
+                    objProviderIndName.IsActive = true;
+                    objProviderIndName.IsDeleted = false;
+                    objProviderIndName.CreatedBy = 0;
+                    objProviderIndName.CreatedOn = DateTime.Now;
+                    objProviderIndName.ProviderIndvNameInfoGuid = Guid.NewGuid().ToString();
+
+                    int ProviderIndvNameInfoId = objProviderIndNameBAL.Save_ProviderIndividualName(objProviderIndName);
+
+                    #endregion
+
+                    #region Provider Staff
+
+                    ProviderStaff objProvStaff = new ProviderStaff();
+                    ProviderBAL objProviderStaffBAL = new ProviderBAL();
+
+                    objProvStaff.ProviderStaffId = 0;
+                    objProvStaff.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
+                    objProvStaff.ProviderId = ObjProviderStaff.ProviderId;
+                    objProvStaff.ApplicationId = ObjProviderStaff.ApplicationId;
+                    objProvStaff.ProviderContactId = 0;
+                    objProvStaff.IsBackgroundCheckReq = ObjProviderStaff.IsBackgroundCheckReq;
+                    objProvStaff.CAMTCNumber = ObjProviderStaff.CAMTCNumber;
+                    objProvStaff.ReferenceNumber = ObjProviderStaff.ReferenceNumber;
+                    objProvStaff.IsActive = ObjProviderStaff.IsActive;
+                    objProvStaff.IsDeleted = ObjProviderStaff.IsDeleted;
+                    objProvStaff.CreatedBy = ObjProviderStaff.CreatedBy;
+                    objProvStaff.CreatedOn = ObjProviderStaff.CreatedOn;
+                    objProvStaff.ModifiedBy = ObjProviderStaff.ModifiedBy;
+                    objProvStaff.ModifiedOn = ObjProviderStaff.ModifiedOn;
+                    objProvStaff.ProviderStaffGuid = ObjProviderStaff.ProviderStaffGuid;
+
+                    int ProviderStaffId = objProviderStaffBAL.SaveProviderStaff(objProvStaff);
+
+                    #endregion
+
+                    #region Provider Individual Name Title/Position
+
+                    ProvIndvNameTitle objProvIndvNameTitle = new ProvIndvNameTitle();
+                    ProviderBAL objProviderBAL = new ProviderBAL();
+
+                    string conId = ObjProviderStaff.ProvIndvNameTitlePositionId; ;
+                    string conTitle = ObjProviderStaff.ProvIndvNameTitlePosition;
+
+                    string[] Id = conId.Split(',');
+                    string[] Title = conTitle.Split(',');
+
+                    for (int i = 0; i < Id.Count(); i++)
+                    {
+                        objProvIndvNameTitle.ProvIndvNameTitlePosId = 0;
+                        objProvIndvNameTitle.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
+                        objProvIndvNameTitle.ProviderId = ObjProviderStaff.ProviderId;
+                        objProvIndvNameTitle.ApplicationId = ObjProviderStaff.ApplicationId;
+                        objProvIndvNameTitle.ProviderStaffId = ProviderStaffId;
+                        objProvIndvNameTitle.ProvIndvNameTitlePositionId = Id[i];
+                        objProvIndvNameTitle.ProvIndvNameTitlePosition = Title[i];
+
+                        objProvIndvNameTitle.ReferenceNumber = "";
+                        objProvIndvNameTitle.IsActive = true;
+                        objProvIndvNameTitle.IsDeleted = false;
+                        objProvIndvNameTitle.CreatedBy = 0;
+                        objProvIndvNameTitle.CreatedOn = DateTime.Now;
+                        objProvIndvNameTitle.ModifiedBy = null;
+                        objProvIndvNameTitle.ModifiedOn = null;
+                        objProvIndvNameTitle.ProvIndvNameTitlePosGuid = Guid.NewGuid().ToString();
+
+                        int ProvIndvNameTitleId = objProviderBAL.SaveProvIndvNameTitle(objProvIndvNameTitle);
+
+                    }
+
+                    #endregion
                 }
 
-                #endregion
+                else
+                {
+                    #region Provider Staff
+
+                    ProviderStaff objProvStaff = new ProviderStaff();
+                    ProviderBAL objProviderStaffBAL = new ProviderBAL();
+
+                    objProvStaff.ProviderStaffId = ObjProviderStaff.ProviderStaffId;
+                    objProvStaff.ProviderIndvNameInfoId = ObjProviderStaff.ProviderIndvNameInfoId;
+                    objProvStaff.ProviderId = ObjProviderStaff.ProviderId;
+                    objProvStaff.ApplicationId = ObjProviderStaff.ApplicationId;
+                    objProvStaff.ProviderContactId = 0;
+                    objProvStaff.IsBackgroundCheckReq = ObjProviderStaff.IsBackgroundCheckReq;
+                    objProvStaff.CAMTCNumber = ObjProviderStaff.CAMTCNumber;
+                    objProvStaff.ReferenceNumber = ObjProviderStaff.ReferenceNumber;
+                    objProvStaff.IsActive = ObjProviderStaff.IsActive;
+                    objProvStaff.IsDeleted = ObjProviderStaff.IsDeleted;
+                    objProvStaff.CreatedBy = ObjProviderStaff.CreatedBy;
+                    objProvStaff.CreatedOn = ObjProviderStaff.CreatedOn;
+                    objProvStaff.ModifiedBy = ObjProviderStaff.ModifiedBy;
+                    objProvStaff.ModifiedOn = ObjProviderStaff.ModifiedOn;
+                    objProvStaff.ProviderStaffGuid = ObjProviderStaff.ProviderStaffGuid;
+
+                    int ProviderStaffId = objProviderStaffBAL.SaveProviderStaff(objProvStaff);
+
+                    #endregion
+                }
 
                 objResponse.Message = Messages.SaveSuccess;
                 objResponse.Status = true;
@@ -3317,6 +3424,8 @@ namespace LAPP.WS.Controllers.Common
 
             try
             {
+                if (ObjProviderGraduatesNumber.ProviderGraduatesNumberId == 0)
+                    ObjProviderGraduatesNumber.ProviderGraduatesNumberGuid = Guid.NewGuid().ToString();
                 ProviderBAL objProviderGraduatesNumberBAL = new ProviderBAL();
                 int ProviderGraduatesNumberId = objProviderGraduatesNumberBAL.SaveProviderGraduatesNumber(ObjProviderGraduatesNumber);
 
@@ -3559,16 +3668,16 @@ namespace LAPP.WS.Controllers.Common
             try
             {
                 ProviderBAL objProviderBAL = new ProviderBAL();
-                int ProviderBusinessTypeId = 0;  
+                int ProviderBusinessTypeId = 0;
 
                 if (objProviderBusinessType.Count > 0)
                 {
-                    for(int i = 0; i < objProviderBusinessType.Count; i++)
+                    for (int i = 0; i < objProviderBusinessType.Count; i++)
                     {
                         ProviderBusinessTypeId = objProviderBAL.SaveProviderBusinessType(objProviderBusinessType[i]);
                     }
                 }
-                
+
                 objResponse.Message = Messages.SaveSuccess;
                 objResponse.Status = true;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
@@ -3639,7 +3748,7 @@ namespace LAPP.WS.Controllers.Common
 
 
                 ProviderNames objProviderNames = new ProviderNames();
-                objProviderNames.ProviderNameId = 0;
+                objProviderNames.ProviderNameId = ObjProviderRelatedSchools.ProviderNameId;
                 objProviderNames.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
                 objProviderNames.ProviderId = ObjProviderRelatedSchools.ProviderId;
                 objProviderNames.IndividualId = 0;
@@ -3652,7 +3761,7 @@ namespace LAPP.WS.Controllers.Common
 
 
                 ProviderRelatedSchools objProviderRelatedSchools = new ProviderRelatedSchools();
-                objProviderRelatedSchools.ProviderRelatedSchoolId = 0;
+                objProviderRelatedSchools.ProviderRelatedSchoolId = ObjProviderRelatedSchools.ProviderRelatedSchoolId;
                 objProviderRelatedSchools.ProviderId = ObjProviderRelatedSchools.ProviderId;
                 objProviderRelatedSchools.ProviderNameId = ProviderNameId;
                 objProviderRelatedSchools.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
@@ -3667,7 +3776,7 @@ namespace LAPP.WS.Controllers.Common
 
 
                 Address objAddress = new Address();
-                objAddress.AddressId = 0;
+                objAddress.AddressId = ObjProviderRelatedSchools.AddressId;
                 objAddress.Addressee = "";
                 objAddress.StreetLine1 = ObjProviderRelatedSchools.StreetLine1;
                 objAddress.StreetLine2 = ObjProviderRelatedSchools.StreetLine2;
@@ -3684,13 +3793,14 @@ namespace LAPP.WS.Controllers.Common
                 int AddressId = objAddressBAL.Save_address(objAddress);
 
                 Contact objContact = new Contact();
-                objContact.ContactId = 0;
+                objContact.ContactId = objProviderRelatedSchools.PhoneId;
                 objContact.ContactFirstName = ObjProviderRelatedSchools.ContactFirstName;
                 objContact.ContactLastName = ObjProviderRelatedSchools.ContactLastName;
                 objContact.ContactTypeId = 6;
                 objContact.Code = "P";
                 objContact.ContactInfo = ObjProviderRelatedSchools.Phone;
                 objContact.Authenticator = "";
+
                 objContact.IsActive = true;
                 objContact.IsDeleted = false;
                 objContact.ContactGuid = Guid.NewGuid().ToString();
@@ -3699,7 +3809,7 @@ namespace LAPP.WS.Controllers.Common
                 int ContactId_Phone = objContactBAL.Save_Contact(objContact);
 
                 objContact = new Contact();
-                objContact.ContactId = 0;
+                objContact.ContactId = ObjProviderRelatedSchools.EmailId;
                 objContact.ContactFirstName = ObjProviderRelatedSchools.ContactFirstName;
                 objContact.ContactLastName = ObjProviderRelatedSchools.ContactLastName;
                 objContact.ContactTypeId = 8;
@@ -3713,7 +3823,7 @@ namespace LAPP.WS.Controllers.Common
                 int ContactId_Email = objContactBAL.Save_Contact(objContact);
 
                 objContact = new Contact();
-                objContact.ContactId = 0;
+                objContact.ContactId = ObjProviderRelatedSchools.WebsiteId;
                 objContact.ContactFirstName = ObjProviderRelatedSchools.ContactFirstName;
                 objContact.ContactLastName = ObjProviderRelatedSchools.ContactLastName;
                 objContact.ContactTypeId = 10;
@@ -3725,123 +3835,124 @@ namespace LAPP.WS.Controllers.Common
                 objContact.ContactGuid = Guid.NewGuid().ToString();
                 objContactBAL = new ContactBAL();
                 int ContactId_Web = objContactBAL.Save_Contact(objContact);
+                if (!ObjProviderRelatedSchools.Isupdate)
+                {
+
+                    ProviderNameAddress objProviderNameAddress = new ProviderNameAddress();
+                    objProviderNameAddress.ProviderNameAddressId = ObjProviderRelatedSchools.ProviderNameAddressId;
+                    objProviderNameAddress.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                    objProviderNameAddress.ProviderNameId = ProviderNameId;
+                    objProviderNameAddress.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                    objProviderNameAddress.AddressId = AddressId;
+                    objProviderNameAddress.AddressTypeId = 6;
+                    objProviderNameAddress.BeginDate = DateTime.Now;
+                    objProviderNameAddress.IsMailingSameasPhysical = false;
+                    objProviderNameAddress.IsActive = true;
+                    objProviderNameAddress.IsDeleted = false;
+                    objProviderNameAddress.CreatedBy = 0;
+                    objProviderNameAddress.CreatedOn = DateTime.Now;
+                    objProviderNameAddress.ProviderNameAddressGuid = Guid.NewGuid().ToString();
+                    ProviderNameBAL objProvNameBAL = new ProviderNameBAL();
+                    int ProviderNameAddressId = objProvNameBAL.SaveProviderNameAddress(objProviderNameAddress);
 
 
-                ProviderNameAddress objProviderNameAddress = new ProviderNameAddress();
-                objProviderNameAddress.ProviderNameAddressId = 0;
-                objProviderNameAddress.ProviderId = ObjProviderRelatedSchools.ProviderId;
-                objProviderNameAddress.ProviderNameId = ProviderNameId;
-                objProviderNameAddress.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
-                objProviderNameAddress.AddressId = AddressId;
-                objProviderNameAddress.AddressTypeId = 6;
-                objProviderNameAddress.BeginDate = DateTime.Now;
-                objProviderNameAddress.IsMailingSameasPhysical = false;
-                objProviderNameAddress.IsActive = true;
-                objProviderNameAddress.IsDeleted = false;
-                objProviderNameAddress.CreatedBy = 0;
-                objProviderNameAddress.CreatedOn = DateTime.Now;
-                objProviderNameAddress.ProviderNameAddressGuid = Guid.NewGuid().ToString();
-                ProviderNameBAL objProvNameBAL = new ProviderNameBAL();
-                int ProviderNameAddressId  = objProvNameBAL.SaveProviderNameAddress(objProviderNameAddress);
+                    ProviderNameContact objProviderNameContact = new ProviderNameContact();
+                    objProviderNameContact.ProviderNameContactId = ObjProviderRelatedSchools.ProviderNameContactId;
+                    objProviderNameContact.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                    objProviderNameContact.ProviderNameId = ProviderNameId;
+                    objProviderNameContact.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                    objProviderNameContact.ContactId = ContactId_Phone;
+                    objProviderNameContact.ContactTypeId = 6;
+                    objProviderNameContact.BeginDate = DateTime.Now;
+                    objProviderNameContact.IsPreferredContact = false;
+                    objProviderNameContact.IsMobile = false;
+                    objProviderNameContact.IsActive = true;
+                    objProviderNameContact.IsDeleted = false;
+                    objProviderNameContact.CreatedBy = 0;
+                    objProviderNameContact.CreatedOn = DateTime.Now;
+                    objProviderNameContact.ProviderNameContactGuid = Guid.NewGuid().ToString();
+                    objProvNameBAL = new ProviderNameBAL();
+                    int ProviderNameContactId_Phone = objProvNameBAL.SaveProviderNameContact(objProviderNameContact);
+
+                    objProviderNameContact = new ProviderNameContact();
+                    objProviderNameContact.ProviderNameContactId = ObjProviderRelatedSchools.ProviderNameContactId;
+                    objProviderNameContact.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                    objProviderNameContact.ProviderNameId = ProviderNameId;
+                    objProviderNameContact.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                    objProviderNameContact.ContactId = ContactId_Email;
+                    objProviderNameContact.ContactTypeId = 8;
+                    objProviderNameContact.BeginDate = DateTime.Now;
+                    objProviderNameContact.IsPreferredContact = false;
+                    objProviderNameContact.IsMobile = false;
+                    objProviderNameContact.IsActive = true;
+                    objProviderNameContact.IsDeleted = false;
+                    objProviderNameContact.CreatedBy = 0;
+                    objProviderNameContact.CreatedOn = DateTime.Now;
+                    objProviderNameContact.ProviderNameContactGuid = Guid.NewGuid().ToString();
+                    objProvNameBAL = new ProviderNameBAL();
+                    int ProviderNameContactId_Email = objProvNameBAL.SaveProviderNameContact(objProviderNameContact);
+
+                    objProviderNameContact = new ProviderNameContact();
+                    objProviderNameContact.ProviderNameContactId = ObjProviderRelatedSchools.ProviderNameContactId;
+                    objProviderNameContact.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                    objProviderNameContact.ProviderNameId = ProviderNameId;
+                    objProviderNameContact.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                    objProviderNameContact.ContactId = ContactId_Web;
+                    objProviderNameContact.ContactTypeId = 10;
+                    objProviderNameContact.BeginDate = DateTime.Now;
+                    objProviderNameContact.IsPreferredContact = false;
+                    objProviderNameContact.IsMobile = false;
+                    objProviderNameContact.IsActive = true;
+                    objProviderNameContact.IsDeleted = false;
+                    objProviderNameContact.CreatedBy = 0;
+                    objProviderNameContact.CreatedOn = DateTime.Now;
+                    objProviderNameContact.ProviderNameContactGuid = Guid.NewGuid().ToString();
+                    objProvNameBAL = new ProviderNameBAL();
+                    int ProviderNameContactId_Web = objProvNameBAL.SaveProviderNameContact(objProviderNameContact);
 
 
-                ProviderNameContact objProviderNameContact = new ProviderNameContact();
-                objProviderNameContact.ProviderNameContactId = 0;
-                objProviderNameContact.ProviderId = ObjProviderRelatedSchools.ProviderId;
-                objProviderNameContact.ProviderNameId = ProviderNameId;
-                objProviderNameContact.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
-                objProviderNameContact.ContactId = ContactId_Phone;
-                objProviderNameContact.ContactTypeId = 6;
-                objProviderNameContact.BeginDate = DateTime.Now;
-                objProviderNameContact.IsPreferredContact = false;
-                objProviderNameContact.IsMobile = false;
-                objProviderNameContact.IsActive = true;
-                objProviderNameContact.IsDeleted = false;
-                objProviderNameContact.CreatedBy = 0;
-                objProviderNameContact.CreatedOn = DateTime.Now;
-                objProviderNameContact.ProviderNameContactGuid = Guid.NewGuid().ToString();
-                objProvNameBAL = new ProviderNameBAL();
-                int ProviderNameContactId_Phone = objProvNameBAL.SaveProviderNameContact(objProviderNameContact);
-
-                objProviderNameContact = new ProviderNameContact();
-                objProviderNameContact.ProviderNameContactId = 0;
-                objProviderNameContact.ProviderId = ObjProviderRelatedSchools.ProviderId;
-                objProviderNameContact.ProviderNameId = ProviderNameId;
-                objProviderNameContact.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
-                objProviderNameContact.ContactId = ContactId_Email;
-                objProviderNameContact.ContactTypeId = 8;
-                objProviderNameContact.BeginDate = DateTime.Now;
-                objProviderNameContact.IsPreferredContact = false;
-                objProviderNameContact.IsMobile = false;
-                objProviderNameContact.IsActive = true;
-                objProviderNameContact.IsDeleted = false;
-                objProviderNameContact.CreatedBy = 0;
-                objProviderNameContact.CreatedOn = DateTime.Now;
-                objProviderNameContact.ProviderNameContactGuid = Guid.NewGuid().ToString();
-                objProvNameBAL = new ProviderNameBAL();
-                int ProviderNameContactId_Email = objProvNameBAL.SaveProviderNameContact(objProviderNameContact);
-
-                objProviderNameContact = new ProviderNameContact();
-                objProviderNameContact.ProviderNameContactId = 0;
-                objProviderNameContact.ProviderId = ObjProviderRelatedSchools.ProviderId;
-                objProviderNameContact.ProviderNameId = ProviderNameId;
-                objProviderNameContact.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
-                objProviderNameContact.ContactId = ContactId_Web;
-                objProviderNameContact.ContactTypeId = 10;
-                objProviderNameContact.BeginDate = DateTime.Now;
-                objProviderNameContact.IsPreferredContact = false;
-                objProviderNameContact.IsMobile = false;
-                objProviderNameContact.IsActive = true;
-                objProviderNameContact.IsDeleted = false;
-                objProviderNameContact.CreatedBy = 0;
-                objProviderNameContact.CreatedOn = DateTime.Now;
-                objProviderNameContact.ProviderNameContactGuid = Guid.NewGuid().ToString();
-                objProvNameBAL = new ProviderNameBAL();
-                int ProviderNameContactId_Web = objProvNameBAL.SaveProviderNameContact(objProviderNameContact);
+                    ProviderRelatedSchoolsAddLK objProviderNameAddressLK = new ProviderRelatedSchoolsAddLK();
+                    objProviderNameAddressLK.ProviderRelatedSchoolId = ProviderRelatedSchoolId;
+                    objProviderNameAddressLK.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                    objProviderNameAddressLK.ProviderNameId = ProviderNameId;
+                    objProviderNameAddressLK.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                    objProviderNameAddressLK.ProviderNameAddressId = ProviderNameAddressId;
+                    objProviderNameAddressLK.ProviderRelatedSchoolAddressLkGuid = Guid.NewGuid().ToString();
+                    objProviderRSBAL = new ProviderRelatedSchoolsBAL();
+                    int ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolAddressLK(objProviderNameAddressLK);
 
 
-                ProviderRelatedSchoolsAddLK objProviderNameAddressLK = new ProviderRelatedSchoolsAddLK();
-                objProviderNameAddressLK.ProviderRelatedSchoolId = ProviderRelatedSchoolId;
-                objProviderNameAddressLK.ProviderId = ObjProviderRelatedSchools.ProviderId;
-                objProviderNameAddressLK.ProviderNameId = ProviderNameId;
-                objProviderNameAddressLK.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
-                objProviderNameAddressLK.ProviderNameAddressId = ProviderNameAddressId;
-                objProviderNameAddressLK.ProviderRelatedSchoolAddressLkGuid = Guid.NewGuid().ToString();
-                objProviderRSBAL = new ProviderRelatedSchoolsBAL();
-                int ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolAddressLK(objProviderNameAddressLK);
+                    ProviderRelatedSchoolsConLK objProviderNameContactLK = new ProviderRelatedSchoolsConLK();
+                    objProviderNameContactLK.ProviderRelatedSchoolId = ProviderRelatedSchoolId;
+                    objProviderNameContactLK.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                    objProviderNameContactLK.ProviderNameId = ProviderNameId;
+                    objProviderNameContactLK.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                    objProviderNameContactLK.ProviderNameContactId = ProviderNameContactId_Phone;
+                    objProviderNameContactLK.ProviderRelatedSchoolContactLkGuid = Guid.NewGuid().ToString();
+                    objProviderRSBAL = new ProviderRelatedSchoolsBAL();
+                    ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolContactLK(objProviderNameContactLK);
 
+                    objProviderNameContactLK = new ProviderRelatedSchoolsConLK();
+                    objProviderNameContactLK.ProviderRelatedSchoolId = ProviderRelatedSchoolId;
+                    objProviderNameContactLK.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                    objProviderNameContactLK.ProviderNameId = ProviderNameId;
+                    objProviderNameContactLK.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                    objProviderNameContactLK.ProviderNameContactId = ProviderNameContactId_Email;
+                    objProviderNameContactLK.ProviderRelatedSchoolContactLkGuid = Guid.NewGuid().ToString();
+                    objProviderRSBAL = new ProviderRelatedSchoolsBAL();
+                    ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolContactLK(objProviderNameContactLK);
 
-                ProviderRelatedSchoolsConLK objProviderNameContactLK = new ProviderRelatedSchoolsConLK();
-                objProviderNameContactLK.ProviderRelatedSchoolId = ProviderRelatedSchoolId;
-                objProviderNameContactLK.ProviderId = ObjProviderRelatedSchools.ProviderId;
-                objProviderNameContactLK.ProviderNameId = ProviderNameId;
-                objProviderNameContactLK.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
-                objProviderNameContactLK.ProviderNameContactId = ProviderNameContactId_Phone;
-                objProviderNameContactLK.ProviderRelatedSchoolContactLkGuid = Guid.NewGuid().ToString();
-                objProviderRSBAL = new ProviderRelatedSchoolsBAL();
-                ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolContactLK(objProviderNameContactLK);
+                    objProviderNameContactLK = new ProviderRelatedSchoolsConLK();
+                    objProviderNameContactLK.ProviderRelatedSchoolId = ProviderRelatedSchoolId;
+                    objProviderNameContactLK.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                    objProviderNameContactLK.ProviderNameId = ProviderNameId;
+                    objProviderNameContactLK.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                    objProviderNameContactLK.ProviderNameContactId = ProviderNameContactId_Web;
+                    objProviderNameContactLK.ProviderRelatedSchoolContactLkGuid = Guid.NewGuid().ToString();
+                    objProviderRSBAL = new ProviderRelatedSchoolsBAL();
+                    ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolContactLK(objProviderNameContactLK);
 
-                objProviderNameContactLK = new ProviderRelatedSchoolsConLK();
-                objProviderNameContactLK.ProviderRelatedSchoolId = ProviderRelatedSchoolId;
-                objProviderNameContactLK.ProviderId = ObjProviderRelatedSchools.ProviderId;
-                objProviderNameContactLK.ProviderNameId = ProviderNameId;
-                objProviderNameContactLK.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
-                objProviderNameContactLK.ProviderNameContactId = ProviderNameContactId_Email;
-                objProviderNameContactLK.ProviderRelatedSchoolContactLkGuid = Guid.NewGuid().ToString();
-                objProviderRSBAL = new ProviderRelatedSchoolsBAL();
-                ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolContactLK(objProviderNameContactLK);
-
-                objProviderNameContactLK = new ProviderRelatedSchoolsConLK();
-                objProviderNameContactLK.ProviderRelatedSchoolId = ProviderRelatedSchoolId;
-                objProviderNameContactLK.ProviderId = ObjProviderRelatedSchools.ProviderId;
-                objProviderNameContactLK.ProviderNameId = ProviderNameId;
-                objProviderNameContactLK.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
-                objProviderNameContactLK.ProviderNameContactId = ProviderNameContactId_Web;
-                objProviderNameContactLK.ProviderRelatedSchoolContactLkGuid = Guid.NewGuid().ToString();
-                objProviderRSBAL = new ProviderRelatedSchoolsBAL();
-                ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolContactLK(objProviderNameContactLK);
-
-
+                }
                 objResponse.Message = Messages.SaveSuccess;
                 objResponse.Status = true;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
