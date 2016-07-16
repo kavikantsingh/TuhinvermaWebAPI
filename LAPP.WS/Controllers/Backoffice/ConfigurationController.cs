@@ -921,11 +921,11 @@ namespace LAPP.WS.Controllers.Backoffice
         /// </summary>
         /// <param name="Key">The Key of the data.</param>
         [AcceptVerbs("GET")]
-        public TransactionTypeResponse GetAllApplicationType(string Key)
+        public DeficiencyTemplateResponseGet Get_All_LAPP_DeficiencyTemplate(string Key)
         {
             LogingHelper.SaveAuditInfo(Key);
 
-            TransactionTypeResponse objResponse = new TransactionTypeResponse();
+            DeficiencyTemplateResponseGet objResponse = new DeficiencyTemplateResponseGet();
 
             if (!TokenHelper.ValidateToken(Key))
             {
@@ -946,7 +946,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
                     objResponse.Message = "User session has expired.";
-                    objResponse.TransactionTypeList = null;
+                    objResponse.DeficiencyTemplateResponseList = null;
                     return objResponse;
                 }
 
@@ -957,8 +957,8 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = "";
 
-                    List<TransactionType> lstTransactionType = objConfigurationBAL.GetAllApplicationType();
-                    objResponse.TransactionTypeList = lstTransactionType;
+                    List<LAPP_DeficiencyTemplate> lstDeficiencyTemplate = objConfigurationBAL.Get_All_LAPP_DeficiencyTemplate();
+                    objResponse.DeficiencyTemplateResponseList = lstDeficiencyTemplate;
 
                     return objResponse;
 
@@ -970,7 +970,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     objResponse.Status = false;
                     objResponse.Message = ex.Message;
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                    objResponse.TransactionTypeList = null;
+                    objResponse.DeficiencyTemplateResponseList = null;
 
                 }
 
@@ -983,7 +983,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 objResponse.Status = false;
                 objResponse.Message = ex.Message;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
-                objResponse.TransactionTypeList = null;
+                objResponse.DeficiencyTemplateResponseList = null;
 
             }
             return objResponse;
@@ -1033,9 +1033,9 @@ namespace LAPP.WS.Controllers.Backoffice
                     string Filter = "";
                     if (search.IsSearch)
                     {
-                        if (search.MasterTransactionId != "-1")
+                        if (search.ApplicationTypeId != "-1")
                         {
-                            Filter = Filter + " and dr.applicationtypeid=" + Convert.ToInt32(search.MasterTransactionId);
+                            Filter = Filter + " and dr.ApplicationTypeId=" + Convert.ToInt32(search.ApplicationTypeId);
                         }
                         if (search.DeficiencyReasonName != "")
                         {
@@ -1118,6 +1118,9 @@ namespace LAPP.WS.Controllers.Backoffice
                         objEntity.Application_Type_ID = saveDeficiencyReason.Application_Type_ID;
                         objEntity.Deficiency_Name = saveDeficiencyReason.Deficiency_Name;
                         objEntity.Description = saveDeficiencyReason.Description;
+                        objEntity.Additional_Text = saveDeficiencyReason.Additional_Text;
+                        objEntity.Deficiency_Template_ID = saveDeficiencyReason.Deficiency_Template_ID;
+
                         objEntity.Is_Active = saveDeficiencyReason.Is_Active;
                         objEntity.Is_Deleted = saveDeficiencyReason.Is_Deleted;
 

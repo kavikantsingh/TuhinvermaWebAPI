@@ -511,53 +511,65 @@ namespace LAPP.DAL
         private DeficiencyReason FetchEntityDR(DataRow dr)
         {
             DeficiencyReason objEntity = new DeficiencyReason();
-            if (dr.Table.Columns.Contains("Deficiency_ID") && dr["Deficiency_ID"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("DeficiencyReasonId") && dr["DeficiencyReasonId"] != DBNull.Value)
             {
-                objEntity.Deficiency_ID = Convert.ToInt32(dr["Deficiency_ID"]);
+                objEntity.Deficiency_ID = Convert.ToInt32(dr["DeficiencyReasonId"]);
             }
-            if (dr.Table.Columns.Contains("Application_Type_ID") && dr["Application_Type_ID"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("ApplicationTypeId") && dr["ApplicationTypeId"] != DBNull.Value)
             {
-                objEntity.Application_Type_ID = Convert.ToInt32(dr["Application_Type_ID"]);
+                objEntity.Application_Type_ID = Convert.ToInt32(dr["ApplicationTypeId"]);
             }
-            if (dr.Table.Columns.Contains("Deficiency_Name") && dr["Deficiency_Name"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("DeficiencyReasonName") && dr["DeficiencyReasonName"] != DBNull.Value)
             {
-                objEntity.Deficiency_Name = Convert.ToString(dr["Deficiency_Name"]);
+                objEntity.Deficiency_Name = Convert.ToString(dr["DeficiencyReasonName"]);
             }
-            if (dr.Table.Columns.Contains("Description") && dr["Description"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("DeficiencyReasonMessage") && dr["DeficiencyReasonMessage"] != DBNull.Value)
             {
-                objEntity.Description = Convert.ToString(dr["Description"]);
+                objEntity.Description = Convert.ToString(dr["DeficiencyReasonMessage"]);
             }
-            if (dr.Table.Columns.Contains("Is_Active") && dr["Is_Active"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
             {
-                objEntity.Is_Active = Convert.ToBoolean(dr["Is_Active"]);
+                objEntity.Is_Active = Convert.ToBoolean(dr["IsActive"]);
             }
-            if (dr.Table.Columns.Contains("Is_Deleted") && dr["Is_Deleted"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("IsDeleted") && dr["IsDeleted"] != DBNull.Value)
             {
-                objEntity.Is_Deleted = Convert.ToBoolean(dr["Is_Deleted"]);
+                objEntity.Is_Deleted = Convert.ToBoolean(dr["IsDeleted"]);
             }
-            if (dr.Table.Columns.Contains("Created_On") && dr["Created_On"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("CreatedOn") && dr["CreatedOn"] != DBNull.Value)
             {
-                objEntity.Created_On = Convert.ToDateTime(dr["Created_On"]);
+                objEntity.Created_On = Convert.ToDateTime(dr["CreatedOn"]);
             }
-            if (dr.Table.Columns.Contains("Created_By") && dr["Created_By"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("CreatedBy") && dr["CreatedBy"] != DBNull.Value)
             {
-                objEntity.Created_By = Convert.ToInt32(dr["Created_By"]);
+                objEntity.Created_By = Convert.ToInt32(dr["CreatedBy"]);
             }
-            if (dr.Table.Columns.Contains("Modified_On") && dr["Modified_On"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("ModifiedOn") && dr["ModifiedOn"] != DBNull.Value)
             {
-                objEntity.Modified_On = Convert.ToDateTime(dr["Modified_On"]);
+                objEntity.Modified_On = Convert.ToDateTime(dr["ModifiedOn"]);
             }
-            if (dr.Table.Columns.Contains("Modified_By") && dr["Modified_By"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("ModifiedBy") && dr["ModifiedBy"] != DBNull.Value)
             {
-                objEntity.Modified_By = Convert.ToInt32(dr["Modified_By"]);
+                objEntity.Modified_By = Convert.ToInt32(dr["ModifiedBy"]);
             }
             if (dr.Table.Columns.Contains("DTS") && dr["DTS"] != DBNull.Value)
             {
                 objEntity.DTS = Convert.ToDateTime(dr["DTS"]);
             }
-            if (dr.Table.Columns.Contains("Name") && dr["Name"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("mastertransactionName") && dr["mastertransactionName"] != DBNull.Value)
             {
-                objEntity.Name = Convert.ToString(dr["Name"]);
+                objEntity.Name = Convert.ToString(dr["mastertransactionName"]);
+            }
+            if (dr.Table.Columns.Contains("EndDate") && dr["EndDate"] != DBNull.Value)
+            {
+                objEntity.End_Date = Convert.ToDateTime(dr["EndDate"]);
+            }
+            if (dr.Table.Columns.Contains("AdditionalText") && dr["AdditionalText"] != DBNull.Value)
+            {
+                objEntity.Additional_Text = Convert.ToBoolean(dr["AdditionalText"]);
+            }
+            if (dr.Table.Columns.Contains("DeficiencyTemplateId") && dr["DeficiencyTemplateId"] != DBNull.Value)
+            {
+                objEntity.Deficiency_Template_ID = Convert.ToInt32(dr["DeficiencyTemplateId"]);
             }
             return objEntity;
         }
@@ -590,7 +602,9 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("U_Created_By", deficiencyReason.Created_By));
             lstParameter.Add(new MySqlParameter("U_Modified_On", deficiencyReason.Modified_On));
             lstParameter.Add(new MySqlParameter("U_Modified_By", deficiencyReason.Modified_By));
-            lstParameter.Add(new MySqlParameter("U_DTS", deficiencyReason.DTS));
+            lstParameter.Add(new MySqlParameter("U_Additional_Text", deficiencyReason.Additional_Text));
+            lstParameter.Add(new MySqlParameter("U_Deficiency_Template_ID", deficiencyReason.Deficiency_Template_ID));
+
             int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "lapp_application_deficiency_reason_Update", lstParameter.ToArray());
             return returnValue;
         }
@@ -601,19 +615,36 @@ namespace LAPP.DAL
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("Application_Type_ID", deficiencyReason.Application_Type_ID));
             lstParameter.Add(new MySqlParameter("Deficiency_Name", deficiencyReason.Deficiency_Name));
-            lstParameter.Add(new MySqlParameter("Description", deficiencyReason.Description));
+            lstParameter.Add(new MySqlParameter("Deficiency_Reason_Message", deficiencyReason.Description));
             lstParameter.Add(new MySqlParameter("Is_Active", deficiencyReason.Is_Active));
             lstParameter.Add(new MySqlParameter("Is_Deleted", deficiencyReason.Is_Deleted));
             lstParameter.Add(new MySqlParameter("Created_On", deficiencyReason.Created_On));
             lstParameter.Add(new MySqlParameter("Created_By", deficiencyReason.Created_By));
             lstParameter.Add(new MySqlParameter("Modified_On", deficiencyReason.Modified_On));
             lstParameter.Add(new MySqlParameter("Modified_By", deficiencyReason.Modified_By));
-            lstParameter.Add(new MySqlParameter("DTS", deficiencyReason.DTS));
-            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
-            returnParam.Direction = ParameterDirection.ReturnValue;
-            lstParameter.Add(returnParam);
-            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "lapp_application_deficiency_reason_Save", true, lstParameter.ToArray());
+            lstParameter.Add(new MySqlParameter("Additional_Text", deficiencyReason.Additional_Text));
+            lstParameter.Add(new MySqlParameter("Deficiency_Template_ID", deficiencyReason.Deficiency_Template_ID));
+            //MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            //returnParam.Direction = ParameterDirection.ReturnValue;
+            //lstParameter.Add(returnParam);
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "lapp_application_deficiency_reason_Save", lstParameter.ToArray());
             return returnValue;
+        }
+
+        public List<LAPP_DeficiencyTemplate> Get_All_LAPP_DeficiencyTemplate()
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "lapp_deficiencytemplate_get_all");
+            List<LAPP_DeficiencyTemplate> lstEntity = new List<LAPP_DeficiencyTemplate>();
+            LAPP_DeficiencyTemplate objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchDeficiencyTemplateEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
         }
 
     }
