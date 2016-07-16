@@ -296,6 +296,11 @@ namespace LAPP.DAL
             {
                 objEntity.ProviderStaffMiddleName = Convert.ToString(dr["MiddleName"]);
             }
+
+            if (dr.Table.Columns.Contains("EmailId") && dr["EmailId"] != DBNull.Value)
+            {
+                objEntity.ProviderStaffEmail= Convert.ToString(dr["EmailId"]);
+            }
             if (dr.Table.Columns.Contains("LastName") && dr["LastName"] != DBNull.Value)
             {
                 objEntity.ProviderStaffLastName = Convert.ToString(dr["LastName"]);
@@ -308,6 +313,11 @@ namespace LAPP.DAL
             {
                 objEntity.ProviderIndvNameInfoId = Convert.ToInt32(dr["ProviderIndvNameInfoId"]);
             }
+            if (dr.Table.Columns.Contains("IndividualNameId") && dr["IndividualNameId"] != DBNull.Value)
+            {
+                objEntity.InduvidualNameId = Convert.ToInt32(dr["IndividualNameId"]);
+
+            }
             if (dr.Table.Columns.Contains("ProviderId") && dr["ProviderId"] != DBNull.Value)
             {
                 objEntity.ProviderId = Convert.ToInt32(dr["ProviderId"]);
@@ -319,6 +329,10 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("ProviderContactId") && dr["ProviderContactId"] != DBNull.Value)
             {
                 objEntity.ProviderContactId = Convert.ToInt32(dr["ProviderContactId"]);
+            }
+            if (dr.Table.Columns.Contains("ContactId") && dr["ContactId"] != DBNull.Value)
+            {
+                objEntity.ContactId = Convert.ToInt32(dr["ContactId"]);
             }
             if (dr.Table.Columns.Contains("IsBackgroundCheckReq") && dr["IsBackgroundCheckReq"] != DBNull.Value)
             {
@@ -360,6 +374,11 @@ namespace LAPP.DAL
             {
                 objEntity.ProviderStaffGuid = Convert.ToString(dr["ProviderStaffGuid"]);
             }
+            if (dr.Table.Columns.Contains("posids") && dr["posids"] != DBNull.Value)
+            {
+                objEntity.posids = Convert.ToString(dr["posids"]);
+            }
+
 
             if (dr.Table.Columns.Contains("ids") && dr["ids"] != DBNull.Value)
             {

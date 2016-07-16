@@ -16,7 +16,11 @@ namespace LAPP.ENTITY
         public int ProviderStaffId { get; set; }
         public int ProviderIndvNameInfoId { get; set; }
         public int ProviderId { get; set; }
+        public int InduvidualNameId { get; set; }
+
         public int ApplicationId { get; set; }
+
+        public int ContactId { get; set; }
         public int ProviderContactId { get; set; }
         public bool IsBackgroundCheckReq { get; set; }
         public string CAMTCNumber { get; set; }
@@ -29,7 +33,9 @@ namespace LAPP.ENTITY
         public DateTime? ModifiedOn { get; set; }
         public string ProviderStaffGuid { get; set; }
         public string ids { get; set; }
+        public string posids { get; set; }
         public string titles { get; set; }
+        public string trueset { get; set; }
     }
 
     public class ProvIndvNameTitle : ProviderStaff
@@ -52,7 +58,7 @@ namespace LAPP.ENTITY
         public string ProvIndvNameTitlePositionId { get; set; }
         public string ProvIndvNameTitlePosition { get; set; }
         public string ProvIndvNameTitlePosGuid { get; set; }
-        
+
     }
 
     public class ProviderStaffGetResponse : BaseEntityServiceResponse
