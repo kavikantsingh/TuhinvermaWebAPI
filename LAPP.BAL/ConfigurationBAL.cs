@@ -64,5 +64,29 @@ namespace LAPP.BAL
         {
             return objDAL.GetDeficiencyTemplate(G_Deficiency_Template_ID);
         }
+
+        public List<TransactionType> GetAllApplicationType()
+        {
+            return objDAL.GetAllApplicationType();
+        }
+
+        public List<DeficiencyReason> GetDeficiencyReason(string Query)
+        {
+            return objDAL.GetDeficiencyReason(Query);
+        }
+
+        public DeficiencyReason Get_lapp_application_deficiency_reason_by_Deficiency_ID(int G_Deficiency_ID)
+        {
+            return objDAL.Get_lapp_application_deficiency_reason_by_Deficiency_ID(G_Deficiency_ID);
+        }
+
+        public int UpdateDeficiencyReason(DeficiencyReason deficiencyReason)
+        {
+            return objDAL.UpdateDeficiencyReason(deficiencyReason);
+        }
+        public int SaveDeficiencyReason(DeficiencyReason deficiencyReason)
+        {
+            return objDAL.SaveDeficiencyReason(deficiencyReason);
+        }
     }
 }

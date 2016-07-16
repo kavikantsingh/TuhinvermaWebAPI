@@ -694,6 +694,25 @@
             <param name="Key">The Key of the data.</param>
             <param name="objlapp_deficiency_template">Object of Configuration</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ConfigurationController.GetAllApplicationType(System.String)">
+            <summary>
+            GetAllApplicationType all data.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ConfigurationController.GetDeficiencyReason(System.String,LAPP.ENTITY.DeficiencyReasonSearch)">
+            <summary>
+            GetDeficiencyReason all data.
+            </summary>
+            <param name="Key">The Key of the data.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ConfigurationController.SaveDeficiencyReason(System.String,LAPP.ENTITY.SaveDeficiencyReason)">
+            <summary>
+            Save the data For Configuration
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="saveDeficiencyReason">Object of Configuration</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentItemLkGetAll(System.String)">
             <summary>
             Looks up all data by Key For Content.
