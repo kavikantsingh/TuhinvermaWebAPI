@@ -9,7 +9,7 @@ namespace LAPP.ENTITY
     public class DeficiencyReasonSearch : DeficiencyReason
     {
         public bool IsSearch { get; set; }
-        public string MasterTransactionId { get; set; }
+        public string ApplicationTypeId { get; set; }
         public string DeficiencyReasonName { get; set; }
         public bool IsActive { get; set; }
     }
@@ -46,5 +46,7 @@ namespace LAPP.ENTITY
         public bool Is_Active { get; set; }
         public bool Is_Deleted { get; set; }
         public int Application_Type_ID { get; set; }
+        public int Deficiency_Template_ID { get; set; }
+        public bool Additional_Text { get; set; }
     }
 }

@@ -88,5 +88,10 @@ namespace LAPP.BAL
         {
             return objDAL.SaveDeficiencyReason(deficiencyReason);
         }
+
+        public List<LAPP_DeficiencyTemplate> Get_All_LAPP_DeficiencyTemplate()
+        {
+            return objDAL.Get_All_LAPP_DeficiencyTemplate();
+        }
     }
 }
