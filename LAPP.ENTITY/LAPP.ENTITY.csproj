@@ -52,6 +52,7 @@
     <Compile Include="ContentLkToPageTabSection.cs" />
     <Compile Include="ContentItemLk.cs" />
     <Compile Include="DailyDeposit.cs" />
+    <Compile Include="DeficiencyReason.cs" />
     <Compile Include="DeficiencyTemplate.cs" />
     <Compile Include="DocumentMaster.cs" />
     <Compile Include="EmployerType.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="TemplateAttachment.cs" />
     <Compile Include="TemplateType.cs" />
     <Compile Include="Token.cs" />
+    <Compile Include="TransactionType.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="UserSecurityQuestion.cs" />
     <Compile Include="UserType.cs" />

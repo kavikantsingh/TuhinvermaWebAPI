@@ -915,5 +915,260 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             return objResponse;
         }
+
+        /// <summary>
+        /// GetAllApplicationType all data.
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        [AcceptVerbs("GET")]
+        public TransactionTypeResponse GetAllApplicationType(string Key)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            TransactionTypeResponse objResponse = new TransactionTypeResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.ResponseReason = null;
+                return objResponse;
+            }
+
+            ConfigurationBAL objConfigurationBAL = new ConfigurationBAL();
+
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.TransactionTypeList = null;
+                    return objResponse;
+                }
+
+                try
+                {
+                    objResponse.Message = "";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+
+                    List<TransactionType> lstTransactionType = objConfigurationBAL.GetAllApplicationType();
+                    objResponse.TransactionTypeList = lstTransactionType;
+
+                    return objResponse;
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                    objResponse.Status = false;
+                    objResponse.Message = ex.Message;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                    objResponse.TransactionTypeList = null;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.TransactionTypeList = null;
+
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// GetDeficiencyReason all data.
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        [AcceptVerbs("POST")]
+        public DeficiencyReasonResponse GetDeficiencyReason(string Key, DeficiencyReasonSearch search)
+        {
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            DeficiencyReasonResponse objResponse = new DeficiencyReasonResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.ResponseReason = null;
+                return objResponse;
+            }
+
+            ConfigurationBAL objConfigurationBAL = new ConfigurationBAL();
+
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.DeficiencyReasonResponseList = null;
+                    return objResponse;
+                }
+
+                try
+                {
+                    objResponse.Message = "";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    string Filter = "";
+                    if (search.IsSearch)
+                    {
+                        if (search.MasterTransactionId != "-1")
+                        {
+                            Filter = Filter + " and dr.applicationtypeid=" + Convert.ToInt32(search.MasterTransactionId);
+                        }
+                        if (search.DeficiencyReasonName != "")
+                        {
+                            Filter = Filter + " and dr.DeficiencyReasonName Like '" + search.DeficiencyReasonName + "%'";
+                        }
+                        if (search.IsActive)
+                        {
+                            Filter = Filter + " and dr.IsActive=1";
+                        }
+                    }
+                    string Query = "SELECT *,f.mastertransactionName FROM deficiencyreason dr JOIN mastertransaction f ON dr.applicationtypeid=f.mastertransactionid WHERE dr.IsDeleted=0 "+ Filter + " ORDER BY dr.mastertransactionid,dr.CreatedOn DESC";
+
+                    List<DeficiencyReason> lstDeficiencyReason = objConfigurationBAL.GetDeficiencyReason(Query);
+                    objResponse.DeficiencyReasonResponseList = lstDeficiencyReason;
+
+                    return objResponse;
+
+                }
+                catch (Exception ex)
+                {
+                    LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                    objResponse.Status = false;
+                    objResponse.Message = ex.Message;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                    objResponse.DeficiencyReasonResponseList = null;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ValidateIndividual", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.DeficiencyReasonResponseList = null;
+
+            }
+            return objResponse;
+        }
+
+        /// <summary>
+        /// Save the data For Configuration
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        /// <param name="saveDeficiencyReason">Object of Configuration</param>
+        [AcceptVerbs("POST")]
+        public DeficiencyReasonResponse SaveDeficiencyReason(string Key, SaveDeficiencyReason saveDeficiencyReason)
+        {
+            int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            DeficiencyReasonResponse objResponse = new DeficiencyReasonResponse();
+            ConfigurationBAL objBAL = new ConfigurationBAL();
+            DeficiencyReason objEntity = new DeficiencyReason();
+            List<Configuration> lstEntity = new List<Configuration>();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.DeficiencyReasonResponseList = null;
+                return objResponse;
+            }
+
+            try
+            {
+
+                if (saveDeficiencyReason.Deficiency_ID > 0)
+                {
+                    objEntity = objBAL.Get_lapp_application_deficiency_reason_by_Deficiency_ID(saveDeficiencyReason.Deficiency_ID);
+                    if (objEntity != null)
+                    {
+                       
+                        objEntity.Application_Type_ID = saveDeficiencyReason.Application_Type_ID;
+                        objEntity.Deficiency_Name = saveDeficiencyReason.Deficiency_Name;
+                        objEntity.Description = saveDeficiencyReason.Description;
+                        objEntity.Is_Active = saveDeficiencyReason.Is_Active;
+                        objEntity.Is_Deleted = saveDeficiencyReason.Is_Deleted;
+
+                        objEntity.Modified_On = DateTime.Now;
+                        objEntity.Modified_By = CreatedOrMoifiy;
+                        objEntity.Created_On = DateTime.Now;
+                        objEntity.Created_By = CreatedOrMoifiy;
+
+                        int i = objBAL.UpdateDeficiencyReason(objEntity);
+                        objResponse.Message = Messages.UpdateSuccess;
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    }
+                }
+                else
+                {
+                    objEntity.Deficiency_ID = saveDeficiencyReason.Deficiency_ID;
+                    objEntity.Application_Type_ID = saveDeficiencyReason.Application_Type_ID;
+                    objEntity.Deficiency_Name = saveDeficiencyReason.Deficiency_Name;
+                    objEntity.Description = saveDeficiencyReason.Description;
+                    objEntity.Is_Active = saveDeficiencyReason.Is_Active;
+                    objEntity.Is_Deleted = saveDeficiencyReason.Is_Deleted;
+
+                    objEntity.End_Date = DateTime.Now;
+                    objEntity.Created_On = DateTime.Now;
+                    objEntity.Created_By = CreatedOrMoifiy;
+                    objEntity.Modified_On = DateTime.Now;
+                    objEntity.Modified_By = CreatedOrMoifiy;
+                    int i = objBAL.SaveDeficiencyReason(objEntity);
+
+                    objResponse.Message = Messages.SaveSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                }
+                string Query = "SELECT *,f.mastertransactionName FROM deficiencyreason dr JOIN mastertransaction f ON dr.applicationtypeid=f.mastertransactionid WHERE dr.IsDeleted=0 ORDER BY dr.mastertransactionid,dr.CreatedOn DESC";
+
+                List<DeficiencyReason> lstDeficiencyReason = objBAL.GetDeficiencyReason(Query);
+                objResponse.DeficiencyReasonResponseList = lstDeficiencyReason;
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ConfigurationSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.DeficiencyReasonResponseList = null;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+            return objResponse;
+        }
     }
 }

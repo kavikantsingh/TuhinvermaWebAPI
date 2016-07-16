@@ -419,5 +419,202 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public List<TransactionType> GetAllApplicationType()
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "lapp_application_fee_get_all");
+            List<TransactionType> lstEntity = new List<TransactionType>();
+            TransactionType objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntityTT(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private TransactionType FetchEntityTT(DataRow dr)
+        {
+            TransactionType objEntity = new TransactionType();
+            if (dr.Table.Columns.Contains("Application_ID") && dr["Application_ID"] != DBNull.Value)
+            {
+                objEntity.Application_ID = Convert.ToInt32(dr["Application_ID"]);
+            }
+
+            if (dr.Table.Columns.Contains("Name") && dr["Name"] != DBNull.Value)
+            {
+                objEntity.Name = Convert.ToString(dr["Name"]);
+            }
+            if (dr.Table.Columns.Contains("Description") && dr["Description"] != DBNull.Value)
+            {
+                objEntity.Description = Convert.ToString(dr["Description"]);
+            }
+
+            if (dr.Table.Columns.Contains("Fee") && dr["Fee"] != DBNull.Value)
+            {
+                objEntity.Fee = Convert.ToDecimal(dr["Fee"]);
+            }
+            if (dr.Table.Columns.Contains("Late_Fee") && dr["Late_Fee"] != DBNull.Value)
+            {
+                objEntity.Late_Fee = Convert.ToDecimal(dr["Late_Fee"]);
+            }
+            if (dr.Table.Columns.Contains("Is_Active") && dr["Is_Active"] != DBNull.Value)
+            {
+                objEntity.Is_Active = Convert.ToBoolean(dr["Is_Active"]);
+            }
+            if (dr.Table.Columns.Contains("Is_Deleted") && dr["Is_Deleted"] != DBNull.Value)
+            {
+                objEntity.Is_Deleted = Convert.ToBoolean(dr["Is_Deleted"]);
+            }
+            if (dr.Table.Columns.Contains("Created_On") && dr["Created_On"] != DBNull.Value)
+            {
+                objEntity.Created_On = Convert.ToDateTime(dr["Created_On"]);
+            }
+            if (dr.Table.Columns.Contains("Created_By") && dr["Created_By"] != DBNull.Value)
+            {
+                objEntity.Created_By = Convert.ToInt32(dr["Created_By"]);
+            }
+            if (dr.Table.Columns.Contains("Modified_On") && dr["Modified_On"] != DBNull.Value)
+            {
+                objEntity.Modified_On = Convert.ToDateTime(dr["Modified_On"]);
+            }
+            if (dr.Table.Columns.Contains("Modified_By") && dr["Modified_By"] != DBNull.Value)
+            {
+                objEntity.Modified_By = Convert.ToInt32(dr["Modified_By"]);
+            }
+            if (dr.Table.Columns.Contains("DTS") && dr["DTS"] != DBNull.Value)
+            {
+                objEntity.DTS = Convert.ToDateTime(dr["DTS"]);
+            }
+
+            return objEntity;
+        }
+
+        public List<DeficiencyReason> GetDeficiencyReason(string Query)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.Text, Query);
+            List<DeficiencyReason> lstEntity = new List<DeficiencyReason>();
+            DeficiencyReason objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntityDR(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private DeficiencyReason FetchEntityDR(DataRow dr)
+        {
+            DeficiencyReason objEntity = new DeficiencyReason();
+            if (dr.Table.Columns.Contains("Deficiency_ID") && dr["Deficiency_ID"] != DBNull.Value)
+            {
+                objEntity.Deficiency_ID = Convert.ToInt32(dr["Deficiency_ID"]);
+            }
+            if (dr.Table.Columns.Contains("Application_Type_ID") && dr["Application_Type_ID"] != DBNull.Value)
+            {
+                objEntity.Application_Type_ID = Convert.ToInt32(dr["Application_Type_ID"]);
+            }
+            if (dr.Table.Columns.Contains("Deficiency_Name") && dr["Deficiency_Name"] != DBNull.Value)
+            {
+                objEntity.Deficiency_Name = Convert.ToString(dr["Deficiency_Name"]);
+            }
+            if (dr.Table.Columns.Contains("Description") && dr["Description"] != DBNull.Value)
+            {
+                objEntity.Description = Convert.ToString(dr["Description"]);
+            }
+            if (dr.Table.Columns.Contains("Is_Active") && dr["Is_Active"] != DBNull.Value)
+            {
+                objEntity.Is_Active = Convert.ToBoolean(dr["Is_Active"]);
+            }
+            if (dr.Table.Columns.Contains("Is_Deleted") && dr["Is_Deleted"] != DBNull.Value)
+            {
+                objEntity.Is_Deleted = Convert.ToBoolean(dr["Is_Deleted"]);
+            }
+            if (dr.Table.Columns.Contains("Created_On") && dr["Created_On"] != DBNull.Value)
+            {
+                objEntity.Created_On = Convert.ToDateTime(dr["Created_On"]);
+            }
+            if (dr.Table.Columns.Contains("Created_By") && dr["Created_By"] != DBNull.Value)
+            {
+                objEntity.Created_By = Convert.ToInt32(dr["Created_By"]);
+            }
+            if (dr.Table.Columns.Contains("Modified_On") && dr["Modified_On"] != DBNull.Value)
+            {
+                objEntity.Modified_On = Convert.ToDateTime(dr["Modified_On"]);
+            }
+            if (dr.Table.Columns.Contains("Modified_By") && dr["Modified_By"] != DBNull.Value)
+            {
+                objEntity.Modified_By = Convert.ToInt32(dr["Modified_By"]);
+            }
+            if (dr.Table.Columns.Contains("DTS") && dr["DTS"] != DBNull.Value)
+            {
+                objEntity.DTS = Convert.ToDateTime(dr["DTS"]);
+            }
+            if (dr.Table.Columns.Contains("Name") && dr["Name"] != DBNull.Value)
+            {
+                objEntity.Name = Convert.ToString(dr["Name"]);
+            }
+            return objEntity;
+        }
+
+        public DeficiencyReason Get_lapp_application_deficiency_reason_by_Deficiency_ID(int G_Deficiency_ID)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_Deficiency_ID", G_Deficiency_ID));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "lapp_application_deficiency_reason_getby_Deficiency_ID", lstParameter.ToArray());
+            DeficiencyReason objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntityDR(dr);
+            }
+            return objEntity;
+        }
+
+        public int UpdateDeficiencyReason(DeficiencyReason deficiencyReason)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("U_Deficiency_ID", deficiencyReason.Deficiency_ID));
+            lstParameter.Add(new MySqlParameter("U_Application_Type_ID", deficiencyReason.Application_Type_ID));
+            lstParameter.Add(new MySqlParameter("U_Deficiency_Name", deficiencyReason.Deficiency_Name));
+            lstParameter.Add(new MySqlParameter("U_Description", deficiencyReason.Description));
+            lstParameter.Add(new MySqlParameter("U_Is_Active", deficiencyReason.Is_Active));
+            lstParameter.Add(new MySqlParameter("U_Is_Deleted", deficiencyReason.Is_Deleted));
+            lstParameter.Add(new MySqlParameter("U_Created_On", deficiencyReason.Created_On));
+            lstParameter.Add(new MySqlParameter("U_Created_By", deficiencyReason.Created_By));
+            lstParameter.Add(new MySqlParameter("U_Modified_On", deficiencyReason.Modified_On));
+            lstParameter.Add(new MySqlParameter("U_Modified_By", deficiencyReason.Modified_By));
+            lstParameter.Add(new MySqlParameter("U_DTS", deficiencyReason.DTS));
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "lapp_application_deficiency_reason_Update", lstParameter.ToArray());
+            return returnValue;
+        }
+
+        public int SaveDeficiencyReason(DeficiencyReason deficiencyReason)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("Application_Type_ID", deficiencyReason.Application_Type_ID));
+            lstParameter.Add(new MySqlParameter("Deficiency_Name", deficiencyReason.Deficiency_Name));
+            lstParameter.Add(new MySqlParameter("Description", deficiencyReason.Description));
+            lstParameter.Add(new MySqlParameter("Is_Active", deficiencyReason.Is_Active));
+            lstParameter.Add(new MySqlParameter("Is_Deleted", deficiencyReason.Is_Deleted));
+            lstParameter.Add(new MySqlParameter("Created_On", deficiencyReason.Created_On));
+            lstParameter.Add(new MySqlParameter("Created_By", deficiencyReason.Created_By));
+            lstParameter.Add(new MySqlParameter("Modified_On", deficiencyReason.Modified_On));
+            lstParameter.Add(new MySqlParameter("Modified_By", deficiencyReason.Modified_By));
+            lstParameter.Add(new MySqlParameter("DTS", deficiencyReason.DTS));
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "lapp_application_deficiency_reason_Save", true, lstParameter.ToArray());
+            return returnValue;
+        }
+
     }
 }
