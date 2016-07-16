@@ -86,8 +86,8 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "providerRelatedSchool_Get_By_providerId", lstParameter.ToArray());
 
-            List<ProviderRelatedSchools> lstEntity = null;
-            ProviderRelatedSchools objEntity = null;
+            List<ProviderRelatedSchools> lstEntity =new List<ProviderRelatedSchools>();
+            ProviderRelatedSchools objEntity = new ProviderRelatedSchools();
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 objEntity = FetchEntity(dr);
@@ -100,6 +100,33 @@ namespace LAPP.DAL
         private ProviderRelatedSchools FetchEntity(DataRow dr)
         {
             ProviderRelatedSchools objEntity = new ProviderRelatedSchools();
+
+
+
+            if (dr.Table.Columns.Contains("ContactInfos") && dr["ContactInfos"] != DBNull.Value)
+            {
+                objEntity.ContactInfos = Convert.ToString(dr["ContactInfos"]);
+                string[] array = objEntity.ContactInfos.Split(',');
+                if (array.Length > 0)
+                {
+
+                    objEntity.Phone = array[0];
+                    objEntity.Email = array[1];
+                    objEntity.Website = array[2];
+
+                }
+            }
+            if (dr.Table.Columns.Contains("ContactIds") && dr["ContactIds"] != DBNull.Value)
+            {
+                objEntity.ContactIds = Convert.ToString(dr["ContactIds"]);
+                string[] array = objEntity.ContactIds.Split(',');
+                if (array.Length > 0)
+                {
+                    objEntity.PhoneId = Convert.ToInt32(array[0]);
+                    objEntity.EmailId = Convert.ToInt32(array[1]);
+                    objEntity.WebsiteId = Convert.ToInt32(array[2]);
+                }
+            }
 
             if (dr.Table.Columns.Contains("ProviderRelatedSchoolId") && dr["ProviderRelatedSchoolId"] != DBNull.Value)
             {
@@ -183,13 +210,13 @@ namespace LAPP.DAL
             {
                 objEntity.CountryId = Convert.ToInt32(dr["CountryId"]);
             }
-            if (dr.Table.Columns.Contains("ContactFirstName") && dr["ContactFirstName"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("First Name") && dr["First Name"] != DBNull.Value)
             {
-                objEntity.ContactFirstName = Convert.ToString(dr["ContactFirstName"]);
+                objEntity.FirstName = Convert.ToString(dr["First Name"]);
             }
-            if (dr.Table.Columns.Contains("ContactLastName") && dr["ContactLastName"] != DBNull.Value)
+            if (dr.Table.Columns.Contains("Last Name") && dr["Last Name"] != DBNull.Value)
             {
-                objEntity.ContactLastName = Convert.ToString(dr["ContactLastName"]);
+                objEntity.LastName = Convert.ToString(dr["Last Name"]);
             }
             if (dr.Table.Columns.Contains("Phone") && dr["Phone"] != DBNull.Value)
             {

@@ -3674,6 +3674,10 @@ namespace LAPP.WS.Controllers.Common
                 {
                     for (int i = 0; i < objProviderBusinessType.Count; i++)
                     {
+                        if (objProviderBusinessType[i].ProviderBusinessTypeId == 0)
+                        {
+                            objProviderBusinessType[i].ProviderBusinessTypeGuid = Guid.NewGuid().ToString();
+                        }
                         ProviderBusinessTypeId = objProviderBAL.SaveProviderBusinessType(objProviderBusinessType[i]);
                     }
                 }
@@ -3697,15 +3701,9 @@ namespace LAPP.WS.Controllers.Common
 
         }
 
-
-        /// <summary>
-        /// This method is to Save the Related Schools in "About the School" Tab
-        /// </summary>
-        /// <param name="Key">Security Key for API.</param>
-        /// <param name="ObjProviderRelatedSchools">Request object for Provider Instruction.</param>
         [AcceptVerbs("POST")]
-        [ActionName("SaveProviderRelatedSchools")]
-        public BaseEntityServiceResponse SaveProviderRelatedSchools(string Key, ProviderRelatedSchools ObjProviderRelatedSchools)
+        [ActionName("DeleteProviderRelatedSchools")]
+        public ProviderRelatedSchoolsGetResponse DeleteProviderRelatedSchools(string Key, ProviderRelatedSchools ObjProviderRelatedSchools)
         {
             int CreateOrModify = 0;
             try
@@ -3716,7 +3714,97 @@ namespace LAPP.WS.Controllers.Common
 
             LogingHelper.SaveAuditInfo();
 
-            BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+            ProviderRelatedSchoolsGetResponse objResponse = new ProviderRelatedSchoolsGetResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            if (ObjProviderRelatedSchools == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+
+                ProviderRelatedSchools objProviderRelatedSchools = new ProviderRelatedSchools();
+                objProviderRelatedSchools.ProviderRelatedSchoolId = ObjProviderRelatedSchools.ProviderRelatedSchoolId;
+                objProviderRelatedSchools.ProviderId = ObjProviderRelatedSchools.ProviderId;
+                objProviderRelatedSchools.ProviderNameId = ObjProviderRelatedSchools.ProviderNameId; ;
+                objProviderRelatedSchools.ApplicationId = ObjProviderRelatedSchools.ApplicationId;
+                objProviderRelatedSchools.DateAssociated = DateTime.Now;
+                objProviderRelatedSchools.IsActive = false;
+                objProviderRelatedSchools.IsDeleted = true;
+                objProviderRelatedSchools.CreatedBy = ObjProviderRelatedSchools.ProviderId;
+                objProviderRelatedSchools.CreatedOn = DateTime.Now;
+                objProviderRelatedSchools.ProviderRelatedSchoolGuid = Guid.NewGuid().ToString();
+                ProviderRelatedSchoolsBAL objProviderRSBAL = new ProviderRelatedSchoolsBAL();
+                int ProviderRelatedSchoolId = objProviderRSBAL.SaveProviderRelatedSchools(objProviderRelatedSchools);
+
+                List<ProviderRelatedSchools> lstProviderOtherProgram = objProviderRSBAL.Get_ProviderRelatedSchool_By_ProviderId(ObjProviderRelatedSchools.ApplicationId, ObjProviderRelatedSchools.ProviderId);
+                objResponse.ProviderRelatedSchoolsList = lstProviderOtherProgram;
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderRelatedSchoolSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+
+            return objResponse;
+
+
+
+        }
+
+        /// <summary>
+        /// This method is to Save the Related Schools in "About the School" Tab
+        /// </summary>
+        /// <param name="Key">Security Key for API.</param>
+        /// <param name="ObjProviderRelatedSchools">Request object for Provider Instruction.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("SaveProviderRelatedSchools")]
+        public ProviderRelatedSchoolsGetResponse SaveProviderRelatedSchools(string Key, ProviderRelatedSchools ObjProviderRelatedSchools)
+        {
+            int CreateOrModify = 0;
+            try
+            {
+                CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            }
+            catch { }
+
+            LogingHelper.SaveAuditInfo();
+
+            ProviderRelatedSchoolsGetResponse objResponse = new ProviderRelatedSchoolsGetResponse();
 
             if (!TokenHelper.ValidateToken(Key))
             {
@@ -3953,9 +4041,25 @@ namespace LAPP.WS.Controllers.Common
                     ProviderRSLK = objProviderRSBAL.SaveProviderRelatedSchoolContactLK(objProviderNameContactLK);
 
                 }
-                objResponse.Message = Messages.SaveSuccess;
-                objResponse.Status = true;
-                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                List<ProviderRelatedSchools> lstProviderOtherProgram = objProviderRSBAL.Get_ProviderRelatedSchool_By_ProviderId(ObjProviderRelatedSchools.ApplicationId, ObjProviderRelatedSchools.ProviderId);
+                objResponse.ProviderRelatedSchoolsList = lstProviderOtherProgram;
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
 
             }
             catch (Exception ex)
