@@ -58,6 +58,8 @@ namespace LAPP.WS.Controllers.Common
 
                     var lstLookupSelected = lstLookup.Select(Lookup => new
                     {
+
+                        ProviderBusinessTypeId = 0,
                         LookupId = Lookup.LookupId,
                         LookupTypeId = Lookup.LookupTypeId,
                         LookupCode = Lookup.LookupCode,

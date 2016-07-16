@@ -9,6 +9,8 @@ namespace LAPP.ENTITY
 {
     public class Lookup : BaseEntity
     {
+        public int ProviderBusinessTypeId { get; set; }
+
         [Display(Description = "Required: No, Desc: Auto Generate")]
         public int LookupId { get; set; }
 
