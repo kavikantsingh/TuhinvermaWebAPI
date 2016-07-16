@@ -296,10 +296,13 @@ namespace LAPP.DAL
             {
                 objEntity.ProviderStaffMiddleName = Convert.ToString(dr["MiddleName"]);
             }
-
+            if (dr.Table.Columns.Contains("active") && dr["active"] != DBNull.Value)
+            {
+                objEntity.ActionList = Convert.ToString(dr["active"]);
+            }
             if (dr.Table.Columns.Contains("EmailId") && dr["EmailId"] != DBNull.Value)
             {
-                objEntity.ProviderStaffEmail= Convert.ToString(dr["EmailId"]);
+                objEntity.ProviderStaffEmail = Convert.ToString(dr["EmailId"]);
             }
             if (dr.Table.Columns.Contains("LastName") && dr["LastName"] != DBNull.Value)
             {

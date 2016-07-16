@@ -19,7 +19,7 @@ namespace LAPP.ENTITY
         public int InduvidualNameId { get; set; }
 
         public int ApplicationId { get; set; }
-
+        public string ActionList { get; set; }
         public int ContactId { get; set; }
         public int ProviderContactId { get; set; }
         public bool IsBackgroundCheckReq { get; set; }
