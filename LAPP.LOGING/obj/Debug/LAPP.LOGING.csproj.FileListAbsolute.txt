@@ -39,3 +39,20 @@ E:\Projects\Tuhin\LAPP_WS\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.xml
 E:\Projects\Tuhin\LAPP_WS\LAPP.LOGING\obj\Debug\LAPP.LOGING.csprojResolveAssemblyReference.cache
 E:\Projects\Tuhin\LAPP_WS\LAPP.LOGING\obj\Debug\LAPP.LOGING.dll
 E:\Projects\Tuhin\LAPP_WS\LAPP.LOGING\obj\Debug\LAPP.LOGING.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\LAPP.LOGING.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\LAPP.LOGING.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\LAPP.DAL.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\LAPP.ENTITY.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\LAPP.GlobalFunctions.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\MySql.Data.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\Newtonsoft.Json.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\System.Web.Http.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\LAPP.DAL.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\LAPP.ENTITY.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\LAPP.GlobalFunctions.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\System.Web.Http.xml
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\bin\Debug\System.Net.Http.Formatting.xml
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\obj\Debug\LAPP.LOGING.csprojResolveAssemblyReference.cache
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\obj\Debug\LAPP.LOGING.dll
+D:\Work\Tuhin Verma\lappws\LAPP.LOGING\obj\Debug\LAPP.LOGING.pdb

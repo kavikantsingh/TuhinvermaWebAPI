@@ -58,3 +58,23 @@ E:\Projects\Tuhin\LAPP_WS\LAPP.BAL\bin\Debug\System.Web.Http.xml
 E:\Projects\Tuhin\LAPP_WS\LAPP.BAL\obj\Debug\LAPP.BAL.csprojResolveAssemblyReference.cache
 E:\Projects\Tuhin\LAPP_WS\LAPP.BAL\obj\Debug\LAPP.BAL.dll
 E:\Projects\Tuhin\LAPP_WS\LAPP.BAL\obj\Debug\LAPP.BAL.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\obj\Debug\LAPP.BAL.csprojResolveAssemblyReference.cache
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\obj\Debug\LAPP.BAL.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\obj\Debug\LAPP.BAL.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.BAL.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.BAL.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.DAL.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.ENTITY.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.GlobalFunctions.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.LOGING.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\MySql.Data.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\Newtonsoft.Json.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\System.Net.Http.Formatting.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\System.Web.Http.dll
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.DAL.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.ENTITY.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.GlobalFunctions.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\LAPP.LOGING.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\Newtonsoft.Json.xml
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\System.Net.Http.Formatting.xml
+D:\Work\Tuhin Verma\lappws\LAPP.BAL\bin\Debug\System.Web.Http.xml

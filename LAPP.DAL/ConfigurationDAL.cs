@@ -252,5 +252,172 @@ namespace LAPP.DAL
 
             return objEntity;
         }
+
+        public List<LAPP_DeficiencyTemplate> Get_lapp_application_Deficiency_Template_By_Query_List(string Query)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.Text, Query);
+            List<LAPP_DeficiencyTemplate> lstEntity = new List<LAPP_DeficiencyTemplate>();
+            LAPP_DeficiencyTemplate objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchDeficiencyTemplateEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private LAPP_DeficiencyTemplate FetchDeficiencyTemplateEntity(DataRow dr)
+        {
+            LAPP_DeficiencyTemplate objEntity = new LAPP_DeficiencyTemplate();
+            if (dr.Table.Columns.Contains("DeficiencyTemplateId") && dr["DeficiencyTemplateId"] != DBNull.Value)
+            {
+                objEntity.Deficiency_Template_ID = Convert.ToInt32(dr["DeficiencyTemplateId"]);
+            }
+            if (dr.Table.Columns.Contains("DeficiencyTemplateName") && dr["DeficiencyTemplateName"] != DBNull.Value)
+            {
+                objEntity.Deficiency_Template_Name = Convert.ToString(dr["DeficiencyTemplateName"]);
+            }
+            if (dr.Table.Columns.Contains("IsActive") && dr["IsActive"] != DBNull.Value)
+            {
+                objEntity.Is_Active = Convert.ToBoolean(dr["IsActive"]);
+            }
+            if (dr.Table.Columns.Contains("IsDeleted") && dr["IsDeleted"] != DBNull.Value)
+            {
+                objEntity.Is_Deleted = Convert.ToBoolean(dr["IsDeleted"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedOn") && dr["CreatedOn"] != DBNull.Value)
+            {
+                objEntity.Created_On = Convert.ToDateTime(dr["CreatedOn"]);
+            }
+            if (dr.Table.Columns.Contains("CreatedBy") && dr["CreatedBy"] != DBNull.Value)
+            {
+                objEntity.Created_By = Convert.ToInt32(dr["CreatedBy"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedOn") && dr["ModifiedOn"] != DBNull.Value)
+            {
+                objEntity.Modified_On = Convert.ToDateTime(dr["ModifiedOn"]);
+            }
+            if (dr.Table.Columns.Contains("ModifiedBy") && dr["ModifiedBy"] != DBNull.Value)
+            {
+                objEntity.Modified_By = Convert.ToInt32(dr["ModifiedBy"]);
+            }
+            if (dr.Table.Columns.Contains("mastertransactionName") && dr["mastertransactionName"] != DBNull.Value)
+            {
+                objEntity.Name = Convert.ToString(dr["mastertransactionName"]);
+            }
+            if (dr.Table.Columns.Contains("mastertransactionid") && dr["mastertransactionid"] != DBNull.Value)
+            {
+                objEntity.Master_Transaction_Id = Convert.ToInt32(dr["mastertransactionid"]);
+            }
+            if (dr.Table.Columns.Contains("EndDate") && dr["EndDate"] != DBNull.Value)
+            {
+                objEntity.End_Date = Convert.ToDateTime(dr["EndDate"]);
+            }
+            if (dr.Table.Columns.Contains("DeficiencyTemplateSubject") && dr["DeficiencyTemplateSubject"] != DBNull.Value)
+            {
+                objEntity.Deficiency_Template_Subject = Convert.ToString(dr["DeficiencyTemplateSubject"]);
+            }
+            if (dr.Table.Columns.Contains("DeficiencyTemplateMessage") && dr["DeficiencyTemplateMessage"] != DBNull.Value)
+            {
+                objEntity.Deficiency_Template_Message = Convert.ToString(dr["DeficiencyTemplateMessage"]);
+            }
+            if (dr.Table.Columns.Contains("IsEditable") && dr["IsEditable"] != DBNull.Value)
+            {
+                objEntity.Is_Editable = Convert.ToBoolean(dr["IsEditable"]);
+            }
+            return objEntity;
+        }
+
+        public List<MasterTransaction> Get_All_LAPP_MasterTransaction()
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "lapp_MasterTransaction_get_all");
+            List<MasterTransaction> lstEntity = new List<MasterTransaction>();
+            MasterTransaction objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchMasterTransactionEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
+        }
+
+        private MasterTransaction FetchMasterTransactionEntity(DataRow dr)
+        {
+            MasterTransaction objEntity = new MasterTransaction();
+            if (dr.Table.Columns.Contains("MasterTransactionId") && dr["MasterTransactionId"] != DBNull.Value)
+            {
+                objEntity.MasterTransactionId = Convert.ToInt32(dr["MasterTransactionId"]);
+            }
+            if (dr.Table.Columns.Contains("MasterTransactionName") && dr["MasterTransactionName"] != DBNull.Value)
+            {
+                objEntity.MasterTransactionName = Convert.ToString(dr["MasterTransactionName"]);
+            }
+
+            return objEntity;
+        }
+
+        public int SaveDeficiencyTemplate(LAPP_DeficiencyTemplate objlapp_deficiency_template)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("Deficiency_Template_Name", objlapp_deficiency_template.Deficiency_Template_Name));
+            lstParameter.Add(new MySqlParameter("Deficiency_Template_Message", objlapp_deficiency_template.Deficiency_Template_Message));
+            lstParameter.Add(new MySqlParameter("Deficiency_Template_Subject", objlapp_deficiency_template.Deficiency_Template_Subject));
+            lstParameter.Add(new MySqlParameter("Master_Transaction_Id", objlapp_deficiency_template.Master_Transaction_Id));
+            lstParameter.Add(new MySqlParameter("Is_Active", objlapp_deficiency_template.Is_Active));
+            lstParameter.Add(new MySqlParameter("Is_Deleted", objlapp_deficiency_template.Is_Deleted));
+            lstParameter.Add(new MySqlParameter("Created_On", objlapp_deficiency_template.Created_On));
+            lstParameter.Add(new MySqlParameter("Created_By", objlapp_deficiency_template.Created_By));
+            lstParameter.Add(new MySqlParameter("Modified_On", objlapp_deficiency_template.Modified_On));
+            lstParameter.Add(new MySqlParameter("Modified_By", objlapp_deficiency_template.Modified_By));
+            //MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            //returnParam.Direction = ParameterDirection.ReturnValue;
+            //lstParameter.Add(returnParam);
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "lapp_deficiency_template_Save", lstParameter.ToArray());
+            return returnValue;
+        }
+
+        public LAPP_DeficiencyTemplate GetDeficiencyTemplate(int G_Deficiency_Template_ID)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("G_Deficiency_Template_ID", G_Deficiency_Template_ID));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "lapp__deficiency_template_by_Deficiency_Template_ID", lstParameter.ToArray());
+            LAPP_DeficiencyTemplate objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchDeficiencyTemplateEntity(dr);
+            }
+            return objEntity;
+        }
+
+        public int UpdateDeficiencyTemplate(LAPP_DeficiencyTemplate objlapp_deficiency_template)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("Deficiency_Template_ID", objlapp_deficiency_template.Deficiency_Template_ID));
+            lstParameter.Add(new MySqlParameter("Deficiency_Template_Name", objlapp_deficiency_template.Deficiency_Template_Name));
+            lstParameter.Add(new MySqlParameter("Deficiency_Template_Message", objlapp_deficiency_template.Deficiency_Template_Message));
+            lstParameter.Add(new MySqlParameter("Deficiency_Template_Subject", objlapp_deficiency_template.Deficiency_Template_Subject));
+            lstParameter.Add(new MySqlParameter("Master_Transaction_Id", objlapp_deficiency_template.Master_Transaction_Id));
+            lstParameter.Add(new MySqlParameter("Is_Active", objlapp_deficiency_template.Is_Active));
+            lstParameter.Add(new MySqlParameter("Is_Deleted", objlapp_deficiency_template.Is_Deleted));
+            lstParameter.Add(new MySqlParameter("Created_On", objlapp_deficiency_template.Created_On));
+            lstParameter.Add(new MySqlParameter("Created_By", objlapp_deficiency_template.Created_By));
+            lstParameter.Add(new MySqlParameter("Modified_On", objlapp_deficiency_template.Modified_On));
+            lstParameter.Add(new MySqlParameter("Modified_By", objlapp_deficiency_template.Modified_By));
+            //MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            //returnParam.Direction = ParameterDirection.ReturnValue;
+            //lstParameter.Add(returnParam);
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "lapp_deficiency_template_Update", lstParameter.ToArray());
+            return returnValue;
+        }
+
     }
 }

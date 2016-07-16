@@ -13,3 +13,8 @@ E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.pdb
 E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.csprojResolveAssemblyReference.cache
 E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.dll
 E:\Projects\Tuhin\LAPP_WS\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.dll
+D:\Work\Tuhin Verma\lappws\LAPP.ENTITY\bin\Debug\LAPP.ENTITY.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.dll
+D:\Work\Tuhin Verma\lappws\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.pdb
+D:\Work\Tuhin Verma\lappws\LAPP.ENTITY\obj\Debug\LAPP.ENTITY.csprojResolveAssemblyReference.cache
