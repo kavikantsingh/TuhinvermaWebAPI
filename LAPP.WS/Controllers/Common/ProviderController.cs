@@ -3004,6 +3004,98 @@ namespace LAPP.WS.Controllers.Common
 
         #region Shekhar 
 
+        [AcceptVerbs("POST")]
+        [ActionName("DeleteProviderStaff")]
+        public ProviderOnLoadResponse DeleteProviderStaff(string Key, ProviderStaff ObjProviderStaff)
+        {
+            int CreateOrModify = 0;
+            try
+            {
+                CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            }
+            catch { }
+
+            LogingHelper.SaveAuditInfo();
+
+            ProviderOnLoadResponse objResponse = new ProviderOnLoadResponse();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            if (ObjProviderStaff == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+                ProviderStaff objProvStaff = new ProviderStaff();
+                ProviderBAL objProviderStaffBAL = new ProviderBAL();
+
+                objProvStaff.ProviderStaffId = ObjProviderStaff.ProviderStaffId;
+                objProvStaff.ProviderIndvNameInfoId = ObjProviderStaff.ProviderIndvNameInfoId;
+                objProvStaff.ProviderId = ObjProviderStaff.ProviderId;
+                objProvStaff.ApplicationId = ObjProviderStaff.ApplicationId;
+                objProvStaff.ProviderContactId = ObjProviderStaff.ContactId;
+                objProvStaff.IsBackgroundCheckReq = ObjProviderStaff.IsBackgroundCheckReq;
+                objProvStaff.CAMTCNumber = ObjProviderStaff.CAMTCNumber;
+                objProvStaff.ReferenceNumber = ObjProviderStaff.ReferenceNumber;
+                objProvStaff.IsActive = false;
+                objProvStaff.IsDeleted = true;
+                objProvStaff.CreatedBy = ObjProviderStaff.CreatedBy;
+                objProvStaff.CreatedOn = ObjProviderStaff.CreatedOn;
+                objProvStaff.ModifiedBy = ObjProviderStaff.ModifiedBy;
+                objProvStaff.ModifiedOn = ObjProviderStaff.ModifiedOn;
+                objProvStaff.ProviderStaffGuid = Guid.NewGuid().ToString();
+
+                int ProviderStaffId = objProviderStaffBAL.SaveProviderStaff(objProvStaff);
+
+                List<ProviderStaff> lstProviderStaff = objProviderStaffBAL.GetAllProviderStaffDetails(ObjProviderStaff.ApplicationId, ObjProviderStaff.ProviderId);
+                objResponse.ListOfProviderStaffDetails = lstProviderStaff;
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderRelatedSchoolSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+
+            return objResponse;
+
+
+
+        }
+
+
         /// <summary>
         /// This method is to Save the School Informations
         /// </summary>
@@ -3044,6 +3136,26 @@ namespace LAPP.WS.Controllers.Common
 
                 if (ObjProviderStaff.ProviderStaffId == 0)
                 {
+                    #region Contact Email Save
+
+                    Contact objContact = new Contact();
+                    objContact = new Contact();
+                    objContact.ContactId = 0;
+                    objContact.ContactFirstName = ObjProviderStaff.ProviderStaffFirstName;
+                    objContact.ContactLastName = ObjProviderStaff.ProviderStaffLastName;
+                    objContact.ContactTypeId = 8;
+                    objContact.Code = "E";
+                    objContact.ContactInfo = ObjProviderStaff.ProviderStaffEmail;
+                    objContact.Authenticator = "";
+                    objContact.IsActive = true;
+                    objContact.IsDeleted = false;
+                    objContact.ContactGuid = Guid.NewGuid().ToString();
+                    ContactBAL objContactBAL = new ContactBAL();
+                    int ContactId_Email = objContactBAL.Save_Contact(objContact);
+
+                    #endregion
+
+
                     #region IndividualName
 
                     IndividualNameBAL objIndNameBAL = new IndividualNameBAL();
@@ -3097,7 +3209,7 @@ namespace LAPP.WS.Controllers.Common
                     objProvStaff.ProviderIndvNameInfoId = ProviderIndvNameInfoId;
                     objProvStaff.ProviderId = ObjProviderStaff.ProviderId;
                     objProvStaff.ApplicationId = ObjProviderStaff.ApplicationId;
-                    objProvStaff.ProviderContactId = 0;
+                    objProvStaff.ProviderContactId = ContactId_Email;
                     objProvStaff.IsBackgroundCheckReq = ObjProviderStaff.IsBackgroundCheckReq;
                     objProvStaff.CAMTCNumber = ObjProviderStaff.CAMTCNumber;
                     objProvStaff.ReferenceNumber = ObjProviderStaff.ReferenceNumber;
@@ -3107,7 +3219,7 @@ namespace LAPP.WS.Controllers.Common
                     objProvStaff.CreatedOn = ObjProviderStaff.CreatedOn;
                     objProvStaff.ModifiedBy = ObjProviderStaff.ModifiedBy;
                     objProvStaff.ModifiedOn = ObjProviderStaff.ModifiedOn;
-                    objProvStaff.ProviderStaffGuid = ObjProviderStaff.ProviderStaffGuid;
+                    objProvStaff.ProviderStaffGuid = Guid.NewGuid().ToString();
 
                     int ProviderStaffId = objProviderStaffBAL.SaveProviderStaff(objProvStaff);
 
@@ -3121,8 +3233,12 @@ namespace LAPP.WS.Controllers.Common
                     string conId = ObjProviderStaff.ProvIndvNameTitlePositionId; ;
                     string conTitle = ObjProviderStaff.ProvIndvNameTitlePosition;
 
+                    string contrueset = ObjProviderStaff.trueset;
+
                     string[] Id = conId.Split(',');
                     string[] Title = conTitle.Split(',');
+
+                    string[] trues = contrueset.Split(',');
 
                     for (int i = 0; i < Id.Count(); i++)
                     {
@@ -3135,7 +3251,12 @@ namespace LAPP.WS.Controllers.Common
                         objProvIndvNameTitle.ProvIndvNameTitlePosition = Title[i];
 
                         objProvIndvNameTitle.ReferenceNumber = "";
-                        objProvIndvNameTitle.IsActive = true;
+
+                        if (trues[i] == "Y")
+                            objProvIndvNameTitle.IsActive = true;
+                        else
+                            objProvIndvNameTitle.IsActive = false;
+
                         objProvIndvNameTitle.IsDeleted = false;
                         objProvIndvNameTitle.CreatedBy = 0;
                         objProvIndvNameTitle.CreatedOn = DateTime.Now;
@@ -3149,7 +3270,6 @@ namespace LAPP.WS.Controllers.Common
 
                     #endregion
                 }
-
                 else
                 {
                     #region Provider Staff
@@ -3157,11 +3277,89 @@ namespace LAPP.WS.Controllers.Common
                     ProviderStaff objProvStaff = new ProviderStaff();
                     ProviderBAL objProviderStaffBAL = new ProviderBAL();
 
+                    IndividualNameBAL objIndNameBAL = new IndividualNameBAL();
+                    IndividualName objIndName = new IndividualName();
+
+                    objIndName.IndividualNameId = ObjProviderStaff.InduvidualNameId;
+                    objIndName.IndividualId = 0;
+                    objIndName.FirstName = ObjProviderStaff.ProviderStaffFirstName;
+                    objIndName.MiddleName = "";
+                    objIndName.LastName = ObjProviderStaff.ProviderStaffLastName;
+                    objIndName.IndividualNameStatusId = 22;
+                    objIndName.IsActive = true;
+                    objIndName.IsDeleted = false;
+                    objIndName.CreatedBy = 0;
+                    objIndName.CreatedOn = DateTime.Now;
+                    objIndName.IndividualNameGuid = Guid.NewGuid().ToString();
+                    objIndName.IndividualNameTypeId = 13;
+
+                    int IndividualNameId = objIndNameBAL.Save_IndividualName(objIndName);
+
+
+                    Contact objContact = new Contact();
+                    objContact = new Contact();
+                    objContact.ContactId = ObjProviderStaff.ContactId;
+                    objContact.ContactFirstName = ObjProviderStaff.ProviderStaffFirstName;
+                    objContact.ContactLastName = ObjProviderStaff.ProviderStaffLastName;
+                    objContact.ContactTypeId = 8;
+                    objContact.Code = "E";
+                    objContact.ContactInfo = ObjProviderStaff.ProviderStaffEmail;
+                    objContact.Authenticator = "";
+                    objContact.IsActive = true;
+                    objContact.IsDeleted = false;
+                    objContact.ContactGuid = Guid.NewGuid().ToString();
+                    ContactBAL objContactBAL = new ContactBAL();
+                    int ContactId_Email = objContactBAL.Save_Contact(objContact);
+
+
+                    ProvIndvNameTitle objProvIndvNameTitle = new ProvIndvNameTitle();
+                    ProviderBAL objProviderBAL = new ProviderBAL();
+
+                    string conId = ObjProviderStaff.ProvIndvNameTitlePositionId;
+                    string conTitle = ObjProviderStaff.ProvIndvNameTitlePosition;
+                    string conposids = ObjProviderStaff.posids;
+                    string contrueset = ObjProviderStaff.trueset;
+
+                    string[] Id = conId.Split(',');
+                    string[] Title = conTitle.Split(',');
+                    string[] Pos = conposids.Split(',');
+                    string[] trues = contrueset.Split(',');
+
+                    for (int i = 0; i < Id.Count(); i++)
+                    {
+                        objProvIndvNameTitle.ProvIndvNameTitlePosId = Convert.ToInt32(Pos[i]);
+                        objProvIndvNameTitle.ProviderIndvNameInfoId = ObjProviderStaff.ProviderIndvNameInfoId;
+                        objProvIndvNameTitle.ProviderId = ObjProviderStaff.ProviderId;
+                        objProvIndvNameTitle.ApplicationId = ObjProviderStaff.ApplicationId;
+                        objProvIndvNameTitle.ProviderStaffId = ObjProviderStaff.ProviderStaffId;
+                        objProvIndvNameTitle.ProvIndvNameTitlePositionId = Id[i];
+                        objProvIndvNameTitle.ProvIndvNameTitlePosition = Title[i];
+
+                        objProvIndvNameTitle.ReferenceNumber = "";
+
+                        if (trues[i] == "Y")
+                            objProvIndvNameTitle.IsActive = true;
+                        else
+                            objProvIndvNameTitle.IsActive = false;
+
+                        objProvIndvNameTitle.IsDeleted = false;
+                        objProvIndvNameTitle.CreatedBy = 0;
+                        objProvIndvNameTitle.CreatedOn = DateTime.Now;
+                        objProvIndvNameTitle.ModifiedBy = null;
+                        objProvIndvNameTitle.ModifiedOn = null;
+                        objProvIndvNameTitle.ProvIndvNameTitlePosGuid = Guid.NewGuid().ToString();
+
+                        int ProvIndvNameTitleId = objProviderBAL.SaveProvIndvNameTitle(objProvIndvNameTitle);
+
+                    }
+
+
+
                     objProvStaff.ProviderStaffId = ObjProviderStaff.ProviderStaffId;
                     objProvStaff.ProviderIndvNameInfoId = ObjProviderStaff.ProviderIndvNameInfoId;
                     objProvStaff.ProviderId = ObjProviderStaff.ProviderId;
                     objProvStaff.ApplicationId = ObjProviderStaff.ApplicationId;
-                    objProvStaff.ProviderContactId = 0;
+                    objProvStaff.ProviderContactId = ContactId_Email;
                     objProvStaff.IsBackgroundCheckReq = ObjProviderStaff.IsBackgroundCheckReq;
                     objProvStaff.CAMTCNumber = ObjProviderStaff.CAMTCNumber;
                     objProvStaff.ReferenceNumber = ObjProviderStaff.ReferenceNumber;
@@ -3171,7 +3369,7 @@ namespace LAPP.WS.Controllers.Common
                     objProvStaff.CreatedOn = ObjProviderStaff.CreatedOn;
                     objProvStaff.ModifiedBy = ObjProviderStaff.ModifiedBy;
                     objProvStaff.ModifiedOn = ObjProviderStaff.ModifiedOn;
-                    objProvStaff.ProviderStaffGuid = ObjProviderStaff.ProviderStaffGuid;
+                    objProvStaff.ProviderStaffGuid = Guid.NewGuid().ToString();
 
                     int ProviderStaffId = objProviderStaffBAL.SaveProviderStaff(objProvStaff);
 
@@ -3265,7 +3463,7 @@ namespace LAPP.WS.Controllers.Common
         /// <param name="ObjProviderOtherProgram">Request object for Provider Instruction.</param>
         [AcceptVerbs("POST")]
         [ActionName("SaveProviderOtherProgram")]
-        public BaseEntityServiceResponse SaveProviderOtherProgramName(string Key, ProviderOtherProgramName ObjProviderOtherProgram)
+        public ProviderOtherProgramNameGetResponse SaveProviderOtherProgramName(string Key, ProviderOtherProgramName ObjProviderOtherProgram)
         {
             int CreateOrModify = 0;
             try
@@ -3276,7 +3474,7 @@ namespace LAPP.WS.Controllers.Common
 
             LogingHelper.SaveAuditInfo();
 
-            BaseEntityServiceResponse objResponse = new BaseEntityServiceResponse();
+            ProviderOtherProgramNameGetResponse objResponse = new ProviderOtherProgramNameGetResponse();
 
             if (!TokenHelper.ValidateToken(Key))
             {
@@ -3304,9 +3502,25 @@ namespace LAPP.WS.Controllers.Common
                 ProviderBAL objProviderOtherProgramBAL = new ProviderBAL();
                 int ProviderOtherProgramId = objProviderOtherProgramBAL.SaveProviderOtherProgram(ObjProviderOtherProgram);
 
-                objResponse.Message = Messages.SaveSuccess;
-                objResponse.Status = true;
-                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                List<ProviderOtherProgramName> lstProviderOtherProgram = objProviderOtherProgramBAL.GetAllProviderOtherProgram(ObjProviderOtherProgram.ApplicationId, ObjProviderOtherProgram.ProviderId);
+                objResponse.ProviderOtherProgramList = lstProviderOtherProgram;
+
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
 
             }
             catch (Exception ex)
@@ -3751,7 +3965,7 @@ namespace LAPP.WS.Controllers.Common
                 ProviderRelatedSchoolsBAL objProviderRSBAL = new ProviderRelatedSchoolsBAL();
                 int ProviderRelatedSchoolId = objProviderRSBAL.SaveProviderRelatedSchools(objProviderRelatedSchools);
 
-                List<ProviderRelatedSchools> lstProviderOtherProgram = objProviderRSBAL.Get_ProviderRelatedSchool_By_ProviderId(ObjProviderRelatedSchools.ApplicationId, ObjProviderRelatedSchools.ProviderId);
+                List<ProviderRelatedSchools> lstProviderOtherProgram = objProviderRSBAL.Get_ProviderRelatedSchool_By_ProviderId(ObjProviderRelatedSchools.ProviderId, ObjProviderRelatedSchools.ApplicationId);
                 objResponse.ProviderRelatedSchoolsList = lstProviderOtherProgram;
                 if (objResponse != null)
                 {
@@ -4042,7 +4256,7 @@ namespace LAPP.WS.Controllers.Common
 
                 }
 
-                List<ProviderRelatedSchools> lstProviderOtherProgram = objProviderRSBAL.Get_ProviderRelatedSchool_By_ProviderId(ObjProviderRelatedSchools.ApplicationId, ObjProviderRelatedSchools.ProviderId);
+                List<ProviderRelatedSchools> lstProviderOtherProgram = objProviderRSBAL.Get_ProviderRelatedSchool_By_ProviderId(ObjProviderRelatedSchools.ProviderId, ObjProviderRelatedSchools.ApplicationId);
                 objResponse.ProviderRelatedSchoolsList = lstProviderOtherProgram;
                 if (objResponse != null)
                 {
