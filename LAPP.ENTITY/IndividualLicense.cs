@@ -30,6 +30,13 @@ namespace LAPP.ENTITY
 
         public string LicenseTypeName { get; set; }
 
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string ApplicationNumber { get; set; }
+        public int TransactionId { get; set; }
+        public string ApplicationTypeName { get; set; }
+
         public string Description
         {
 
