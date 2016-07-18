@@ -1141,6 +1141,8 @@ namespace LAPP.WS.Controllers.Backoffice
                     objEntity.Application_Type_ID = saveDeficiencyReason.Application_Type_ID;
                     objEntity.Deficiency_Name = saveDeficiencyReason.Deficiency_Name;
                     objEntity.Description = saveDeficiencyReason.Description;
+                    objEntity.Additional_Text = saveDeficiencyReason.Additional_Text;
+                    objEntity.Deficiency_Template_ID = saveDeficiencyReason.Deficiency_Template_ID;
                     objEntity.Is_Active = saveDeficiencyReason.Is_Active;
                     objEntity.Is_Deleted = saveDeficiencyReason.Is_Deleted;
 
