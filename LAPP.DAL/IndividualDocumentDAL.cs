@@ -42,7 +42,9 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("DocumentTypeId", GetNullValue.ByDataType(objIndividualDocument.DocumentTypeId)));
             lstParameter.Add(new MySqlParameter("DocumentName", GetNullValue.ByDataType(objIndividualDocument.DocumentName)));
             lstParameter.Add(new MySqlParameter("OtherDocumentTypeName", GetNullValue.ByDataType(objIndividualDocument.OtherDocumentTypeName)));
-            
+            lstParameter.Add(new MySqlParameter("LicenseeReprint", objIndividualDocument.LicenseeReprint));
+
+            //LicenseeReprint
 
             MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
             returnParam.Direction = ParameterDirection.ReturnValue;
@@ -236,6 +238,10 @@ namespace LAPP.DAL
                 objEntity.OtherDocumentTypeName = dr["OtherDocumentTypeName"].ToString();
             }
 
+            if (dr.Table.Columns.Contains("LicenseeReprint") && dr["LicenseeReprint"] != DBNull.Value)
+            {
+                objEntity.LicenseeReprint = Convert.ToBoolean(dr["LicenseeReprint"].ToString());
+            }
 
 
             return objEntity;

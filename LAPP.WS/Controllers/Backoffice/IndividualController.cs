@@ -1971,6 +1971,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         {
                             int individualId = objIndividualDocumentResponse.IndividualId;
                             int? applicationId = objIndividualDocumentResponse.ApplicationId;
+                            bool LicenseeReprint = objIndividualDocumentResponse.LicenseeReprint;
 
 
                             objIndividualDocument = new IndividualDocument();
@@ -1994,6 +1995,7 @@ namespace LAPP.WS.Controllers.Backoffice
                             objIndividualDocument.ModifiedOn = null;
                             objIndividualDocument.ModifiedBy = null;
                             objIndividualDocument.IndividualDocumentGuid = Guid.NewGuid().ToString();
+                            objIndividualDocument.LicenseeReprint = LicenseeReprint;
 
                             objIndividualDocument.DocumentId = objDtU.DocumentId;
                             objIndividualDocument.DocumentCd = objDtU.DocumentCd;
@@ -2329,6 +2331,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         {
                             int individualId = objIndividualDocumentResponse.IndividualId;
                             int? applicationId = objIndividualDocumentResponse.ApplicationId;
+                            bool LicenseeReprint = objIndividualDocumentResponse.LicenseeReprint;
 
                             objIndividualDocument = new IndividualDocument();
 
@@ -2351,6 +2354,7 @@ namespace LAPP.WS.Controllers.Backoffice
                             objIndividualDocument.ModifiedOn = null;
                             objIndividualDocument.ModifiedBy = null;
                             objIndividualDocument.IndividualDocumentGuid = Guid.NewGuid().ToString();
+                            objIndividualDocument.LicenseeReprint = LicenseeReprint;
 
                             objIndividualDocument.DocumentId = objDtU.DocumentId;
                             objIndividualDocument.DocumentCd = objDtU.DocumentCd;
