@@ -240,7 +240,7 @@ namespace LAPP.DAL
 
             if (dr.Table.Columns.Contains("LicenseeReprint") && dr["LicenseeReprint"] != DBNull.Value)
             {
-                objEntity.LicenseeReprint = Convert.ToBoolean(dr["LicenseeReprint"].ToString());
+                objEntity.LicenseeReprint = Convert.ToBoolean(dr["LicenseeReprint"]);
             }
 
 
