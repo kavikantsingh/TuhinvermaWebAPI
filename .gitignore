@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
@@ -22,3 +22,6 @@
 /LAPP.BAL/bin/Debug/LAPP.DAL.pdb
 /LAPP.BAL/bin/Debug/LAPP.DAL.dll
 /LAPP.BAL/bin/Debug
+LAPP.GlobalFunctions/obj/Debug/LAPP.GlobalFunctions.csprojResolveAssemblyReference.cache
+LAPP.WS/bin/LAPP.WS.pdb
+LAPP.WS/obj/Debug/LAPP.WS.pdb

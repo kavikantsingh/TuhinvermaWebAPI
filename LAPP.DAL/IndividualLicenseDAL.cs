@@ -161,6 +161,24 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
+        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            lstParameter.Add(new MySqlParameter("LicenseNumber", LicenseNumber));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualLicense_GET_BY_LicenseNumber", lstParameter.ToArray());
+
+            IndividualLicense objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+
+            }
+            return objEntity;
+        }
+
         private IndividualLicense FetchEntity(DataRow dr)
         {
             IndividualLicense objEntity = new IndividualLicense();
@@ -261,6 +279,30 @@ namespace LAPP.DAL
             if (dr.Table.Columns.Contains("LicenseStatusColorCode") && dr["LicenseStatusColorCode"] != DBNull.Value)
             {
                 objEntity.LicenseStatusColorCode = Convert.ToString(dr["LicenseStatusColorCode"]);
+            }
+            if (dr.Table.Columns.Contains("FirstName") && dr["FirstName"] != DBNull.Value)
+            {
+                objEntity.FirstName = Convert.ToString(dr["FirstName"]);
+            }
+            if (dr.Table.Columns.Contains("MiddleName") && dr["MiddleName"] != DBNull.Value)
+            {
+                objEntity.MiddleName = Convert.ToString(dr["MiddleName"]);
+            }
+            if (dr.Table.Columns.Contains("LastName") && dr["LastName"] != DBNull.Value)
+            {
+                objEntity.LastName = Convert.ToString(dr["LastName"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationNumber") && dr["ApplicationNumber"] != DBNull.Value)
+            {
+                objEntity.ApplicationNumber = Convert.ToString(dr["ApplicationNumber"]);
+            }
+            if (dr.Table.Columns.Contains("TransactionId") && dr["TransactionId"] != DBNull.Value)
+            {
+                objEntity.TransactionId = Convert.ToInt32(dr["TransactionId"]);
+            }
+            if (dr.Table.Columns.Contains("ApplicationTypeName") && dr["ApplicationTypeName"] != DBNull.Value)
+            {
+                objEntity.ApplicationTypeName = Convert.ToString(dr["ApplicationTypeName"]);
             }
 
             return objEntity;

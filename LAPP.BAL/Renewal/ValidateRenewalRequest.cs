@@ -375,7 +375,7 @@ namespace LAPP.BAL.Renewal
             {
                 foreach (IndividualCECourseResponse objCehResponse in lstCECourseResponse)
                 {
-                    lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objCehResponse.CourseNameTitle), objCehResponse.CourseNameTitle, lstResponseReason, 100);
+                    lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objCehResponse.CourseNameTitle), objCehResponse.CourseNameTitle, lstResponseReason, 250);
                     lstResponseReason = Validations.IsValidDateMMDDYYYYProperty(nameof(objCehResponse.CECourseDate), objCehResponse.CECourseDate != null ? objCehResponse.CECourseDate.ToString() : "", lstResponseReason);
                     // lstResponseReason = Validations.IsValidIntDecimalProperty(nameof(objCehResponse.CECourseHours), objCehResponse.CECourseHours.ToString(), lstResponseReason);
 
@@ -766,7 +766,7 @@ namespace LAPP.BAL.Renewal
             {
                 foreach (IndividualCECourseResponse objCehResponse in lstCECourseResponse)
                 {
-                    lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objCehResponse.CourseNameTitle), objCehResponse.CourseNameTitle, lstResponseReason, 100);
+                    lstResponseReason = Validations.IsRequiredPropertyMaxLength(nameof(objCehResponse.CourseNameTitle), objCehResponse.CourseNameTitle, lstResponseReason, 250);
                     lstResponseReason = Validations.IsValidDateMMDDYYYYProperty(nameof(objCehResponse.CECourseDate), objCehResponse.CECourseDate != null ? objCehResponse.CECourseDate.ToString() : "", lstResponseReason);
                     // lstResponseReason = Validations.IsValidIntDecimalProperty(nameof(objCehResponse.CECourseHours), objCehResponse.CECourseHours.ToString(), lstResponseReason);
 
