@@ -1971,6 +1971,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         {
                             int individualId = objIndividualDocumentResponse.IndividualId;
                             int? applicationId = objIndividualDocumentResponse.ApplicationId;
+                            bool LicenseeReprint = objIndividualDocumentResponse.LicenseeReprint;
 
 
                             objIndividualDocument = new IndividualDocument();
@@ -1994,6 +1995,7 @@ namespace LAPP.WS.Controllers.Backoffice
                             objIndividualDocument.ModifiedOn = null;
                             objIndividualDocument.ModifiedBy = null;
                             objIndividualDocument.IndividualDocumentGuid = Guid.NewGuid().ToString();
+                            objIndividualDocument.LicenseeReprint = LicenseeReprint;
 
                             objIndividualDocument.DocumentId = objDtU.DocumentId;
                             objIndividualDocument.DocumentCd = objDtU.DocumentCd;
@@ -2329,6 +2331,7 @@ namespace LAPP.WS.Controllers.Backoffice
                         {
                             int individualId = objIndividualDocumentResponse.IndividualId;
                             int? applicationId = objIndividualDocumentResponse.ApplicationId;
+                            bool LicenseeReprint = objIndividualDocumentResponse.LicenseeReprint;
 
                             objIndividualDocument = new IndividualDocument();
 
@@ -2351,6 +2354,7 @@ namespace LAPP.WS.Controllers.Backoffice
                             objIndividualDocument.ModifiedOn = null;
                             objIndividualDocument.ModifiedBy = null;
                             objIndividualDocument.IndividualDocumentGuid = Guid.NewGuid().ToString();
+                            objIndividualDocument.LicenseeReprint = LicenseeReprint;
 
                             objIndividualDocument.DocumentId = objDtU.DocumentId;
                             objIndividualDocument.DocumentCd = objDtU.DocumentCd;
@@ -4829,6 +4833,73 @@ namespace LAPP.WS.Controllers.Backoffice
         }
 
 
+
+        #endregion
+
+        #region IndividualLicenseByNumber
+        
+        /// <summary>
+        /// Get Method to get IndividualLicense by key and LicenseNumber.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="LicenseNumber">License Number</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualLicenseByLicenseNumber")]
+        public IndividualLicenseResponseRequest IndividualLicenseByLicenseNumber(string Key, string LicenseNumber)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualLicenseResponseRequest objResponse = new IndividualLicenseResponseRequest();
+            IndividualLicenseBAL objIndividualLicenseBAL = new IndividualLicenseBAL();
+            IndividualLicenseResponse objIndividualLicenseResponse = new IndividualLicenseResponse();
+            IndividualLicense objIndividualLicense = new IndividualLicense();
+            List<IndividualLicenseResponse> lstIndividualLicenseResponse = new List<IndividualLicenseResponse>();
+            List<IndividualLicense> lstIndividualLicense = new List<IndividualLicense>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualLicenseList = null;
+                    return objResponse;
+                }
+
+                objIndividualLicenseResponse = objIndividualLicenseBAL.Get_IndividualLicense_By_LicenseNumber(LicenseNumber);
+                if (objIndividualLicenseResponse != null)
+                {
+                    List<IndividualLicenseResponse> lstLicenseResponse = new List<IndividualLicenseResponse>();
+                    lstLicenseResponse.Add(objIndividualLicenseResponse);
+
+                    objResponse.IndividualLicenseList = lstLicenseResponse;
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualLicenseList = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualLicenseBYLicesneNumber", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualLicenseList = null;
+
+            }
+            return objResponse;
+        }
 
         #endregion
     }

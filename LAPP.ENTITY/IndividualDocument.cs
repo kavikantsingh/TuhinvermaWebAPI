@@ -32,6 +32,7 @@ namespace LAPP.ENTITY
         public int? DocumentTypeId { get; set; }
         public string DocumentName { get; set; }
         public string OtherDocumentTypeName { get; set; }
+        public bool LicenseeReprint { get; set; }
     }
 
     public class IndividualDocumentGet : BaseEntity
@@ -55,6 +56,7 @@ namespace LAPP.ENTITY
         public int? DocumentTypeId { get; set; }
         public string DocumentName { get; set; }
         public string OtherDocumentTypeName { get; set; }
+        public bool LicenseeReprint { get; set; }
     }
 
 
@@ -65,6 +67,7 @@ namespace LAPP.ENTITY
         public string Email { get; set; }
         public bool SendEmail { get; set; }
         public int TransactionId { get; set; }
+        public bool LicenseeReprint { get; set; }
 
         public List<DocumentToUpload> DocumentUploadList { get; set; }
     }
@@ -76,6 +79,7 @@ namespace LAPP.ENTITY
         public bool SendEmail { get; set; }
         public int TransactionId { get; set; }
         public string AffirmativeAction { get; set; }
+        public bool LicenseeReprint { get; set; }
 
         public List<DocumentToUploadByHTML> DocumentUploadList { get; set; }
     }
