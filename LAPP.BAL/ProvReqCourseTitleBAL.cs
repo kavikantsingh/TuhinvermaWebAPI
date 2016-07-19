@@ -17,9 +17,9 @@ namespace LAPP.BAL
             return objDAL.Save_ProvReqCourseTitle(objProvReqCourseTitle);
         }
 
-        public List<ProvReqCourseTitle> Get_All_ProvReqCourseTitle_By_CourseOfStudyId(int CourseOfStudyId, int ProviderId)
+        public List<ProvReqCourseTitle> Get_All_ProvReqCourseTitle_By_CourseOfStudyId(int CourseOfStudyId, int ProviderId, int appid)
         {
-            return objDAL.Get_All_ProvReqCourseTitle_By_CourseOfStudyId(CourseOfStudyId, ProviderId);
+            return objDAL.Get_All_ProvReqCourseTitle_By_CourseOfStudyId(CourseOfStudyId, ProviderId, appid);
         }
 
         public int Update_ProvReqCourseTitle(ProvReqCourseTitle objProvReqCourseTitle)
