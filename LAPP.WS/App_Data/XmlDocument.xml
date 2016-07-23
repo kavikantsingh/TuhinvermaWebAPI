@@ -1147,6 +1147,13 @@
             <param name="Key">API security key.</param>
             <param name="IndividualId">IndividualId.</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseByLicenseNumber(System.String,System.String)">
+            <summary>
+            Get Method to get IndividualLicense by key and LicenseNumber.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="LicenseNumber">License Number</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.PageController.PageGetAllPageNames(System.String)">
             <summary>
             Looks up all data by Key For Pages.
