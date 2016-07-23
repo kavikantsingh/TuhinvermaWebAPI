@@ -1174,7 +1174,7 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                     objResponse.ResponseReason = "";
 
-                    List<ProviderNames> lstPrevSchools = objProviderInstructionBAL.GetAllPreviousSchools(objProviderNames.ProviderNameTypeId, objProviderNames.ProviderId);
+                    List<ProviderNames> lstPrevSchools = objProviderInstructionBAL.GetAllPreviousSchools(objProviderNames.ApplicationId, objProviderNames.ProviderId);
                     objResponse.ListOfPreviousSchool = lstPrevSchools;
 
                     return objResponse;
@@ -4301,7 +4301,6 @@ namespace LAPP.WS.Controllers.Common
         public ProviderRelatedSchoolsGetResponse GetAllProviderRelatedSchools(string Key, int ApplicationId, int ProviderId)
         {
             ProviderRelatedSchoolsGetResponse objResponse = new ProviderRelatedSchoolsGetResponse();
-
             LogingHelper.SaveAuditInfo(Key);
 
             try
