@@ -94,11 +94,16 @@ namespace LAPP.DAL
             return objEntity;
         }
 
-        public List<Configuration> GetAll_Configuration()
+        public List<Configuration> GetAll_Configuration(ConfigurationSearch objConfigurationSearch)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "configuration_Get_All");
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            if(!string.IsNullOrEmpty(objConfigurationSearch.Setting))
+                lstParameter.Add(new MySqlParameter("Setting", objConfigurationSearch.Setting));
+            else
+                lstParameter.Add(new MySqlParameter("Setting", null));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "configuration_Get_All",lstParameter.ToArray());
             List<Configuration> lstCountry = new List<Configuration>();
             Configuration objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

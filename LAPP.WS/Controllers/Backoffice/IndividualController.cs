@@ -2961,7 +2961,7 @@ namespace LAPP.WS.Controllers.Backoffice
                 if (objDocument != null)
                 {
 
-                    var stream = new FileStream(objDocument.DocumentPath, FileMode.Open);
+                    var stream = new FileStream(objDocument.DocumentPath, FileMode.Open, FileAccess.Read);
                     result.Content = new StreamContent(stream);
                     result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
                     result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(objDocument.DocumentPath);

@@ -22,9 +22,9 @@ namespace LAPP.BAL
         //    return objDAL.Update_Configuration(objConfiguration);
         //}
 
-        public List<Configuration> GetAll_Configuration()
+        public List<Configuration> GetAll_Configuration(ConfigurationSearch objConfigurationSearch)
         {
-            return objDAL.GetAll_Configuration();
+            return objDAL.GetAll_Configuration(objConfigurationSearch);
         }
 
         public Configuration Get_Configuration_By_ConfigurationId(int ConfigurationId)

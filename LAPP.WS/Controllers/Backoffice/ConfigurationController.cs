@@ -276,7 +276,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     return objResponse;
                 }
 
-                lstConfiguration = objBAL.GetAll_Configuration();
+                lstConfiguration = objBAL.GetAll_Configuration(objConfigurationSearch);
                 if (lstConfiguration != null && lstConfiguration.Count > 0)
                 {
                     objResponse.Status = true;
@@ -291,7 +291,10 @@ namespace LAPP.WS.Controllers.Backoffice
                         DepartmentId = ConfigurationL.DepartmentId,
                         DepartmentName = ConfigurationL.DepartmentName,
                         Value = ConfigurationL.Value,
-                        IsActive = ConfigurationL.IsActive
+                        IsActive = ConfigurationL.IsActive,
+                        IsEditable=ConfigurationL.IsEditable,
+                        Setting= ConfigurationL.Setting,
+                        Description= ConfigurationL.Description
                     }).ToList();
 
 
@@ -370,9 +373,10 @@ namespace LAPP.WS.Controllers.Backoffice
                     objEntity = objBAL.Get_Configuration_By_ConfigurationId(objConfiguration.ConfigurationId);
                     if (objEntity != null)
                     {
-                        objConfiguration.ModifiedOn = DateTime.Now;
-                        objConfiguration.ModifiedBy = CreatedOrMoifiy;
-                        //objBAL.Update_Configuration(objConfiguration);
+                        objEntity.ModifiedOn = DateTime.Now;
+                        objEntity.ModifiedBy = CreatedOrMoifiy;
+                        objEntity.Value = objConfiguration.Value;
+                        objBAL.Save_Configuration(objEntity);
                         objResponse.Message = Messages.UpdateSuccess;
                         objResponse.Status = true;
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
