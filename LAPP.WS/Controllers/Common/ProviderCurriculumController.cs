@@ -47,7 +47,7 @@ namespace LAPP.WS.Controllers.Common
                     return objResponse;
                 }
                 lstProvReqCourseOfStudy = objProvReqCourseOfStudyBAL.Get_All_ProvReqCourseOfStudy();
-                if(lstProvReqCourseOfStudy!=null && lstProvReqCourseOfStudy.Count>0)
+                if (lstProvReqCourseOfStudy != null && lstProvReqCourseOfStudy.Count > 0)
                 {
                     objResponse.ResponseReason = "To Get All ProvReqCourseOfStudy";
                     objResponse.Status = true;
@@ -83,7 +83,7 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.ProvReqCourseOfStudy = null;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogingHelper.SaveExceptionInfo(Key, ex, "ProvReqCourseOfStudyGetAll", ENTITY.Enumeration.eSeverity.Error);
 
@@ -127,9 +127,9 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.ResponseReason = "";
                     return objResponse;
                 }
-                if(objProvReqCourseTitle != null)// && CourseTitleName!=null && CourseHours!=null)
+                if (objProvReqCourseTitle != null)// && CourseTitleName!=null && CourseHours!=null)
                 {
-                    //objProvReqCourseTitleEntity.ProvReqCourseTitleId = objProvReqCourseTitle.ProvReqCourseTitleId;
+                    objProvReqCourseTitleEntity.ProvReqCourseTitleId = objProvReqCourseTitle.ProvReqCourseTitleId;
                     objProvReqCourseTitleEntity.ProvReqCourseofStudyId = objProvReqCourseTitle.ProvReqCourseofStudyId;
                     objProvReqCourseTitleEntity.ProviderId = objProvReqCourseTitle.ProviderId;
                     objProvReqCourseTitleEntity.ApplicationId = objProvReqCourseTitle.ApplicationId;
@@ -160,9 +160,9 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.ResponseReason = "";
                     return objResponse;
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogingHelper.SaveExceptionInfo("", ex, "ProvReqCourseTitle", ENTITY.Enumeration.eSeverity.Error);
 
@@ -181,7 +181,7 @@ namespace LAPP.WS.Controllers.Common
         /// <param name="ProviderId">Provider Id</param>
         [AcceptVerbs("GET")]
         [ActionName("ProvReqCourseTitleGetAllByCourseOfStudyId")]
-        public ProvReqCourseTitleResponse ProvReqCourseTitleGetAllByCourseOfStudyId(string Key, int CourseOfStudyId, int ProviderId)
+        public ProvReqCourseTitleResponse ProvReqCourseTitleGetAllByCourseOfStudyId(string Key, int CourseOfStudyId, int ProviderId, int ApplicationId)
         {
             int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
 
@@ -201,7 +201,7 @@ namespace LAPP.WS.Controllers.Common
                     objResponse.ResponseReason = "";
                     return objResponse;
                 }
-                lstProvReqCourseTitle = objProvReqCourseTitleBAL.Get_All_ProvReqCourseTitle_By_CourseOfStudyId(CourseOfStudyId, ProviderId);
+                lstProvReqCourseTitle = objProvReqCourseTitleBAL.Get_All_ProvReqCourseTitle_By_CourseOfStudyId(CourseOfStudyId, ProviderId, ApplicationId);
                 if (lstProvReqCourseTitle != null && lstProvReqCourseTitle.Count > 0)
                 {
                     objResponse.ResponseReason = "To Get All ProvReqCourseTitle by Course of Study Id";
@@ -228,7 +228,7 @@ namespace LAPP.WS.Controllers.Common
                     }
                     ).ToList();
 
-                    objResponse.ProvReqCourseTitle= lstProvReqCourseTitleSelected;
+                    objResponse.ProvReqCourseTitle = lstProvReqCourseTitleSelected;
                 }
                 else
                 {
@@ -329,6 +329,8 @@ namespace LAPP.WS.Controllers.Common
         }
 
 
+        //not used
+
         /// <summary>
         /// This API used to update Prov Req Course Title.
         /// </summary>
@@ -360,7 +362,7 @@ namespace LAPP.WS.Controllers.Common
                 if (objProvReqCourseTitle != null)// && CourseTitleName!=null && CourseHours!=null)
                 {
                     objProvReqCourseTitle.ProvReqCourseTitleId = objProvReqCourseTitle.ProvReqCourseTitleId;
-                   // objEntity.ProvReqCourseofStudyId = objProvReqCourseTitle.ProvReqCourseofStudyId;
+                    // objEntity.ProvReqCourseofStudyId = objProvReqCourseTitle.ProvReqCourseofStudyId;
                     objEntity.ProviderId = objProvReqCourseTitle.ProviderId;
                     //objEntity.ApplicationId = objProvReqCourseTitle.ApplicationId;
                     objEntity.CourseTitleName = objProvReqCourseTitle.CourseTitleName;
@@ -556,7 +558,7 @@ namespace LAPP.WS.Controllers.Common
         /// <param name="ProviderId">Provider Id</param>
         [AcceptVerbs("GET")]
         [ActionName("ProvClinicHoursGetByProviderId")]
-        public ProvClinicHoursResponse ProvClinicHoursGetByProviderId(string Key, int ProviderId)
+        public ProvClinicHoursResponse ProvClinicHoursGetByProviderId(string Key, int ProviderId, int ApplicationId)
         {
             int CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
 
@@ -600,7 +602,7 @@ namespace LAPP.WS.Controllers.Common
                 objResponse.Status = false;
                 objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
                 objResponse.Message = ex.Message;
-                objResponse.ProvClinicHours= null;
+                objResponse.ProvClinicHours = null;
             }
             return objResponse;
         }
