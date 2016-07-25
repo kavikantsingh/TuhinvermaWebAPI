@@ -71,6 +71,11 @@ namespace LAPP.BAL
             return objDal.GetAllProviderGraduatesNumber(ApplicationId, ProviderId);
         }
 
+        public int SaveProviderTabStatus(ProviderTabStatus ObjProviderTabStatus)
+        {
+            return objDal.SaveProviderTabStatus(ObjProviderTabStatus);
+        }
+
         public List<ProviderTabStatusGetResponse> GetAllProviderTabStatus(int ApplicationId, int ProviderId)
         {
             return objDal.GetAllProviderTabStatus(ApplicationId, ProviderId);
