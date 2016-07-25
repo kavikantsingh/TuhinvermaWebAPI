@@ -60,6 +60,11 @@ namespace LAPP.ENTITY
         public DateTime? ModifiedOn { get; set; }
         public string IndividualLicenseGuid { get; set; }
     }
+    public class IndividualLicenseRenewalResponse
+    {
+        public DateTime LicenseExpirationDate { get; set; }
+        public bool IsValid { get; set; }
+    }
 
     public class IndividualLicenseResponseRequest : BaseEntityServiceResponse
     {

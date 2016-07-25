@@ -145,4 +145,13 @@ namespace LAPP.ENTITY
         public List<IndividualResponse> IndividualResponse { get; set; }
     }
 
+    public class IndividualLoadResponse
+    {
+        public string MiddleName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string CAMTCIdNumber { get; set; }
+        public string CAMTCCertificateNumber { get; set; }
+
+    }
 }

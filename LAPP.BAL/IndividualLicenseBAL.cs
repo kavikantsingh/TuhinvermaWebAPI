@@ -48,10 +48,17 @@ namespace LAPP.BAL
         {
             return objDal.Get_IndividualLicense_By_ApplicationId(applicationId);
         }
-
+        public IndividualLicenseRenewalResponse IndividualLicense_Renewal_Insert(int IndividualId, int ApplicationId, int ApplicationTypeId, int LicenseStatusTypeId, int CreatedBy, String IndividualLicenseGuId)
+        {
+            return objDal.IndividualLicense_Renewal_Insert(IndividualId, ApplicationId, ApplicationTypeId, LicenseStatusTypeId, CreatedBy, IndividualLicenseGuId);
+        }
         public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber)
         {
             return objDal.Get_IndividualLicense_By_LicenseNumber(LicenseNumber);
         }
-    }
+        public IndividualLoadResponse Get_CertificateHolder_By_IndividualId(int individualId, int applicationId)
+        {
+            return objDal.Get_CertificateHolder_By_IndividualId(individualId, applicationId);
+        }
+        }
 }

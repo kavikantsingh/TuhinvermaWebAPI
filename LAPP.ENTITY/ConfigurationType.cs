@@ -94,4 +94,8 @@ namespace LAPP.ENTITY
     {
         public List<ConfigurationTypeGet> ConfigurationList { get; set; }
     }
+    public class ApplicationSaveResponse : BaseEntityServiceResponse
+    {
+        public int ApplicationId { get; set; }
+    }
 }

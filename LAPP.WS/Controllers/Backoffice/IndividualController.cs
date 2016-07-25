@@ -566,9 +566,12 @@ namespace LAPP.WS.Controllers.Backoffice
         /// </summary>
         /// <param name="Key">API security key.</param>
         /// <param name="IndividualId">Record ID.</param>
+        /// <param name="ReferenceNumber">Session storage record ID.</param>
+        /// <param name="UserId">Session storage login userId.</param>
+
         [AcceptVerbs("GET")]
         [ActionName("ValidateIndividual")]
-        public IndividualRenewalResponse ValidateIndividual(string Key, int IndividualId)
+        public IndividualRenewalResponse ValidateIndividual(string Key, int IndividualId,string ReferenceNumber,int UserId)
         {
             LogingHelper.SaveAuditInfo(Key);
 
@@ -591,16 +594,16 @@ namespace LAPP.WS.Controllers.Backoffice
 
                 try
                 {
-                    objIndividualResponse = objIndividualBAL.Get_Individual_By_IndividualId(IndividualId);
+                    objIndividualResponse = new IndividualResponse();//objIndividualBAL.Get_Individual_By_IndividualId(IndividualId);
                     if (objIndividualResponse != null)
                     {
-                        Users objUseres = new Users();
-                        UsersBAL objUsersBAL = new UsersBAL();
-                        objUseres = objUsersBAL.Get_Users_byIndividualId(objIndividualResponse.IndividualId);
-                        if (objUseres != null)
-                        {
-                            objIndividualResponse.Email = objUseres.Email;
-                        }
+                        //Users objUseres = new Users();
+                        //UsersBAL objUsersBAL = new UsersBAL();
+                        //objUseres = objUsersBAL.Get_Users_byIndividualId(objIndividualResponse.IndividualId);
+                        //if (objUseres != null)
+                        //{
+                        //    objIndividualResponse.Email = objUseres.Email;
+                        //}
 
                         IndividualRenewal objIndividualRenewal = new IndividualRenewal();
                         objResponse.IndividualRenewal = objIndividualRenewal;
@@ -609,116 +612,65 @@ namespace LAPP.WS.Controllers.Backoffice
 
                         #region Validate License and Application 
 
-                        IndividualLicense objLatestLicense = new IndividualLicense();
-                        IndividualLicenseBAL objIndividualLicenseBAL = new IndividualLicenseBAL();
+                        IndividualApplication objIndividualApplication = new IndividualApplication();
+                        IndividualApplicationBAL objIndividualApplicationBAL = new IndividualApplicationBAL();
 
-                        objLatestLicense = objIndividualLicenseBAL.Get_Latest_IndividualLicense_By_IndividualId(IndividualId);
-                        if (objLatestLicense != null)
+                        objIndividualApplication = objIndividualApplicationBAL.Get_Application_PendingRenewal_By_IndividualId(IndividualId,5);
+                        if (objIndividualApplication == null)
                         {
-                            if (objLatestLicense.LicenseStatusTypeId == 6)
+                            Application objApplication = new Application();
+                            ApplicationBAL objApplicationBAL = new ApplicationBAL();
+
+                            objApplication.ApplicationTypeId = 1;
+                            objApplication.ApplicationStatusId = 1;
+                            objApplication.ApplicationStatusReasonId = 1;
+                            objApplication.ApplicationNumber = SerialsBAL.Get_Application_Number();
+                            objApplication.ApplicationSubmitMode = String.Empty;
+                            objApplication.SubmittedDate = DateTime.Now;
+                            objApplication.StartedDate = DateTime.Now;
+                            objApplication.ApplicationStatusDate = DateTime.Now;
+                            objApplication.PaymentDeadlineDate = DateTime.Now;
+                            objApplication.PaymentDate = DateTime.Now;
+                            objApplication.ConfirmationNumber = String.Empty;
+                            objApplication.ReferenceNumber = ReferenceNumber ?? String.Empty;
+                            objApplication.IsFingerprintingNotRequired = true;
+                            objApplication.IsPaymentRequired = false;
+                            objApplication.CanProvisionallyHire = false;
+                            objApplication.GoPaperless = false;
+                            objApplication.IsActive = true;
+                            objApplication.IsDeleted = false;
+                            objApplication.IsArchive = false;
+                            objApplication.CreatedBy = UserId;
+                            objApplication.CreatedOn = DateTime.Now;
+                            objApplication.ModifiedBy = UserId;
+                            objApplication.ModifiedOn = DateTime.Now;
+                            objApplication.ApplicationGuid = Guid.NewGuid().ToString();
+                            objApplication.LicenseTypeId = 1;
+
+                            var response = objApplicationBAL.Application_Insert(objApplication);
+                            var applicationId = response.ApplicationId;
+
+                            IndividualLicenseRenewalResponse objIndividualLicenseRenewal = new IndividualLicenseRenewalResponse();
+                            IndividualLicenseBAL objIndividualLicenseBAL = new IndividualLicenseBAL();
+
+                            objIndividualLicenseRenewal = objIndividualLicenseBAL.IndividualLicense_Renewal_Insert(IndividualId, applicationId, 1, 5, UserId, Guid.NewGuid().ToString());
+                            if(!objIndividualLicenseRenewal.IsValid)
                             {
-                                objResponse.ResponseReason = "";
-                                objResponse.Message = "Either you are not allowed to renew or you have submitted your renewal. Please contact to the board.";
                                 objResponse.Status = false;
-                                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.RenewalDenied).ToString("00");
-                                objResponse.IndividualRenewal = null;
-                                return objResponse;
-
-                            }
-                            bool NotValidLicenseRequestMax = false;
-                            bool NotValidLicenseRequestMin = false;
-
-                            int AllowedDaysMax = 0;
-                            int AllowedDaysMin = 0;
-                            ConfigurationTypeBAL objBAL = new ConfigurationTypeBAL();
-                            ConfigurationType objEntity = new ConfigurationType();
-                            ConfigurationType objConfigurationType = new ConfigurationType();
-                            objConfigurationType = objBAL.Get_Configuration_By_Settings_object("Noofdaysallowedforrenewalfromlicenseexpdate".ToLower());
-                            if (objConfigurationType != null)
-                            {
-                                AllowedDaysMax = Convert.ToInt32(objConfigurationType.Value);
-                            }
-                            objConfigurationType = new ConfigurationType();
-                            objConfigurationType = objBAL.Get_Configuration_By_Settings_object("Noofdaysallowedforrenewalbeforelicenseexp".ToLower());
-                            if (objConfigurationType != null)
-                            {
-                                AllowedDaysMin = Convert.ToInt32(objConfigurationType.Value);
-                            }
-
-                            List<IndividualLicense> lstIndividualLicense = new List<IndividualLicense>();
-                            try
-                            {
-                                lstIndividualLicense = objIndividualLicenseBAL.Get_IndividualLicense_By_IndividualId(IndividualId);
-                                if (lstIndividualLicense != null && lstIndividualLicense.Count > 0)
-                                {
-
-                                    IndividualLicense objLicense = lstIndividualLicense[0];
-                                    if (objLicense.LicenseExpirationDate.Date.AddDays(-AllowedDaysMin) >= DateTime.Now)
-                                    {
-                                        NotValidLicenseRequestMin = true;
-                                    }
-
-                                    if (objLicense.LicenseExpirationDate.Date.AddDays(AllowedDaysMax) <= DateTime.Now)
-                                    {
-                                        NotValidLicenseRequestMax = true;
-                                    }
-
-                                    #region Check Renewal Denieal Status
-
-                                    if (NotValidLicenseRequestMin)
-                                    {
-                                        objResponse.ResponseReason = "";// GlobalFunctions.GeneralFunctions.GetJsonStringFromList(lstResponseReason);
-                                        objResponse.Message = "License renewal is not open yet. License can only be renewed starting  " + AllowedDaysMin + " days before the expiration date. ";
-                                        objResponse.Status = false;
-                                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.RenewalDenied).ToString("00");
-                                        objResponse.IndividualRenewal = null;
-                                        return objResponse;
-
-                                    }
-                                    if (NotValidLicenseRequestMax)
-                                    {
-                                        objResponse.ResponseReason = "";// GlobalFunctions.GeneralFunctions.GetJsonStringFromList(lstResponseReason);
-                                        objResponse.Message = "License can only be renewed within " + AllowedDaysMax + " days of the license expiration date. Please contact office.";
-                                        objResponse.Status = false;
-                                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.RenewalDenied).ToString("00");
-                                        objResponse.IndividualRenewal = null;
-                                        return objResponse;
-
-                                    }
-
-                                    #endregion
-
-                                }
-                                else
-                                {
-                                    objResponse.ResponseReason = "";
-                                    objResponse.Message = "Either you are not allowed to renew or you have submitted your renewal. Please contact to the board.";
-                                    objResponse.Status = false;
-                                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.RenewalDenied).ToString("00");
-                                    objResponse.IndividualRenewal = null;
-                                    return objResponse;
-
-                                }
-
-                                objResponse.ResponseReason = "";
-                                objResponse.Message = "You are eligible for renewal.";
-                                objResponse.Status = true;
-                                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                                objResponse.Message = "Something went wrong.";
                                 objResponse.IndividualRenewal = null;
                                 return objResponse;
                             }
-                            catch (Exception ex)
-                            {
-                                throw ex;
 
-                            }
-                        }
-                        else
-                        {
-                            objResponse.Status = false;
-                            objResponse.Message = "No license found.";
-                            objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                            objResponse.LicenseExpirationDate = objIndividualLicenseRenewal.LicenseExpirationDate;
+                            objResponse.Status = true;
+                            objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                            objResponse.Message = "Success";
                             objResponse.IndividualRenewal = null;
+                            return objResponse;
+
+                            
                         }
                         #endregion
                     }
@@ -757,7 +709,46 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+        /// <summary>
+        /// Get Configuration value by setting
+        /// </summary>
+        ///  <param name="Key">API security key.</param>
+        /// <param name="Setting">Setting key.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("ConfigurationTypeBySetting")]
+        public ConfigurationValueResponse ConfigurationTypeBySetting(string Key, string Setting)
+        {
+            var objResponse = new ConfigurationValueResponse();
+            int AllowedDays = 0;
+            ConfigurationTypeBAL objBAL = new ConfigurationTypeBAL();
+            ConfigurationType objEntity = new ConfigurationType();
+            ConfigurationType objConfigurationType = new ConfigurationType();
+            objConfigurationType = objBAL.Get_ConfigurationType_Value_By_Setting(Setting.ToLower());
+            if (objConfigurationType != null)
+            {
+                AllowedDays = Convert.ToInt32(objConfigurationType.Value);
+                objResponse.SettingKey = Setting;
+                objResponse.IsValid = true;
+                objResponse.Configurationvalue = AllowedDays;
+            }
+            return objResponse;
+        }
 
+        /// <summary>
+        /// Get Configuration value by setting
+        /// </summary>
+        ///  <param name="individualId">IndividualId.</param>
+        /// <param name="applicationId">ApplicationId.</param>
+        /// <param name="Key">Key.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("LoadCertificateHolder")]
+        public IndividualLoadResponse LoadCertificateHolder(string Key,int individualId,int applicationId)
+        {
+            var objResponse = new IndividualLoadResponse();
+            var objindividualBAL = new IndividualLicenseBAL();
+            objResponse = objindividualBAL.Get_CertificateHolder_By_IndividualId(individualId, applicationId);
+            return objResponse;
+        }
         #endregion
 
         #region IndividualNameSave

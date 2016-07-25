@@ -22,7 +22,10 @@ namespace LAPP.BAL
             return objDal.Get_All_IndividualApplication();
         }
 
-
+        public IndividualApplication Get_Application_PendingRenewal_By_IndividualId(int IndividualId, int LicenseStatusTypeId)
+        {
+            return objDal.Get_Application_PendingRenewal_By_IndividualId(IndividualId, LicenseStatusTypeId);
+        }
         public IndividualApplication Get_IndividualApplication_byIndividualId(int IndividualId)
         {
             return objDal.Get_IndividualApplication_byIndividualId(IndividualId);
