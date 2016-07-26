@@ -15,7 +15,10 @@ namespace LAPP.BAL
         {
             return objDal.Save_Individual(objIndividual);
         }
-
+        public int Update_Individual(IndividualLoadResponse objIndividual)
+        {
+            return objDal.Update_Individual(objIndividual);
+        }
         public List<Individual> Get_All_Individual()
         {
             return objDal.Get_All_Individual();

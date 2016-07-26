@@ -56,5 +56,9 @@ namespace LAPP.BAL
         {
             return objDal.Update_ContentItemLk(objContentItemLkPost);
         }
+        public ContentItemLk Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(int ContentItemLkId, String ContentItemLkCode)
+        {
+            return objDal.Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(ContentItemLkId, ContentItemLkCode);
+        }
     }
 }

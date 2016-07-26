@@ -698,6 +698,35 @@ namespace LAPP.DAL
 
         }
 
+
+        public int SaveProviderTabStatus(ProviderTabStatus ObjProviderTabStatus)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ApplicationTabStatusId", ObjProviderTabStatus.ApplicationTabStatusId));
+            lstParameter.Add(new MySqlParameter("ApplicationId", ObjProviderTabStatus.ApplicationId));
+            lstParameter.Add(new MySqlParameter("PageModuleId", ObjProviderTabStatus.PageModuleId));
+            lstParameter.Add(new MySqlParameter("PageModuleTabSubModuleId", ObjProviderTabStatus.PageModuleTabSubModuleId));
+            lstParameter.Add(new MySqlParameter("PageTabSectionId", ObjProviderTabStatus.PageTabSectionId));
+            lstParameter.Add(new MySqlParameter("IndividualId", ObjProviderTabStatus.IndividualId));
+            lstParameter.Add(new MySqlParameter("ProviderId", ObjProviderTabStatus.ProviderId));
+            lstParameter.Add(new MySqlParameter("TabName", ObjProviderTabStatus.TabName));
+            lstParameter.Add(new MySqlParameter("ApplicationTabStatus", ObjProviderTabStatus.ApplicationTabStatus));
+            lstParameter.Add(new MySqlParameter("SortOrder", ObjProviderTabStatus.SortOrder));
+            lstParameter.Add(new MySqlParameter("IsActive", ObjProviderTabStatus.IsActive));
+            lstParameter.Add(new MySqlParameter("IsDeleted", ObjProviderTabStatus.IsDeleted));
+            lstParameter.Add(new MySqlParameter("CreatedBy", ObjProviderTabStatus.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", ObjProviderTabStatus.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", ObjProviderTabStatus.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", ObjProviderTabStatus.ModifiedOn));
+            
+            MySqlParameter returnParam = new MySqlParameter("ReturnParam", SqlDbType.Int);
+            returnParam.Direction = ParameterDirection.ReturnValue;
+            lstParameter.Add(returnParam);
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "providerTabStatus_Save", true, lstParameter.ToArray());
+            int returnValue = Convert.ToInt32(returnParam.Value);
+            return returnValue;
+        }
+
         public List<ProviderTabStatusGetResponse> GetAllProviderTabStatus(int ApplicationId, int ProviderId)
         {
             DataSet ds = new DataSet("DS");

@@ -89,7 +89,23 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
-
+        public ContentItemLk Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(int ContentItemLkId, String ContentItemLkCode)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("ContentItemLkId", ContentItemLkId));
+            lstParameter.Add(new MySqlParameter("ContentItemLkCode", ContentItemLkCode));            
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "ContentItemLk_GET_BY_ContentItemLkId_AND_Code", lstParameter.ToArray());
+            ContentItemLk objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
         public List<ContentItemLk> Get_ContentItemLk_By_ContentItemLkCode(string Code)
         {
             DataSet ds = new DataSet("DS");
