@@ -52,9 +52,9 @@ namespace LAPP.BAL
         {
             return objDal.IndividualLicense_Renewal_Insert(IndividualId, ApplicationId, ApplicationTypeId, LicenseStatusTypeId, CreatedBy, IndividualLicenseGuId);
         }
-        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber)
+        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber, string LastName, string SSN)
         {
-            return objDal.Get_IndividualLicense_By_LicenseNumber(LicenseNumber);
+            return objDal.Get_IndividualLicense_By_LicenseNumber(LicenseNumber, LastName, SSN);
         }
         public IndividualLoadResponse Get_CertificateHolder_By_IndividualId(int individualId, int applicationId)
         {

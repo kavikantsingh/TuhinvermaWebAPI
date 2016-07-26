@@ -183,13 +183,15 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber)
+        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber, string LastName, string SSN)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             lstParameter.Add(new MySqlParameter("LicenseNumber", LicenseNumber));
+            lstParameter.Add(new MySqlParameter("LastName", LastName));
+            lstParameter.Add(new MySqlParameter("SSN", SSN));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualLicense_GET_BY_LicenseNumber", lstParameter.ToArray());
 
             IndividualLicense objEntity = null;

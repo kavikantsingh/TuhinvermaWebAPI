@@ -4836,7 +4836,7 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <param name="LicenseNumber">License Number</param>
         [AcceptVerbs("GET")]
         [ActionName("IndividualLicenseByLicenseNumber")]
-        public IndividualLicenseResponseRequest IndividualLicenseByLicenseNumber(string Key, string LicenseNumber)
+        public IndividualLicenseResponseRequest IndividualLicenseByLicenseNumber(string Key, string LicenseNumber, string LastName, string SSN)
         {
             LogingHelper.SaveAuditInfo(Key);
 
@@ -4857,7 +4857,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     return objResponse;
                 }
 
-                objIndividualLicenseResponse = objIndividualLicenseBAL.Get_IndividualLicense_By_LicenseNumber(LicenseNumber);
+                objIndividualLicenseResponse = objIndividualLicenseBAL.Get_IndividualLicense_By_LicenseNumber(LicenseNumber, LastName, SSN);
                 if (objIndividualLicenseResponse != null)
                 {
                     List<IndividualLicenseResponse> lstLicenseResponse = new List<IndividualLicenseResponse>();
