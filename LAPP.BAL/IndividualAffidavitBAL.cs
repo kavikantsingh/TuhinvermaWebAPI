@@ -16,7 +16,14 @@ namespace LAPP.BAL
         {
             return objDal.Save_IndividualAffidavit(objaddress);
         }
-
+        public int Insert_IndividualAffidavit(IndividualAffidavit objaddress)
+        {
+            return objDal.Insert_IndividualAffidavit(objaddress);
+        }
+        public int Insert_Individualaffidavitsignature(Individualaffidavitsignature objIndividualaffidavitsignature)
+        {
+            return objDal.Insert_Individualaffidavitsignature(objIndividualaffidavitsignature);
+        }
         public List<IndividualAffidavit> Get_All_IndividualAffidavit()
         {
             return objDal.Get_All_IndividualAffidavit();
