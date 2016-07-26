@@ -216,7 +216,7 @@ namespace LAPP.WS.Controllers.User
                     objEntity.IsDeleted = true;
                     objEntity.ModifiedOn = DateTime.Now;
                     objEntity.ModifiedBy = TokenHelper.GetTokenByKey(Key).UserId;
-                    objBAL.Save_Users(objEntity);
+                    objBAL.User_Delete(ID);
 
                     objResponse.Message = Messages.DeleteSuccess;
                     objResponse.Status = true;
@@ -303,7 +303,7 @@ namespace LAPP.WS.Controllers.User
                         IsPending = menu.IsPending,
                     }).ToList();
                     objResponse.Total_Recard = lstUsers[0].Total_Recard;
-                    objResponse.Users = lstUsersSelected;
+                    objResponse.Users = lstUsers;
                 }
                 else
                 {
@@ -327,6 +327,330 @@ namespace LAPP.WS.Controllers.User
             return objResponse;
         }
 
+
+
+        /// <summary>
+        /// Method to Search Users by key and objUsersSearch.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="objUsersSearch">Record ID.</param>
+        /// <param name="PageNumber">Record ID.</param>
+        /// <param name="NoOfRecords">Record ID.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("UsersSearchAdmin")]
+        public UsersSearchResponse UsersSearchAdmin(string Key, UsersSearch objUsersSearch)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            UsersSearchResponse objResponse = new UsersSearchResponse();
+            UsersBAL objBAL = new UsersBAL();
+            Users objEntity = new Users();
+            List<UsersSearch> lstUsersSearch = new List<UsersSearch>();
+            List<Users> lstUsers = new List<Users>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.Users = null;
+                    return objResponse;
+                }
+
+                lstUsers = objBAL.Search_Users_Admin(objUsersSearch);
+                if (lstUsers != null && lstUsers.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    var lstUsersSelected = lstUsers.Select(menu => new
+                    {
+                        UserName = menu.UserName,
+                        UserTypeId = menu.UserTypeId,
+                        UserTypeName = menu.UserTypeName,
+                        FirstName = menu.FirstName,
+                        LastName = menu.LastName,
+                        DateOfBirth = menu.DOB,
+                        Gender = menu.Gender,
+                        Phone = menu.Phone,
+                        PositionTitle = menu.PositionTitle,
+                        Email = menu.Email,
+                        SourceId = menu.SourceId,
+                        SourceName = menu.SourceName,
+                        UserStatusId = menu.UserStatusId,
+                        UserStatusName = menu.UserStatusName,
+
+                        IsPending = menu.IsPending,
+                    }).ToList();
+                    objResponse.Total_Recard = lstUsersSelected.Count;
+                    objResponse.Users = lstUsers;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.Users = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "UsersSearch", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Users = null;
+
+            }
+            return objResponse;
+        }
+        /// <summary>
+        /// Save or Update the data For Users
+        /// </summary>
+        /// <param name="Key">The Key of the data.</param>
+        /// <param name="objUsers">Object of Users</param>
+        [AcceptVerbs("POST")]
+        [ActionName("UsersSaveAdmin")]
+        public UsersPostResponse UsersSaveAdmin(string Key, UsersRequest objUsers)
+        {
+
+
+            int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
+
+            LogingHelper.SaveAuditInfo(Key);
+
+            UsersPostResponse objResponse = new UsersPostResponse();
+            UsersBAL objBAL = new UsersBAL();
+            Users objEntity = new Users();
+            List<UsersRequest> lstEntity = new List<UsersRequest>();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.Message = "User session has expired.";
+                objResponse.Users = null;
+                return objResponse;
+            }
+
+            //string ValidationResponse = UsersValidation.ValidateUsersObject(objUsers);
+
+            //if (!string.IsNullOrEmpty(ValidationResponse))
+            //{
+
+
+            //    objResponse.Message = "Validation Error";
+            //    objResponse.Status = false;
+            //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+            //    objResponse.ResponseReason = ValidationResponse;
+            //    return objResponse;
+
+            //}
+
+            try
+            {
+                Individual objIndividual = new Individual();
+                IndividualBAL objIndividualBAL = new IndividualBAL();
+
+                if (objUsers.UserId > 0)
+                {
+                    objEntity = objBAL.Get_Users_byUsersId(objUsers.UserId);
+                    if (objEntity != null)
+                    {
+                        objEntity.FirstName = objUsers.FirstName;
+                        objEntity.UserName = objUsers.UserName;
+                        objEntity.LastName = objUsers.LastName;
+                        objEntity.UserTypeId = objUsers.UserTypeId;
+                        objEntity.UserStatusId = objUsers.UserStatusId;
+                       objEntity.IsPending = objUsers.IsPending;                   
+                        objEntity.Phone = objUsers.Phone;
+                        objEntity.PositionTitle = objUsers.PositionTitle;
+                        objEntity.Email = objUsers.Email;
+
+                        if (!string.IsNullOrEmpty(objUsers.Phone))
+                        { objEntity.Phone = objUsers.Phone; }
+
+                        #region User Role Save
+                        List<UserRolesRequest> lstRoles = new List<UserRolesRequest>();
+                        lstRoles = objUsers.UserRoles;
+
+                        if (lstRoles != null && lstRoles.Count > 0)
+                        {
+                            foreach (UserRolesRequest objRoleReq in lstRoles)
+                            {
+                                UserRole objRole = new UserRole();
+                                UserRoleBAL objRoleBAL = new UserRoleBAL();
+                                if (objRoleReq.UserRoleID > 0)
+                                {
+                                    objRole = objRoleBAL.Get_UserRole_byUserRoleId(objRoleReq.UserRoleID);
+                                    if (objRole != null)
+                                    {
+                                        objRole.IsActive = objRoleReq.Selected;
+                                        objRole.IsGrantable = objRoleReq.Grantable;
+                                        objRole.ModifiedBy = CreatedOrMoifiy;
+                                        objRole.ModifiedOn = DateTime.Now;
+                                        objRoleBAL.Save_UserRole(objRole);
+                                    }
+                                }
+                                else
+                                {
+                                    objRole = new UserRole();
+                                    objRole.RoleId = objRoleReq.RoleId;
+                                    objRole.UserId = objUsers.UserId;
+                                    objRole.IsActive = objRoleReq.Selected;
+                                    objRole.IsGrantable = objRoleReq.Grantable;
+                                    objRole.ModifiedBy = 0;
+                                    objRole.ModifiedOn = DateTime.Now;
+                                    objRole.CreatedBy = CreatedOrMoifiy;
+                                    objRole.CreatedOn = DateTime.Now;
+                                    objRole.IsDeleted = false;
+                                    objRoleBAL.Save_UserRole(objRole);
+                                }
+
+                            }
+                        }
+                        #endregion
+
+
+                        objEntity.Gender = objUsers.Gender;
+                        objEntity.DateOfBirth = objUsers.DateOfBirth;
+
+                        objEntity.ModifiedOn = DateTime.Now;
+                        objEntity.ModifiedBy = CreatedOrMoifiy;
+                        objBAL.Individual_User_Save(objEntity);
+                        objResponse.Message = Messages.UpdateSuccess;
+                        objResponse.Status = true;
+                        objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    }
+
+                }
+                else
+                {
+                    string TempPassword = GeneralFunctions.GetTempPassword();
+                    objEntity = new Users();
+
+                    objEntity.FirstName = objUsers.FirstName;
+                    objEntity.UserName = objUsers.UserName;
+                    objEntity.LastName = objUsers.LastName;
+                    objEntity.UserTypeId = objUsers.UserTypeId;
+                    objEntity.UserStatusId = objUsers.UserStatusId;
+                    objEntity.IsPending = objUsers.IsPending;
+                    objEntity.SourceId = objUsers.SourceId;
+                    objEntity.Email = objUsers.Email;
+
+                    objEntity.Gender = objUsers.Gender;
+                    objEntity.DateOfBirth = objUsers.DateOfBirth;
+
+
+                    objEntity.PositionTitle = objUsers.PositionTitle;
+
+                    if (!string.IsNullOrEmpty(objUsers.Phone))
+                    { objEntity.Phone = objUsers.Phone; }
+
+                    objEntity.PasswordHash = TempPassword;// "123456";
+                    objEntity.TemporaryPassword = true;
+                    objEntity.FailedLogins = 0;
+                    // objUsers.SourceId = 0;
+
+                    objEntity.IsActive = true;
+                    objEntity.IsDeleted = false;
+
+                    //   objEntity.PasswordChangedOn = DateTime.Now;
+                    objEntity.CreatedBy = 1;
+                    objEntity.UserGuid = Guid.NewGuid().ToString();
+                    objEntity.IndividualGuid = "";
+
+                    objEntity.Authenticator = Guid.NewGuid().ToString();
+                    objEntity.CreatedOn = DateTime.Now;
+                    objEntity.CreatedBy = CreatedOrMoifiy;
+                    //objUsers.ModifiedOn = null;
+                    objEntity.UserId = objBAL.Individual_User_Save(objEntity);
+
+
+
+                    objResponse.Message = Messages.SaveSuccess;
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    objUsers.UserId = objEntity.UserId;
+
+                    #region User Role Save
+                    List<UserRolesRequest> lstRoles = new List<UserRolesRequest>();
+                    lstRoles = objUsers.UserRoles;
+
+                    if (lstRoles != null && lstRoles.Count > 0)
+                    {
+                        foreach (UserRolesRequest objRoleReq in lstRoles)
+                        {
+                            UserRole objRole = new UserRole();
+                            UserRoleBAL objRoleBAL = new UserRoleBAL();
+                            if (objRoleReq.UserRoleID > 0)
+                            {
+                                objRole = objRoleBAL.Get_UserRole_byUserRoleId(objRoleReq.UserRoleID);
+                                if (objRole != null)
+                                {
+                                    objRole.IsActive = objRoleReq.Selected;
+                                    objRole.IsGrantable = objRoleReq.Grantable;
+                                    objRole.ModifiedBy = 1;
+                                    objRole.ModifiedOn = DateTime.Now;
+                                    objRoleBAL.Save_UserRole(objRole);
+                                }
+                            }
+                            else
+                            {
+                                objRole = new UserRole();
+                                objRole.RoleId = objRoleReq.RoleId;
+                                objRole.UserId = objUsers.UserId;
+                                objRole.IsActive = objRoleReq.Selected;
+                                objRole.IsGrantable = objRoleReq.Grantable;
+                                objRole.ModifiedBy = 1;
+                                objRole.ModifiedOn = DateTime.Now;
+                                objRole.CreatedBy = 1;
+                                objRole.CreatedOn = DateTime.Now;
+                                objRole.IsDeleted = false;
+                                objRoleBAL.Save_UserRole(objRole);
+                            }
+
+                        }
+                    }
+                    #endregion
+
+                    #region Send Email of user creation
+
+                    if (EmailHelper.SendMail(objUsers.Email, "Temporary Password", "Email: " + objUsers.Email + " <br/> Temporary Password: " + TempPassword, true))
+                    {
+                        LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Temporary Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Temporary Password email has been sent", EmailHelper.GetSenderAddress(), objUsers.Email, null, null, objUsers.UserId, null, null, null);
+                    }
+                    else
+                    {
+                        LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Temporary Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Temporary Password email sending failed", EmailHelper.GetSenderAddress(), objUsers.Email, null, null, objUsers.UserId, null, null, null);
+                    }
+
+                    #endregion
+
+                }
+
+                lstEntity.Add(objUsers);
+                objResponse.Status = true;
+
+                objResponse.Users = lstEntity;
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "UsersSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.Users = null;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+            return objResponse;
+        }
 
         /// <summary>
         /// Save or Update the data For Users
@@ -357,19 +681,19 @@ namespace LAPP.WS.Controllers.User
                 return objResponse;
             }
 
-            string ValidationResponse = UsersValidation.ValidateUsersObject(objUsers);
+            //string ValidationResponse = UsersValidation.ValidateUsersObject(objUsers);
 
-            if (!string.IsNullOrEmpty(ValidationResponse))
-            {
+            //if (!string.IsNullOrEmpty(ValidationResponse))
+            //{
 
 
-                objResponse.Message = "Validation Error";
-                objResponse.Status = false;
-                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
-                objResponse.ResponseReason = ValidationResponse;
-                return objResponse;
+            //    objResponse.Message = "Validation Error";
+            //    objResponse.Status = false;
+            //    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+            //    objResponse.ResponseReason = ValidationResponse;
+            //    return objResponse;
 
-            }
+            //}
 
             try
             {
@@ -487,7 +811,8 @@ namespace LAPP.WS.Controllers.User
                     //   objEntity.PasswordChangedOn = DateTime.Now;
                     objEntity.CreatedBy = 1;
                     objEntity.UserGuid = Guid.NewGuid().ToString();
-                    objEntity.IndividualGuid = Guid.NewGuid().ToString();
+                      objEntity.IndividualGuid = Guid.NewGuid().ToString();
+                    
                     objEntity.Authenticator = Guid.NewGuid().ToString();
                     objEntity.CreatedOn = DateTime.Now;
                     objEntity.CreatedBy = CreatedOrMoifiy;
