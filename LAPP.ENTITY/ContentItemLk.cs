@@ -38,4 +38,16 @@ namespace LAPP.ENTITY
         public DateTime EffectiveDate { get; set; }
         public DateTime EndDate { get; set; }
     }
+    public class ContentItemLkAffidavitResponse: BaseEntityServiceResponse
+    {
+        public List<ContentItemLkAffidavitItem> ContentItems { get; set; }
+    }
+    public class ContentItemLkAffidavitItem
+    {
+        public int ContentItemLkId { get; set; }
+        public string ContentItemLkDesc { get; set; }
+        public string ContentItemLkCode { get; set; }
+        public int ContentItemNo { get; set; }
+        public Boolean IsChecked { get; set; }
+    }
 }

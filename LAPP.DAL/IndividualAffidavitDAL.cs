@@ -39,7 +39,50 @@ namespace LAPP.DAL
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
+        public int Insert_IndividualAffidavit(IndividualAffidavit objIndividualAffidavit)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("IndividualId", objIndividualAffidavit.IndividualId));
+            lstParameter.Add(new MySqlParameter("ContentItemLkId", objIndividualAffidavit.ContentItemLkId));
+            lstParameter.Add(new MySqlParameter("ContentItem#", objIndividualAffidavit.ContentItemNumber));
+            lstParameter.Add(new MySqlParameter("ContentItemResponse", objIndividualAffidavit.ContentItemResponse));
+            lstParameter.Add(new MySqlParameter("Desc", objIndividualAffidavit.Desc));
+            lstParameter.Add(new MySqlParameter("IsActive", objIndividualAffidavit.IsActive));
+            lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualAffidavit.IsDeleted));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualAffidavit.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualAffidavit.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualAffidavit.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualAffidavit.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("IndividualAffidavitGuid", objIndividualAffidavit.IndividualAffidavitGuid));
+            lstParameter.Add(new MySqlParameter("Name", objIndividualAffidavit.Name));
+            lstParameter.Add(new MySqlParameter("SignatureName", objIndividualAffidavit.SignatureName));
+            lstParameter.Add(new MySqlParameter("Date", objIndividualAffidavit.Date));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objIndividualAffidavit.ApplicationId));
 
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "Individualaffidavit_save", true, lstParameter.ToArray());
+            return returnValue;
+        }
+
+        public int Insert_Individualaffidavitsignature(Individualaffidavitsignature objIndividualaffidavitsignature)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("IndividualId", objIndividualaffidavitsignature.IndividualId));
+            lstParameter.Add(new MySqlParameter("Name", objIndividualaffidavitsignature.Name));
+            lstParameter.Add(new MySqlParameter("SignatureName", objIndividualaffidavitsignature.SignatureName));
+            lstParameter.Add(new MySqlParameter("Date", objIndividualaffidavitsignature.Date));
+            lstParameter.Add(new MySqlParameter("ApplicationId", objIndividualaffidavitsignature.ApplicationId));
+            lstParameter.Add(new MySqlParameter("IndividualAffidavitSignatureGuid", objIndividualaffidavitsignature.IndividualAffidavitSignatureGuid));
+            lstParameter.Add(new MySqlParameter("ReferenceNumber", objIndividualaffidavitsignature.ReferenceNumber));
+            lstParameter.Add(new MySqlParameter("IsActive", objIndividualaffidavitsignature.IsActive));
+            lstParameter.Add(new MySqlParameter("IsDeleted", objIndividualaffidavitsignature.IsDeleted));
+            lstParameter.Add(new MySqlParameter("CreatedBy", objIndividualaffidavitsignature.CreatedBy));
+            lstParameter.Add(new MySqlParameter("CreatedOn", objIndividualaffidavitsignature.CreatedOn));
+            lstParameter.Add(new MySqlParameter("ModifiedBy", objIndividualaffidavitsignature.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("ModifiedOn", objIndividualaffidavitsignature.ModifiedOn));
+          
+            int returnValue = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "Individualaffidavitsignature_save", lstParameter.ToArray());
+            return returnValue;
+        }
         public IndividualAffidavit Get_IndividualAffidavit_By_IndId_AppId(int individualId, int applicationId)
         {
             DataSet ds = new DataSet("DS");

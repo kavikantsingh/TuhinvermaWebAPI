@@ -56,9 +56,9 @@ namespace LAPP.BAL
         {
             return objDal.Get_IndividualLicense_By_LicenseNumber(LicenseNumber, LastName, SSN);
         }
-        public IndividualLoadResponse Get_CertificateHolder_By_IndividualId(int individualId, int applicationId)
+        public IndividualLoadResponse Get_IndividualLicense_By_IndividualId_ApplicationId(int individualId, int applicationId)
         {
-            return objDal.Get_CertificateHolder_By_IndividualId(individualId, applicationId);
+            return objDal.Get_IndividualLicense_By_IndividualId_ApplicationId(individualId, applicationId);
         }
         }
 }

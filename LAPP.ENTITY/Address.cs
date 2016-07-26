@@ -7,7 +7,7 @@ using System.Text;
 namespace LAPP.ENTITY
 {
 
-    public class AddressResponse : BaseEntity
+    public class AddressResponse : BaseEntityServiceResponse
 
     {
         [Display(Description = "Required: Yes, Desc: Auto Generate")]

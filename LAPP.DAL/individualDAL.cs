@@ -50,6 +50,20 @@ namespace LAPP.DAL
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
+        public int Update_Individual(IndividualLoadResponse objIndividual)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("I_IndividualId", objIndividual.IndividualId));
+            lstParameter.Add(new MySqlParameter("I_IndividualLicenseId", objIndividual.IndividualLicenseId));
+            lstParameter.Add(new MySqlParameter("I_FirstName", objIndividual.FirstName.NullString()));
+            lstParameter.Add(new MySqlParameter("I_MiddleName", objIndividual.MiddleName.NullString()));
+            lstParameter.Add(new MySqlParameter("I_LastName", objIndividual.LastName.NullString()));
+            lstParameter.Add(new MySqlParameter("I_CAMTCIdNumber", objIndividual.CAMTCIdNumber.NullString()));
+            lstParameter.Add(new MySqlParameter("I_CAMTCCertificateNumber", objIndividual.CAMTCCertificateNumber.NullString()));
+            
+            var returnVal = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "Individual_Update", lstParameter.ToArray());
+            return returnVal;
+        }
 
         public List<Individual> Get_All_Individual()
         {
