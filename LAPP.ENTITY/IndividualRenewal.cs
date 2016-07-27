@@ -130,9 +130,17 @@ namespace LAPP.ENTITY
 
     public class IndividualRenewalResponse : BaseEntityServiceResponse
     {
+        public DateTime LicenseExpirationDate { get; set; }
         public IndividualRenewal IndividualRenewal { get; set; }
     }
+    public class ConfigurationValueResponse : BaseEntityServiceResponse
+    {
+        public string SettingKey { get; set; }
+        public bool IsValid { get; set; }
 
+        public int Configurationvalue { get; set; }
+
+    }
     public class RenewalSearchResponse : BaseEntityServiceResponse
     {
         public int Total_Recard { get; set; }

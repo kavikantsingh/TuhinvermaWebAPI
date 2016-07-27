@@ -45,7 +45,24 @@ namespace LAPP.DAL
             }
             return lstEntity;
         }
+        public IndividualApplication Get_Application_PendingRenewal_By_IndividualId(int IndividualId, int LicenseStatusTypeId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("P_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("P_LicenseStatusTypeId", LicenseStatusTypeId));
 
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Application_Get_PendingRenewal_By_IndividualId", lstParameter.ToArray());
+
+            IndividualApplication objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+
+            }
+            return objEntity;
+        }
         public IndividualApplication Get_IndividualApplication_byIndividualId(int IndividualId)
         {
             DataSet ds = new DataSet("DS");

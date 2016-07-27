@@ -1199,19 +1199,19 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.DeleteTemplateById(System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.DeleteTemplateById(System.String,System.Int32)">
             <summary>
             Delete Template By Id
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.UpdateTemplate(LAPP.ENTITY.Template)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.UpdateTemplate(System.String,LAPP.ENTITY.Template)">
             <summary>
             Update Template
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.CreateTemplate(LAPP.ENTITY.Template)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.CreateTemplate(System.String,LAPP.ENTITY.Template)">
             <summary>
             Create Template
             </summary>
@@ -1229,19 +1229,19 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByAppTyId(System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByAppTyId(System.String,LAPP.ENTITY.TemplateSearch)">
             <summary>
             Get All Templates Get By AppTy Id
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByTemplateName(System.String)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByTemplateName(System.String,LAPP.ENTITY.TemplateSearch)">
             <summary>
             Get All Templates Get By Template Name
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByAppTyIdTemplateName(System.Int32,System.String)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByAppTyIdTemplateName(System.String,LAPP.ENTITY.TemplateSearch)">
             <summary>
             Get All Templates Get By AppTy Id and Template Name
             </summary>

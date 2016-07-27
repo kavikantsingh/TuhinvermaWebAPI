@@ -62,6 +62,26 @@ namespace LAPP.ENTITY
         public List<ProviderNameResponse> ProviderNameResponseList { get; set; }
     }
 
+    public class ProviderTabStatus
+    {
+        public int ApplicationTabStatusId { get; set; }
+        public int ApplicationId { get; set; }
+        public int PageModuleId { get; set; }
+        public int PageModuleTabSubModuleId { get; set; }
+        public int PageTabSectionId { get; set; }
+        public int IndividualId { get; set; }
+        public int ProviderId { get; set; }
+        public string TabName { get; set; }
+        public bool ApplicationTabStatus { get; set; }
+        public int SortOrder { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+    }
+
     public class ProviderTabStatusGet
     {
         public string TabName { get; set; }

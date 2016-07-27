@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Http;
 using LAPP.BAL;
 using LAPP.ENTITY;
+using LAPP.WS.App_Helper.Common;
 
 namespace LAPP.WS.Controllers.Backoffice
 {
@@ -40,7 +41,7 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("DeleteTemplateById")]
-        public void DeleteTemplateById(int id)
+        public void DeleteTemplateById(string Key,int id)
         {
             _templateBal.DeleteTemplateById(id);
         }
@@ -51,9 +52,18 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("UpdateTemplate")]
-        public void UpdateTemplate(Template template)
+        public void UpdateTemplate(string Key, Template template)
         {
-            _templateBal.UpdateTemplate(template);
+            int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
+
+            var temp= _templateBal.GetTemplateById(template.TemplateId);
+            temp.TemplateName = template.TemplateName;
+            temp.ApplicationTypeId = template.ApplicationTypeId;
+            temp.TemplateSubject = template.TemplateSubject;
+            temp.TemplateMessage = template.TemplateMessage;
+            temp.ModifiedOn = System.DateTime.Now;
+            temp.ModifiedBy = CreatedOrMoifiy;
+            _templateBal.UpdateTemplate(temp);
         }
 
         /// <summary>
@@ -62,8 +72,22 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("CreateTemplate")]
-        public int CreateTemplate(Template template)
+        public int CreateTemplate(string Key, Template template)
         {
+            int CreatedOrMoifiy = TokenHelper.GetTokenByKey(Key).UserId;
+            template.TemplateCode = "";
+            template.MasterTransactionId = 1;
+            template.PageModuleId = 1;
+            template.PageTabSectionId = 1;
+            template.PageModuleTabSubModuleId = 1;
+            template.TemplateAppliesToTypeId = 1;
+            template.TemplateTypeId = 1;
+
+            template.IsActive = true;
+            template.CreatedOn = System.DateTime.Now;
+            template.CreatedBy = CreatedOrMoifiy;
+            template.ModifiedOn = System.DateTime.Now;
+            template.ModifiedBy = CreatedOrMoifiy;
             return _templateBal.CreateTemplate(template);
         }
 
@@ -95,33 +119,33 @@ namespace LAPP.WS.Controllers.Backoffice
         /// Get All Templates Get By AppTy Id
         /// </summary>
         /// <returns></returns>
-        [AcceptVerbs("GET")]
+        [AcceptVerbs("POST")]
         [ActionName("GetAllTemplatesGetByAppTyId")]
-        public List<Template> GetAllTemplatesGetByAppTyId(int applicationTy)
+        public List<Template> GetAllTemplatesGetByAppTyId(string Key, TemplateSearch tempSearch)
         {
-            return _templateBal.Get_All_Template().Where(x=>x.ApplicationTypeId == applicationTy).ToList();
+            return _templateBal.Get_All_Template().Where(x=>x.ApplicationTypeId == tempSearch.applicationTy).ToList();
         }
 
         /// <summary>
         /// Get All Templates Get By Template Name
         /// </summary>
         /// <returns></returns>
-        [AcceptVerbs("GET")]
+        [AcceptVerbs("POST")]
         [ActionName("GetAllTemplatesGetByTemplateName")]
-        public List<Template> GetAllTemplatesGetByTemplateName(string tempName)
+        public List<Template> GetAllTemplatesGetByTemplateName(string Key, TemplateSearch tempSearch)
         {
-            return _templateBal.Get_All_Template().Where(x=>x.TemplateName.Contains(tempName)).ToList();
+            return _templateBal.Get_All_Template().Where(x=>x.TemplateName.Contains(tempSearch.tempName)).ToList();
         }
 
         /// <summary>
         /// Get All Templates Get By AppTy Id and Template Name
         /// </summary>
         /// <returns></returns>
-        [AcceptVerbs("GET")]
+        [AcceptVerbs("POST")]
         [ActionName("GetAllTemplatesGetByAppTyIdTemplateName")]
-        public List<Template> GetAllTemplatesGetByAppTyIdTemplateName(int applicationTy, string tempName)
+        public List<Template> GetAllTemplatesGetByAppTyIdTemplateName(string Key, TemplateSearch tempSearch)
         {
-            return _templateBal.Get_All_Template().Where(x => x.ApplicationTypeId == applicationTy && x.TemplateName.Contains(tempName)).ToList();
+            return _templateBal.Get_All_Template().Where(x => x.ApplicationTypeId == tempSearch.applicationTy && x.TemplateName.Contains(tempSearch.tempName)).ToList();
         }
     }
 }

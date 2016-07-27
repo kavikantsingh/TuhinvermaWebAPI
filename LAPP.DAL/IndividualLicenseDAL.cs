@@ -41,6 +41,28 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public IndividualLicenseRenewalResponse IndividualLicense_Renewal_Insert(int IndividualId,int ApplicationId,int ApplicationTypeId,int LicenseStatusTypeId,int CreatedBy,String IndividualLicenseGuId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("L_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("L_ApplicationId", ApplicationId));
+            lstParameter.Add(new MySqlParameter("L_ApplicationTypeId", ApplicationTypeId));
+            lstParameter.Add(new MySqlParameter("L_LicenseStatusTypeId", LicenseStatusTypeId));
+            lstParameter.Add(new MySqlParameter("L_CreatedBy", CreatedBy));
+            lstParameter.Add(new MySqlParameter("L_IndividualLicenseGuId", IndividualLicenseGuId));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualLicence_Renewal_Insert", lstParameter.ToArray());
+
+            IndividualLicenseRenewalResponse objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchRenewalEntity(dr);
+
+            }
+            return objEntity;
+        }
         public IndividualLicense Get_IndividualLicense_By_ApplicationId(int applicationId)
         {
             DataSet ds = new DataSet("DS");
@@ -161,13 +183,15 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber)
+        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber, string LastName, string SSN)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             lstParameter.Add(new MySqlParameter("LicenseNumber", LicenseNumber));
+            lstParameter.Add(new MySqlParameter("LastName", LastName));
+            lstParameter.Add(new MySqlParameter("SSN", SSN));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualLicense_GET_BY_LicenseNumber", lstParameter.ToArray());
 
             IndividualLicense objEntity = null;
@@ -179,6 +203,62 @@ namespace LAPP.DAL
             return objEntity;
         }
 
+        public IndividualLoadResponse Get_IndividualLicense_By_IndividualId_ApplicationId(int individualId,int applicationId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("C_IndividualId", individualId));
+            lstParameter.Add(new MySqlParameter("C_ApplicationId", applicationId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualLicense_Get_By_IndividualId_ApplicationId", lstParameter.ToArray());
+
+            IndividualLoadResponse objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchIndividualLoad(dr);
+            }
+            return objEntity;
+        }
+
+        private IndividualLoadResponse FetchIndividualLoad(DataRow dr)
+        {
+            IndividualLoadResponse objEntity = new IndividualLoadResponse();
+            if (dr.Table.Columns.Contains("CAMTCIdNumber") && dr["CAMTCIdNumber"] != DBNull.Value && !String.IsNullOrEmpty(dr["CAMTCIdNumber"].ToString()))
+            {
+                objEntity.CAMTCIdNumber = (dr["CAMTCIdNumber"]).ToString();
+            }
+            if (dr.Table.Columns.Contains("CAMTCCertificateNumber") && dr["CAMTCCertificateNumber"] != DBNull.Value && !String.IsNullOrEmpty(dr["CAMTCCertificateNumber"].ToString()))
+            {
+                objEntity.CAMTCCertificateNumber = (dr["CAMTCCertificateNumber"]).ToString();
+            }
+            if (dr.Table.Columns.Contains("FirstName") && dr["FirstName"] != DBNull.Value && !String.IsNullOrEmpty(dr["FirstName"].ToString()))
+            {
+                objEntity.FirstName = (dr["FirstName"]).ToString();
+            }
+            if (dr.Table.Columns.Contains("LastName") && dr["LastName"] != DBNull.Value && !String.IsNullOrEmpty(dr["LastName"].ToString()))
+            {
+                objEntity.LastName = (dr["LastName"]).ToString();
+            }
+            if (dr.Table.Columns.Contains("MiddleName") && dr["MiddleName"] != DBNull.Value && !String.IsNullOrEmpty(dr["MiddleName"].ToString()))
+            {
+                objEntity.MiddleName = (dr["MiddleName"]).ToString();
+            }
+            return objEntity;
+        }
+        private IndividualLicenseRenewalResponse FetchRenewalEntity(DataRow dr)
+        {
+            IndividualLicenseRenewalResponse objEntity = new IndividualLicenseRenewalResponse();
+            if (dr.Table.Columns.Contains("LicenseExpirationDate") && dr["LicenseExpirationDate"] != DBNull.Value)
+            {
+                objEntity.LicenseExpirationDate = Convert.ToDateTime(dr["LicenseExpirationDate"]);
+            }
+            if (dr.Table.Columns.Contains("IsValid") && dr["IsValid"] != DBNull.Value)
+            {
+                objEntity.IsValid = Convert.ToBoolean(dr["IsValid"]);
+            }
+            return objEntity;
+        }
         private IndividualLicense FetchEntity(DataRow dr)
         {
             IndividualLicense objEntity = new IndividualLicense();

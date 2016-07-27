@@ -15,7 +15,10 @@ namespace LAPP.BAL
         {
             return objDal.Save_IndividualContact(objIndividualContact);
         }
-
+        public int Update_Individual_Contact(IndividualContactLoadResponse objContact)
+        {
+            return objDal.Update_Individual_Contact(objContact);
+        }
         public List<IndividualContact> Get_All_IndividualContact()
         {
             return objDal.Get_All_IndividualContact();
@@ -24,6 +27,10 @@ namespace LAPP.BAL
         public List<IndividualContact> Get_IndividualContact_By_IndividualId(int IndividualId)
         {
             return objDal.Get_IndividualContact_By_IndividualId(IndividualId);
+        }
+        public IndividualContactLoadResponse Get_IndividualContact_By_IndividualId_ContactType(int IndividualId, int ContactTypeId)
+        {
+            return objDal.Get_IndividualContact_By_IndividualId_ContactType(IndividualId, ContactTypeId);
         }
         public IndividualContact Get_IndividualContact_By_IndividualContactId(int ID)
         {

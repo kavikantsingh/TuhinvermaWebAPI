@@ -16,6 +16,10 @@ namespace LAPP.BAL
         {
             return objDal.Save_Application(objaddress);
         }
+        public ApplicationSaveResponse Application_Insert(Application objApplication)
+        {
+            return objDal.Application_Insert(objApplication);
+        }
 
         public List<Application> Get_All_Application()
         {

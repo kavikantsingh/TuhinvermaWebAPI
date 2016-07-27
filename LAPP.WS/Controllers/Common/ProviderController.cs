@@ -3724,6 +3724,103 @@ namespace LAPP.WS.Controllers.Common
 
 
         /// <summary>
+        /// This method is to save the Tab Status
+        /// </summary>
+        /// <param name="Key">Security Key for API.</param>
+        /// <param name="ObjProviderTabStatus">Request object for Provider Tab Status.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("SaveProviderTabStatus")]
+        public ProviderTabStatusGetResponse SaveProviderTabStatus(string Key, ProviderTabStatus ObjProviderTabStatus)
+        {
+            int CreateOrModify = 0;
+            try
+            {
+                CreateOrModify = TokenHelper.GetTokenByKey(Key).UserId;
+            }
+            catch { }
+
+            LogingHelper.SaveAuditInfo();
+
+            //ProviderTabStatusGetResponse objResponse = new ProviderTabStatusGetResponse();
+            ProviderTabStatusGetResponseRequest objResponse = new ProviderTabStatusGetResponseRequest();
+
+            if (!TokenHelper.ValidateToken(Key))
+            {
+                objResponse.Message = "User session has expired.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            if (ObjProviderTabStatus == null)
+            {
+                objResponse.Message = "Invalid Object.";
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.InvalidRequestObject).ToString("00");
+                objResponse.ResponseReason = "";
+                return objResponse;
+            }
+
+            try
+            {
+
+                ProviderTabStatus objProviderTabStatus = new ProviderTabStatus();
+                objProviderTabStatus.ApplicationTabStatusId = ObjProviderTabStatus.ApplicationTabStatusId;
+                objProviderTabStatus.ApplicationId = ObjProviderTabStatus.ApplicationId;
+                objProviderTabStatus.PageModuleId = ObjProviderTabStatus.PageModuleId;
+                objProviderTabStatus.PageModuleTabSubModuleId = ObjProviderTabStatus.PageModuleTabSubModuleId;
+                objProviderTabStatus.PageTabSectionId = ObjProviderTabStatus.PageTabSectionId;
+                objProviderTabStatus.IndividualId = ObjProviderTabStatus.IndividualId;
+                objProviderTabStatus.ProviderId = ObjProviderTabStatus.ProviderId;
+                objProviderTabStatus.TabName = ObjProviderTabStatus.TabName;
+                objProviderTabStatus.ApplicationTabStatus = ObjProviderTabStatus.ApplicationTabStatus;
+                objProviderTabStatus.SortOrder = ObjProviderTabStatus.SortOrder;
+                objProviderTabStatus.IsActive = true;
+                objProviderTabStatus.IsDeleted = false;
+                objProviderTabStatus.CreatedBy = ObjProviderTabStatus.ProviderId;
+                objProviderTabStatus.CreatedOn = DateTime.Now;
+
+                ProviderBAL objProviderBAL = new ProviderBAL();
+                int ApplicationTabStatusId = objProviderBAL.SaveProviderTabStatus(objProviderTabStatus);
+
+                List<ProviderTabStatusGetResponse> lstProviderTabStatus = objProviderBAL.GetAllProviderTabStatus(ObjProviderTabStatus.ApplicationId, ObjProviderTabStatus.ProviderId);
+                objResponse.ProviderTabStatusList = lstProviderTabStatus;
+
+                if (objResponse != null)
+                {
+                    objResponse.Message = "Success";
+                    objResponse.Status = true;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+                else
+                {
+                    objResponse.Message = "Fail";
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
+                    objResponse.ResponseReason = "";
+                    return objResponse;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ProviderTabStatusSave", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+
+            return objResponse;
+
+
+        }
+
+
+        /// <summary>
         /// This method is to Get the Tab Status
         /// </summary>
         /// <param name="Key">API security key.</param>
@@ -3749,9 +3846,8 @@ namespace LAPP.WS.Controllers.Common
 
                 ProviderBAL objProviderBAL = new ProviderBAL();
 
-                //Method to get provider staff details grid
-                List<ProviderTabStatusGetResponse> lstProviderOtherProgram = objProviderBAL.GetAllProviderTabStatus(ApplicationId, ProviderId);
-                objResponse.ProviderTabStatusList = lstProviderOtherProgram;
+                List<ProviderTabStatusGetResponse> lstProviderTabStatus = objProviderBAL.GetAllProviderTabStatus(ApplicationId, ProviderId);
+                objResponse.ProviderTabStatusList = lstProviderTabStatus;
 
                 if (objResponse != null)
                 {

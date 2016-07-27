@@ -25,6 +25,10 @@ namespace LAPP.BAL
         {
             return objDAL.Get_Configuration_By_Settings(Setting);
         }
+        public ConfigurationType Get_ConfigurationType_Value_By_Setting(string Setting)
+        {
+            return objDAL.Get_ConfigurationType_Value_By_Setting(Setting);
+        }
         public  ConfigurationType  Get_Configuration_By_Settings_object(string Setting)
         {
             return objDAL.Get_Configuration_By_Settings_object(Setting);

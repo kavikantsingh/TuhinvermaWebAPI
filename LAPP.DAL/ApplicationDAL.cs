@@ -53,6 +53,45 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public ApplicationSaveResponse Application_Insert(Application objApplication)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("@ApplicationTypeId", objApplication.ApplicationTypeId));
+            lstParameter.Add(new MySqlParameter("@ApplicationStatusId", objApplication.ApplicationStatusId));
+            lstParameter.Add(new MySqlParameter("@ApplicationStatusReasonId", objApplication.ApplicationStatusReasonId));
+            lstParameter.Add(new MySqlParameter("@ApplicationNumber", objApplication.ApplicationNumber));
+            lstParameter.Add(new MySqlParameter("@ApplicationSubmitMode", objApplication.ApplicationSubmitMode));
+            lstParameter.Add(new MySqlParameter("@StartedDate", objApplication.StartedDate));
+            lstParameter.Add(new MySqlParameter("@SubmittedDate", objApplication.SubmittedDate));
+            lstParameter.Add(new MySqlParameter("@ApplicationStatusDate", objApplication.ApplicationStatusDate));
+            lstParameter.Add(new MySqlParameter("@PaymentDeadlineDate", objApplication.PaymentDeadlineDate));
+            lstParameter.Add(new MySqlParameter("@PaymentDate", objApplication.PaymentDate));
+            lstParameter.Add(new MySqlParameter("@ConfirmationNumber", objApplication.ConfirmationNumber));
+            lstParameter.Add(new MySqlParameter("@ReferenceNumber", objApplication.ReferenceNumber));
+            lstParameter.Add(new MySqlParameter("@IsFingerprintingNotRequired", objApplication.IsFingerprintingNotRequired));
+            lstParameter.Add(new MySqlParameter("@IsPaymentRequired", objApplication.IsPaymentRequired));
+            lstParameter.Add(new MySqlParameter("@CanProvisionallyHire", objApplication.CanProvisionallyHire));
+            lstParameter.Add(new MySqlParameter("@GoPaperless", objApplication.GoPaperless));
+            lstParameter.Add(new MySqlParameter("@IsActive", objApplication.IsActive));
+            lstParameter.Add(new MySqlParameter("@IsDeleted", objApplication.IsDeleted));
+            lstParameter.Add(new MySqlParameter("@IsArchive", objApplication.IsArchive));
+            lstParameter.Add(new MySqlParameter("@CreatedBy", objApplication.CreatedBy));
+            lstParameter.Add(new MySqlParameter("@CreatedOn", objApplication.CreatedOn));
+            lstParameter.Add(new MySqlParameter("@ModifiedBy", objApplication.ModifiedBy));
+            lstParameter.Add(new MySqlParameter("@ModifiedOn", objApplication.ModifiedOn));
+            lstParameter.Add(new MySqlParameter("@ApplicationGuid", objApplication.ApplicationGuid));
+            lstParameter.Add(new MySqlParameter("@LicenseTypeId", objApplication.LicenseTypeId));
+          
+            DataSet ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "Application_Insert", lstParameter.ToArray());
+            ApplicationSaveResponse objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetSaveEntity(dr);
+            }
+            return objEntity;
+        }
+
         //public int Update_Application(Application objApplication)
         //{
         //    DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
@@ -145,7 +184,15 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
-
+        private ApplicationSaveResponse FetSaveEntity(DataRow dr)
+        {
+            ApplicationSaveResponse objEntity = new ApplicationSaveResponse();
+            if (dr.Table.Columns.Contains("ApplicationId") && dr["ApplicationId"] != DBNull.Value)
+            {
+                objEntity.ApplicationId = Convert.ToInt32(dr["ApplicationId"]);
+            }
+            return objEntity;
+        }
         private Application FetchEntity(DataRow dr)
         {
             Application objEntity = new Application();

@@ -35,7 +35,23 @@ namespace LAPP.DAL
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
+        public int Update_Individual_Address(IndividualAddressLoadResponse objAddress)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("A_AddressId", objAddress.AddressId));
+            lstParameter.Add(new MySqlParameter("A_AddressTypeId", objAddress.AddressTypeId));
+            lstParameter.Add(new MySqlParameter("A_StreetLine1", objAddress.StreetLine1.NullString()));
+            lstParameter.Add(new MySqlParameter("A_StreetLine2", objAddress.StreetLine2.NullString()));
+            lstParameter.Add(new MySqlParameter("A_City", objAddress.City.NullString()));
+            lstParameter.Add(new MySqlParameter("A_StateCode", objAddress.StateCode.NullString()));
+            lstParameter.Add(new MySqlParameter("A_Zip", objAddress.Zip.NullString()));
+            lstParameter.Add(new MySqlParameter("A_UseUserAddress", objAddress.UseUserAddress));
+            lstParameter.Add(new MySqlParameter("A_UseVerifiedAddress", objAddress.UseVerifiedAddress));
+            lstParameter.Add(new MySqlParameter("A_IsMailingSameAsPhysical", objAddress.IsMailingSameAsPhysical));
 
+            var returnVal = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "IndividualAddress_Update", lstParameter.ToArray());
+            return returnVal;
+        }
         public List<IndividualAddress> Get_All_IndividualAddress()
         {
             DataSet ds = new DataSet("DS");
@@ -112,6 +128,27 @@ namespace LAPP.DAL
             return objEntity;
         }
 
+        public IndividualAddressLoadResponse Get_IndividualAddress_By_IndividualId(int IndividualId,int AddressTypeId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+
+            lstParameter.Add(new MySqlParameter("C_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("C_AddressTypeId", AddressTypeId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualAddress_Get_By_IndividualId", lstParameter.ToArray());
+            IndividualAddressLoadResponse objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchindividualAddress(dr);
+            }
+            return objEntity;
+        }
+
         public IndividualAddress Get_IndividualAddress_By_IndividualAddressId(int ID)
         {
             DataSet ds = new DataSet("DS");
@@ -125,6 +162,55 @@ namespace LAPP.DAL
             {
                 DataRow dr = ds.Tables[0].Rows[0];
                 objEntity = FetchEntity(dr);
+            }
+            return objEntity;
+        }
+        private IndividualAddressLoadResponse FetchindividualAddress(DataRow dr)
+        {
+            IndividualAddressLoadResponse objEntity = new IndividualAddressLoadResponse();
+            if (dr.Table.Columns.Contains("IndividualId") && dr["IndividualId"] != DBNull.Value)
+            {
+                objEntity.IndividualId = Convert.ToInt32(dr["IndividualId"]);
+            }
+            if (dr.Table.Columns.Contains("AddressId") && dr["AddressId"] != DBNull.Value)
+            {
+                objEntity.AddressId = Convert.ToInt32(dr["AddressId"]);
+            }
+            if (dr.Table.Columns.Contains("AddressTypeId") && dr["AddressTypeId"] != DBNull.Value)
+            {
+                objEntity.AddressTypeId = Convert.ToInt32(dr["AddressTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("StreetLine1") && dr["StreetLine1"] != DBNull.Value)
+            {
+                objEntity.StreetLine1 = Convert.ToString(dr["StreetLine1"]);
+            }
+            if (dr.Table.Columns.Contains("StreetLine2") && dr["StreetLine2"] != DBNull.Value)
+            {
+                objEntity.StreetLine2 = Convert.ToString(dr["StreetLine2"]);
+            }
+            if (dr.Table.Columns.Contains("City") && dr["City"] != DBNull.Value)
+            {
+                objEntity.City = Convert.ToString(dr["City"]);
+            }
+            if (dr.Table.Columns.Contains("StateCode") && dr["StateCode"] != DBNull.Value)
+            {
+                objEntity.StateCode = Convert.ToString(dr["StateCode"]);
+            }
+            if (dr.Table.Columns.Contains("Zip") && dr["Zip"] != DBNull.Value)
+            {
+                objEntity.Zip = Convert.ToString(dr["Zip"]);
+            }
+            if (dr.Table.Columns.Contains("CountryId") && dr["CountryId"] != DBNull.Value)
+            {
+                objEntity.CountryId = Convert.ToInt32(dr["CountryId"]);
+            }
+            if (dr.Table.Columns.Contains("UseUserAddress") && dr["UseUserAddress"] != DBNull.Value)
+            {
+                objEntity.UseUserAddress = Convert.ToBoolean(dr["UseUserAddress"]);
+            }
+            if (dr.Table.Columns.Contains("UseVerifiedAddress") && dr["UseVerifiedAddress"] != DBNull.Value)
+            {
+                objEntity.UseVerifiedAddress = Convert.ToBoolean(dr["UseVerifiedAddress"]);
             }
             return objEntity;
         }
