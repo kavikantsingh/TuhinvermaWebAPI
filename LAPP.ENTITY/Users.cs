@@ -283,8 +283,8 @@ namespace LAPP.ENTITY
 
     public class UsersResponse : BaseEntityServiceResponse
     {
-        public object Users { get; set; }
-        //public Users Users { get; set; }
+        //public object Users { get; set; }
+        public   Users Users { get; set; }
 
     }
 }

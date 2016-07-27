@@ -25,12 +25,12 @@ namespace LAPP.WS.Controllers.User
         /// <param name="Key">The Key of the data.</param>
         [AcceptVerbs("GET")]
         [ActionName("UsersGetAll")]
-        public UsersResponse UsersGetAll(string Key)
+        public UsersSearchResponse UsersGetAll(string Key)
         {
 
             LogingHelper.SaveAuditInfo(Key);
 
-            UsersResponse objResponse = new UsersResponse();
+            UsersSearchResponse objResponse = new UsersSearchResponse();
             UsersBAL objBAL = new UsersBAL();
             Users objEntity = new Users();
             List<Users> lstUsers = new List<Users>();
@@ -77,7 +77,7 @@ namespace LAPP.WS.Controllers.User
                         IsActive = menu.IsActive
                     }).ToList();
 
-                    objResponse.Users = lstUsersSelected;
+                    objResponse.Users = lstUsers;
                 }
                 else
                 {
@@ -160,7 +160,7 @@ namespace LAPP.WS.Controllers.User
                         IsActive = menu.IsActive
                     }).ToList();
 
-                    objResponse.Users = lstUsersSelected;
+                    objResponse.Users = objEntity;
                 }
                 else
                 {
@@ -327,6 +327,76 @@ namespace LAPP.WS.Controllers.User
             return objResponse;
         }
 
+
+
+        [AcceptVerbs("GET")]
+        [ActionName("ResetPassword")]
+        public ForgetPasswordResponse ResetPassword(int[] userid)
+        {
+            ForgetPasswordResponse objRsponse = new ForgetPasswordResponse();
+
+            UsersBAL objUsersBAL = new UsersBAL();
+            foreach(var id in userid)
+            { 
+            Users objUser = objUsersBAL.Get_Users_byUsersId(id);
+            if (objUser != null && objUser.UserId > 0)
+            {
+                Individual objIndividual = new Individual();
+                IndividualBAL objIndividualBAL = new IndividualBAL();
+                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objUser.IndividualId);
+                //if (objIndividual != null)
+                //{
+                string TempPassword = GeneralFunctions.GetTempPassword();
+                objUser.PasswordHash = TempPassword;
+                objUser.TemporaryPassword = true;
+                objUsersBAL.Save_Users(objUser);
+
+                string mailContent = "The password has been reset. The temporary password has been sent to the email address on file. Please check your email address.";
+                mailContent += "<br/> <br/>";
+                mailContent += "Temporary Password: " + TempPassword;
+                mailContent += "<br/> <br/>";
+                mailContent += "If you are missing emails from California Massage Therapy Council, please check email accounts <u>Spam</u> or <u>Junk</u> folder to ensure ";
+                mailContent += "email message was not filtered.If the message is in Spam or Junk folder, click Not Spam or Not Junk after selecting the message, ";
+                mailContent += "which will allow future email messages from California Massage Therapy Council to be delivered to your Inbox.";
+                mailContent += "<br/><br/><br/>";
+                mailContent += "Thank you.";
+                mailContent += "<br/><br/>";
+                mailContent += "California Massage Therapy Council";
+
+                //if (EmailHelper.SendMail(Email, "Forget Password", "Temporary Password: " + TempPassword, true))
+                if (EmailHelper.SendMail(objUser.Email, "Forget Password", mailContent, true))
+                {
+
+                    //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                    LogHelper.LogCommunication(objUser.IndividualId, null, eCommunicationType.Email, "Reset Password", eCommunicationStatus.Success, (eCommentLogSource.WSAPI).ToString(), "Forget Password email has been sent", EmailHelper.GetSenderAddress(), objUser.Email, null, null, objUser.UserId, null, null, null);
+                    objRsponse.StatusCode = "00";
+                    objRsponse.Status = true;
+                    objRsponse.Message = "Reset pasword mail has been sent to all the users.";
+                }
+                else
+                {
+                    //LogHelper.LogCommunication(objIndividual.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), Email, null, null, objUser.UserId, null, null, null);
+                    LogHelper.LogCommunication(objUser.IndividualId, null, eCommunicationType.Email, "Forget Password", eCommunicationStatus.Fail, (eCommentLogSource.WSAPI).ToString(), "Forget Password email sending failed", EmailHelper.GetSenderAddress(), objUser.Email, null, null, objUser.UserId, null, null, null);
+
+                    objRsponse.StatusCode = "11";
+                    objRsponse.Status = false;
+                    objRsponse.Message = "We are not able to send email due to technical issues.";
+                }
+               
+            }
+            
+            else
+            {
+                objRsponse.StatusCode = ((int)ResponseStatusCode.Validation).ToString("00");
+                objRsponse.Status = false;
+                objRsponse.Message = "No associated record found.";
+
+            }
+        }
+
+            return objRsponse;
+
+        }
 
 
         /// <summary>
