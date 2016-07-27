@@ -455,6 +455,103 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+        /// <summary>
+        /// Get Method to get Individual by key and ID.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualOnlyBYIndividualId")]
+        public IndividualResponseRequest IndividualOnlyBYIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualResponseRequest objResponse = new IndividualResponseRequest();
+            IndividualBAL objIndividualBAL = new IndividualBAL();
+            IndividualResponse objIndividualResponse = new IndividualResponse();
+            Individual objIndividual = new Individual();
+            List<IndividualResponse> lstIndividualResponse = new List<IndividualResponse>();
+            List<Individual> lstIndividual = new List<Individual>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualResponse = null;
+                    return objResponse;
+                }
+
+                objIndividual = objIndividualBAL.Get_IndividualOnly_By_IndividualId(IndividualId);
+                if (objIndividual != null)
+                {
+                    lstIndividual.Add(objIndividual);
+
+                    lstIndividualResponse = lstIndividual.Select(obj => new IndividualResponse
+                    {
+                        IndividualId = obj.IndividualId,
+                        FirstName = obj.FirstName,
+                        LastName = obj.LastName,
+                        MiddleName = obj.MiddleName,
+                        SuffixId = obj.SuffixId,
+                        Email = obj.Email,
+                        SSN = obj.SSN,
+                        IsItin = obj.IsItin,
+                        DateOfBirth = obj.DateOfBirth,
+                        RaceId = obj.RaceId,
+                        Gender = obj.Gender,
+                        HairColorId = obj.HairColorId,
+                        EyeColorId = obj.EyeColorId,
+                        Weight = obj.Weight,
+                        Height = obj.Height,
+                        PlaceOfBirth = obj.PlaceOfBirth,
+                        CitizenshipId = obj.CitizenshipId,
+                        ExternalId = obj.ExternalId,
+                        ExternalId2 = obj.ExternalId2,
+                        IsArchived = obj.IsArchived,
+                        Name = obj.Name,
+
+                        StatusColorCode = obj.StatusColorCode,
+                        IsNameChanged = obj.IsNameChanged,
+                        PlaceofBirthCity = obj.PlaceofBirthCity,
+                        PlaceofBirthState = obj.PlaceofBirthState,
+                        PlaceofBirthCountry = obj.PlaceofBirthCountry,
+                        objIndividualAddress = obj.objIndividualAddress,
+                        Picture = obj.Picture,
+                        objIndividualContact = obj.objIndividualContact,
+
+                        IsActive = obj.IsActive
+
+                    }).ToList();
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    objResponse.IndividualResponse = lstIndividualResponse;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualResponse = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualBYIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualResponse = null;
+
+            }
+            return objResponse;
+        }
 
         /// <summary>
         /// Get Method to get Individual by key and ID.

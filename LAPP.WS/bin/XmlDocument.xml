@@ -788,6 +788,13 @@
             <param name="objContentItemLkPost">ContentItemLkPost</param>
             <returns>ContentItemLkResponse</returns>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentGetAffidavitContent(System.String)">
+            <summary>
+            Get affidavit Content
+            </summary>
+            <param name="Key">API security key</param>
+            <returns>ContentItemLkResponse</returns>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.DashboardController.DashboardApplicationCount(System.String)">
             <summary>
             Get Method to get DashboardApplicationCount key.
@@ -875,6 +882,13 @@
             <param name="Key">The Key of the data.</param>
             <param name="objIndividual">Object of IndividualAddress</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualOnlyBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get Individual by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualBYIndividualId(System.String,System.Int32)">
             <summary>
             Get Method to get Individual by key and ID.
@@ -882,12 +896,42 @@
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.ValidateIndividual(System.String,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.ValidateIndividual(System.String,System.Int32,System.String,System.Int32)">
             <summary>
             Validate Individual by key and ID.
             </summary>
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
+            <param name="ReferenceNumber">Session storage record ID.</param>
+            <param name="UserId">Session storage login userId.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.ConfigurationTypeBySetting(System.String,System.String)">
+            <summary>
+            Get Configuration value by setting
+            </summary>
+             <param name="Key">API security key.</param>
+            <param name="Setting">Setting key.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.LoadCertificateHolder(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get Configuration value by setting
+            </summary>
+             <param name="individualId">IndividualId.</param>
+            <param name="applicationId">ApplicationId.</param>
+            <param name="Key">Key.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.VerifyAddress(LAPP.ENTITY.AddressResponse)">
+            <summary>
+            Verify address
+            </summary>
+             <param name="address">Object of address.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.SaveReCertificationIndividualInfo(System.String,LAPP.ENTITY.IndividualLoadResponse)">
+            <summary>
+            Save Recertification detail
+            </summary>
+             <param name="individual">Individual detail.</param>
+             <param name="Key">Key.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualNameSave(System.String,LAPP.ENTITY.IndividualNameRequest)">
             <summary>
@@ -1147,7 +1191,7 @@
             <param name="Key">API security key.</param>
             <param name="IndividualId">IndividualId.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseByLicenseNumber(System.String,System.String)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseByLicenseNumber(System.String,System.String,System.String,System.String)">
             <summary>
             Get Method to get IndividualLicense by key and LicenseNumber.
             </summary>
@@ -1705,6 +1749,13 @@
             <param name="Key">API security key.</param>
             <param name="ApplicationId">Application Id</param>
             <param name="ProviderId">Provider Id</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveProviderTabStatus(System.String,LAPP.ENTITY.ProviderTabStatus)">
+            <summary>
+            This method is to save the Tab Status
+            </summary>
+            <param name="Key">Security Key for API.</param>
+            <param name="ObjProviderTabStatus">Request object for Provider Tab Status.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Common.ProviderController.GetAllProviderTabStatus(System.String,System.Int32,System.Int32)">
             <summary>
