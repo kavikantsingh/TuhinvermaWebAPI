@@ -873,6 +873,8 @@ namespace LAPP.WS.Controllers.Backoffice
                 }
 
                 lstIndividualName = objBAL.Get_IndividualName_By_IndividualIdANDIndividualNameTypeId(IndividualId, Convert.ToInt32(eIndividualNameType.Individual));
+                //lstIndividualName = objBAL.Get_IndividualName_By_IndividualIdANDIndividualNameTypeId(IndividualId, 13);
+
                 if (lstIndividualName != null)
                 {
                     lstEntity = lstIndividualName

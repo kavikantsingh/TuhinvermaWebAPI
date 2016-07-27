@@ -1757,7 +1757,7 @@
             <param name="Key">API Security Key</param>
             <param name="objProvReqCourseTitle">object to receive all values</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvReqCourseTitleGetAllByCourseOfStudyId(System.String,System.Int32,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvReqCourseTitleGetAllByCourseOfStudyId(System.String,System.Int32,System.Int32,System.Int32)">
             <summary>
             This API used to get Provider Required Of Study Id
             </summary>
@@ -1794,7 +1794,7 @@
             <param name="Key">API Security Key</param>
             <param name="objProvClinicHours">object to receive all values</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvClinicHoursGetByProviderId(System.String,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvClinicHoursGetByProviderId(System.String,System.Int32,System.Int32)">
             <summary>
             This API used to save clinic hours in ProvClinicHours table in database.
             </summary>

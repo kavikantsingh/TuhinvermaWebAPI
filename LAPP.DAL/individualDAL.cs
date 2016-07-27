@@ -91,7 +91,6 @@ namespace LAPP.DAL
 
                 objEntity.objIndividualAddress = objADAL.Get_Current_IndividualAddress_By_IndividualId(objEntity.IndividualId);
                 objEntity.objIndividualContact = objCDAL.Get_Primary_IndividualContact_By_IndividualId(objEntity.IndividualId);
-
             }
             return objEntity;
 
