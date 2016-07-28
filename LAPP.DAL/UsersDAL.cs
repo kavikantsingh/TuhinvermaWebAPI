@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace LAPP.DAL
 {
 
@@ -41,7 +42,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("EulaAcceptedOn", objUsers.EulaAcceptedOn));
             lstParameter.Add(new MySqlParameter("UserExternalId", objUsers.UserExternalId));
             lstParameter.Add(new MySqlParameter("IndividualId", objUsers.IndividualId));
-            lstParameter.Add(new MySqlParameter("SourceId", objUsers.SourceId));
+            lstParameter.Add(new MySqlParameter("SourceId",objUsers.SourceId));
             lstParameter.Add(new MySqlParameter("SignatureFileId", objUsers.SignatureFileId));
             lstParameter.Add(new MySqlParameter("IsPending", objUsers.IsPending));
             lstParameter.Add(new MySqlParameter("UserGuid", objUsers.UserGuid));
@@ -67,7 +68,15 @@ namespace LAPP.DAL
             return returnValue;
         }
 
-
+        public int Delete_Users(int id)
+        {
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("UserId", id));
+            objDB.ExecuteNonQuery(CommandType.StoredProcedure, "User_Delete", true, lstParameter.ToArray());
+            return 0;
+        }
+      
 
         public int Individual_User_Save(Users objUsers)
         {
@@ -96,7 +105,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("EulaAcceptedOn", objUsers.EulaAcceptedOn));
             lstParameter.Add(new MySqlParameter("UserExternalId", objUsers.UserExternalId));
             lstParameter.Add(new MySqlParameter("IndividualId", objUsers.IndividualId));
-            lstParameter.Add(new MySqlParameter("SourceId", objUsers.SourceId));
+            lstParameter.Add(new MySqlParameter("SourceId", 1));
             lstParameter.Add(new MySqlParameter("SignatureFileId", objUsers.SignatureFileId));
             lstParameter.Add(new MySqlParameter("IsPending", objUsers.IsPending));
             lstParameter.Add(new MySqlParameter("UserGuid", objUsers.UserGuid));
@@ -202,8 +211,41 @@ namespace LAPP.DAL
                     lstEntity.Add(objEntity);
             }
             return lstEntity;
+        }
 
 
+        public List<Users> Search_Users_Admin(UsersSearch objUsers)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            var email=objUsers.Email == null ? "": objUsers.Email;
+
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            lstParameter.Add(new MySqlParameter("_UserName",  objUsers.UserName==null ? "":objUsers.UserName));
+            lstParameter.Add(new MySqlParameter("_UserTypeId", objUsers.UserTypeId  ));
+           // lstParameter.Add(new MySqlParameter("G_FirstName", objUsers.FirstName));
+            lstParameter.Add(new MySqlParameter("_LastName", objUsers.LastName == null ? "":objUsers.LastName ));          
+            lstParameter.Add(new MySqlParameter("_Email", email  ));          
+            lstParameter.Add(new MySqlParameter("_UserStatusId", objUsers.UserStatusId));
+            lstParameter.Add(new MySqlParameter("_IsPending", objUsers.IsPending));
+            lstParameter.Add(new MySqlParameter("_RoleId", objUsers.RoleId));
+            lstParameter.Add(new MySqlParameter("_ProviderId", 0));
+
+         
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "User_By_Search_Admin", lstParameter.ToArray());
+
+            List<Users> lstEntity = new List<Users>();
+            Users objEntity = null;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                objEntity = FetchEntity(dr);
+                if (objEntity != null)
+                    lstEntity.Add(objEntity);
+            }
+            return lstEntity;
         }
 
         public List<Users> Search_Users_WithPager(UsersSearch objUsers, int CurrentPage, int PagerSize)

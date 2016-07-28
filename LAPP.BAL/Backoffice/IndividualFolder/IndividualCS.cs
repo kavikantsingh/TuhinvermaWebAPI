@@ -21,9 +21,15 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
 
             try
             {
-                int individualId = objIndividualPostResponse.IndividualId;
+                
+                int individualId = Convert.ToInt32(objIndividualPostResponse.IndividualId);
                 int? applicantID = null;
-                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objIndividualPostResponse.IndividualId);
+
+                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(individualId);
+
+                if (objIndividual == null)
+                    objIndividual = objIndividualBAL.Get_IndividualOnly_By_IndividualId(individualId);
+
                 if (objIndividual != null)
                 {
                     objIndividual.FirstName = objIndividualPostResponse.FirstName;
@@ -55,7 +61,7 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                     IndividualOther objIndividualOther = new IndividualOther();
                     IndividualOtherBAL objIndividualOtherBAL = new IndividualOtherBAL();
 
-                    objIndividualOther = objIndividualOtherBAL.Get_IndividualOther_By_IndividualId(objIndividualPostResponse.IndividualId);
+                    objIndividualOther = objIndividualOtherBAL.Get_IndividualOther_By_IndividualId(individualId);
                     if (objIndividualOther != null)
                     {
                         objIndividualOther.IndividualId = individualId;

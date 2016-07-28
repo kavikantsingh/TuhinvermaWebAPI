@@ -18,6 +18,8 @@ namespace LAPP.ENTITY
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public int AdressStatusId { get; set; }
+        public bool UseUserAddress { get; set; }
+        public bool UseVerifiedAddress { get; set; }
     }
 
     public class IndividualAddress : IndividualAddressResponse

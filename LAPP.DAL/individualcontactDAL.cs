@@ -69,9 +69,9 @@ namespace LAPP.DAL
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("C_IndividualId", IndividualId));
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALCONTACT_GET_BY_IndividualId", lstParameter.ToArray());
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALCONTACT_GETAll_BY_IndividualId", lstParameter.ToArray());
             List<IndividualContact> lstEntity = new List<IndividualContact>();
             IndividualContact objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

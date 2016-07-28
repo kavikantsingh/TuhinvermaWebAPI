@@ -105,7 +105,33 @@ namespace LAPP.DAL
 
                 objEntity.objIndividualAddress = objADAL.Get_Current_IndividualAddress_By_IndividualId(objEntity.IndividualId);
                 objEntity.objIndividualContact = objCDAL.Get_Primary_IndividualContact_By_IndividualId(objEntity.IndividualId);
+            }
+            return objEntity;
 
+
+        }
+
+        public Individual Get_IndividualOnly_By_IndividualId(int ID)
+        {
+            IndividualAddressDAL objADAL = new IndividualAddressDAL();
+            IndividualContactDAL objCDAL = new IndividualContactDAL();
+
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_IndividualId", ID));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALOnly_GET_BY_IndividualId", lstParameter.ToArray());
+            Individual objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+
+                objEntity.objIndividualAddress = objADAL.Get_Current_IndividualAddress_By_IndividualId(objEntity.IndividualId);
+                objEntity.objIndividualContact = objCDAL.Get_Primary_IndividualContact_By_IndividualId(objEntity.IndividualId);
             }
             return objEntity;
 

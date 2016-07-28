@@ -165,6 +165,8 @@ namespace LAPP.WS.Controllers.Backoffice
                             StreetLine1 = obj.StreetLine1,
                             StreetLine2 = obj.StreetLine2,
                             BadAddress = obj.BadAddress,
+                            UseUserAddress = obj.UseUserAddress,
+                            UseVerifiedAddress = obj.UseVerifiedAddress,
                             Zip = obj.Zip
 
 
@@ -455,6 +457,103 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+        /// <summary>
+        /// Get Method to get Individual by key and ID.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualOnlyBYIndividualId")]
+        public IndividualResponseRequest IndividualOnlyBYIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualResponseRequest objResponse = new IndividualResponseRequest();
+            IndividualBAL objIndividualBAL = new IndividualBAL();
+            IndividualResponse objIndividualResponse = new IndividualResponse();
+            Individual objIndividual = new Individual();
+            List<IndividualResponse> lstIndividualResponse = new List<IndividualResponse>();
+            List<Individual> lstIndividual = new List<Individual>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualResponse = null;
+                    return objResponse;
+                }
+
+                objIndividual = objIndividualBAL.Get_IndividualOnly_By_IndividualId(IndividualId);
+                if (objIndividual != null)
+                {
+                    lstIndividual.Add(objIndividual);
+
+                    lstIndividualResponse = lstIndividual.Select(obj => new IndividualResponse
+                    {
+                        IndividualId = obj.IndividualId,
+                        FirstName = obj.FirstName,
+                        LastName = obj.LastName,
+                        MiddleName = obj.MiddleName,
+                        SuffixId = obj.SuffixId,
+                        Email = obj.Email,
+                        SSN = obj.SSN,
+                        IsItin = obj.IsItin,
+                        DateOfBirth = obj.DateOfBirth,
+                        RaceId = obj.RaceId,
+                        Gender = obj.Gender,
+                        HairColorId = obj.HairColorId,
+                        EyeColorId = obj.EyeColorId,
+                        Weight = obj.Weight,
+                        Height = obj.Height,
+                        PlaceOfBirth = obj.PlaceOfBirth,
+                        CitizenshipId = obj.CitizenshipId,
+                        ExternalId = obj.ExternalId,
+                        ExternalId2 = obj.ExternalId2,
+                        IsArchived = obj.IsArchived,
+                        Name = obj.Name,
+
+                        StatusColorCode = obj.StatusColorCode,
+                        IsNameChanged = obj.IsNameChanged,
+                        PlaceofBirthCity = obj.PlaceofBirthCity,
+                        PlaceofBirthState = obj.PlaceofBirthState,
+                        PlaceofBirthCountry = obj.PlaceofBirthCountry,
+                        objIndividualAddress = obj.objIndividualAddress,
+                        Picture = obj.Picture,
+                        objIndividualContact = obj.objIndividualContact,
+
+                        IsActive = obj.IsActive
+
+                    }).ToList();
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    objResponse.IndividualResponse = lstIndividualResponse;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualResponse = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualBYIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualResponse = null;
+
+            }
+            return objResponse;
+        }
 
         /// <summary>
         /// Get Method to get Individual by key and ID.
@@ -873,8 +972,16 @@ namespace LAPP.WS.Controllers.Backoffice
                 //http.Headers.Add("apiKey:test_a3c3210eb06e5865258536ed326fbbf7b2b");
                 //http.Headers.Add("apiVersion:2016-06-30");
                 SetBasicAuthHeader(http, "test_a3c3210eb06e5865258536ed326fbbf7b2b", "");
-               
-                string Data = Newtonsoft.Json.JsonConvert.SerializeObject(address);
+
+                Dictionary<string, string> requestObj = new Dictionary<string, string>();
+                requestObj.Add("address_line1", address.StreetLine1);
+                requestObj.Add("address_line2", address.StreetLine2);
+                requestObj.Add("address_city", address.City);
+                requestObj.Add("address_state", address.StateCode);
+                requestObj.Add("address_zip", address.Zip);
+                requestObj.Add("address_country", "US");
+
+                string Data = Newtonsoft.Json.JsonConvert.SerializeObject(requestObj);
                
                 UTF8Encoding encoding = new UTF8Encoding();
                 Byte[] bytes = encoding.GetBytes(Data);
@@ -889,8 +996,19 @@ namespace LAPP.WS.Controllers.Backoffice
                 var sr = new StreamReader(stream);
                 var content = sr.ReadToEnd();
                 var responseString = content;
-                address = Newtonsoft.Json.JsonConvert.DeserializeObject<AddressResponse>(responseString);
-                address.Status = true;
+                dynamic addressResp = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(responseString);
+
+                if(addressResp != null && addressResp.address != null)
+                {
+                    address.StreetLine1 = addressResp.address.address_line1;
+                    address.StreetLine2 = addressResp.address.address_line2;
+                    address.StateCode = addressResp.address.address_state;
+                    address.Zip = addressResp.address.address_zip;
+                    address.City = addressResp.address.address_city;
+
+                    address.Status = true;
+                    
+                }
                 return address;
             }
             catch (Exception ex)
@@ -1086,6 +1204,8 @@ namespace LAPP.WS.Controllers.Backoffice
                 }
 
                 lstIndividualName = objBAL.Get_IndividualName_By_IndividualIdANDIndividualNameTypeId(IndividualId, Convert.ToInt32(eIndividualNameType.Individual));
+                //lstIndividualName = objBAL.Get_IndividualName_By_IndividualIdANDIndividualNameTypeId(IndividualId, 13);
+
                 if (lstIndividualName != null)
                 {
                     lstEntity = lstIndividualName

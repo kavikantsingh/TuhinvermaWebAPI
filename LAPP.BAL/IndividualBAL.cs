@@ -46,6 +46,11 @@ namespace LAPP.BAL
             return objDal.Get_Individual_By_IndividualId(ID);
         }
 
+        public Individual Get_IndividualOnly_By_IndividualId(int ID)
+        {
+            return objDal.Get_IndividualOnly_By_IndividualId(ID);
+        }
+
         public Individual Get_Individual_By_LastNameSSNCodeLicenseNumber(string lastName, string licenseNumber, string SSNCode)
         {
             return objDal.Get_Individual_By_LastNameSSNCodeLicenseNumber(lastName, licenseNumber, SSNCode);
