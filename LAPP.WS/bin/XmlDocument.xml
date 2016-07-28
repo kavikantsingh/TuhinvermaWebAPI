@@ -2224,6 +2224,22 @@
             <param name="PageNumber">Record ID.</param>
             <param name="NoOfRecords">Record ID.</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.User.UsersController.UsersSearchAdmin(System.String,LAPP.ENTITY.UsersSearch)">
+            <summary>
+            Method to Search Users by key and objUsersSearch.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="objUsersSearch">Record ID.</param>
+            <param name="PageNumber">Record ID.</param>
+            <param name="NoOfRecords">Record ID.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.User.UsersController.UsersSaveAdmin(System.String,LAPP.ENTITY.UsersRequest)">
+            <summary>
+            Save or Update the data For Users
+            </summary>
+            <param name="Key">The Key of the data.</param>
+            <param name="objUsers">Object of Users</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.User.UsersController.UsersSave(System.String,LAPP.ENTITY.UsersRequest)">
             <summary>
             Save or Update the data For Users

@@ -699,6 +699,8 @@ namespace LAPP.WS.Controllers.Common
                         ProviderDocumentGET objTempEntity = new ProviderDocumentGET();
                         
                         objTempEntity.ProviderDocumentId = ReturnProviderId;
+                        objTempEntity.ProviderId = objProviderDocument.ProviderId;
+                        objTempEntity.DocumentId = objProviderDocument.DocumentId;
                         objTempEntity.DocumentName = objProviderDocument.DocumentName;
                         objTempEntity.DocumentTypeId = objProviderDocument.DocumentTypeId;
                         objTempEntity.DocumentTypeIdName = objProviderDocument.DocumentTypeIdName;

@@ -59,7 +59,6 @@ namespace LAPP.DAL
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 objEntity = FetchEntity(dr);
-
             }
             return objEntity;
         }

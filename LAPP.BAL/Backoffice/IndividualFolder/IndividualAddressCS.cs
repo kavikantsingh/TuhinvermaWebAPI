@@ -44,6 +44,8 @@ namespace LAPP.BAL.Backoffice.IndividualFolder
                         objIndAddress.BeginDate = objAddressResponse.BeginDate;
                         objIndAddress.IsDeleted = objAddressResponse.IsDeleted;
                         objIndAddress.AdressStatusId = objAddressResponse.AdressStatusId;
+                        objIndAddress.UseVerifiedAddress = objAddressResponse.UseVerifiedAddress;
+                        objIndAddress.UseUserAddress = objAddressResponse.UseUserAddress;
                         objIndAddressBAL.Save_IndividualAddress(objIndAddress);
 
                         //End  Update IndividualAddress
