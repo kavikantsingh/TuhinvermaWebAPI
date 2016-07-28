@@ -28,6 +28,14 @@ namespace LAPP.BAL
 
         }
 
+
+        public int User_Delete(int userid)
+        {
+            return objDAL.Delete_Users(userid);
+        }
+
+    
+
         public Users Get_Users_byUsersId(int ID)
         {
             return objDAL.Get_Users_byUserId(ID);
@@ -56,6 +64,12 @@ namespace LAPP.BAL
         public List<Users> Search_Users(UsersSearch objUsers)
         {
             return objDAL.Search_Users(objUsers);
+        }
+
+
+        public List<Users> Search_Users_Admin(UsersSearch objUsers)
+        {
+            return objDAL.Search_Users_Admin(objUsers);
         }
 
         public List<Users> Search_Users_WithPager(UsersSearch objUsers, int CurrentPage, int PagerSize)

@@ -183,13 +183,15 @@ namespace LAPP.DAL
             return lstEntity;
         }
 
-        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber)
+        public IndividualLicense Get_IndividualLicense_By_LicenseNumber(string LicenseNumber, string LastName, string SSN)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
             lstParameter.Add(new MySqlParameter("LicenseNumber", LicenseNumber));
+            lstParameter.Add(new MySqlParameter("LastName", LastName));
+            lstParameter.Add(new MySqlParameter("SSN", SSN));
             ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualLicense_GET_BY_LicenseNumber", lstParameter.ToArray());
 
             IndividualLicense objEntity = null;
@@ -201,7 +203,7 @@ namespace LAPP.DAL
             return objEntity;
         }
 
-        public IndividualLoadResponse Get_CertificateHolder_By_IndividualId(int individualId,int applicationId)
+        public IndividualLoadResponse Get_IndividualLicense_By_IndividualId_ApplicationId(int individualId,int applicationId)
         {
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
@@ -209,7 +211,7 @@ namespace LAPP.DAL
             lstParameter.Add(new MySqlParameter("C_IndividualId", individualId));
             lstParameter.Add(new MySqlParameter("C_ApplicationId", applicationId));
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "CertificateHolder_Get_By_IndividualId", lstParameter.ToArray());
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualLicense_Get_By_IndividualId_ApplicationId", lstParameter.ToArray());
 
             IndividualLoadResponse objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)

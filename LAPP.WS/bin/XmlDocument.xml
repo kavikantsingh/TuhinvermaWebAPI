@@ -788,6 +788,13 @@
             <param name="objContentItemLkPost">ContentItemLkPost</param>
             <returns>ContentItemLkResponse</returns>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.ContentController.ContentGetAffidavitContent(System.String)">
+            <summary>
+            Get affidavit Content
+            </summary>
+            <param name="Key">API security key</param>
+            <returns>ContentItemLkResponse</returns>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.DashboardController.DashboardApplicationCount(System.String)">
             <summary>
             Get Method to get DashboardApplicationCount key.
@@ -875,6 +882,13 @@
             <param name="Key">The Key of the data.</param>
             <param name="objIndividual">Object of IndividualAddress</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualOnlyBYIndividualId(System.String,System.Int32)">
+            <summary>
+            Get Method to get Individual by key and ID.
+            </summary>
+            <param name="Key">API security key.</param>
+            <param name="IndividualId">Record ID.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualBYIndividualId(System.String,System.Int32)">
             <summary>
             Get Method to get Individual by key and ID.
@@ -882,12 +896,42 @@
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.ValidateIndividual(System.String,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.ValidateIndividual(System.String,System.Int32,System.String,System.Int32)">
             <summary>
             Validate Individual by key and ID.
             </summary>
             <param name="Key">API security key.</param>
             <param name="IndividualId">Record ID.</param>
+            <param name="ReferenceNumber">Session storage record ID.</param>
+            <param name="UserId">Session storage login userId.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.ConfigurationTypeBySetting(System.String,System.String)">
+            <summary>
+            Get Configuration value by setting
+            </summary>
+             <param name="Key">API security key.</param>
+            <param name="Setting">Setting key.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.LoadCertificateHolder(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get Configuration value by setting
+            </summary>
+             <param name="individualId">IndividualId.</param>
+            <param name="applicationId">ApplicationId.</param>
+            <param name="Key">Key.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.VerifyAddress(LAPP.ENTITY.AddressResponse)">
+            <summary>
+            Verify address
+            </summary>
+             <param name="address">Object of address.</param>
+        </member>
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.SaveReCertificationIndividualInfo(System.String,LAPP.ENTITY.IndividualLoadResponse)">
+            <summary>
+            Save Recertification detail
+            </summary>
+             <param name="individual">Individual detail.</param>
+             <param name="Key">Key.</param>
         </member>
         <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualNameSave(System.String,LAPP.ENTITY.IndividualNameRequest)">
             <summary>
@@ -1147,7 +1191,7 @@
             <param name="Key">API security key.</param>
             <param name="IndividualId">IndividualId.</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseByLicenseNumber(System.String,System.String)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.IndividualController.IndividualLicenseByLicenseNumber(System.String,System.String,System.String,System.String)">
             <summary>
             Get Method to get IndividualLicense by key and LicenseNumber.
             </summary>
@@ -1199,19 +1243,19 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.DeleteTemplateById(System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.DeleteTemplateById(System.String,System.Int32)">
             <summary>
             Delete Template By Id
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.UpdateTemplate(LAPP.ENTITY.Template)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.UpdateTemplate(System.String,LAPP.ENTITY.Template)">
             <summary>
             Update Template
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.CreateTemplate(LAPP.ENTITY.Template)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.CreateTemplate(System.String,LAPP.ENTITY.Template)">
             <summary>
             Create Template
             </summary>
@@ -1229,19 +1273,19 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByAppTyId(System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByAppTyId(System.String,LAPP.ENTITY.TemplateSearch)">
             <summary>
             Get All Templates Get By AppTy Id
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByTemplateName(System.String)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByTemplateName(System.String,LAPP.ENTITY.TemplateSearch)">
             <summary>
             Get All Templates Get By Template Name
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByAppTyIdTemplateName(System.Int32,System.String)">
+        <member name="M:LAPP.WS.Controllers.Backoffice.TemplateController.GetAllTemplatesGetByAppTyIdTemplateName(System.String,LAPP.ENTITY.TemplateSearch)">
             <summary>
             Get All Templates Get By AppTy Id and Template Name
             </summary>
@@ -1706,6 +1750,13 @@
             <param name="ApplicationId">Application Id</param>
             <param name="ProviderId">Provider Id</param>
         </member>
+        <member name="M:LAPP.WS.Controllers.Common.ProviderController.SaveProviderTabStatus(System.String,LAPP.ENTITY.ProviderTabStatus)">
+            <summary>
+            This method is to save the Tab Status
+            </summary>
+            <param name="Key">Security Key for API.</param>
+            <param name="ObjProviderTabStatus">Request object for Provider Tab Status.</param>
+        </member>
         <member name="M:LAPP.WS.Controllers.Common.ProviderController.GetAllProviderTabStatus(System.String,System.Int32,System.Int32)">
             <summary>
             This method is to Get the Tab Status
@@ -1757,7 +1808,7 @@
             <param name="Key">API Security Key</param>
             <param name="objProvReqCourseTitle">object to receive all values</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvReqCourseTitleGetAllByCourseOfStudyId(System.String,System.Int32,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvReqCourseTitleGetAllByCourseOfStudyId(System.String,System.Int32,System.Int32,System.Int32)">
             <summary>
             This API used to get Provider Required Of Study Id
             </summary>
@@ -1794,7 +1845,7 @@
             <param name="Key">API Security Key</param>
             <param name="objProvClinicHours">object to receive all values</param>
         </member>
-        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvClinicHoursGetByProviderId(System.String,System.Int32)">
+        <member name="M:LAPP.WS.Controllers.Common.ProviderCurriculumController.ProvClinicHoursGetByProviderId(System.String,System.Int32,System.Int32)">
             <summary>
             This API used to save clinic hours in ProvClinicHours table in database.
             </summary>
