@@ -694,21 +694,25 @@ namespace LAPP.WS.Controllers.Common
                     if (FilePath != null)
                     {
                         objEntity.DocumentPath = FilePath;
-
                         int ReturnProviderId = objBAL.Save_ProviderDocument(objEntity);
                         List<ProviderDocumentGET> lstTempProviderDoccumentGET = new List<ProviderDocumentGET>();
                         ProviderDocumentGET objTempEntity = new ProviderDocumentGET();
+                        
                         objTempEntity.ProviderDocumentId = ReturnProviderId;
+                        objTempEntity.DocumentName = objProviderDocument.DocumentName;
+                        objTempEntity.DocumentTypeId = objProviderDocument.DocumentTypeId;
+                        objTempEntity.DocumentTypeIdName = objProviderDocument.DocumentTypeIdName;
+                        objTempEntity.OtherDocumentTypeName = objProviderDocument.OtherDocumentTypeName;
+
+
                         lstTempProviderDoccumentGET.Add(objTempEntity);
                         objResponse.ProviderDocumentGET = lstTempProviderDoccumentGET;
-
                         objResponse.Message = Messages.SaveSuccess;
                         objResponse.Status = true;
                         objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Validation).ToString("00");
                         objResponse.ResponseReason = "";
+
                     }
-
-
                 }
                 else
                 {
