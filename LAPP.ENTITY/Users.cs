@@ -271,8 +271,8 @@ namespace LAPP.ENTITY
     public class UsersSearchResponse : BaseEntityServiceResponse
     {
         public int Total_Recard { get; set; }
-        //public object Users { get; set; }
-        public List<Users> Users { get; set; }
+        public object Users { get; set; }
+        
      }
 
 
@@ -283,8 +283,8 @@ namespace LAPP.ENTITY
 
     public class UsersResponse : BaseEntityServiceResponse
     {
-        //public object Users { get; set; }
-        public   Users Users { get; set; }
+        public object Users { get; set; }
+       
 
     }
 }
