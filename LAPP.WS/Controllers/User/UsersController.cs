@@ -342,13 +342,10 @@ namespace LAPP.WS.Controllers.User
             if (objUser != null && objUser.UserId > 0)
             {
                 Individual objIndividual = new Individual();
-                IndividualBAL objIndividualBAL = new IndividualBAL();
-                objIndividual = objIndividualBAL.Get_Individual_By_IndividualId(objUser.IndividualId);
-                //if (objIndividual != null)
-                //{
-                string TempPassword = GeneralFunctions.GetTempPassword();
+                 string TempPassword = GeneralFunctions.GetTempPassword();
                 objUser.PasswordHash = TempPassword;
                 objUser.TemporaryPassword = true;
+                    objUser.IndividualGuid="";
                 objUsersBAL.Save_Users(objUser);
 
                 string mailContent = "The password has been reset. The temporary password has been sent to the email address on file. Please check your email address.";
