@@ -28,4 +28,10 @@ namespace LAPP.ENTITY
         public int ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
     }
+
+    public class TemplateSearch : BaseEntity
+    {
+        public int applicationTy { get; set; }
+        public string tempName { get; set; }
+    }
 }

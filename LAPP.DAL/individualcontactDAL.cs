@@ -36,6 +36,18 @@ namespace LAPP.DAL
             return returnValue;
         }
 
+        public int Update_Individual_Contact(IndividualContactLoadResponse objContact)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("C_ContactId", objContact.ContactId));
+            lstParameter.Add(new MySqlParameter("C_ContactTypeId", objContact.ContactTypeId));
+            lstParameter.Add(new MySqlParameter("C_IsMobile", objContact.IsMobile));
+            lstParameter.Add(new MySqlParameter("C_ContactInfo", objContact.ContactInfo.NullString()));
+
+            var returnVal = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "IndividualContact_Update", lstParameter.ToArray());
+            return returnVal;
+        }
+
         public List<IndividualContact> Get_All_IndividualContact()
         {
             DataSet ds = new DataSet("DS");
@@ -57,9 +69,9 @@ namespace LAPP.DAL
             DataSet ds = new DataSet("DS");
             DBHelper objDB = new DBHelper();
             List<MySqlParameter> lstParameter = new List<MySqlParameter>();
-            lstParameter.Add(new MySqlParameter("G_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("C_IndividualId", IndividualId));
             lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
-            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALCONTACT_GET_BY_IndividualId", lstParameter.ToArray());
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALCONTACT_GETAll_BY_IndividualId", lstParameter.ToArray());
             List<IndividualContact> lstEntity = new List<IndividualContact>();
             IndividualContact objEntity = null;
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -89,6 +101,25 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
+        public IndividualContactLoadResponse Get_IndividualContact_By_IndividualId_ContactType(int IndividualId,int ContactTypeId)
+        {
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("C_IndividualId", IndividualId));
+            lstParameter.Add(new MySqlParameter("C_ContactTypeId", ContactTypeId));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "IndividualContact_Get_By_IndividualId", lstParameter.ToArray());
+            IndividualContactLoadResponse objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchIndividualContact(dr);
+            }
+            return objEntity;
+        }
 
         public IndividualContact Get_IndividualContact_By_IndividualContactId(int ID)
         {
@@ -106,7 +137,31 @@ namespace LAPP.DAL
             }
             return objEntity;
         }
-
+        private IndividualContactLoadResponse FetchIndividualContact(DataRow dr)
+        {
+            IndividualContactLoadResponse objEntity = new IndividualContactLoadResponse();
+            if (dr.Table.Columns.Contains("IndividualId") && dr["IndividualId"] != DBNull.Value)
+            {
+                objEntity.IndividualId = Convert.ToInt32(dr["IndividualId"]);
+            }
+            if (dr.Table.Columns.Contains("ContactId") && dr["ContactId"] != DBNull.Value)
+            {
+                objEntity.ContactId = Convert.ToInt32(dr["ContactId"]);
+            }
+            if (dr.Table.Columns.Contains("ContactTypeId") && dr["ContactTypeId"] != DBNull.Value)
+            {
+                objEntity.ContactTypeId = Convert.ToInt32(dr["ContactTypeId"]);
+            }
+            if (dr.Table.Columns.Contains("IsMobile") && dr["IsMobile"] != DBNull.Value)
+            {
+                objEntity.IsMobile = Convert.ToBoolean(dr["IsMobile"]);
+            }
+            if (dr.Table.Columns.Contains("ContactInfo") && dr["ContactInfo"] != DBNull.Value)
+            {
+                objEntity.ContactInfo = Convert.ToString(dr["ContactInfo"]);
+            }
+            return objEntity;
+        }
         private IndividualContact FetchEntity(DataRow dr)
         {
             IndividualContact objEntity = new IndividualContact();

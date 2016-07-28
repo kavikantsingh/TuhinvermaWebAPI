@@ -50,6 +50,20 @@ namespace LAPP.DAL
             int returnValue = Convert.ToInt32(returnParam.Value);
             return returnValue;
         }
+        public int Update_Individual(IndividualLoadResponse objIndividual)
+        {
+            DBHelper objDB = new DBHelper(); List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("I_IndividualId", objIndividual.IndividualId));
+            lstParameter.Add(new MySqlParameter("I_IndividualLicenseId", objIndividual.IndividualLicenseId));
+            lstParameter.Add(new MySqlParameter("I_FirstName", objIndividual.FirstName.NullString()));
+            lstParameter.Add(new MySqlParameter("I_MiddleName", objIndividual.MiddleName.NullString()));
+            lstParameter.Add(new MySqlParameter("I_LastName", objIndividual.LastName.NullString()));
+            lstParameter.Add(new MySqlParameter("I_CAMTCIdNumber", objIndividual.CAMTCIdNumber.NullString()));
+            lstParameter.Add(new MySqlParameter("I_CAMTCCertificateNumber", objIndividual.CAMTCCertificateNumber.NullString()));
+            
+            var returnVal = objDB.ExecuteNonQuery(CommandType.StoredProcedure, "Individual_Update", lstParameter.ToArray());
+            return returnVal;
+        }
 
         public List<Individual> Get_All_Individual()
         {
@@ -91,7 +105,33 @@ namespace LAPP.DAL
 
                 objEntity.objIndividualAddress = objADAL.Get_Current_IndividualAddress_By_IndividualId(objEntity.IndividualId);
                 objEntity.objIndividualContact = objCDAL.Get_Primary_IndividualContact_By_IndividualId(objEntity.IndividualId);
+            }
+            return objEntity;
 
+
+        }
+
+        public Individual Get_IndividualOnly_By_IndividualId(int ID)
+        {
+            IndividualAddressDAL objADAL = new IndividualAddressDAL();
+            IndividualContactDAL objCDAL = new IndividualContactDAL();
+
+            DataSet ds = new DataSet("DS");
+            DBHelper objDB = new DBHelper();
+            List<MySqlParameter> lstParameter = new List<MySqlParameter>();
+            lstParameter.Add(new MySqlParameter("_IndividualId", ID));
+            lstParameter.Add(new MySqlParameter("EncryptionKey", EncryptionKey.Key));
+
+            ds = objDB.ExecuteDataSet(CommandType.StoredProcedure, "INDIVIDUALOnly_GET_BY_IndividualId", lstParameter.ToArray());
+            Individual objEntity = null;
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = ds.Tables[0].Rows[0];
+                objEntity = FetchEntity(dr);
+
+                objEntity.objIndividualAddress = objADAL.Get_Current_IndividualAddress_By_IndividualId(objEntity.IndividualId);
+                objEntity.objIndividualContact = objCDAL.Get_Primary_IndividualContact_By_IndividualId(objEntity.IndividualId);
             }
             return objEntity;
 

@@ -15,7 +15,10 @@ namespace LAPP.BAL
         {
             return objDal.Save_Individual(objIndividual);
         }
-
+        public int Update_Individual(IndividualLoadResponse objIndividual)
+        {
+            return objDal.Update_Individual(objIndividual);
+        }
         public List<Individual> Get_All_Individual()
         {
             return objDal.Get_All_Individual();
@@ -41,6 +44,11 @@ namespace LAPP.BAL
         public Individual Get_Individual_By_IndividualId(int ID)
         {
             return objDal.Get_Individual_By_IndividualId(ID);
+        }
+
+        public Individual Get_IndividualOnly_By_IndividualId(int ID)
+        {
+            return objDal.Get_IndividualOnly_By_IndividualId(ID);
         }
 
         public Individual Get_Individual_By_LastNameSSNCodeLicenseNumber(string lastName, string licenseNumber, string SSNCode)

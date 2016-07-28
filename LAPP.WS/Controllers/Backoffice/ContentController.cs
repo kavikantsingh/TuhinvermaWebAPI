@@ -742,6 +742,81 @@ namespace LAPP.WS.Controllers.Backoffice
             }
             return objResponse;
         }
+
+        /// <summary>
+        /// Get affidavit Content
+        /// </summary>
+        /// <param name="Key">API security key</param>
+        /// <returns>ContentItemLkResponse</returns>
+        [AcceptVerbs("GET")]
+        [ActionName("ContentGetAffidavitContent")]
+        public ContentItemLkAffidavitResponse ContentGetAffidavitContent(string Key)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            ContentItemLkAffidavitResponse objResponse = new ContentItemLkAffidavitResponse();
+            ContentItemLkBAL objBAL = new ContentItemLkBAL();
+            ContentItemLk objEntity = new ContentItemLk();
+            List<ContentItemLkAffidavitItem> lstContent = new List<ContentItemLkAffidavitItem>();
+
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.ContentItems = null;
+                    return objResponse;
+                }
+                var items = new Dictionary<int, ContentItemLk>();
+                items.Add(1, objBAL.Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(21, "SchoolEligibility"));
+                items.Add(2, objBAL.Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(21, "SchoolEligibility"));
+                items.Add(3, objBAL.Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(21, "SchoolEligibility"));
+                items.Add(4, objBAL.Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(21, "SchoolEligibility"));
+                items.Add(5, objBAL.Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(21, "SchoolEligibility"));
+                items.Add(6, objBAL.Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(21, "SchoolEligibility"));
+                items.Add(7, objBAL.Get_ContentItemLk_GET_BY_ContentItemLkId_AND_Code(21, "SchoolEligibility"));
+
+
+                if (items != null && items.Count > 0)
+                {
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    lstContent = items.Select(i => new ContentItemLkAffidavitItem
+                    {
+                        ContentItemLkId = i.Value.ContentItemLkId,
+                        ContentItemLkCode = i.Value.ContentItemLkCode,
+                        ContentItemLkDesc = i.Value.ContentItemLkDesc,
+                        ContentItemNo = i.Key,
+                        IsChecked = false
+                    }).ToList();
+
+                    objResponse.ContentItems = lstContent;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.ContentItems = null;
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "ContentGetAffidavitContent", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.Message = ex.Message;
+                objResponse.ContentItems = null;
+            }
+
+            return objResponse;
+        }
         #endregion
     }
 }

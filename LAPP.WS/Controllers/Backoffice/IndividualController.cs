@@ -24,6 +24,7 @@ using System.Web.Http.Description;
 using System.Data.OleDb;
 using System.Data;
 using LAPP.WS.Controllers.Common;
+using System.Text;
 
 namespace LAPP.WS.Controllers.Backoffice
 {
@@ -454,6 +455,103 @@ namespace LAPP.WS.Controllers.Backoffice
             return objResponse;
         }
 
+        /// <summary>
+        /// Get Method to get Individual by key and ID.
+        /// </summary>
+        /// <param name="Key">API security key.</param>
+        /// <param name="IndividualId">Record ID.</param>
+        [AcceptVerbs("GET")]
+        [ActionName("IndividualOnlyBYIndividualId")]
+        public IndividualResponseRequest IndividualOnlyBYIndividualId(string Key, int IndividualId)
+        {
+            LogingHelper.SaveAuditInfo(Key);
+
+            IndividualResponseRequest objResponse = new IndividualResponseRequest();
+            IndividualBAL objIndividualBAL = new IndividualBAL();
+            IndividualResponse objIndividualResponse = new IndividualResponse();
+            Individual objIndividual = new Individual();
+            List<IndividualResponse> lstIndividualResponse = new List<IndividualResponse>();
+            List<Individual> lstIndividual = new List<Individual>();
+            try
+            {
+                if (!TokenHelper.ValidateToken(Key))
+                {
+                    objResponse.Status = false;
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.ValidateToken).ToString("00");
+                    objResponse.Message = "User session has expired.";
+                    objResponse.IndividualResponse = null;
+                    return objResponse;
+                }
+
+                objIndividual = objIndividualBAL.Get_IndividualOnly_By_IndividualId(IndividualId);
+                if (objIndividual != null)
+                {
+                    lstIndividual.Add(objIndividual);
+
+                    lstIndividualResponse = lstIndividual.Select(obj => new IndividualResponse
+                    {
+                        IndividualId = obj.IndividualId,
+                        FirstName = obj.FirstName,
+                        LastName = obj.LastName,
+                        MiddleName = obj.MiddleName,
+                        SuffixId = obj.SuffixId,
+                        Email = obj.Email,
+                        SSN = obj.SSN,
+                        IsItin = obj.IsItin,
+                        DateOfBirth = obj.DateOfBirth,
+                        RaceId = obj.RaceId,
+                        Gender = obj.Gender,
+                        HairColorId = obj.HairColorId,
+                        EyeColorId = obj.EyeColorId,
+                        Weight = obj.Weight,
+                        Height = obj.Height,
+                        PlaceOfBirth = obj.PlaceOfBirth,
+                        CitizenshipId = obj.CitizenshipId,
+                        ExternalId = obj.ExternalId,
+                        ExternalId2 = obj.ExternalId2,
+                        IsArchived = obj.IsArchived,
+                        Name = obj.Name,
+
+                        StatusColorCode = obj.StatusColorCode,
+                        IsNameChanged = obj.IsNameChanged,
+                        PlaceofBirthCity = obj.PlaceofBirthCity,
+                        PlaceofBirthState = obj.PlaceofBirthState,
+                        PlaceofBirthCountry = obj.PlaceofBirthCountry,
+                        objIndividualAddress = obj.objIndividualAddress,
+                        Picture = obj.Picture,
+                        objIndividualContact = obj.objIndividualContact,
+
+                        IsActive = obj.IsActive
+
+                    }).ToList();
+
+                    objResponse.Status = true;
+                    objResponse.Message = "";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+
+                    objResponse.IndividualResponse = lstIndividualResponse;
+                }
+                else
+                {
+                    objResponse.Status = false;
+                    objResponse.Message = "No record found.";
+                    objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Success).ToString("00");
+                    objResponse.IndividualResponse = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogingHelper.SaveExceptionInfo(Key, ex, "IndividualBYIndividualId", ENTITY.Enumeration.eSeverity.Error);
+
+                objResponse.Status = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+                objResponse.IndividualResponse = null;
+
+            }
+            return objResponse;
+        }
 
         /// <summary>
         /// Get Method to get Individual by key and ID.
@@ -742,12 +840,233 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <param name="Key">Key.</param>
         [AcceptVerbs("GET")]
         [ActionName("LoadCertificateHolder")]
-        public IndividualLoadResponse LoadCertificateHolder(string Key,int individualId,int applicationId)
+        public CertificateHolderLoadResponse LoadCertificateHolder(string Key,int individualId,int applicationId)
         {
-            var objResponse = new IndividualLoadResponse();
+            var objResponse = new CertificateHolderLoadResponse();
+
+            var individualLicense = new IndividualLoadResponse();
             var objindividualBAL = new IndividualLicenseBAL();
-            objResponse = objindividualBAL.Get_CertificateHolder_By_IndividualId(individualId, applicationId);
+            individualLicense = objindividualBAL.Get_IndividualLicense_By_IndividualId_ApplicationId(individualId, applicationId);
+
+            objResponse.IndividualId = individualId;
+            objResponse.CAMTCCertificateNumber = individualLicense.CAMTCCertificateNumber;
+            objResponse.CAMTCIdNumber = individualLicense.CAMTCIdNumber;
+            objResponse.FirstName = individualLicense.FirstName;
+            objResponse.LastName = individualLicense.LastName;
+            objResponse.MiddleName = individualLicense.MiddleName;
+
+            var individualAddress = new IndividualAddressLoadResponse();
+            var objIndividualAddressBAL = new IndividualAddressBAL();
+
+            //Home Address
+
+            individualAddress = objIndividualAddressBAL.Get_IndividualAddress_By_IndividualId(individualId, 2);
+
+            if (individualAddress == null)
+                individualAddress = new IndividualAddressLoadResponse();
+
+            objResponse.HomeAddressId = individualAddress.AddressId;
+            objResponse.HomeAddressTypeId = individualAddress.AddressTypeId;
+            objResponse.HomeStreetLine1 = individualAddress.StreetLine1;
+            objResponse.HomeStreetLine2 = individualAddress.StreetLine2;
+            objResponse.HomeCity = individualAddress.City;
+            objResponse.HomeZip = individualAddress.Zip;
+            objResponse.HomeStateCode = individualAddress.StateCode;
+            objResponse.HomeCountryId = individualAddress.CountryId;
+            objResponse.HomeUseUserAddress = individualAddress.UseUserAddress;
+            objResponse.HomeUseVerifiedAddress = individualAddress.UseVerifiedAddress;
+
+            //Mailing Address
+            individualAddress = objIndividualAddressBAL.Get_IndividualAddress_By_IndividualId(individualId, 1);
+
+            if (individualAddress == null)
+                individualAddress = new IndividualAddressLoadResponse();
+
+            objResponse.MailingAddressId = individualAddress.AddressId;
+            objResponse.MailingAddressTypeId = individualAddress.AddressTypeId;
+            objResponse.MailingStreetLine1 = individualAddress.StreetLine1;
+            objResponse.MailingStreetLine2 = individualAddress.StreetLine2;
+            objResponse.MailingCity = individualAddress.City;
+            objResponse.MailingZip = individualAddress.Zip;
+            objResponse.MailingStateCode = individualAddress.StateCode;
+            objResponse.MailingCountryId = individualAddress.CountryId;
+            objResponse.MailingUseUserAddress = individualAddress.UseUserAddress;
+            objResponse.MailingUseVerifiedAddress = individualAddress.UseVerifiedAddress;
+            objResponse.IsMailingSameAsPhysical = individualAddress.IsMailingSameAsPhysical;
+
+            var individualContact = new IndividualContactLoadResponse();
+            var objindividualContactBAL = new IndividualContactBAL();
+
+            //Primary Phone
+            individualContact = objindividualContactBAL.Get_IndividualContact_By_IndividualId_ContactType(individualId, 6);
+
+            if (individualContact == null)
+                individualContact = new IndividualContactLoadResponse();
+
+            objResponse.PrimaryPhoneContactId = individualContact.ContactId;
+            objResponse.PrimaryPhoneContactTypeId = individualContact.ContactTypeId;
+            objResponse.PrimaryPhone = individualContact.ContactInfo;
+            objResponse.PrimaryPhoneIsMobile = individualContact.IsMobile;
+
+            //Secondary Phone
+            individualContact = objindividualContactBAL.Get_IndividualContact_By_IndividualId_ContactType(individualId, 7);
+
+            if (individualContact == null)
+                individualContact = new IndividualContactLoadResponse();
+
+            objResponse.SecondaryPhoneContactId = individualContact.ContactId;
+            objResponse.SecondaryPhoneContactTypeId = individualContact.ContactTypeId;
+            objResponse.SecondaryPhone = individualContact.ContactInfo;
+            objResponse.SecondaryPhoneIsMobile = individualContact.IsMobile;
+
+            //Website
+            individualContact = objindividualContactBAL.Get_IndividualContact_By_IndividualId_ContactType(individualId, 17);
+
+            if (individualContact == null)
+                individualContact = new IndividualContactLoadResponse();
+
+            objResponse.WebsiteContactId = individualContact.ContactId;
+            objResponse.WebsiteContactTypeId = individualContact.ContactTypeId;
+            objResponse.Website = individualContact.ContactInfo;
+
+            //Primary Email
+            individualContact = objindividualContactBAL.Get_IndividualContact_By_IndividualId_ContactType(individualId, 18);
+
+            if (individualContact == null)
+                individualContact = new IndividualContactLoadResponse();
+
+            objResponse.PrimaryEmailContactId = individualContact.ContactId;
+            objResponse.PrimaryEmailContactTypeId = individualContact.ContactTypeId;
+            objResponse.PrimaryEmail = individualContact.ContactInfo;
+
+            //Secondary Email
+            individualContact = objindividualContactBAL.Get_IndividualContact_By_IndividualId_ContactType(individualId, 19);
+
+            if (individualContact == null)
+                individualContact = new IndividualContactLoadResponse();
+
+            objResponse.SecondaryEmailContactId = individualContact.ContactId;
+            objResponse.SecondaryEmailContactTypeId = individualContact.ContactTypeId;
+            objResponse.SecondaryEmail = individualContact.ContactInfo;
+
             return objResponse;
+        }
+
+        /// <summary>
+        /// Verify address
+        /// </summary>
+        ///  <param name="address">Object of address.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("VerifyAddress")]
+        public AddressResponse VerifyAddress(AddressResponse address)
+        {
+            try
+            {
+                var url = "https://api.lob.com/v1/verify";
+                var http = (HttpWebRequest)WebRequest.Create(new Uri(url));
+                http.Accept = "application/json";
+                http.ContentType = "application/json";
+                http.Method = "POST";
+                //http.Headers.Add("apiKey:test_a3c3210eb06e5865258536ed326fbbf7b2b");
+                //http.Headers.Add("apiVersion:2016-06-30");
+                SetBasicAuthHeader(http, "test_a3c3210eb06e5865258536ed326fbbf7b2b", "");
+               
+                string Data = Newtonsoft.Json.JsonConvert.SerializeObject(address);
+               
+                UTF8Encoding encoding = new UTF8Encoding();
+                Byte[] bytes = encoding.GetBytes(Data);
+
+                Stream newStream = http.GetRequestStream();
+                newStream.Write(bytes, 0, bytes.Length);
+                newStream.Close();
+
+                var response = http.GetResponse();
+
+                var stream = response.GetResponseStream();
+                var sr = new StreamReader(stream);
+                var content = sr.ReadToEnd();
+                var responseString = content;
+                address = Newtonsoft.Json.JsonConvert.DeserializeObject<AddressResponse>(responseString);
+                address.Status = true;
+                return address;
+            }
+            catch (Exception ex)
+            {
+                address.Status = false;
+            }
+            return address;
+        }
+        private void SetBasicAuthHeader(WebRequest request, String userName, String userPassword)
+        {
+            string authInfo = userName + ":" + userPassword;
+            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+            request.Headers["Authorization"] = "Basic " + authInfo;
+        }
+        /// <summary>
+        /// Save Recertification detail
+        /// </summary>
+        ///  <param name="individual">Individual detail.</param>
+        ///  <param name="Key">Key.</param>
+        //<param name = "individualAddress" > List of Individual address detail.</param>
+        //<param name="individualContacts">List of Individual contact detail.</param>
+        [AcceptVerbs("POST")]
+        [ActionName("SaveReCertificationIndividualInfo")]
+        public BaseEntityServiceResponse SaveReCertificationIndividualInfo(string Key, IndividualLoadResponse individual)
+        {
+            var objSaveResponse = new BaseEntityServiceResponse();
+
+            var objIndividualBAL = new IndividualBAL();
+            try
+            {
+                var individualRes = objIndividualBAL.Update_Individual(individual);
+
+                var individualAddress = individual.IndividualAddress;
+                var objIndividualAddressBAL = new IndividualAddressBAL();
+                foreach (var add in individualAddress)
+                {
+                    var addRes = objIndividualAddressBAL.Update_Individual_Address(add);
+                }
+
+                var individualContacts = individual.IndividualContacts;
+                var objIndividualContactBAL = new IndividualContactBAL();
+                foreach (var con in individualContacts)
+                {
+                    var conRes = objIndividualContactBAL.Update_Individual_Contact(con);
+                }
+            }
+            catch (Exception ex)
+            {
+                objSaveResponse.Message = ex.Message;
+                objSaveResponse.Status = false;
+                objSaveResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+            objSaveResponse.Message = "Success";
+            objSaveResponse.Status = true;
+            return objSaveResponse;
+        }
+
+        [AcceptVerbs("POST")]
+        [ActionName("SaveIndividualAffidavit")]
+        public BaseEntityServiceResponse SaveIndividualAffidavit(string Key, IndividualAffidavit individualAffidavit)
+        {
+            var objSaveResponse = new BaseEntityServiceResponse();
+
+            var objIndividualAffidavitBAL = new IndividualAffidavitBAL();
+            try
+            {
+                var individualRes = objIndividualAffidavitBAL.Insert_IndividualAffidavit(individualAffidavit);
+                var individualRes2 = objIndividualAffidavitBAL.Insert_Individualaffidavitsignature(individualAffidavit.Individualaffidavitsignature);
+
+            }
+            catch (Exception ex)
+            {
+                objSaveResponse.Message = ex.Message;
+                objSaveResponse.Status = false;
+                objSaveResponse.StatusCode = Convert.ToInt32(ResponseStatusCode.Exception).ToString("00");
+            }
+            objSaveResponse.Message = "Success";
+            objSaveResponse.Status = true;
+            return objSaveResponse;
         }
         #endregion
 
@@ -864,6 +1183,8 @@ namespace LAPP.WS.Controllers.Backoffice
                 }
 
                 lstIndividualName = objBAL.Get_IndividualName_By_IndividualIdANDIndividualNameTypeId(IndividualId, Convert.ToInt32(eIndividualNameType.Individual));
+                //lstIndividualName = objBAL.Get_IndividualName_By_IndividualIdANDIndividualNameTypeId(IndividualId, 13);
+
                 if (lstIndividualName != null)
                 {
                     lstEntity = lstIndividualName
@@ -4836,7 +5157,7 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <param name="LicenseNumber">License Number</param>
         [AcceptVerbs("GET")]
         [ActionName("IndividualLicenseByLicenseNumber")]
-        public IndividualLicenseResponseRequest IndividualLicenseByLicenseNumber(string Key, string LicenseNumber)
+        public IndividualLicenseResponseRequest IndividualLicenseByLicenseNumber(string Key, string LicenseNumber, string LastName, string SSN)
         {
             LogingHelper.SaveAuditInfo(Key);
 
@@ -4857,7 +5178,7 @@ namespace LAPP.WS.Controllers.Backoffice
                     return objResponse;
                 }
 
-                objIndividualLicenseResponse = objIndividualLicenseBAL.Get_IndividualLicense_By_LicenseNumber(LicenseNumber);
+                objIndividualLicenseResponse = objIndividualLicenseBAL.Get_IndividualLicense_By_LicenseNumber(LicenseNumber, LastName, SSN);
                 if (objIndividualLicenseResponse != null)
                 {
                     List<IndividualLicenseResponse> lstLicenseResponse = new List<IndividualLicenseResponse>();

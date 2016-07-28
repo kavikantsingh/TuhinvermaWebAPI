@@ -66,6 +66,7 @@ namespace LAPP.ENTITY.Enumeration
 
     public enum eIndividualNameType
     {
+        
         Individual = 12,
         Sponsor,
         Supervisor
