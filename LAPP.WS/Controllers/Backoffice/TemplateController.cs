@@ -41,9 +41,9 @@ namespace LAPP.WS.Controllers.Backoffice
         /// <returns></returns>
         [AcceptVerbs("POST")]
         [ActionName("DeleteTemplateById")]
-        public void DeleteTemplateById(string Key,int id)
+        public void DeleteTemplateById(string Key, Template template)
         {
-            _templateBal.DeleteTemplateById(id);
+            _templateBal.DeleteTemplateById(template.TemplateId);
         }
 
         /// <summary>
