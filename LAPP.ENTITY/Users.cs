@@ -200,6 +200,8 @@ namespace LAPP.ENTITY
 
         public List<UserRolesRequest> UserRoles { get; set; }
 
+        public string IndividualGuid { get; set; }
+
     }
 
     public class UserRolesRequest
@@ -270,7 +272,8 @@ namespace LAPP.ENTITY
     {
         public int Total_Recard { get; set; }
         public object Users { get; set; }
-    }
+        
+     }
 
 
     public class UsersPostResponse : BaseEntityServiceResponse
@@ -281,5 +284,7 @@ namespace LAPP.ENTITY
     public class UsersResponse : BaseEntityServiceResponse
     {
         public object Users { get; set; }
+       
+
     }
 }

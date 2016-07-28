@@ -3989,7 +3989,21 @@ namespace LAPP.BAL.Renewal
                                             objPendingLicense2.OriginalLicenseDate = objLatestLicense.OriginalLicenseDate;
                                             objPendingLicense2.LicenseEffectiveDate = objLatestLicense.LicenseExpirationDate.AddDays(1);
                                             objPendingLicense2.LicenseExpirationDate = objLatestLicense.LicenseExpirationDate.AddYears(1);
-                                            objPendingLicense2.LicenseStatusTypeId = objLatestLicense.LicenseStatusTypeId == 1 ? 5 : objLatestLicense.LicenseStatusTypeId == 2 ? 5 : 8;
+                                            //objPendingLicense2.LicenseStatusTypeId = objLatestLicense.LicenseStatusTypeId == 1 ? 5 : objLatestLicense.LicenseStatusTypeId == 2 ? 5 : 8;
+
+                                            if (objPendingLicense2.LicenseStatusTypeId == 1 || objPendingLicense2.LicenseStatusTypeId == 2)
+                                            {
+                                                objPendingLicense2.LicenseStatusTypeId = 5;
+                                            }
+                                            else if (objLatestLicense.LicenseStatusTypeId == 4)
+                                            {
+                                                objPendingLicense2.LicenseStatusTypeId = 8;
+                                            }
+                                            else if (objLatestLicense.LicenseStatusTypeId == 22)
+                                            {
+                                                objPendingLicense2.LicenseStatusTypeId = 24;
+                                            }
+
                                             objPendingLicense2.IsDeleted = false;
                                             objPendingLicense2.CreatedBy = objToken.UserId;
                                             objPendingLicense2.CreatedOn = DateTime.Now;
